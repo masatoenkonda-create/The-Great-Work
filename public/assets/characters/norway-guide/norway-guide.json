@@ -1,0 +1,23 @@
+{
+  "image": "norway-guide.png",
+  "frameWidth": 64,
+  "frameHeight": 72,
+  "columns": 1,
+  "rows": 1,
+  "frameCount": 1,
+  "characterHeight": 64,
+  "anchor": {
+    "x": 32,
+    "y": 69
+  },
+  "opaquePaletteColors": 24,
+  "direction": "right",
+  "animation": "static-explaining-pose",
+  "sourceBounds": [
+    997,
+    86,
+    1892,
+    1473
+  ],
+  "notes": "One supplied pose, not a walking animation. Exterior gray matte removed; black outlines and interior gray details preserved. Mirror in code when appropriate."
+}
