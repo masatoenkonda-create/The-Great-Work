@@ -20,13 +20,13 @@ export const ASSETS = {
 
   // Stage backdrops
   stages: {
-    1: '/assets/stages/stop1_backdrop.png',
-    2: '/assets/stages/stop2_backdrop.png',
-    3: '/assets/stages/stop3_backdrop.png',
-    4: '/assets/stages/stop4_backdrop.png',
-    5: '/assets/stages/stop5_backdrop.png',
-    6: '/assets/stages/stop6_backdrop.png',
-    7: '/assets/stages/stop7_backdrop.png'
+    1: '/assets/stages/stop1_backdrop.jpg',
+    2: '/assets/stages/stop2_backdrop.jpg',
+    3: '/assets/stages/stop3_backdrop.jpg',
+    4: '/assets/stages/stop4_backdrop.jpg',
+    5: '/assets/stages/stop5_backdrop.jpg',
+    6: '/assets/stages/stop6_backdrop.jpg',
+    7: '/assets/stages/stop7_backdrop.jpg'
   }
 } as const;
 

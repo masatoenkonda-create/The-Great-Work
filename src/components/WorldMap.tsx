@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { RouteStop, ROUTE_STOPS, StopId, CargoState } from '../types/route';
 import { sound } from '../services/audio';
 import { ASSETS } from '../content/assets';
-import { Lock, Unlock, Check, ChevronRight, Play, ArrowLeft } from 'lucide-react';
+import { Lock, ChevronRight, ArrowLeft } from 'lucide-react';
+import { ScreenControls } from './ScreenControls';
 
 interface WorldMapProps {
   cargo: CargoState;
@@ -11,6 +12,8 @@ interface WorldMapProps {
   onReset: () => void;
   isMuted: boolean;
   onToggleMute: () => void;
+  isFullscreen: boolean;
+  onToggleFullscreen: () => void;
 }
 
 export const WorldMap: React.FC<WorldMapProps> = ({
@@ -19,10 +22,13 @@ export const WorldMap: React.FC<WorldMapProps> = ({
   onOpenTitle,
   onReset,
   isMuted,
-  onToggleMute
+  onToggleMute,
+  isFullscreen,
+  onToggleFullscreen
 }) => {
   const [selectedId, setSelectedId] = useState<StopId>(cargo.currentStopId);
-  const [devPreviewMode, setDevPreviewMode] = useState<boolean>(false);
+  // Development build: all entrances stay open without changing earned completion.
+  const devPreviewMode = true;
   const [feedbackMsg, setFeedbackMsg] = useState<string | null>(null);
 
   const selectedStop = ROUTE_STOPS.find((s) => s.id === selectedId) || ROUTE_STOPS[0];
@@ -53,7 +59,7 @@ export const WorldMap: React.FC<WorldMapProps> = ({
       const unlocked = isStopUnlocked(targetId);
       if (!unlocked) {
         sound.playError();
-        setFeedbackMsg(`Stage 0${targetId} is locked. Complete Stage 0${targetId - 1} first, or toggle Dev Preview.`);
+        setFeedbackMsg(`Stage 0${targetId} is locked. Complete Stage 0${targetId - 1} first.`);
         setTimeout(() => setFeedbackMsg(null), 3000);
         return;
       }
@@ -88,7 +94,8 @@ export const WorldMap: React.FC<WorldMapProps> = ({
       } else if (e.key === 'p' || e.key === 'P') {
         e.preventDefault();
         sound.playClick();
-        setDevPreviewMode((prev) => !prev);
+        setFeedbackMsg('All stages are unlocked during development.');
+        setTimeout(() => setFeedbackMsg(null), 3000);
       } else if (e.key === 'm' || e.key === 'M') {
         e.preventDefault();
         onToggleMute();
@@ -161,85 +168,46 @@ export const WorldMap: React.FC<WorldMapProps> = ({
   const selectedIsCompleted = isStopCompleted(selectedId);
 
   return (
-    <div className="relative w-full h-full flex flex-col justify-between bg-[#030611] text-white font-mono select-none overflow-hidden">
-      {/* Top HUD: Title, Progress, Lot ID & Toggles */}
-      <header className="relative z-20 w-full px-6 py-2.5 bg-[#070b19]/95 border-b border-[#1e293b] flex items-center justify-between shadow-md">
-        <div className="flex items-center gap-3">
-          {onOpenTitle && (
-            <button
-              onClick={() => {
-                sound.playClick();
-                onOpenTitle();
-              }}
-              className="flex items-center gap-1 px-2.5 py-1 bg-[#1e293b] hover:bg-[#334155] border border-stone-500 rounded text-xs font-bold text-stone-200 cursor-pointer transition-colors"
-              title="Return to Title Screen (Esc)"
-            >
-              <ArrowLeft size={13} />
-              <span>TITLE [ESC]</span>
-            </button>
-          )}
-
-          <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 bg-[#dc2626] text-white text-[10px] font-black tracking-widest uppercase rounded">
-              WORLD MAP
-            </span>
-            <span className="text-xs md:text-sm font-bold text-[#facc15] tracking-wider hidden sm:inline">
-              THE GREAT WORK
-            </span>
-          </div>
-        </div>
-
-        {/* Campaign Progress & Lot Info */}
-        <div className="flex items-center gap-3 text-xs">
-          <div className="hidden md:flex items-center gap-2 px-3 py-1 bg-[#0f172a] border border-[#334155] rounded text-stone-300">
-            <span className="text-stone-400">LOT:</span>
-            <span className="font-bold text-[#38bdf8]">#{cargo.lotId}</span>
-          </div>
-
-          <div className="flex items-center gap-2 px-3 py-1 bg-[#0f172a] border border-[#334155] rounded">
-            <span className="text-stone-400 hidden sm:inline">PROGRESS:</span>
-            <span className="font-bold text-[#10b981]">
-              {cargo.completedStops.length} / 7 COMPLETED
-            </span>
-          </div>
-
-          {/* Dev Preview Mode Toggle */}
+    <div className="relative w-full h-full bg-[#020409] text-white font-mono select-none overflow-hidden">
+      {/* Top-left overlay: back to title + progress */}
+      <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
+        {onOpenTitle && (
           <button
             onClick={() => {
               sound.playClick();
-              setDevPreviewMode((prev) => !prev);
+              onOpenTitle();
             }}
-            className={`flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-bold border transition-colors cursor-pointer ${
-              devPreviewMode
-                ? 'bg-[#ca8a04] hover:bg-[#eab308] border-yellow-200 text-stone-950 shadow-[0_0_10px_rgba(234,179,8,0.5)]'
-                : 'bg-[#1e293b] hover:bg-[#334155] border-stone-600 text-stone-300'
-            }`}
-            title="Toggle Developer Preview mode to inspect any stop (P)"
+            className="p-2 bg-[#030612]/70 hover:bg-[#030612]/90 border border-white/20 rounded text-white/80 hover:text-white cursor-pointer transition-colors"
+            title="Title screen"
           >
-            {devPreviewMode ? <Unlock size={12} /> : <Lock size={12} />}
-            <span>DEV PREVIEW: {devPreviewMode ? 'ON [P]' : 'OFF [P]'}</span>
+            <ArrowLeft size={16} />
           </button>
-
-          <button
-            onClick={() => {
-              sound.playClick();
-              onToggleMute();
-            }}
-            className="px-2.5 py-1 bg-[#1e293b] hover:bg-[#334155] border border-stone-600 text-stone-300 rounded text-xs font-bold cursor-pointer"
-            title="Toggle audio (M)"
-          >
-            {isMuted ? 'MUTE [M]' : 'SOUND [M]'}
-          </button>
+        )}
+        <div className="px-3 py-1.5 bg-[#030612]/70 border border-white/20 rounded text-xs font-bold text-[#10b981]">
+          {cargo.completedStops.length} / 7
         </div>
-      </header>
+      </div>
 
-      {/* Main Map Viewport: SVG with exact 1376x768 viewBox preserving aspect ratio without cropping */}
-      <main className="relative flex-1 w-full min-h-0 flex items-center justify-center p-2 bg-[#020409]">
-        <div className="relative aspect-[1376/768] w-full max-h-full max-w-full flex items-center justify-center shadow-2xl rounded overflow-hidden border border-[#1e293b]">
+      {/* Top-right overlay: sound + fullscreen (P still toggles dev preview, shown only when on) */}
+      <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
+        {devPreviewMode && (
+          <span className="px-2 py-1 bg-[#ca8a04] text-stone-950 rounded text-[10px] font-black">DEV</span>
+        )}
+        <ScreenControls
+          isMuted={isMuted}
+          onToggleMute={onToggleMute}
+          isFullscreen={isFullscreen}
+          onToggleFullscreen={onToggleFullscreen}
+        />
+      </div>
+
+      {/* Main Map Viewport: SVG 1376x768 viewBox scaled to cover the whole screen */}
+      <main className="absolute inset-0">
+        <div className="relative w-full h-full">
           <svg
             viewBox="0 0 1376 768"
             className="w-full h-full block pixelated"
-            preserveAspectRatio="xMidYMid meet"
+            preserveAspectRatio="xMidYMid slice"
             style={{ imageRendering: 'pixelated' }}
           >
             {/* Approved Pixel Art World Map Background (1376x768 JPEG) */}
@@ -361,8 +329,8 @@ export const WorldMap: React.FC<WorldMapProps> = ({
                       className={isActive ? 'animate-pulse' : ''}
                     />
 
-                    {/* Pacific Seam Continuation Cues */}
-                    <g transform="translate(1360, 265)">
+                    {/* Pacific Seam Continuation Cues (inset so they survive edge cropping on narrow screens) */}
+                    <g transform="translate(1290, 305)">
                       <rect
                         x="-52"
                         y="-10"
@@ -387,7 +355,7 @@ export const WorldMap: React.FC<WorldMapProps> = ({
                       </text>
                     </g>
 
-                    <g transform="translate(10, 265)">
+                    <g transform="translate(90, 250)">
                       <rect
                         x="-5"
                         y="-10"
@@ -699,66 +667,38 @@ export const WorldMap: React.FC<WorldMapProps> = ({
         </div>
       )}
 
-      {/* Bottom HUD: Selected Stop Details & Enter Action */}
-      <footer className="relative z-20 w-full px-6 py-3.5 bg-[#070b19]/95 border-t border-[#1e293b] flex flex-wrap items-center justify-between gap-4 shadow-lg">
-        {/* Left: Selected Stop Details & Activity Caption per GUIDELINES §Current implementation */}
-        <div className="flex-1 min-w-[280px]">
-          <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 bg-[#fbbf24] text-stone-950 text-xs font-black rounded uppercase">
-              STAGE 0{selectedStop.id}
-            </span>
-            <span className="text-sm font-bold text-white tracking-wide">
-              {selectedStop.label}
-            </span>
-            <span className="text-xs text-stone-400">
-              ({selectedStop.location})
-            </span>
-
-            {selectedIsCompleted ? (
-              <span className="flex items-center gap-1 text-[11px] font-bold text-[#10b981] bg-[#064e3b]/80 px-2 py-0.5 rounded border border-[#10b981]">
-                <Check size={11} /> COMPLETED
-              </span>
-            ) : selectedStop.id === cargo.currentStopId ? (
-              <span className="flex items-center gap-1 text-[11px] font-bold text-[#fbbf24] bg-[#78350f]/80 px-2 py-0.5 rounded border border-[#fbbf24] animate-pulse">
-                <Play size={10} /> CURRENT GOAL
-              </span>
-            ) : selectedIsUnlocked ? (
-              <span className="text-[11px] font-bold text-[#38bdf8] bg-[#0c4a6e]/80 px-2 py-0.5 rounded border border-[#38bdf8]">
-                UNLOCKED
-              </span>
-            ) : (
-              <span className="flex items-center gap-1 text-[11px] font-bold text-[#94a3b8] bg-[#1e293b] px-2 py-0.5 rounded border border-stone-600">
-                <Lock size={10} /> LOCKED
-              </span>
-            )}
+      {/* Selected stop panel, floating over the map */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 w-[min(720px,calc(100%-2rem))] px-4 py-3 bg-[#030612]/80 border border-white/20 rounded flex items-center gap-4 shadow-lg">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-baseline gap-2">
+            <span className="text-sm font-bold text-[#fbbf24]">{selectedStop.label}</span>
+            <span className="text-xs text-stone-400 truncate">{selectedStop.location}</span>
           </div>
-
           {/* Activity caption per GUIDELINES §How to draw the road */}
-          <p className="mt-1 text-xs text-[#bae6fd] leading-relaxed max-w-3xl">
-            {selectedStop.activity}
-          </p>
+          <p className="mt-1 text-xs text-[#bae6fd] leading-relaxed">{selectedStop.activity}</p>
         </div>
 
-        {/* Right: Enter Stage Button & Key Navigation hints */}
-        <div className="flex items-center gap-3">
-          <div className="hidden lg:flex flex-col text-right text-[11px] text-stone-400 font-mono">
-            <span>← / → OR [1-7] SELECT STAGE</span>
-            <span>ENTER OPENS STAGE · ESC TITLE</span>
-          </div>
-
-          <button
-            onClick={() => handleEnterStage(selectedId)}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded border-2 text-xs md:text-sm font-bold tracking-wider uppercase transition-all shadow-[3px_3px_0_#000] cursor-pointer ${
-              selectedIsUnlocked
-                ? 'bg-[#10b981] hover:bg-[#059669] border-white text-white hover:scale-102 active:scale-98'
-                : 'bg-[#1e293b] hover:bg-[#334155] border-stone-500 text-stone-300'
-            }`}
-          >
-            <span>{selectedIsUnlocked ? 'ENTER STAGE' : 'INSPECT (LOCKED)'}</span>
-            <ChevronRight size={16} />
-          </button>
-        </div>
-      </footer>
+        <button
+          onClick={() => handleEnterStage(selectedId)}
+          className={`shrink-0 flex items-center gap-1.5 px-4 py-2 rounded border-2 text-xs font-bold tracking-wider uppercase transition-all shadow-[3px_3px_0_#000] cursor-pointer ${
+            selectedIsUnlocked
+              ? 'bg-[#10b981] hover:bg-[#059669] border-white text-white'
+              : 'bg-[#1e293b] border-stone-500 text-stone-400'
+          }`}
+        >
+          {selectedIsUnlocked ? (
+            <>
+              <span>{selectedIsCompleted ? 'REPLAY' : 'ENTER'}</span>
+              <ChevronRight size={14} />
+            </>
+          ) : (
+            <>
+              <Lock size={12} />
+              <span>LOCKED</span>
+            </>
+          )}
+        </button>
+      </div>
     </div>
   );
 };

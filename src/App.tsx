@@ -5,12 +5,14 @@ import { TitleScreen } from './components/TitleScreen';
 import { WorldMap } from './components/WorldMap';
 import { Workspace3D } from './components/Workspace3D';
 import { sound } from './services/audio';
+import { useFullscreen } from './services/fullscreen';
 
 export default function App() {
   const [cargo, setCargo] = useState<CargoState>(() => loadSavedCargo());
   const [view, setView] = useState<'title' | 'map' | 'workspace'>('title');
   const [activeStopId, setActiveStopId] = useState<StopId>(cargo.currentStopId);
   const [isMuted, setIsMuted] = useState<boolean>(sound.getMuted());
+  const { isFullscreen, toggleFullscreen } = useFullscreen();
 
   // Check if save data exists
   const hasSaveData = cargo.completedStops.length > 0 || cargo.currentStopId > 1;
@@ -91,6 +93,8 @@ export default function App() {
           onContinue={handleContinue}
           isMuted={isMuted}
           onToggleMute={handleToggleMute}
+          isFullscreen={isFullscreen}
+          onToggleFullscreen={toggleFullscreen}
         />
       )}
 
@@ -102,11 +106,14 @@ export default function App() {
           onReset={handleResetRun}
           isMuted={isMuted}
           onToggleMute={handleToggleMute}
+          isFullscreen={isFullscreen}
+          onToggleFullscreen={toggleFullscreen}
         />
       )}
 
       {view === 'workspace' && (
         <Workspace3D
+          key={currentStop.id}
           stop={currentStop}
           cargo={cargo}
           onComplete={handleCompleteStop}

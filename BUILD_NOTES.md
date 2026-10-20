@@ -62,3 +62,70 @@ Spec: [GUIDELINES.md](GUIDELINES.md) — §Current implementation request
 ## 4. Stubbed / Placeholder
 
 - Workshop stages retain their existing workcell models and mechanics; workshop background art and character animations are scheduled for subsequent passes per guidelines.
+
+## Workshop artwork integration - 20 October 2026
+
+- Added supplied Norway smelter, Germany purification, and Japan wafer workshop JPEGs to `public/assets/stages/`, each 1376x768, through the existing asset manifest.
+- Stops 1-3 show the full illustration with centered aspect-ratio preservation and letterboxing, without cropping or stretching. Existing task panels and completion handlers remain in place. Camera controls and procedural area labels are hidden for illustrated stages; a failed image load falls back to the existing 3D view.
+- Kept changes separate from the concurrent title, map, fullscreen, and app sizing work. No shared layout dimensions were changed.
+
+Tested:
+- `npm.cmd run lint` passed.
+- `npm.cmd run build` passed (existing large-bundle warning).
+- All three JPEG URLs returned HTTP 200 with image/jpeg from the running local Vite server; dimensions verified as 1376x768.
+
+Untested:
+- Visual browser inspection at desktop and narrow sizes, full campaign replay, and image-load failure fallback.
+
+Stubbed / placeholder:
+- Artwork is a fixed backdrop; machinery in the illustration is not individually interactive. Existing task panels drive gameplay. Stops 4-7 retain their procedural views.
+
+## Norway manufacturing workshop - Codex, 20 October 2026
+
+- All seven map entrances stay unlocked during development (`devPreviewMode = true`); P no longer turns access off. Earned completion is still separate.
+- New isolated components: `NorwayManufacturing.tsx` owns the process and controls; `NorwaySmelterScene.tsx` owns the simple Three.js assets and animation. No new dependencies.
+- Minimal integration in `Workspace3D.tsx`: retain Claude's StageIntro first; render NorwayManufacturing afterward for stop 1; skip the old Three.js renderer for that stop. Claude's dialogue, sprites, image fitting, app sizing, and other workshops were not edited in this pass.
+- Norway sequence: select three quartz rocks, load quartz with carbon, switch on the furnace, tap liquid silicon into a casting mold, watch it cool, explicitly ship 12 kg to Germany. Clickable 3D quartz and matching accessible controls share state. Completion is emitted only by the final shipping action.
+- Art: fixed orthographic furnace cutaway on a workbench, pale quartz, dark carbon, three electrodes, visible reaction pool, tap chute, casting mold and cooled slab. Norway artwork is dimmed behind the 3D workbench. The caller owns the separate illustrated arrival scene.
+- Process basis: existing SOURCES.md R03 and Elkem's 'From quartz to silicon to silicones' (https://magazine.elkem.com/is/material-science-insights/from-quartz-to-silicon-to-silicones/), checked for quartz + carbon, electric furnace, liquid tapping, casting, and subsequent purification.
+
+Tested:
+- TypeScript and production build pass; build retains the existing bundle-size warning.
+- Browser: arrival -> workshop; rejects waste rock; selects quartz through controls and directly on the 3D scene; full loading/smelting/pouring/cooling/shipping sequence; Germany receives 12 kg; completion changes to 1/7.
+- Opened stage 7 with only Norway completed, exited with Escape, confirmed completion stayed 1/7.
+- Desktop and 700x800 workshop layout; no browser runtime errors. Temporary viewport override reset.
+
+Untested:
+- Full seven-stage campaign, touch devices, WebGL-unavailable fallback, smallest phone sizes.
+
+Stubbed / placeholder:
+- Educational cutaway with shortened time, game-sized batch, automatic carbon addition and simplified gas particles. Refining/slag handling and industrial process control are omitted. Color sorting is a gameplay cue rather than a real purity assay. Other levels retain their existing manufacturing screens.
+
+## Norway blank-screen report - 20 October 2026
+- Found localhost:3000 was not running (browser connection refused). Restarted Vite as a hidden background Node process, independent of the interactive dev terminal.
+- Tested: map -> Norway arrival -> Skip -> Norway 3D workshop; no browser runtime errors; background server returns HTTP 200.
+- Untested: full dialogue playback and full production sequence in this repair pass. No gameplay or Claude-owned introduction code changed.
+- Stubbed / placeholder: unchanged from the Norway workshop notes above.
+
+## Norway arrival rework - Claude, 20 October 2026
+- Replaced the full-screen pixel-sprite intro with an arrival screen in the workshop frame (same top bar and right-hand `md:w-96` panel as Germany). Left: the Norway illustration shown whole. Right: MATERIALS panel.
+- Sigurd introduces quartz, coal and wood chips; each one joins the panel (and appears as a pile in the hall) on the line where it is mentioned. Then the player walks with ← → (or clicks the floor or a pile) and presses Space/E to pick up. Once all three are gathered, "Enter the workshop" (or Enter) opens Codex's `NorwayManufacturing` 3D level.
+- Characters and piles are deliberate placeholders (dashed figures, coloured blocks) until real art arrives. Removed `PixelSprite.tsx` and `content/sprites.ts`.
+- Script, items and floor positions live in `content/dialogues.ts` (`STAGE_INTROS`), so other stops can reuse `StageIntro` by adding an entry.
+
+Tested: `npm run lint` passes. Browser: map -> Norway -> dialogue reveals the items one by one -> keyboard walk + Space pickup, click-to-walk pickup -> 3/3 -> Enter -> 3D workshop. No console errors.
+Untested: touch input, narrow and phone layouts.
+
+## Arrival scenes for stops 2-7 - Claude, 20 October 2026
+- New Nano Banana backdrops (2752x1536, from ~/Downloads) downscaled to 1376x768 and installed as `public/assets/stages/stop2..7_backdrop.jpg`; `assets.ts` stops 4-7 now point to `.jpg`. The previous stop2/stop3 backdrops were replaced (not committed; nothing else references them).
+- Every stop now opens with the same arrival screen as Norway, then its existing workshop. `Workspace3D` uses `ASSETS.stages[stop.id]` for all stops.
+- `StageIntroScript` gained per-stop `goal`, `feetY`, `enterFrom`, `playerEndX`; the guide turns to face the player.
+- Guides and materials: Germany GRETA (silicon metal, hydrogen chloride, hydrogen), Japan AIKO (polysilicon, quartz crucible, seed crystal), Taiwan MEI (blank wafers, photoresist, photomask), Malaysia FARID (tested wafer, substrate, gold wire, mold resin), China XIAO LIN (packaged chip, logic board, display, battery), USA SAM (phone box, charging cable, SIM card).
+- Placeholder piles got a dark outline so they read on light floors (Japan, Taiwan).
+
+Tested: `npm run lint` passes. Browser: every stop 2-7 arrival renders with characters and piles on the floor; Japan full gather -> Enter -> existing 3D workshop loads.
+Untested: full gather run on stops 2, 4-7 (same code path as Japan); touch and phone layouts.
+
+## Fullscreen preference - 20 October 2026
+- Removed automatic fullscreen from New Game and Continue. Manual fullscreen controls remain available.
+- Tested: TypeScript check passed. Untested: browser interaction in this small change. Stubbed / placeholder: none added.

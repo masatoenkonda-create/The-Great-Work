@@ -8,6 +8,26 @@
   image-rendering: crisp-edges;
 }
 
+/* Stage arrival: placeholder characters breathe / bob while talking; panel items fade in */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes sprite-idle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(2px); }
+}
+@keyframes sprite-talk {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+.sprite-idle {
+  animation: sprite-idle 1.6s steps(2, jump-none) infinite;
+}
+.sprite-talk {
+  animation: sprite-talk 0.36s steps(2, jump-none) infinite;
+}
+
 /* Subtle CRT Scanlines effect overlay */
 .scanlines {
   background: linear-gradient(

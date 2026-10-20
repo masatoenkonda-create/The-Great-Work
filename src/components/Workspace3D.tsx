@@ -10,6 +10,10 @@ import { Stop4CircuitWorkspace } from './Stop4CircuitWorkspace';
 import { Stop5PackagingWorkspace } from './Stop5PackagingWorkspace';
 import { Stop6AssemblyWorkspace } from './Stop6AssemblyWorkspace';
 import { sound } from '../services/audio';
+import { ASSETS } from '../content/assets';
+import { STAGE_INTROS } from '../content/dialogues';
+import { StageIntro } from './StageIntro';
+import { NorwayManufacturing } from './NorwayManufacturing';
 import {
   RotateCcw,
   Eye,
@@ -42,6 +46,10 @@ export const Workspace3D: React.FC<Workspace3DProps> = ({
   onReturnToMap
 }) => {
   const mountRef = useRef<HTMLDivElement>(null);
+  // Arrival scene on the stage backdrop first (when scripted), then the 3D workshop
+  const backdrop = ASSETS.stages[stop.id];
+  const introScript = STAGE_INTROS[stop.id];
+  const [phase, setPhase] = useState<'intro' | 'work'>(backdrop && introScript ? 'intro' : 'work');
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
@@ -88,6 +96,7 @@ export const Workspace3D: React.FC<Workspace3DProps> = ({
 
   // Initialize Three.js scene
   useEffect(() => {
+    if (phase !== 'work' || stop.id === 1) return;
     if (!mountRef.current) return;
     const container = mountRef.current;
     const width = container.clientWidth || 800;
@@ -163,7 +172,7 @@ export const Workspace3D: React.FC<Workspace3DProps> = ({
       controls.dispose();
       renderer.dispose();
     };
-  }, [stop.id]);
+  }, [stop.id, phase]);
 
   // Global Escape key listener to return to map per GUIDELINES
   useEffect(() => {
@@ -209,6 +218,23 @@ export const Workspace3D: React.FC<Workspace3DProps> = ({
     }
   };
 
+  if (phase === 'intro' && backdrop && introScript) {
+    return (
+      <StageIntro
+        stop={stop}
+        lotId={cargo.lotId}
+        backdrop={backdrop}
+        script={introScript}
+        onDone={() => setPhase('work')}
+        onReturnToMap={onReturnToMap}
+      />
+    );
+  }
+
+  if (Number(stop.id) === 1) {
+    return <NorwayManufacturing onComplete={onComplete} onReturnToMap={onReturnToMap} />;
+  }
+
   return (
     <div className="flex flex-col h-full bg-[#f8f6f0] text-stone-900 select-none overflow-hidden font-sans">
       {/* Top Bar: Stop Identification & Areas */}
@@ -224,7 +250,7 @@ export const Workspace3D: React.FC<Workspace3DProps> = ({
             <span className="text-xs text-stone-400 font-mono">Lot #{cargo.lotId}</span>
           </div>
           <div className="text-xs text-stone-600 mt-0.5">
-            <strong>Input:</strong> {stop.inputDescription} $\rightarrow$ <strong>Output:</strong> {stop.outputDescription}
+            <strong>Input:</strong> {stop.inputDescription} → <strong>Output:</strong> {stop.outputDescription}
           </div>
         </div>
 
