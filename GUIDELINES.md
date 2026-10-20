@@ -1,7 +1,7 @@
 # Build guidelines: The Great Work
 
 Updated: 20 October 2026  
-Basis: [UNIFIED_OPINION.md](UNIFIED_OPINION.md) plus Maxence's feedback after playing the first alpha.  
+Basis: [UNIFIED_OPINION.md](UNIFIED_OPINION.md) plus Maxence's feedback and three visual references supplied on 20 October 2026.  
 Where this file and the opinion files differ, **this file wins**.
 
 ## 0. How to work
@@ -10,13 +10,14 @@ This is an **alpha prototype**, built in several runs, layer by layer. Nobody ex
 
 - Placeholders are fine: coloured boxes, simple sprites, temporary sounds. Mark them in `BUILD_NOTES.md`, never on screen.
 - Finish one run's scope before starting the next (see §13). Do not add stops, countries, branches or features.
-- Priority order when time runs short: **working state and progression → visible action and animation → less text → art.**
+- **Current priority: establish the whole-game experience first — welcoming title → readable pixel world map → illustrated location → return to map.** Build this connected visual slice before deepening production mechanics. Technical repairs support that flow; do not let the bug list become the next creative brief.
+- Use the detailed task descriptions below as a later backlog. They are not requirements for the first visual milestone.
 - At the end of every run, update `BUILD_NOTES.md` with three lists: **tested** (what you actually ran), **untested**, and **stubbed / placeholder**.
 - Keep `GUIDELINES.md`, `SOURCES.md` and the opinion files. Old code can be deleted; Git keeps history.
 
 ## 1. The game in one paragraph
 
-You play a **fab worker in a white bunny suit**. You follow **one chip** around the world, from quartz to a phone in someone's hand. A **pixel-art world map** links seven stops. At each stop you enter a small **workshop** with a fixed backdrop, and you do the job yourself: walk, pick things up, load the machine, set it, and **watch the material change**. The look is **16-bit Super Nintendo pixel art**. For the map and the fixed stage backdrops, think of **Street Fighter II**: a slowly turning world with flags, and a fixed background behind each stage.
+You play a **fab worker in a white bunny suit**. You follow **one chip** around the world, from quartz to a phone in someone's hand. A **pixel-art world map** links seven stops. At each stop you enter a small **workshop** with a fixed backdrop, and you do the job yourself: walk, pick things up, load the machine, set it, and **watch the material change**. The look is **16-bit-era pixel art**. Use an original visual identity informed by Maxence's references: Street Fighter II for recognizable world geography and flags, Donkey Kong Country for an inviting progression route, and a fighting-game stage for a richly illustrated fixed location background. These are references for composition and function, not assets to copy.
 
 The player learns by doing and seeing, not by reading.
 
@@ -30,22 +31,42 @@ The player learns by doing and seeing, not by reading.
 
 ## 3. Art direction and asset pipeline
 
+### Visual brief: what the references mean
+
+- **Welcome:** an inviting illustrated title screen that feels like entering a game. The industrial journey should be apparent from the art; avoid a dashboard or a wall of explanation.
+- **Journey:** recognizable continents, seven clearly selectable stops, one road and one current-position marker. Borrow the readable progression of the island reference without turning the world into a fictional island or adding branches. Keep the existing seven-stop route.
+- **Places:** a fixed, detailed background establishes each location, with a clear floor and space for objects in front. This is the role of the rooftop reference; do not transplant its castle, logos or fighting theme into every factory.
+- **One visual family:** title, map, backgrounds, worker and UI share palette, pixel scale, lighting conventions and typography. The world can be colorful and welcoming while equipment remains readable.
+- **Keep the first implementation simple:** 2D backgrounds and sprites with a 2D or 2.5D interaction layer are sufficient. Full 3D is optional and must not dictate the visual direction.
+
+### Separate asset creation from game assembly
+
+Create the visual brief and a small coherent asset pack separately, then have the game builder integrate those files. Codex's image-generation tools or a dedicated Gemini image session can produce candidate illustrations; the implementation session should not have to invent the whole art direction while writing the game.
+
+First produce **one title background, one world map, and one representative workshop backdrop**. Review them together before producing the remaining locations. Use a shared palette and approved reference image for subsequent assets. Do not generate all seven backgrounds independently.
+
+Treat generated illustrations as artwork, not authoritative geography or technical diagrams. Check continent shapes and country positions against a geographic reference. Put route lines, markers, flags, text and buttons in code so they remain accurate, readable and movable. Do not bake these into a generated map image.
+
+### Asset integration
+
 - Style: original 16-bit SNES pixel art. Low resolution scaled up with nearest-neighbour filtering (`image-rendering: pixelated`). Limited palette, chunky outlines. No copied Nintendo or Capcom art.
-- **Gemini builds with placeholders.** The final images will be generated separately (for example with Codex) and dropped into the same files later. So the code must never depend on how a placeholder looks.
+- The builder can start the screen skeleton with placeholders while the first asset pack is prepared. **Integrate the first approved artwork in the visual milestone**, rather than postponing all art until after the production systems. Code must not depend on the appearance of a placeholder.
 - Load every image from `public/assets/` through one file, `src/content/assets.ts`, which maps a name to a path. If an image is missing, draw a coloured box of the right size, not an error.
 
-Asset manifest (create a placeholder for each one):
+Asset manifest (only the first visual pack is needed for Run A; remaining entries are later):
 
 | File | Size (px) | Content |
 |---|---|---|
 | `title/background.png` | 320×180 | Fab corridor or clean-room window |
-| `title/worker.png` | 64×96 per frame | Bunny-suit worker sprite sheet: idle, walk (4 frames), carry, use |
-| `title/logo.png` | free | "THE GREAT WORK" logo |
-| `map/world.png` | 640×320 | Wraparound pixel world map, left and right edges match |
+| `characters/worker.png` | 64×96 per frame | Shared transparent worker sprite sheet; idle first, walk/carry/use added with gameplay |
+| `title/logo.png` | optional | Original logo artwork; a crisp text title is sufficient initially |
+| `map/world.png` | 640×320 | Recognizable pixel world geography; no baked labels, flags or route lines |
 | `map/flag_<country>.png` | 16×12 | norway, germany, japan, taiwan, malaysia, china, usa |
 | `map/vehicle.png` | 16×16 per frame | Small truck; optional boat and plane frames for sea or air legs |
 | `stages/stop<N>_backdrop.png` | 320×180 | Fixed backdrop for stops 1–7 |
 | `ui/*` | free | Cursor, slot outline, target band, buttons |
+
+For each illustrated asset, record its canvas size, intended crop and clear areas for UI or playable objects. Backgrounds are opaque; character and object sprites use transparency. Render labels and menus in code. Keep pixel scaling consistent; do not mix blurry enlarged art with crisp sprites. The listed sizes are base canvases, not a requirement to force unrelated generated images into different pixel densities.
 
 ## 4. Title screen
 
@@ -53,25 +74,28 @@ Asset manifest (create a placeholder for each one):
 - Menu: **New game**, **Continue** (only with a save), **Sound on/off**.
 - Nothing else. No explanation paragraph.
 
-## 5. World map (Street Fighter II style)
+## 5. World map (world geography with a simple progression road)
 
-- The pixel world scrolls **slowly sideways and wraps around**, like a rotating globe seen flat.
-- Each of the seven stops is a **flag** on its country. Completed stops get a small check mark. The next stop blinks.
-- A small **vehicle** sits on the current flag. **Arrow keys hop it to the next or previous unlocked flag**, with a short travel animation along the route line (truck on land, boat or plane across the sea). No free driving, no steering.
+- Start with a stable, readable world overview. Gentle scrolling or wraparound is optional polish after selection works; selected stops and labels must remain easy to follow. A rotating-globe effect is not a requirement.
+- Each of the seven stops is a **flag** anchored to its country. Completed stops get a small check mark. The next stop blinks. Separate nearby East Asian labels with small callouts so Japan, Taiwan, Malaysia and China remain readable; do not move countries to make space.
+- A small **position marker** sits on the current flag. **Arrow keys hop it to the next or previous unlocked flag**, with a short travel animation along the route line. A dot or worker icon is sufficient first; truck/boat/plane variants are later polish. No free driving or steering.
 - `Enter` on a flag enters that stop. Locked stops cannot be entered.
-- The map is **local and offline**. Remove Leaflet and every tile server. Country name in one small label; nothing more.
+- The map is **local and offline**. Remove Leaflet and every tile server. Show the selected stop's country, short activity name and enter prompt; no dense information panels.
+- Draw only the seven-stop campaign road, not the world's real supplier network. Highlight the next leg and mute the rest if lines become visually crowded.
 
 Route (unchanged): **Norway → Germany → Japan → Taiwan → Malaysia → China → User (USA)**.
 
 ## 6. Workshop screen
 
-- **Fixed backdrop** per country (the stage art), with the playable floor in front of it in 3D or 2.5D. The camera stays fixed; at most one close-up shot during the "watch" step.
+- **Fixed backdrop** per country (the stage art), with a clear playable floor and separate objects in front of it in 2D or 2.5D; use simple 3D only where it helps. The camera stays fixed; at most one close-up shot during the "watch" step.
 - The **worker is visible and controllable**: arrow keys or WASD to walk, `E` or `Space` to pick up or drop. The worker carries **one item at a time**.
 - Minimal HUD: stop name, current objective in one line, the item being carried.
 - **Everything that changes is animated.** If the player cuts an ingot, the cylinder visibly gets sliced and wafers fall off. If a furnace melts, it glows and the output pours. If something is invisible in real life, show a simple close-up or cross-section instead.
 - No sidebars full of buttons. Actions happen by walking to objects.
 
-## 7. The guided task loop (every stop)
+## 7. The guided task loop (later gameplay runs)
+
+This is the intended interaction pattern after the visual flow is approved. Run A does not rebuild this loop or all seven production tasks.
 
 1. **Objective:** one line, for example "Fill the reactor."
 2. **Gather:** walk around the workshop and pick up the needed items, one by one. Do not hand them to the player.
@@ -83,7 +107,7 @@ Route (unchanged): **Norway → Germany → Japan → Taiwan → Malaysia → Ch
 
 Failure is cheap: retry restores the stop's starting state. Settings are **toy values**, not industrial recipes.
 
-## 8. The seven stops
+## 8. The seven stops (route and later interaction backlog)
 
 | Stop | Pick up | Machine / animation | Mistake the player can make | Carried forward |
 |---|---|---|---|---|
@@ -137,28 +161,44 @@ The player never sees sources, but the content must still be true.
 
 ## 13. Run plan
 
-**Run A: frame and first two stops**
-- Title screen, world map, workshop frame with the controllable worker, asset loader with placeholders.
-- Run-state fixes (§10), text cleanup (§9), cleanup (§12).
-- Rebuild stops 2 and 3 with the full task loop (§7). Stop 2 is the chemical lab: walk, pick each canister, set the mix.
-- Other stops may stay as simple pass-through rooms for now.
+**Run A: the game at a glance — current milestone**
+- A welcoming title screen, a proper offline pixel world map, and one representative illustrated location (Germany's lab is a suitable first example).
+- Connect title → map → location → map. Show all seven route stops, with a clear current stop and readable selection. A development preview can expose the representative room without pretending earlier production was completed.
+- Integrate the first coherent art pack: title background, world map and workshop backdrop. Use simple temporary sprites/objects where necessary.
+- The location needs a clear floor, a worker or player marker, a few separate equipment/input/output objects, and a return action. Detailed recipes, parameter tuning and failure models are deferred.
+- Preserve existing playable work where practical. Other stops can use simple preview rooms; document their status in build notes.
+- Make only the state and cleanup changes necessary for this connected flow. Do not rebuild every system as a prerequisite.
+- Review the three screens together for composition, consistency and clarity before proceeding.
 
-**Run B: the wafer map**
-- Stops 4 and 5, with the carried wafer map and red-die refusal.
+**Run B: one hands-on workshop**
+- Add movement, pickup/load/run and one visible material transformation in the approved room.
+- Establish reusable sprites, interaction cues and animation conventions.
+- Keep the task short; assess whether the action is understandable before expanding it.
 
-**Run C: the rest of the road**
-- Stops 1, 6 and the ending (7) with the route recap.
+**Run C: carry the result**
+- Build the Taiwan → Malaysia wafer-map handoff, then expand the other stops with the same established interaction language.
+- Apply the remaining run-state fixes, save/resume behavior and source-linked content checks as those features are connected.
 
-**Run D: real art**
-- Replace placeholders with the generated assets from the manifest (§3). Add sound.
+**Run D: complete the journey**
+- Complete remaining locations and the ending/route recap.
+- Extend the approved art family across the remaining backdrops, then add optional animation and sound polish.
+- No additional routes, countries or production branches.
 
-## 14. Acceptance check (every run)
+## 14. Acceptance checks
 
-- `bun install`, `bunx tsc --noEmit` and `bunx vite build` pass.
-- The game goes title → map → stops → ending without errors, using the keyboard only.
-- The map works offline, scrolls, and the arrow keys hop the vehicle between flags.
-- In every rebuilt stop, the worker gathers items, loads slots, sets a value against a target band, and **watches the material change**.
-- A mistake shows on the object, gives a hint, and can be retried.
-- The wafer map is the same at stop 4, stop 5, after save/resume, and in the recap.
-- No paragraphs, source panels or placeholder text appear on screen.
-- `BUILD_NOTES.md` lists tested, untested and stubbed items honestly.
+### Current milestone: Run A
+- TypeScript check and production build pass using the documented setup.
+- Title → map → representative location → map works without errors.
+- The title feels welcoming, the map reads as a world journey, and the location reads as a place with a usable foreground.
+- All seven stops and the single road are readable, including the closely spaced Asian stops.
+- Map selection and screen navigation work with the keyboard. Geography and artwork load locally without tile services.
+- The first three screens share one coherent pixel-art direction; labels and menus remain crisp and legible.
+- No dense sidebars, paragraphs or production-parameter work distract from this milestone.
+- `BUILD_NOTES.md` honestly lists tested, untested and placeholder items. Do not claim the complete campaign was tested from this visual slice.
+
+### Later gameplay milestones
+- Rebuilt tasks let the player act on objects and watch a meaningful transformation.
+- Mistakes have a visible result and can be retried.
+- One lot and its wafer map remain consistent through downstream use, navigation and save/resume.
+- Review, retry, reset and ending completion obey §10.
+- The completed journey works title → stops → ending → recap; scope acceptance checks to the features actually rebuilt.
