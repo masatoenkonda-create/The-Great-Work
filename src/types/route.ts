@@ -13,7 +13,8 @@ export interface RouteStop {
   purpose: string;
   inputDescription: string;
   outputDescription: string;
-  coordinates: { x: number; y: number }; // Percentage on 2D world map (0-100)
+  coordinates: { x: number; y: number }; // Percentage on 2D fallback map (0-100)
+  latLng: [number, number]; // Real geographic latitude, longitude [lat, lng]
   sources: string[]; // Reference IDs from SOURCES.md (e.g. ['R03'])
   summary: string;
 }
@@ -46,7 +47,8 @@ export const ROUTE_STOPS: RouteStop[] = [
     purpose: 'Quartz-bearing feed + carbon -> silicon metal',
     inputDescription: 'Quartzite rocks + Carbon-reducing feed (coal/woodchips)',
     outputDescription: 'Metallurgical-grade Silicon Metal (approx. 98-99% pure)',
-    coordinates: { x: 52, y: 22 }, // Norway on equirectangular map projection
+    coordinates: { x: 52, y: 22 },
+    latLng: [63.31, 9.87], // Thamshavn / Orkanger, Norway
     sources: ['R03'],
     summary: 'Smelt raw quartz and carbon in a submerged-arc electric furnace at over 1900°C to release oxygen and tap liquid silicon metal.'
   },
@@ -57,7 +59,8 @@ export const ROUTE_STOPS: RouteStop[] = [
     purpose: 'Silicon metal -> electronic-grade polysilicon',
     inputDescription: 'Silicon metal powder + Hydrogen Chloride (HCl)',
     outputDescription: 'Electronic-grade Polysilicon (hyper-pure solid chunks)',
-    coordinates: { x: 51, y: 29 }, // Germany
+    coordinates: { x: 51, y: 29 },
+    latLng: [48.16, 12.83], // Burghausen, Germany
     sources: ['R04', 'R13'],
     summary: 'React silicon metal into trichlorosilane gas, distill away impurities down to parts-per-billion, then deposit hyper-pure polysilicon.'
   },
@@ -68,7 +71,8 @@ export const ROUTE_STOPS: RouteStop[] = [
     purpose: 'Polysilicon -> crystal ingot -> polished wafers',
     inputDescription: 'Electronic-grade polysilicon chunks + Quartz crucible',
     outputDescription: 'Ultra-flat, mirror-polished blank Silicon Wafers',
-    coordinates: { x: 86, y: 38 }, // Japan (Kyushu/Honshu)
+    coordinates: { x: 86, y: 38 },
+    latLng: [33.27, 129.87], // Imari / Kyushu, Japan
     sources: ['R05', 'R06'],
     summary: 'Melt polysilicon, pull a single-crystal cylindrical ingot, slice into thin round discs with diamond wire, and chemical-mechanically polish to atomic flatness.'
   },
@@ -79,7 +83,8 @@ export const ROUTE_STOPS: RouteStop[] = [
     purpose: 'Blank wafers + prepared design/masks/supplies -> processed wafers with a good/bad die map',
     inputDescription: 'Blank silicon wafers + Photoresist + Pre-made mask designs',
     outputDescription: 'Processed wafer patterned with hundreds of microchips + Electrical probe test map',
-    coordinates: { x: 82, y: 46 }, // Taiwan
+    coordinates: { x: 82, y: 46 },
+    latLng: [24.78, 120.99], // Hsinchu Science Park, Taiwan
     sources: ['R01', 'R02', 'R07', 'R08', 'R14'],
     summary: 'Execute the microscopic lithography and etch cycle: deposit film, coat resist, expose pattern through mask, develop, plasma etch, and clean. Test each die with electrical probe needles.'
   },
@@ -90,7 +95,8 @@ export const ROUTE_STOPS: RouteStop[] = [
     purpose: 'Tested wafer + package materials -> released packaged chips',
     inputDescription: 'Tested wafer with die map + Substrate carrier + Bond wires + Mold resin',
     outputDescription: 'Hermetically sealed, individual packaged chip ready for board mounting',
-    coordinates: { x: 77, y: 58 }, // Malaysia
+    coordinates: { x: 77, y: 58 },
+    latLng: [5.30, 100.28], // Bayan Lepas, Penang, Malaysia
     sources: ['R02', 'R15', 'R18'],
     summary: 'Precision-saw the wafer along scribe lines, pick a verified good die, bond microscopic electrical connections to a package carrier, and encapsulate in protective resin.'
   },
@@ -101,7 +107,8 @@ export const ROUTE_STOPS: RouteStop[] = [
     purpose: 'Released chip + board and other ready-made components -> working phone',
     inputDescription: 'Packaged chip + Logic circuit board + Display + Battery + Enclosure',
     outputDescription: 'Fully assembled and factory-tested smartphone',
-    coordinates: { x: 79, y: 42 }, // China mainland
+    coordinates: { x: 79, y: 42 },
+    latLng: [34.75, 113.62], // Zhengzhou / Central Assembly Hub, China
     sources: ['R02', 'R11'],
     summary: 'Surface-mount the chip onto the main printed circuit board alongside memory and power management, assemble internal modules into chassis, and run boot diagnosis.'
   },
@@ -112,7 +119,8 @@ export const ROUTE_STOPS: RouteStop[] = [
     purpose: 'Finished phone -> someone using it',
     inputDescription: 'Packaged retail phone box',
     outputDescription: 'Operational phone powered on and running daily apps',
-    coordinates: { x: 22, y: 35 }, // Illustrative consumer location (North America / global user)
+    coordinates: { x: 22, y: 35 },
+    latLng: [37.77, -122.42], // San Francisco, CA / Consumer Market
     sources: ['Game scenario'],
     summary: 'Unbox the finished phone, press the power button, observe the initial setup screen, launch an app powered by your chip, and reflect on the worldwide supply chain.'
   }

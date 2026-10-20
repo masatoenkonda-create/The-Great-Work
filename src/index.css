@@ -1,1 +1,11 @@
 @import "tailwindcss";
+
+.custom-map-pin {
+  background: transparent !important;
+  border: none !important;
+}
+
+.leaflet-container {
+  font-family: inherit;
+  background-color: #1e232a;
+}

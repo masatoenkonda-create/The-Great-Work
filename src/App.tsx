@@ -69,7 +69,7 @@ export default function App() {
   const currentStop = ROUTE_STOPS.find((s) => s.id === activeStopId) || ROUTE_STOPS[0];
 
   return (
-    <div className="w-screen h-screen overflow-hidden bg-[#dfd8c8]">
+    <div className="w-screen h-screen overflow-hidden bg-[#181c22]">
       {view === 'map' ? (
         <WorldMap
           cargo={cargo}
