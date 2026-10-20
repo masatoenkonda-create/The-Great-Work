@@ -4,6 +4,64 @@ Updated: 20 October 2026
 Basis: [UNIFIED_OPINION.md](UNIFIED_OPINION.md) plus Maxence's feedback and three visual references supplied on 20 October 2026.  
 Where this file and the opinion files differ, **this file wins**.
 
+## Current implementation request: apply the two approved images
+
+**This is the next task. It takes priority over the broader run plan below.** Apply the supplied title and world-map artwork, add seven stage entrances and one connecting route. Do not generate replacement art or rebuild production tasks in this pass.
+
+Approved files, already in this repository:
+
+| Use | Repository file | Original size |
+|---|---|---|
+| Title background | `public/assets/title/background.jpg` | 1376×768 |
+| World-map background | `public/assets/map/world.jpg` | 1376×768 |
+
+Use these exact JPEG files through the asset manifest. Do not rename a JPEG to PNG or stretch it to the earlier proposed 2:1 map canvas. These approved images supersede the placeholder dimensions in the original manifest. Preserve their aspect ratio.
+
+### What to build now
+
+1. **Title:** display the approved corridor artwork, with THE GREAT WORK and a small New game / Continue menu rendered separately. Place readable text over the quiet dark upper area; a subtle local scrim is fine. Continue appears only with a valid save. No worker asset is required for this pass.
+2. **Map:** display the approved map without cropping any continent. Add seven numbered stage markers, short labels, a selected-position marker and the six connections below. Simple code-drawn pixel-style markers are sufficient; no new image assets are required.
+3. **Entrances:** click a marker or select it with Left/Right and Enter to open its existing stage. Escape returns to the map. Preserve existing workshop gameplay; if an entrance has no room yet, provide a minimal room shell with its short stage title and a return action. Do not fabricate completion merely by opening or leaving a stage.
+4. Keep the normal progression/unlock rules. All seven stops remain visible. A developer preview may open locked entrances without modifying the campaign.
+5. Stop after this integration. Workshop backgrounds, new recipes, character animation and detailed production mechanics belong to later requests.
+
+### How to put stages on this image
+
+The image is a **background**, not an interactive map service. Overlay the markers and paths in code:
+
+- Use one shared coordinate system: an SVG with `viewBox="0 0 1376 768"` is a straightforward solution. Put the background image, route paths and stage anchors inside that same coordinate space, with uniform scaling and centered aspect-ratio preservation. Alternatively use a correctly sized aspect-ratio wrapper with percentage-positioned overlays.
+- Never position markers relative to the whole browser window. If the image is letterboxed, the overlays must follow the displayed image rectangle, not the outer container.
+- Do not use `object-fit: cover` or crop the map. No Leaflet, tiles, map API or latitude/longitude projection is needed.
+- The supplied artwork is stylized and not a calibrated geographic projection. Start from the approximate image coordinates below, then inspect and adjust visually on this exact picture. These are representative country anchors, not verified factory locations.
+- Keep anchor positions separate from label offsets. Move a label and draw a short leader line when needed; do not move Japan or Taiwan just to prevent text overlap.
+- Make markers easy to click and keyboard-focusable. Use actual accessible buttons or focusable SVG controls with short accessible names. Labels should stay readable at the normal desktop view; do not cram them directly into the East Asian cluster.
+
+Starting anchor coordinates (pixels on the 1376×768 image; x from left, y from top):
+
+| Order | Marker label | x | y |
+|---|---|---:|---:|
+| 1 | Norway · Silicon | 700 | 150 |
+| 2 | Germany · Purify | 680 | 220 |
+| 3 | Japan · Wafers | 1200 | 280 |
+| 4 | Taiwan · Circuits | 1120 | 350 |
+| 5 | Malaysia · Package | 1040 | 445 |
+| 6 | China · Phone | 1090 | 300 |
+| 7 | USA · User | 260 | 260 |
+
+Store these seven entries in one ordered data array with IDs, labels, coordinates and existing stage destinations. Derive keyboard order and route connections from that same array. Do not add a second conflicting route definition.
+
+### How to draw the road
+
+- Draw exactly this ordered chain: **1 → 2 → 3 → 4 → 5 → 6 → 7**. It is one campaign road with six legs, not a supplier-network diagram.
+- Use restrained dotted or dashed paths with a dark outline for contrast; place paths behind the markers. Gently curve them where useful. They are travel links, not literal highways or verified freight routes.
+- Keep completed legs distinct, highlight the next leg and mute future legs. Show the selected stage's activity in one short caption.
+- Avoid a giant China–USA diagonal across the other five stops. That last leg may cross the Pacific map seam as two path pieces exiting the right edge and entering the left edge, with matching continuation cues. Those two pieces represent **one leg**, not two branches; the world itself need not scroll.
+- Separate nearby Asian labels using small callouts. Highlight the selected/next connection if the full chain is busy. No extra hubs, branches, shipping icons or information panels.
+
+### Check this pass
+
+Confirm that both local images load, every marker remains attached to its country when resizing, all seven stage entrances work with mouse and keyboard, Escape returns to the map, and entering/reviewing does not silently complete stages. Check a normal desktop size and a narrower window. Update `BUILD_NOTES.md` with what was actually tested. No full campaign replay or production-task overhaul is requested.
+
 ## 0. How to work
 
 This is an **alpha prototype**, built in several runs, layer by layer. Nobody expects a finished game from one run.
@@ -57,10 +115,10 @@ Asset manifest (only the first visual pack is needed for Run A; remaining entrie
 
 | File | Size (px) | Content |
 |---|---|---|
-| `title/background.png` | 320×180 | Fab corridor or clean-room window |
+| `title/background.jpg` | 1376×768 | Approved supplied corridor artwork |
 | `characters/worker.png` | 64×96 per frame | Shared transparent worker sprite sheet; idle first, walk/carry/use added with gameplay |
 | `title/logo.png` | optional | Original logo artwork; a crisp text title is sufficient initially |
-| `map/world.png` | 640×320 | Recognizable pixel world geography; no baked labels, flags or route lines |
+| `map/world.jpg` | 1376×768 | Approved supplied world map; stages and route overlaid in code |
 | `map/flag_<country>.png` | 16×12 | norway, germany, japan, taiwan, malaysia, china, usa |
 | `map/vehicle.png` | 16×16 per frame | Small truck; optional boat and plane frames for sea or air legs |
 | `stages/stop<N>_backdrop.png` | 320×180 | Fixed backdrop for stops 1–7 |
@@ -202,3 +260,4 @@ The player never sees sources, but the content must still be true.
 - One lot and its wafer map remain consistent through downstream use, navigation and save/resume.
 - Review, retry, reset and ending completion obey §10.
 - The completed journey works title → stops → ending → recap; scope acceptance checks to the features actually rebuilt.
+
