@@ -1,0 +1,68 @@
+{
+  "image": "player-walk.png",
+  "frameWidth": 64,
+  "frameHeight": 72,
+  "columns": 4,
+  "rows": 1,
+  "frameCount": 4,
+  "characterHeight": 64,
+  "anchor": {
+    "x": 32,
+    "y": 69
+  },
+  "framesPerSecond": 7.142857,
+  "loop": true,
+  "opaquePaletteColors": 24,
+  "direction": "right",
+  "notes": "Prepared from four supplied poses; shared head axis and bottom baseline. Source poses were not redrawn, so their original pose differences remain.",
+  "sourceFrames": [
+    {
+      "sourceBounds": [
+        58,
+        132,
+        734,
+        1416
+      ],
+      "offset": [
+        16,
+        5
+      ]
+    },
+    {
+      "sourceBounds": [
+        723,
+        132,
+        1330,
+        1416
+      ],
+      "offset": [
+        16,
+        5
+      ]
+    },
+    {
+      "sourceBounds": [
+        1399,
+        132,
+        2018,
+        1393
+      ],
+      "offset": [
+        16,
+        5
+      ]
+    },
+    {
+      "sourceBounds": [
+        2019,
+        132,
+        2671,
+        1416
+      ],
+      "offset": [
+        16,
+        5
+      ]
+    }
+  ]
+}
