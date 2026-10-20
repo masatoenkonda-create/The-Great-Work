@@ -1,11 +1,20 @@
 @import "tailwindcss";
 
-.custom-map-pin {
-  background: transparent !important;
-  border: none !important;
+/* 16-bit SNES Pixel Art Engine & Nearest-Neighbor Rescaling */
+.pixelated {
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
 
-.leaflet-container {
-  font-family: inherit;
-  background-color: #1e232a;
+/* Subtle CRT Scanlines effect overlay */
+.scanlines {
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.25) 50%
+  );
+  background-size: 100% 4px;
+  z-index: 40;
+  pointer-events: none;
 }

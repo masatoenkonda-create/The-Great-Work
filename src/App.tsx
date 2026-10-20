@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { RouteStop, ROUTE_STOPS, StopId, CargoState } from './types/route';
 import { loadSavedCargo, saveCargoState, clearCargoState } from './services/storage';
+import { TitleScreen } from './components/TitleScreen';
 import { WorldMap } from './components/WorldMap';
 import { Workspace3D } from './components/Workspace3D';
-import { SourcesPanel } from './components/SourcesPanel';
 import { sound } from './services/audio';
 
 export default function App() {
   const [cargo, setCargo] = useState<CargoState>(() => loadSavedCargo());
-  const [view, setView] = useState<'map' | 'workspace'>('map');
+  const [view, setView] = useState<'title' | 'map' | 'workspace'>('title');
   const [activeStopId, setActiveStopId] = useState<StopId>(cargo.currentStopId);
-  const [isSourcesOpen, setIsSourcesOpen] = useState<boolean>(false);
-  const [isMuted, setIsMuted] = useState<boolean>(false);
+  const [isMuted, setIsMuted] = useState<boolean>(sound.getMuted());
+
+  // Check if save data exists
+  const hasSaveData = cargo.completedStops.length > 0 || cargo.currentStopId > 1;
 
   // Sync activeStopId when cargo loads
   useEffect(() => {
@@ -49,6 +51,18 @@ export default function App() {
     }
   };
 
+  const handleNewGame = () => {
+    const freshState = clearCargoState();
+    setCargo(freshState);
+    setActiveStopId(1);
+    setView('map');
+  };
+
+  const handleContinue = () => {
+    setActiveStopId(cargo.currentStopId);
+    setView('map');
+  };
+
   const handleResetRun = () => {
     const freshState = clearCargoState();
     setCargo(freshState);
@@ -69,17 +83,29 @@ export default function App() {
   const currentStop = ROUTE_STOPS.find((s) => s.id === activeStopId) || ROUTE_STOPS[0];
 
   return (
-    <div className="w-screen h-screen overflow-hidden bg-[#181c22]">
-      {view === 'map' ? (
+    <div className="w-screen h-screen overflow-hidden bg-[#070817]">
+      {view === 'title' && (
+        <TitleScreen
+          hasSaveData={hasSaveData}
+          onNewGame={handleNewGame}
+          onContinue={handleContinue}
+          isMuted={isMuted}
+          onToggleMute={handleToggleMute}
+        />
+      )}
+
+      {view === 'map' && (
         <WorldMap
           cargo={cargo}
           onSelectStop={handleSelectStop}
-          onOpenSources={() => setIsSourcesOpen(true)}
+          onOpenTitle={() => setView('title')}
           onReset={handleResetRun}
           isMuted={isMuted}
           onToggleMute={handleToggleMute}
         />
-      ) : (
+      )}
+
+      {view === 'workspace' && (
         <Workspace3D
           stop={currentStop}
           cargo={cargo}
@@ -87,12 +113,6 @@ export default function App() {
           onReturnToMap={() => setView('map')}
         />
       )}
-
-      {/* Sources & Evidence Panel */}
-      <SourcesPanel
-        isOpen={isSourcesOpen}
-        onClose={() => setIsSourcesOpen(false)}
-      />
     </div>
   );
 }

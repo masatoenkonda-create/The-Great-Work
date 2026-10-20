@@ -165,6 +165,19 @@ export const Workspace3D: React.FC<Workspace3DProps> = ({
     };
   }, [stop.id]);
 
+  // Global Escape key listener to return to map per GUIDELINES
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        sound.playClick();
+        onReturnToMap();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onReturnToMap]);
+
   const updateCameraPosition = (view: 'isometric' | 'inspection', cam: THREE.PerspectiveCamera) => {
     if (view === 'isometric') {
       cam.position.set(14, 12, 14);

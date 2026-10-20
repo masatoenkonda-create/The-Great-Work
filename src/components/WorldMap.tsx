@@ -1,522 +1,764 @@
-import React, { useState, useEffect, useRef } from 'react';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
+import React, { useState, useEffect, useCallback } from 'react';
 import { RouteStop, ROUTE_STOPS, StopId, CargoState } from '../types/route';
-import { Play, CheckCircle2, Lock, RotateCcw, BookOpen, Volume2, VolumeX, Layers, Compass, Globe, Sparkles } from 'lucide-react';
 import { sound } from '../services/audio';
+import { ASSETS } from '../content/assets';
+import { Lock, Unlock, Check, ChevronRight, Play, ArrowLeft } from 'lucide-react';
 
 interface WorldMapProps {
   cargo: CargoState;
   onSelectStop: (stopId: StopId) => void;
-  onOpenSources: () => void;
+  onOpenTitle?: () => void;
   onReset: () => void;
   isMuted: boolean;
   onToggleMute: () => void;
 }
 
-type MapTheme = 'voyager' | 'satellite' | 'dark';
-
-// Generate intermediate curved points between two lat/lngs for graceful flight/shipping arcs
-function generateArcPoints(
-  start: [number, number],
-  end: [number, number],
-  numPoints: number = 30
-): [number, number][] {
-  const [lat1, lon1] = start;
-  let [lat2, lon2] = end;
-
-  // Handle trans-Pacific longitude wrapping (e.g., China/Taiwan -> North America)
-  if (lon1 > 90 && lon2 < -60) {
-    lon2 += 360;
-  }
-
-  const points: [number, number][] = [];
-  for (let i = 0; i <= numPoints; i++) {
-    const f = i / numPoints;
-    // Linear interpolation of lat and lon
-    let lat = lat1 + (lat2 - lat1) * f;
-    let lon = lon1 + (lon2 - lon1) * f;
-
-    // Add a natural arc bowing upwards/northwards based on distance
-    const arcBowing = Math.sin(Math.PI * f) * 12;
-    lat = Math.min(82, lat + arcBowing);
-
-    // Normalize lon back to [-180, 180] if wrapped
-    if (lon > 180) {
-      lon -= 360;
-    }
-
-    points.push([lat, lon]);
-  }
-  return points;
-}
-
 export const WorldMap: React.FC<WorldMapProps> = ({
   cargo,
   onSelectStop,
-  onOpenSources,
+  onOpenTitle,
   onReset,
   isMuted,
   onToggleMute
 }) => {
-  const mapContainerRef = useRef<HTMLDivElement | null>(null);
-  const mapInstanceRef = useRef<L.Map | null>(null);
-  const layersGroupRef = useRef<L.LayerGroup | null>(null);
-  const tileLayerRef = useRef<L.TileLayer | null>(null);
+  const [selectedId, setSelectedId] = useState<StopId>(cargo.currentStopId);
+  const [devPreviewMode, setDevPreviewMode] = useState<boolean>(false);
+  const [feedbackMsg, setFeedbackMsg] = useState<string | null>(null);
 
-  const [activeTheme, setActiveTheme] = useState<MapTheme>('voyager');
-  const [inspectedStopId, setInspectedStopId] = useState<StopId>(cargo.currentStopId);
+  const selectedStop = ROUTE_STOPS.find((s) => s.id === selectedId) || ROUTE_STOPS[0];
 
-  // Sync inspected stop when cargo progresses
+  // Progression logic per GUIDELINES §Current implementation & §10:
+  // Normal mode: unlocked if stop is currentStopId or already completed.
+  // Dev preview mode: all stops can be entered for inspection without modifying campaign save.
+  const isStopUnlocked = (id: StopId) => {
+    if (devPreviewMode) return true;
+    return id <= cargo.currentStopId || cargo.completedStops.includes(id);
+  };
+
+  const isStopCompleted = (id: StopId) => cargo.completedStops.includes(id);
+
+  // Sync selectedId when currentStopId advances
   useEffect(() => {
-    setInspectedStopId(cargo.currentStopId);
+    setSelectedId(cargo.currentStopId);
   }, [cargo.currentStopId]);
 
-  // Tile layer URL maps
-  const TILE_PROVIDERS: Record<MapTheme, { url: string; attribution: string; subdomains?: string[] }> = {
-    voyager: {
-      url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-      subdomains: ['a', 'b', 'c', 'd']
-    },
-    satellite: {
-      url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-      attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-    },
-    dark: {
-      url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-      subdomains: ['a', 'b', 'c', 'd']
-    }
-  };
-
-  // Initialize Leaflet Map
+  // Audio ambience
   useEffect(() => {
-    if (!mapContainerRef.current || mapInstanceRef.current) return;
-
-    // Initialize with bounds centered over Eurasian-Pacific supply chain corridor
-    const map = L.map(mapContainerRef.current, {
-      center: [34, 70],
-      zoom: 3,
-      minZoom: 2,
-      maxZoom: 16,
-      worldCopyJump: true,
-      zoomControl: false
-    });
-
-    // Add zoom control in top-left
-    L.control.zoom({ position: 'topleft' }).addTo(map);
-
-    // Initial base tile layer
-    const provider = TILE_PROVIDERS[activeTheme];
-    const initialTiles = L.tileLayer(provider.url, {
-      attribution: provider.attribution,
-      subdomains: provider.subdomains || ['a', 'b', 'c', 'd'],
-      maxZoom: 18
-    }).addTo(map);
-    tileLayerRef.current = initialTiles;
-
-    // Layer group for markers and route paths
-    const layersGroup = L.layerGroup().addTo(map);
-    layersGroupRef.current = layersGroup;
-
-    mapInstanceRef.current = map;
-
-    // Initial bounds fit to all stops
-    const bounds = L.latLngBounds(ROUTE_STOPS.map(s => s.latLng));
-    map.fitBounds(bounds, { padding: [60, 60] });
-
-    return () => {
-      map.remove();
-      mapInstanceRef.current = null;
-    };
+    sound.startCozyAmbience();
   }, []);
 
-  // Update Tile Layer when theme changes
-  useEffect(() => {
-    if (!mapInstanceRef.current) return;
-    const map = mapInstanceRef.current;
-
-    if (tileLayerRef.current) {
-      map.removeLayer(tileLayerRef.current);
-    }
-
-    const provider = TILE_PROVIDERS[activeTheme];
-    const newTiles = L.tileLayer(provider.url, {
-      attribution: provider.attribution,
-      subdomains: provider.subdomains || ['a', 'b', 'c', 'd'],
-      maxZoom: 18
-    }).addTo(map);
-
-    tileLayerRef.current = newTiles;
-  }, [activeTheme]);
-
-  // Update Markers, Routes, and Active Nodes
-  useEffect(() => {
-    if (!mapInstanceRef.current || !layersGroupRef.current) return;
-
-    const map = mapInstanceRef.current;
-    const group = layersGroupRef.current;
-    group.clearLayers();
-
-    // 1. Draw connecting route arcs between consecutive stops
-    for (let i = 0; i < ROUTE_STOPS.length - 1; i++) {
-      const fromStop = ROUTE_STOPS[i];
-      const toStop = ROUTE_STOPS[i + 1];
-      const arcPoints = generateArcPoints(fromStop.latLng, toStop.latLng, 35);
-
-      const isCompletedLeg = cargo.completedStops.includes(toStop.id);
-      const isActiveLeg = cargo.currentStopId === toStop.id;
-
-      // Glow backdrop for active/completed legs
-      if (isCompletedLeg || isActiveLeg) {
-        L.polyline(arcPoints, {
-          color: isCompletedLeg ? '#10b981' : '#f59e0b',
-          weight: 6,
-          opacity: 0.35,
-          lineCap: 'round',
-          lineJoin: 'round'
-        }).addTo(group);
+  // Enter active stage
+  const handleEnterStage = useCallback(
+    (targetId: StopId) => {
+      const unlocked = isStopUnlocked(targetId);
+      if (!unlocked) {
+        sound.playError();
+        setFeedbackMsg(`Stage 0${targetId} is locked. Complete Stage 0${targetId - 1} first, or toggle Dev Preview.`);
+        setTimeout(() => setFeedbackMsg(null), 3000);
+        return;
       }
+      sound.playConfirm();
+      onSelectStop(targetId);
+    },
+    [devPreviewMode, cargo.currentStopId, cargo.completedStops, onSelectStop]
+  );
 
-      // Foreground route path
-      L.polyline(arcPoints, {
-        color: isCompletedLeg
-          ? '#059669'
-          : isActiveLeg
-          ? '#d97706'
-          : activeTheme === 'dark'
-          ? '#64748b'
-          : '#94a3b8',
-        weight: isActiveLeg ? 3.5 : 2.5,
-        opacity: isActiveLeg ? 1.0 : isCompletedLeg ? 0.9 : 0.65,
-        dashArray: isCompletedLeg ? undefined : '8, 8',
-        lineCap: 'round',
-        lineJoin: 'round'
-      }).addTo(group);
-    }
-
-    // 2. Draw Stop Markers with custom HTML DivIcons
-    ROUTE_STOPS.forEach(stop => {
-      const isCompleted = cargo.completedStops.includes(stop.id);
-      const isCurrent = cargo.currentStopId === stop.id;
-      const isInspected = inspectedStopId === stop.id;
-      const isLocked = stop.id > cargo.currentStopId && !isCompleted;
-
-      // Custom HTML Pin
-      const iconHtml = `
-        <div class="relative flex items-center justify-center transform transition-transform duration-200 ${
-          isInspected ? 'scale-125 z-50' : 'hover:scale-115'
-        }">
-          ${
-            isCurrent
-              ? `<div class="absolute -inset-2 bg-amber-400 rounded-full animate-ping opacity-60"></div>`
-              : ''
-          }
-          <div class="relative w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs shadow-xl border-2 transition-all ${
-            isCurrent
-              ? 'bg-amber-400 text-stone-950 border-white ring-4 ring-amber-500/50 shadow-amber-500/50'
-              : isCompleted
-              ? 'bg-emerald-600 text-white border-white shadow-emerald-700/50'
-              : 'bg-stone-700 text-stone-300 border-stone-500 opacity-85'
-          }">
-            ${
-              isCompleted
-                ? `<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>`
-                : isLocked
-                ? `<svg class="w-3.5 h-3.5 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke-width="2.5"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke-width="2.5"/></svg>`
-                : `<span>${stop.id}</span>`
-            }
-          </div>
-          <div class="absolute -bottom-6 px-1.5 py-0.5 bg-stone-950/90 text-amber-200 border border-stone-700 rounded text-[9px] font-mono whitespace-nowrap shadow-md pointer-events-none">
-            ${stop.location}
-          </div>
-        </div>
-      `;
-
-      const customIcon = L.divIcon({
-        className: 'custom-map-pin',
-        html: iconHtml,
-        iconSize: [36, 36],
-        iconAnchor: [18, 18]
-      });
-
-      const marker = L.marker(stop.latLng, { icon: customIcon }).addTo(group);
-
-      // Marker click behavior
-      marker.on('click', () => {
-        sound.playSelect();
-        setInspectedStopId(stop.id);
-        if (!isLocked || isCompleted) {
-          map.flyTo(stop.latLng, Math.max(map.getZoom(), 5), { duration: 0.8 });
+  // Keyboard navigation per GUIDELINES §2 & §Current implementation:
+  // Left/Right arrow keys hop sequentially between the 7 stops
+  // Enter enters stage, Escape returns to title, P toggles dev preview, M toggles mute
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+        e.preventDefault();
+        sound.playClick();
+        setSelectedId((prev) => (prev > 1 ? ((prev - 1) as StopId) : 7));
+      } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+        e.preventDefault();
+        sound.playClick();
+        setSelectedId((prev) => (prev < 7 ? ((prev + 1) as StopId) : 1));
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleEnterStage(selectedId);
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        if (onOpenTitle) {
+          sound.playClick();
+          onOpenTitle();
         }
-      });
-    });
-  }, [cargo, inspectedStopId, activeTheme]);
+      } else if (e.key === 'p' || e.key === 'P') {
+        e.preventDefault();
+        sound.playClick();
+        setDevPreviewMode((prev) => !prev);
+      } else if (e.key === 'm' || e.key === 'M') {
+        e.preventDefault();
+        onToggleMute();
+      } else if (e.key >= '1' && e.key <= '7') {
+        e.preventDefault();
+        const num = parseInt(e.key, 10) as StopId;
+        sound.playClick();
+        setSelectedId(num);
+      }
+    },
+    [selectedId, handleEnterStage, onOpenTitle, onToggleMute]
+  );
 
-  // Fit view to entire global route
-  const handleFitRoute = () => {
-    sound.playSelect();
-    if (!mapInstanceRef.current) return;
-    const bounds = L.latLngBounds(ROUTE_STOPS.map(s => s.latLng));
-    mapInstanceRef.current.fitBounds(bounds, { padding: [60, 60] });
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleKeyDown]);
+
+  // Route path geometry (Ordered chain: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7)
+  // Leg 6 crosses the Pacific seam: Exit right edge at (1376, 275), enter left edge at (0, 275)
+  const ROUTE_LEGS = [
+    {
+      id: 1,
+      from: 1 as StopId,
+      to: 2 as StopId,
+      path: 'M 700 150 Q 695 185 680 220'
+    },
+    {
+      id: 2,
+      from: 2 as StopId,
+      to: 3 as StopId,
+      path: 'M 680 220 Q 940 130 1200 280'
+    },
+    {
+      id: 3,
+      from: 3 as StopId,
+      to: 4 as StopId,
+      path: 'M 1200 280 Q 1170 315 1120 350'
+    },
+    {
+      id: 4,
+      from: 4 as StopId,
+      to: 5 as StopId,
+      path: 'M 1120 350 Q 1090 405 1040 445'
+    },
+    {
+      id: 5,
+      from: 5 as StopId,
+      to: 6 as StopId,
+      path: 'M 1040 445 Q 1055 365 1090 300'
+    },
+    {
+      id: 6,
+      from: 6 as StopId,
+      to: 7 as StopId,
+      // Leg 6: Pacific seam crossing pieces
+      pathA: 'M 1090 300 Q 1240 275 1376 275',
+      pathB: 'M 0 275 Q 120 275 260 260'
+    }
+  ];
+
+  // Leg status styling helper
+  const getLegStatus = (fromId: StopId, toId: StopId) => {
+    const isCompleted = isStopCompleted(fromId) && isStopCompleted(toId);
+    const isActive = isStopCompleted(fromId) && toId === cargo.currentStopId;
+    return { isCompleted, isActive };
   };
 
-  // Fly to active stop
-  const handleFocusActiveStage = () => {
-    sound.playSelect();
-    if (!mapInstanceRef.current) return;
-    const active = ROUTE_STOPS.find(s => s.id === cargo.currentStopId) || ROUTE_STOPS[0];
-    mapInstanceRef.current.flyTo(active.latLng, 6, { duration: 1.2 });
-    setInspectedStopId(active.id);
-  };
-
-  const inspectedStop = ROUTE_STOPS.find(s => s.id === inspectedStopId) || ROUTE_STOPS[0];
-  const isInspectedCompleted = cargo.completedStops.includes(inspectedStop.id);
-  const isInspectedLocked = inspectedStop.id > cargo.currentStopId && !isInspectedCompleted;
+  const selectedIsUnlocked = isStopUnlocked(selectedId);
+  const selectedIsCompleted = isStopCompleted(selectedId);
 
   return (
-    <div className="flex flex-col h-full bg-[#1e232a] text-stone-100 select-none overflow-hidden font-sans">
-      {/* Top Header: Semiconductor Flight Ribbon */}
-      <header className="px-6 py-3 bg-[#181c22] text-stone-200 border-b border-stone-800 flex flex-wrap items-center justify-between gap-4 shadow-lg z-20">
+    <div className="relative w-full h-full flex flex-col justify-between bg-[#030611] text-white font-mono select-none overflow-hidden">
+      {/* Top HUD: Title, Progress, Lot ID & Toggles */}
+      <header className="relative z-20 w-full px-6 py-2.5 bg-[#070b19]/95 border-b border-[#1e293b] flex items-center justify-between shadow-md">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-amber-500 rounded-lg flex items-center justify-center text-stone-950 font-black shadow-md text-xs font-mono tracking-tighter">
-            CHIP
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest bg-red-600 text-white rounded font-mono">
-                REAL WORLD ROUTE
-              </span>
-              <span className="text-xs text-amber-300 font-mono">
-                LOT #{cargo.lotId}
-              </span>
-              <span className="text-xs text-stone-400 font-mono hidden sm:inline">
-                &bull; 7-Stop Semiconductor Journey
-              </span>
-            </div>
-            <h1 className="text-lg sm:text-xl font-bold tracking-tight text-white mt-0.5">
-              One Chip, One Road — Global Supply Chain Map
-            </h1>
+          {onOpenTitle && (
+            <button
+              onClick={() => {
+                sound.playClick();
+                onOpenTitle();
+              }}
+              className="flex items-center gap-1 px-2.5 py-1 bg-[#1e293b] hover:bg-[#334155] border border-stone-500 rounded text-xs font-bold text-stone-200 cursor-pointer transition-colors"
+              title="Return to Title Screen (Esc)"
+            >
+              <ArrowLeft size={13} />
+              <span>TITLE [ESC]</span>
+            </button>
+          )}
+
+          <div className="flex items-center gap-2">
+            <span className="px-2 py-0.5 bg-[#dc2626] text-white text-[10px] font-black tracking-widest uppercase rounded">
+              WORLD MAP
+            </span>
+            <span className="text-xs md:text-sm font-bold text-[#facc15] tracking-wider hidden sm:inline">
+              THE GREAT WORK
+            </span>
           </div>
         </div>
 
-        {/* Global Controls & Audio */}
-        <div className="flex items-center gap-2">
+        {/* Campaign Progress & Lot Info */}
+        <div className="flex items-center gap-3 text-xs">
+          <div className="hidden md:flex items-center gap-2 px-3 py-1 bg-[#0f172a] border border-[#334155] rounded text-stone-300">
+            <span className="text-stone-400">LOT:</span>
+            <span className="font-bold text-[#38bdf8]">#{cargo.lotId}</span>
+          </div>
+
+          <div className="flex items-center gap-2 px-3 py-1 bg-[#0f172a] border border-[#334155] rounded">
+            <span className="text-stone-400 hidden sm:inline">PROGRESS:</span>
+            <span className="font-bold text-[#10b981]">
+              {cargo.completedStops.length} / 7 COMPLETED
+            </span>
+          </div>
+
+          {/* Dev Preview Mode Toggle */}
           <button
             onClick={() => {
+              sound.playClick();
+              setDevPreviewMode((prev) => !prev);
+            }}
+            className={`flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-bold border transition-colors cursor-pointer ${
+              devPreviewMode
+                ? 'bg-[#ca8a04] hover:bg-[#eab308] border-yellow-200 text-stone-950 shadow-[0_0_10px_rgba(234,179,8,0.5)]'
+                : 'bg-[#1e293b] hover:bg-[#334155] border-stone-600 text-stone-300'
+            }`}
+            title="Toggle Developer Preview mode to inspect any stop (P)"
+          >
+            {devPreviewMode ? <Unlock size={12} /> : <Lock size={12} />}
+            <span>DEV PREVIEW: {devPreviewMode ? 'ON [P]' : 'OFF [P]'}</span>
+          </button>
+
+          <button
+            onClick={() => {
+              sound.playClick();
               onToggleMute();
-              sound.playSelect();
             }}
-            className="p-2 bg-stone-800 hover:bg-stone-700 text-amber-300 rounded-lg border border-stone-700 shadow-xs transition cursor-pointer"
-            title={isMuted ? 'Unmute procedural sound' : 'Mute sound'}
+            className="px-2.5 py-1 bg-[#1e293b] hover:bg-[#334155] border border-stone-600 text-stone-300 rounded text-xs font-bold cursor-pointer"
+            title="Toggle audio (M)"
           >
-            {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4 text-emerald-400" />}
-          </button>
-
-          <button
-            onClick={() => {
-              sound.playSelect();
-              onOpenSources();
-            }}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700 rounded-lg shadow-xs transition cursor-pointer font-mono"
-          >
-            <BookOpen className="w-3.5 h-3.5 text-amber-400" />
-            <span>SOURCES.md</span>
-          </button>
-
-          <button
-            onClick={() => {
-              sound.playSelect();
-              if (window.confirm('Reset this journey to a fresh batch at Stop 1?')) {
-                onReset();
-              }
-            }}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-red-900/80 hover:bg-red-800 text-red-200 border border-red-800 rounded-lg shadow-xs transition cursor-pointer font-mono"
-            title="Reset to fresh run"
-          >
-            <RotateCcw className="w-3.5 h-3.5" />
-            <span>RESET</span>
+            {isMuted ? 'MUTE [M]' : 'SOUND [M]'}
           </button>
         </div>
       </header>
 
-      {/* Main Map Viewport & Real Geographic Canvas */}
-      <div className="flex-1 relative overflow-hidden flex flex-col justify-between p-3 sm:p-5">
-        {/* Real World Map Container */}
-        <div className="w-full h-full min-h-[44vh] max-h-[58vh] bg-stone-900 border-2 border-stone-700/80 rounded-2xl relative overflow-hidden shadow-2xl flex items-center justify-center">
-          {/* Leaflet DOM Mounting Container */}
-          <div ref={mapContainerRef} className="w-full h-full z-0" />
+      {/* Main Map Viewport: SVG with exact 1376x768 viewBox preserving aspect ratio without cropping */}
+      <main className="relative flex-1 w-full min-h-0 flex items-center justify-center p-2 bg-[#020409]">
+        <div className="relative aspect-[1376/768] w-full max-h-full max-w-full flex items-center justify-center shadow-2xl rounded overflow-hidden border border-[#1e293b]">
+          <svg
+            viewBox="0 0 1376 768"
+            className="w-full h-full block pixelated"
+            preserveAspectRatio="xMidYMid meet"
+            style={{ imageRendering: 'pixelated' }}
+          >
+            {/* Approved Pixel Art World Map Background (1376x768 JPEG) */}
+            <image
+              href={ASSETS.worldMap}
+              x="0"
+              y="0"
+              width="1376"
+              height="768"
+              preserveAspectRatio="none"
+            />
 
-          {/* Map Layer and Camera Controls Overlay (Top Right) */}
-          <div className="absolute top-3 right-3 z-10 flex flex-col items-end gap-2 pointer-events-auto">
-            {/* Theme switcher */}
-            <div className="bg-stone-950/85 backdrop-blur-md p-1 rounded-xl border border-stone-700/80 shadow-lg flex items-center gap-1 text-xs">
-              <button
-                onClick={() => {
-                  sound.playSelect();
-                  setActiveTheme('voyager');
-                }}
-                className={`px-2.5 py-1 rounded-lg font-medium transition cursor-pointer ${
-                  activeTheme === 'voyager'
-                    ? 'bg-amber-500 text-stone-950 font-bold shadow-xs'
-                    : 'text-stone-300 hover:bg-stone-800'
-                }`}
-                title="Detailed cartographic map"
-              >
-                Voyager
-              </button>
-              <button
-                onClick={() => {
-                  sound.playSelect();
-                  setActiveTheme('satellite');
-                }}
-                className={`px-2.5 py-1 rounded-lg font-medium transition cursor-pointer ${
-                  activeTheme === 'satellite'
-                    ? 'bg-amber-500 text-stone-950 font-bold shadow-xs'
-                    : 'text-stone-300 hover:bg-stone-800'
-                }`}
-                title="True satellite Earth imagery"
-              >
-                Satellite
-              </button>
-              <button
-                onClick={() => {
-                  sound.playSelect();
-                  setActiveTheme('dark');
-                }}
-                className={`px-2.5 py-1 rounded-lg font-medium transition cursor-pointer ${
-                  activeTheme === 'dark'
-                    ? 'bg-amber-500 text-stone-950 font-bold shadow-xs'
-                    : 'text-stone-300 hover:bg-stone-800'
-                }`}
-                title="Dark command room map"
-              >
-                Dark
-              </button>
-            </div>
+            {/* Subtle retro scanline / grid vignette pattern */}
+            <rect
+              width="1376"
+              height="768"
+              fill="url(#vignetteGrad)"
+              pointerEvents="none"
+            />
 
-            {/* Camera Quick Action Buttons */}
-            <div className="flex items-center gap-1.5 bg-stone-950/85 backdrop-blur-md p-1 rounded-xl border border-stone-700/80 shadow-lg text-xs">
-              <button
-                onClick={handleFitRoute}
-                className="flex items-center gap-1 px-2.5 py-1 text-stone-200 hover:bg-stone-800 rounded-lg font-mono transition cursor-pointer"
-                title="Fit entire global route on screen"
-              >
-                <Globe className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Fit Route</span>
-              </button>
-              <button
-                onClick={handleFocusActiveStage}
-                className="flex items-center gap-1 px-2.5 py-1 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 rounded-lg font-mono transition cursor-pointer"
-                title="Fly camera to current active stage"
-              >
-                <Compass className="w-3.5 h-3.5 text-amber-400" />
-                <span>Stage 0{cargo.currentStopId}</span>
-              </button>
-            </div>
-          </div>
+            <defs>
+              <radialGradient id="vignetteGrad" cx="50%" cy="50%" r="70%">
+                <stop offset="60%" stopColor="#000000" stopOpacity="0" />
+                <stop offset="100%" stopColor="#000000" stopOpacity="0.45" />
+              </radialGradient>
+            </defs>
 
-          {/* Quick Route Progress Indicator (Bottom Left of Map) */}
-          <div className="absolute bottom-3 left-3 z-10 bg-stone-950/85 backdrop-blur-md px-3 py-2 rounded-xl border border-stone-700/80 shadow-lg flex items-center gap-2 pointer-events-auto">
-            <span className="text-[10px] font-mono uppercase text-stone-400 font-bold">
-              Progress:
-            </span>
-            <div className="flex items-center gap-1">
-              {ROUTE_STOPS.map(s => {
-                const isDone = cargo.completedStops.includes(s.id);
-                const isNow = cargo.currentStopId === s.id;
+            {/* 1. ROUTE LEGS (Behind markers per GUIDELINES §How to draw the road) */}
+            <g id="route-legs">
+              {ROUTE_LEGS.map((leg) => {
+                const { isCompleted, isActive } = getLegStatus(leg.from, leg.to);
+
+                // Normal 1-piece legs (Legs 1-5)
+                if (leg.path) {
+                  return (
+                    <g key={`leg-${leg.id}`}>
+                      {/* Outline path for crisp contrast over land & ocean */}
+                      <path
+                        d={leg.path}
+                        fill="none"
+                        stroke="#050814"
+                        strokeWidth="6"
+                        strokeLinecap="round"
+                        strokeDasharray="6 8"
+                      />
+                      {/* Foreground colored route path */}
+                      <path
+                        d={leg.path}
+                        fill="none"
+                        stroke={
+                          isCompleted
+                            ? '#10b981'
+                            : isActive
+                            ? '#fbbf24'
+                            : '#475569'
+                        }
+                        strokeWidth={isActive ? '3.5' : '3'}
+                        strokeLinecap="round"
+                        strokeDasharray="6 8"
+                        strokeOpacity={isCompleted || isActive ? 1 : 0.4}
+                        className={isActive ? 'animate-pulse' : ''}
+                      />
+                    </g>
+                  );
+                }
+
+                // Leg 6: Pacific Seam Crossing (Pieces A and B)
                 return (
-                  <button
-                    key={s.id}
-                    onClick={() => {
-                      sound.playSelect();
-                      setInspectedStopId(s.id);
-                      if (mapInstanceRef.current) {
-                        mapInstanceRef.current.flyTo(s.latLng, 6);
+                  <g key={`leg-${leg.id}-seam`}>
+                    {/* Piece A: China to East Edge */}
+                    <path
+                      d={leg.pathA}
+                      fill="none"
+                      stroke="#050814"
+                      strokeWidth="6"
+                      strokeLinecap="round"
+                      strokeDasharray="6 8"
+                    />
+                    <path
+                      d={leg.pathA}
+                      fill="none"
+                      stroke={
+                        isCompleted
+                          ? '#10b981'
+                          : isActive
+                          ? '#fbbf24'
+                          : '#475569'
                       }
-                    }}
-                    className={`w-5 h-5 rounded-md text-[10px] font-bold font-mono flex items-center justify-center transition cursor-pointer ${
-                      isNow
-                        ? 'bg-amber-400 text-stone-950 ring-2 ring-amber-300'
-                        : isDone
-                        ? 'bg-emerald-600 text-white'
-                        : 'bg-stone-800 text-stone-400 hover:bg-stone-700'
-                    }`}
-                    title={`${s.id}. ${s.name} (${s.location})`}
-                  >
-                    {s.id}
-                  </button>
+                      strokeWidth={isActive ? '3.5' : '3'}
+                      strokeLinecap="round"
+                      strokeDasharray="6 8"
+                      strokeOpacity={isCompleted || isActive ? 1 : 0.4}
+                      className={isActive ? 'animate-pulse' : ''}
+                    />
+
+                    {/* Piece B: West Edge to USA */}
+                    <path
+                      d={leg.pathB}
+                      fill="none"
+                      stroke="#050814"
+                      strokeWidth="6"
+                      strokeLinecap="round"
+                      strokeDasharray="6 8"
+                    />
+                    <path
+                      d={leg.pathB}
+                      fill="none"
+                      stroke={
+                        isCompleted
+                          ? '#10b981'
+                          : isActive
+                          ? '#fbbf24'
+                          : '#475569'
+                      }
+                      strokeWidth={isActive ? '3.5' : '3'}
+                      strokeLinecap="round"
+                      strokeDasharray="6 8"
+                      strokeOpacity={isCompleted || isActive ? 1 : 0.4}
+                      className={isActive ? 'animate-pulse' : ''}
+                    />
+
+                    {/* Pacific Seam Continuation Cues */}
+                    <g transform="translate(1360, 265)">
+                      <rect
+                        x="-52"
+                        y="-10"
+                        width="64"
+                        height="20"
+                        rx="3"
+                        fill="#0b0f1d"
+                        stroke="#38bdf8"
+                        strokeWidth="1"
+                        fillOpacity="0.85"
+                      />
+                      <text
+                        x="-20"
+                        y="4"
+                        fill="#38bdf8"
+                        fontSize="9"
+                        fontWeight="bold"
+                        textAnchor="middle"
+                        fontFamily="monospace"
+                      >
+                        TO USA ▶
+                      </text>
+                    </g>
+
+                    <g transform="translate(10, 265)">
+                      <rect
+                        x="-5"
+                        y="-10"
+                        width="70"
+                        height="20"
+                        rx="3"
+                        fill="#0b0f1d"
+                        stroke="#38bdf8"
+                        strokeWidth="1"
+                        fillOpacity="0.85"
+                      />
+                      <text
+                        x="30"
+                        y="4"
+                        fill="#38bdf8"
+                        fontSize="9"
+                        fontWeight="bold"
+                        textAnchor="middle"
+                        fontFamily="monospace"
+                      >
+                        ◀ FROM ASIA
+                      </text>
+                    </g>
+                  </g>
                 );
               })}
-            </div>
+            </g>
+
+            {/* 2. LEADER LINES & CALLOUT LABELS (Staggered to prevent overlap in East Asia) */}
+            <g id="callout-labels">
+              {ROUTE_STOPS.map((stop) => {
+                const isSelected = stop.id === selectedId;
+                const isCompleted = isStopCompleted(stop.id);
+                const isUnlocked = isStopUnlocked(stop.id);
+
+                const labelWidth = 145;
+                const labelHeight = 28;
+
+                // Callout coordinates
+                const anchorX = stop.x;
+                const anchorY = stop.y;
+                let targetX = anchorX + stop.callout.dx;
+                let targetY = anchorY + stop.callout.dy;
+
+                // Adjust box placement based on alignment
+                let boxX = targetX;
+                if (stop.callout.align === 'center') {
+                  boxX = targetX - labelWidth / 2;
+                } else if (stop.callout.align === 'right') {
+                  boxX = targetX - labelWidth;
+                }
+
+                // Clamp within SVG boundary
+                boxX = Math.max(10, Math.min(1376 - labelWidth - 10, boxX));
+                const boxY = Math.max(10, Math.min(768 - labelHeight - 10, targetY - labelHeight / 2));
+
+                const leaderEndX =
+                  stop.callout.align === 'left'
+                    ? boxX
+                    : stop.callout.align === 'right'
+                    ? boxX + labelWidth
+                    : boxX + labelWidth / 2;
+                const leaderEndY = boxY + labelHeight / 2;
+
+                return (
+                  <g
+                    key={`label-${stop.id}`}
+                    className="cursor-pointer transition-opacity"
+                    onClick={() => {
+                      sound.playClick();
+                      setSelectedId(stop.id);
+                    }}
+                    onDoubleClick={() => handleEnterStage(stop.id)}
+                  >
+                    {/* Leader Line with dark outline */}
+                    <line
+                      x1={anchorX}
+                      y1={anchorY}
+                      x2={leaderEndX}
+                      y2={leaderEndY}
+                      stroke="#050814"
+                      strokeWidth="3.5"
+                    />
+                    <line
+                      x1={anchorX}
+                      y1={anchorY}
+                      x2={leaderEndX}
+                      y2={leaderEndY}
+                      stroke={
+                        isSelected
+                          ? '#fbbf24'
+                          : isCompleted
+                          ? '#10b981'
+                          : isUnlocked
+                          ? '#38bdf8'
+                          : '#64748b'
+                      }
+                      strokeWidth="1.5"
+                      strokeDasharray={isSelected ? 'none' : '3 3'}
+                    />
+
+                    {/* Callout Box */}
+                    <rect
+                      x={boxX}
+                      y={boxY}
+                      width={labelWidth}
+                      height={labelHeight}
+                      rx="4"
+                      fill="#070c1b"
+                      fillOpacity="0.92"
+                      stroke={
+                        isSelected
+                          ? '#fbbf24'
+                          : isCompleted
+                          ? '#10b981'
+                          : isUnlocked
+                          ? '#38bdf8'
+                          : '#334155'
+                      }
+                      strokeWidth={isSelected ? '2.5' : '1.5'}
+                      className="transition-all"
+                    />
+
+                    {/* Label Badge / Order */}
+                    <rect
+                      x={boxX + 4}
+                      y={boxY + 4}
+                      width="20"
+                      height="20"
+                      rx="3"
+                      fill={
+                        isCompleted
+                          ? '#10b981'
+                          : isSelected
+                          ? '#fbbf24'
+                          : isUnlocked
+                          ? '#0284c7'
+                          : '#1e293b'
+                      }
+                    />
+                    <text
+                      x={boxX + 14}
+                      y={boxY + 18}
+                      fill={isSelected && !isCompleted ? '#050814' : '#ffffff'}
+                      fontSize="11"
+                      fontWeight="bold"
+                      textAnchor="middle"
+                      fontFamily="monospace"
+                    >
+                      {isCompleted ? '✓' : stop.order}
+                    </text>
+
+                    {/* Label Text */}
+                    <text
+                      x={boxX + 28}
+                      y={boxY + 18}
+                      fill={
+                        isSelected
+                          ? '#fbbf24'
+                          : isCompleted
+                          ? '#a7f3d0'
+                          : isUnlocked
+                          ? '#ffffff'
+                          : '#94a3b8'
+                      }
+                      fontSize="10"
+                      fontWeight={isSelected ? 'bold' : 'normal'}
+                      fontFamily="monospace"
+                    >
+                      {stop.label}
+                    </text>
+                  </g>
+                );
+              })}
+            </g>
+
+            {/* 3. STAGE ANCHOR MARKERS & SELECTION INDICATOR */}
+            <g id="anchor-markers">
+              {ROUTE_STOPS.map((stop) => {
+                const isSelected = stop.id === selectedId;
+                const isCompleted = isStopCompleted(stop.id);
+                const isUnlocked = isStopUnlocked(stop.id);
+
+                return (
+                  <g
+                    key={`marker-${stop.id}`}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Stage 0${stop.id}: ${stop.label}`}
+                    className="cursor-pointer focus:outline-none"
+                    onClick={() => {
+                      if (selectedId === stop.id) {
+                        handleEnterStage(stop.id);
+                      } else {
+                        sound.playClick();
+                        setSelectedId(stop.id);
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        handleEnterStage(stop.id);
+                      }
+                    }}
+                  >
+                    {/* Shadow underneath anchor */}
+                    <ellipse
+                      cx={stop.x}
+                      cy={stop.y + 11}
+                      rx="11"
+                      ry="4"
+                      fill="#000000"
+                      fillOpacity="0.45"
+                    />
+
+                    {/* Selected Active Ring / Reticle */}
+                    {isSelected && (
+                      <g>
+                        <circle
+                          cx={stop.x}
+                          cy={stop.y}
+                          r="21"
+                          fill="none"
+                          stroke="#fbbf24"
+                          strokeWidth="2.5"
+                          strokeDasharray="4 4"
+                          className="animate-spin"
+                          style={{
+                            transformOrigin: `${stop.x}px ${stop.y}px`,
+                            animationDuration: '10s'
+                          }}
+                        />
+
+                        {/* Bouncing Selector Arrow '▼' */}
+                        <g transform={`translate(${stop.x}, ${stop.y - 25})`}>
+                          <polygon
+                            points="0,8 -7,-4 7,-4"
+                            fill="#fbbf24"
+                            stroke="#050814"
+                            strokeWidth="1.5"
+                          />
+                        </g>
+                      </g>
+                    )}
+
+                    {/* Anchor Pin Circle */}
+                    <circle
+                      cx={stop.x}
+                      cy={stop.y}
+                      r="13"
+                      fill={
+                        isCompleted
+                          ? '#10b981'
+                          : isSelected
+                          ? '#fbbf24'
+                          : isUnlocked
+                          ? '#0284c7'
+                          : '#1e293b'
+                      }
+                      stroke="#ffffff"
+                      strokeWidth={isSelected ? '2.5' : '2'}
+                      filter="drop-shadow(0px 2px 3px rgba(0,0,0,0.7))"
+                    />
+
+                    {/* Stop Number or Icon */}
+                    {isCompleted ? (
+                      <text
+                        x={stop.x}
+                        y={stop.y + 4.5}
+                        fill="#ffffff"
+                        fontSize="12"
+                        fontWeight="900"
+                        textAnchor="middle"
+                        fontFamily="monospace"
+                      >
+                        ✓
+                      </text>
+                    ) : !isUnlocked ? (
+                      <g transform={`translate(${stop.x - 5}, ${stop.y - 5})`}>
+                        <path
+                          d="M2.5 4V3a2.5 2.5 0 0 1 5 0v1h.5a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h.5zm1 0h3V3a1.5 1.5 0 0 0-3 0v1z"
+                          fill="#94a3b8"
+                        />
+                      </g>
+                    ) : (
+                      <text
+                        x={stop.x}
+                        y={stop.y + 4.5}
+                        fill={isSelected ? '#0f172a' : '#ffffff'}
+                        fontSize="11"
+                        fontWeight="bold"
+                        textAnchor="middle"
+                        fontFamily="monospace"
+                      >
+                        {stop.order}
+                      </text>
+                    )}
+                  </g>
+                );
+              })}
+            </g>
+          </svg>
+        </div>
+      </main>
+
+      {/* Temporary Feedback Message (e.g. Locked alert) */}
+      {feedbackMsg && (
+        <div className="absolute top-16 left-1/2 transform -translate-x-1/2 z-30 px-4 py-2 bg-red-950/90 border-2 border-red-500 rounded text-red-200 text-xs font-bold shadow-lg animate-bounce">
+          {feedbackMsg}
+        </div>
+      )}
+
+      {/* Bottom HUD: Selected Stop Details & Enter Action */}
+      <footer className="relative z-20 w-full px-6 py-3.5 bg-[#070b19]/95 border-t border-[#1e293b] flex flex-wrap items-center justify-between gap-4 shadow-lg">
+        {/* Left: Selected Stop Details & Activity Caption per GUIDELINES §Current implementation */}
+        <div className="flex-1 min-w-[280px]">
+          <div className="flex items-center gap-2">
+            <span className="px-2 py-0.5 bg-[#fbbf24] text-stone-950 text-xs font-black rounded uppercase">
+              STAGE 0{selectedStop.id}
+            </span>
+            <span className="text-sm font-bold text-white tracking-wide">
+              {selectedStop.label}
+            </span>
+            <span className="text-xs text-stone-400">
+              ({selectedStop.location})
+            </span>
+
+            {selectedIsCompleted ? (
+              <span className="flex items-center gap-1 text-[11px] font-bold text-[#10b981] bg-[#064e3b]/80 px-2 py-0.5 rounded border border-[#10b981]">
+                <Check size={11} /> COMPLETED
+              </span>
+            ) : selectedStop.id === cargo.currentStopId ? (
+              <span className="flex items-center gap-1 text-[11px] font-bold text-[#fbbf24] bg-[#78350f]/80 px-2 py-0.5 rounded border border-[#fbbf24] animate-pulse">
+                <Play size={10} /> CURRENT GOAL
+              </span>
+            ) : selectedIsUnlocked ? (
+              <span className="text-[11px] font-bold text-[#38bdf8] bg-[#0c4a6e]/80 px-2 py-0.5 rounded border border-[#38bdf8]">
+                UNLOCKED
+              </span>
+            ) : (
+              <span className="flex items-center gap-1 text-[11px] font-bold text-[#94a3b8] bg-[#1e293b] px-2 py-0.5 rounded border border-stone-600">
+                <Lock size={10} /> LOCKED
+              </span>
+            )}
           </div>
+
+          {/* Activity caption per GUIDELINES §How to draw the road */}
+          <p className="mt-1 text-xs text-[#bae6fd] leading-relaxed max-w-3xl">
+            {selectedStop.activity}
+          </p>
         </div>
 
-        {/* Bottom Current/Inspected Stop Information Card & Navigation */}
-        <div className="mt-3 bg-stone-900 border border-stone-800 rounded-2xl p-4 shadow-xl">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="space-y-1.5 max-w-2xl">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="px-2 py-0.5 bg-stone-800 text-amber-400 text-[10px] font-bold font-mono rounded border border-stone-700">
-                  STAGE 0{inspectedStop.id} OF 07
-                </span>
-                <span className="text-sm font-bold text-white">
-                  {inspectedStop.location}
-                </span>
-                <span className="text-xs text-stone-400 font-mono">
-                  Coordinates: {inspectedStop.latLng[0].toFixed(2)}°N, {inspectedStop.latLng[1].toFixed(2)}°E
-                </span>
-                <span className="text-xs text-stone-500 font-mono hidden md:inline">
-                  Sources: {inspectedStop.sources.join(', ')}
-                </span>
-              </div>
-
-              <h3 className="text-base sm:text-lg font-bold text-white">
-                {inspectedStop.name}:{' '}
-                <span className="font-normal text-stone-300">
-                  {inspectedStop.purpose}
-                </span>
-              </h3>
-              <p className="text-xs text-stone-400 leading-relaxed">
-                {inspectedStop.summary}
-              </p>
-            </div>
-
-            {/* Action button to enter production workspace */}
-            <div className="flex items-center gap-3 shrink-0">
-              {isInspectedLocked ? (
-                <div className="flex items-center gap-2 px-5 py-2.5 bg-stone-800 text-stone-400 font-medium text-xs rounded-xl border border-stone-700">
-                  <Lock className="w-4 h-4 text-stone-500" />
-                  <span>Locked until Stage 0{cargo.currentStopId} completes</span>
-                </div>
-              ) : (
-                <button
-                  onClick={() => {
-                    sound.playSelect();
-                    onSelectStop(inspectedStop.id);
-                  }}
-                  className="flex items-center gap-2 px-6 py-3 bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-sm rounded-xl shadow-lg transition cursor-pointer transform hover:-translate-y-0.5 active:translate-y-0"
-                >
-                  <Play className="w-4 h-4 fill-stone-950" />
-                  <span>
-                    {inspectedStop.id === 7
-                      ? 'Enter Ending & Unboxing'
-                      : isInspectedCompleted
-                      ? 'Review 3D Workspace'
-                      : 'Enter 3D Workspace'}
-                  </span>
-                </button>
-              )}
-            </div>
+        {/* Right: Enter Stage Button & Key Navigation hints */}
+        <div className="flex items-center gap-3">
+          <div className="hidden lg:flex flex-col text-right text-[11px] text-stone-400 font-mono">
+            <span>← / → OR [1-7] SELECT STAGE</span>
+            <span>ENTER OPENS STAGE · ESC TITLE</span>
           </div>
-        </div>
 
-        {/* Mandatory Map Legend Disclaimer as required by GUIDELINES.md Section 4 */}
-        <div className="mt-2 text-center text-[11px] text-stone-400 font-mono">
-          Note: This is a representative teaching scenario grounded in real regional activities. It is <strong>not</strong> a documented supplier itinerary for an actual iPhone chip.
+          <button
+            onClick={() => handleEnterStage(selectedId)}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded border-2 text-xs md:text-sm font-bold tracking-wider uppercase transition-all shadow-[3px_3px_0_#000] cursor-pointer ${
+              selectedIsUnlocked
+                ? 'bg-[#10b981] hover:bg-[#059669] border-white text-white hover:scale-102 active:scale-98'
+                : 'bg-[#1e293b] hover:bg-[#334155] border-stone-500 text-stone-300'
+            }`}
+          >
+            <span>{selectedIsUnlocked ? 'ENTER STAGE' : 'INSPECT (LOCKED)'}</span>
+            <ChevronRight size={16} />
+          </button>
         </div>
-      </div>
+      </footer>
     </div>
   );
 };
