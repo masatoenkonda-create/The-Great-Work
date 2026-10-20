@@ -1,0 +1,6 @@
+{
+  "name": "One Chip, One Road - Worldwide Semiconductor Journey",
+  "description": "Follow one generic silicon chip around the world, from raw material to a phone someone uses, across Norway, Germany, Japan, Taiwan, Malaysia, China, and the User.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

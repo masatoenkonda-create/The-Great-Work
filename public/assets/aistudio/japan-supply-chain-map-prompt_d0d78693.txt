@@ -1,0 +1,25 @@
+Create a polished editorial infographic, landscape 16:9, very high resolution, readable professional typography. Use case: infographic-diagram. Title: "JAPAN'S SEMICONDUCTOR SUPPLY CHAIN". Subtitle: "Where Japan supplies the world — and where it still depends on it".
+A beautiful intelligence briefing, warm ivory background, charcoal typography, restrained vermilion for Japan, muted teal for overseas dependencies, generous negative space, crisp thin connectors, precise typographic hierarchy, subtle realistic wafer and chip cutaway miniatures. No cartoon, no neon, no visual clutter, no fake logos. It must be a useful map and workflow, not a pile of company names.
+Upper two-thirds: a clear left-to-right manufacturing flow in five well-separated numbered stages. Exact stage labels:
+"01  WAFERS & CHEMISTRY"
+"02  FRONT-END FAB"
+"03  PROBE & DIE PREP"
+"04  PACKAGE & ASSEMBLE"
+"05  FINAL TEST → SYSTEMS"
+Under each stage, concise supplier role labels in beautifully aligned type:
+01: "SUMCO · silicon wafers" and "JSR / Shin-Etsu · photoresists".
+02: "Tokyo Electron · deposition / etch / coat & develop" and "SCREEN · cleaning". A small circular process motif with "Deposit → pattern → etch → clean ↻" and "Repeated across many layers". Equipment suppliers feed this stage; they are not fabs.
+03: "Advantest · wafer test" and "DISCO · grinding / dicing".
+04: "Ajinomoto · ABF insulating film" and "IBIDEN · package substrates". Indicate these two inputs feed packaging, NOT a confirmed supplier contract between named firms. Show a restrained package cross-section.
+05: "Advantest · electrical test" and "Servers · phones · vehicles".
+Across top of stages 02-05 a thin teal external-input band labelled "GLOBAL INTERDEPENDENCE" with three compact labels "Customer designs", "ASML (Netherlands) · EUV scanners", "Overseas assembly & packaging capacity". Use discrete connectors from ASML to front-end and assembly capacity to package. Do not imply every chip uses EUV or all packaging is overseas. Small note: "Process routes vary by product".
+Lower third: an elegant geographic inset, actual recognizable outline of Kyushu with accurate north-up geography, label "KYUSHU CLOSE-UP". Pin only two regional clusters with accurate relative positioning: "Kumamoto" northeast of Kagoshima, and "Kagoshima / Kirishima" in southern Kyushu. Use clean text outside the island connected by leaders:
+Kumamoto: "JASM · foundry"; "Sony · image sensors"; "Tokyo Electron Kyushu · equipment (Koshi)".
+Kagoshima / Kirishima: "Kyocera · ceramics & semiconductor-related components".
+Beside map: clear small highlighted panel "JASM FAB 2" then "3nm · production target 2028" then "Company plan — not current output".
+A final bottom-right analysis panel titled "THE STRATEGIC QUESTION" with exact text "Who owns the qualified input, the process knowledge, and the customer relationship?".
+Footer, clearly readable: "Selected examples, not exhaustive. Arrows show process roles, not confirmed supplier contracts. | Checked 20 Oct 2026".
+All names correctly spelled, no market-share statistics, no invented supplier contracts, no invented plants, no node sizes for fab 1. Maintain ample text size, optimize diagram legibility. Geography inset is supporting, main focus is flow and leverage.
+
+Version 2 edit prompt:
+Edit this infographic with only the following precision corrections, preserve the whole layout, fonts, all other names, illustrations and text. In the package cross-section under stage 04, replace the right-hand label 'Package substrate (ABF)' with 'Package substrate'. Add a separate short precise label 'ABF dielectric layers' with a fine leader to the thin internal insulating layers within that substrate, without overlap or crowding. ABF is a film material inside the substrate, not the substrate itself. In the JASM FAB 2 panel add the small caption 'Illustrative fab' inside a bottom corner of the fab photo so the art cannot be mistaken for a documentary site photograph. Keep text crisp, all existing text unchanged except those requested corrections.
