@@ -270,3 +270,8 @@ Checked: code/document inspection and primary-source research; original PDF meta
 
 Tested: `npm run lint` passes; `bun test src/content` 8/8 (Norway and Germany controls). Not tested: anything in the browser (user tests), Norway regression after the extraction, narrow screens.
 Placeholders: code-drawn panel and guide box, "G" portrait for Greta, primitive geometry, compressed times.
+
+## Japan research, first pass - Claude, 21 October 2026
+
+- Ran workflow steps 1–2 for Japan. Added [research/japan/README.md](research/japan/README.md) (J01–J05, answers to the four player questions, check of the existing dialogue and the old slider workshop) and [research/japan/HANDOFF.md](research/japan/HANDOFF.md) (decisions D01–D08, one dialogue fix, six open questions for Codex, including whether Japan's pull speed should finally feed red dies in Taiwan). Linked from SOURCES.md.
+- Stopped before the plan: Codex's turn. No code changed.
