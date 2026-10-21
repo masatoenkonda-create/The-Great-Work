@@ -275,3 +275,11 @@ Placeholders: code-drawn panel and guide box, "G" portrait for Greta, primitive 
 
 - Ran workflow steps 1–2 for Japan. Added [research/japan/README.md](research/japan/README.md) (J01–J05, answers to the four player questions, check of the existing dialogue and the old slider workshop) and [research/japan/HANDOFF.md](research/japan/HANDOFF.md) (decisions D01–D08, one dialogue fix, six open questions for Codex, including whether Japan's pull speed should finally feed red dies in Taiwan). Linked from SOURCES.md.
 - Stopped before the plan: Codex's turn. No code changed.
+
+## Japan independent review and proposed workshop — Codex, 21 October 2026
+
+- Reviewed J01–J05, all six handoff questions, old Japan/Taiwan task code, current cargo schema and the shared workshop components. Added [CODEX_REVIEW.md](research/japan/CODEX_REVIEW.md) and [WORKSHOP_PLAN.md](research/japan/WORKSHOP_PLAN.md) for Claude to review before building.
+- Added J08–J10, saved the original J03 chapter, PVA semiconductor-puller brochure and Siltronic process presentation. Inspected J03 Fig.1, PVA exterior and Siltronic slide 14 after rendering; checked J03's CC BY 3.0 statement. Full structure-loss article pages returned 403; only primary indexed excerpts were used to bound the finding, not prescribe a detector.
+- Proposed seven visual beats with crucible/seed handling, automatic neck/shoulder/tail, a body-growth heat/pull puzzle, cool/crop/grind before batch wire slicing, finishing and FOSB dispatch. Retained recoverable growth; no arbitrary contamination score or claimed Taiwan integration. Added workflow checks for phase-specific controls and physically coherent recovery.
+
+Checked: code/document/source inspection, original PDF metadata/text, three rendered pages and license statement. No application code or game assets changed; no tests/build/playthrough run. Exact site geometry, defect equations and variable downstream yield remain unvalidated/deferred.

@@ -2,6 +2,8 @@
 
 Research started 21 October 2026 by Claude, following [WORKSHOP_WORKFLOW.md](../../WORKSHOP_WORKFLOW.md) steps 1–2. **Research only; no plan or code yet.** Codex is invited to add records (J08 onward) and challenge the ones below. Decisions and open questions are in [HANDOFF.md](HANDOFF.md).
 
+**Codex second pass complete:** [CODEX_REVIEW.md](CODEX_REVIEW.md) answers the six handoff questions and audits the existing code; [WORKSHOP_PLAN.md](WORKSHOP_PLAN.md) proposes seven compact beats for Claude to review. No application code changed. Original notes below are preserved; apply the review's distinctions between single-crystal structure, surface finish, contamination and visible diameter. J06/J07 are intentionally unassigned; new records start at J08 as Claude requested.
+
 ## What the research says, in player terms
 
 | Question | Answer | Records |
@@ -71,3 +73,43 @@ The core lesson: **a chip starts as one giant perfect crystal, grown slowly out 
 - **Arrival dialogue (`dialogues.ts`, stop 3).** Mostly consistent: chunks melted above 1,400 °C, quartz crucible, seed dipped and pulled slowly while spinning, wire slicing and mirror polish. **One fix:** "A day or more for one ingot" → several days (J02: 3–4.5 days for a 2 m crystal).
 - **Old workshop (`Stop3WaferWorkspace.tsx`).** Slider screen. Melt 1,420 °C is sourced (J01, J02). Pull-rate window "1.0–1.4 mm/min" is not: J02 gives 0.4–1.2 and J03 "at or below 1 mm/min". "Roughness below 0.2 nm / atomic flatness" is unsourced (UNIFIED_OPINION.md asked for "mirror-polished"). The wire feed-tension control has no effect (UNIFIED_OPINION.md). To be replaced by the Norway/Germany-style workshop, not extended.
 - **Route data (`route.ts`, stop 3).** Consistent. "Chemical-mechanically polish" is fine (J01: mechano-chemical polishing).
+
+## Codex supplemental evidence
+
+### J08 — Current industrial puller exterior and control variables
+
+**PVA TePla, _Czochralski Process_ and _CGS1218_ manufacturer brochure.** [Process page](https://www.pvatepla.com/products-technologies/crystal-growth/czochralski-process/), [original brochure](https://www.pvatepla.com/fileadmin/sitepackage/pdf/brochures/PVA_CGS1218.pdf), [local PDF](sources/J08-pva-cgs1218.pdf), [inspected cover](previews/J08-industrial-puller.png).
+
+**Locator:** Process section (melt/seed/pulling sequence); brochure PDF p.1 exterior photograph and subsequent equipment description/data sheet. Downloaded brochure metadata records a March 2026 modification, not a claimed publication date.
+
+**Supports:** Current semiconductor-oriented steel chamber/pulling tower appearance; seed pulling, rotation and thermal control are distinct coupled functions. The vendor distinguishes semiconductor pullers from its solar-specific model.
+
+**Use/limits:** Exterior/silhouette reference alongside J03's internal diagram. Not proof that this model is installed at SUMCO Imari. No hardware speed limit or capacity imported as a recipe. The webpage's approximate melt-temperature wording is not a reason to replace established silicon melting-point facts. Manufacturer photos are reference only; game-art reuse permission was not checked. Original eight-page PDF validated with Poppler; cover visually inspected.
+
+### J09 — Producer diagrams for wafer handling, sawing and finishing
+
+**Siltronic, Investor Presentation, April 2026, slide 14, _Wafer Production Process_.** [Original PDF](https://www.siltronic.com/fileadmin/investorrelations/2026/Q1/20260429_Siltronic_InvestorPresentation__.pdf), [local copy](sources/J09-siltronic-process-2026.pdf), [inspected slide](previews/J09-wafer-process.png); [producer process text](https://www.siltronic.com/en/products.html).
+
+**Locator:** PDF p.14 / printed slide 14, individual schematic panels; webpage sections Cylindrical Grinding, Wire Slicing, Edge Rounding, Lapping and Polishing.
+
+**Supports:** Wire web over guide rollers, slurry supply and a supported crystal fed through multiple cuts; edge grinding, carrier-held lapping, cleaning/etching and pad polishing. The diagram supplies concrete machinery geometry.
+
+**Limits:** Representative wafer-producer flow, not a Japan-site drawing. FZ and CZ are alternatives, not sequential steps; optional epitaxy is omitted from our polished-blank-wafer lesson. Slurry wire sawing is the coherent selected depiction, not proof every modern line uses it. Copyright Siltronic AG; use as reference rather than copying into game assets. Original 32-page PDF validated; p.14 rendered and visually inspected.
+
+### J10 — Structure loss has observable signs, not a universal speed score
+
+**Original studies:** [_Analyzing structure loss in Czochralski silicon growth: Root causes investigation through surface examination_](https://www.sciencedirect.com/science/article/pii/S0022024823004906), Journal of Crystal Growth; [_Machine Learning Methods for Structure Loss Classification in Czochralski Silicon Ingots_](https://pubs.acs.org/cgdefu/article/24/17/7132/152844/Machine-Learning-Methods-for-Structure-Loss), Crystal Growth & Design 24 (2024), 7132 onward.
+
+**Evidence available:** Primary-publisher indexed excerpts discuss growth-ridge disappearance as a sign of structure loss in examined ingots. The ACS excerpt identifies its examined crystals as 9-inch phosphorus- or gallium-doped material.
+
+**Limits:** Full publisher pages returned 403. Figures, complete methods and image licenses were not inspected. This is a bounded answer to Claude's research question, not evidence for an instant universal detector, a direct pull-speed threshold or a wafer-contamination formula. Do not build a ridge-disappearance failure mechanic from the excerpt. Use the better-established diameter/meniscus feedback in this sample.
+
+### J03 supplement — inspected puller diagram and license
+
+Saved the [original chapter](sources/J03-cz-growth-wafer-manufacturing-2012.pdf). PDF p.2 / printed p.44 contains Figure 1, the chosen interior reference; [preview](previews/J03-cz-puller-figure1.png) visually checked. The last page (PDF p.30) explicitly states Creative Commons Attribution 3.0. Preserve author/work attribution for any reuse and check separately credited elements; open availability is not a blanket license for every external photograph. J02 shows Wiley/photograph credits, so its freely accessible PDF is not assumed to permit image reuse.
+
+The chapter's steady-body control discussion and phase-specific necking regime were independently rechecked. Its defect physics is more detailed than our intended simulation and does not validate a game control-to-failed-die equation. The selected design uses qualified pause/recovery, rather than conflating intrinsic point defects with surface contamination.
+
+### J01/J05 continuity checks
+
+SUMCO's primary page confirms grinding, sawing, lapping, etching, polishing, cleaning and inspection as distinct operations. Compress their presentation without teaching that polishing alone performs all of them. Miraial's current FOSB page confirms a front-opening shipping box distinct from its FOUP product category. Do not substitute a bare wafer stack or treat FOUP and FOSB as identical names. No standard was purchased; current SEMI standard status or full compliance is not claimed.

@@ -49,6 +49,8 @@ Germany's second research pass added these reusable checks:
 - **Separate purity, appearance and success.** Roughness, color or time spent trying controls is not a chemical assay. A pause-and-retry puzzle can legitimately produce the same qualified output after recovery. If downstream quality must vary, define an explicit choice and carry its real saved result; do not attach an arbitrary purity score to failed attempts.
 - **Make the review usable by the builder.** Resolve technical choices in a short proposed plan, provide figure/page locators and source limits, and label generic geometry or omitted utilities as intentional abstractions. Do not leave a research questionnaire when the next task is coding. A reviewer can refine the proposal without restarting the research.
 - **Bound shared-component work.** Reuse layout/panel/guide rendering while keeping each process model separate. Preserve the accepted reference level; generalization must support the new scene rather than become a whole-game rewrite.
+- **Respect phase-specific control regimes.** A setting appropriate for startup, necking or finishing may be wrong during steady production. Apply a toy working band only to the phase it represents; automate brief specialist phases when they add no useful player decision.
+- **Design recovery before drawing failure.** A pause-only model should warn before producing permanent faulty material. Do not show cracks, lost crystal structure or a misshapen finished segment, then visually erase them when a knob is corrected. Use observable interface/trend cues and retain already qualified progress.
 
 ## Rules that apply to every level
 

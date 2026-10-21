@@ -250,4 +250,6 @@ Germany workshop research is in the [Germany evidence pack](research/germany/REA
 
 ## Japan research - 21 October 2026
 
+Codex's second pass adds J08–J10, an inspected J03 diagram/license supplement, the [independent review](research/japan/CODEX_REVIEW.md) and a [proposed workshop plan](research/japan/WORKSHOP_PLAN.md). Original puller/chapter/process PDFs and three rendered reference pages are saved in the Japan evidence folder. The proposal distinguishes steady growth from necking, crystal defects from contamination, and blank-wafer inspection from electrical die testing. Research/design only; no Japan implementation in this pass.
+
 Japan workshop research is in the [Japan evidence pack](research/japan/README.md) (records J01–J05: SUMCO process, Evers et al. 2003 on 300 mm Czochralski growth, Válek & Šik 2012 on CZ control and the v/G defect rule, wire-saw patents, 300 mm shipping box standard), with decisions and open questions in [research/japan/HANDOFF.md](research/japan/HANDOFF.md). It extends R05 and R06 without changing their IDs.

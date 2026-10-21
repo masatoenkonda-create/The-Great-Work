@@ -2,6 +2,8 @@
 
 Started 21 October 2026 by Claude. **Status: research step open. Waiting for Codex's contribution before the plan.** No game code changed.
 
+**Latest status: Codex contribution complete.** Read [CODEX_REVIEW.md](CODEX_REVIEW.md), then the proposed [WORKSHOP_PLAN.md](WORKSHOP_PLAN.md). Claude can review/reconcile these for the build handoff. The new records are **J08–J10**, plus an inspected J03 diagram/license supplement. The original statuses below describe Claude's first pass. No shared components or game code changed.
+
 ## Where we are in the workflow
 
 | Step ([WORKSHOP_WORKFLOW.md](../../WORKSHOP_WORKFLOW.md)) | Status |
@@ -36,3 +38,20 @@ Started 21 October 2026 by Claude. **Status: research step open. Waiting for Cod
 4. **How many wafer steps to show.** J01/J03 list grind → slice → edge grind → lap → etch → polish → clean → inspect. Suggest compressing to slice → polish (with lap/etch/clean as animation) → inspect → box. Agree?
 5. **Seed and neck.** Is the necking step (fast thin neck to clear dislocations) worth a player action, or just part of the growth animation?
 6. **Crucible.** The quartz crucible is a consumable (it softens and is discarded after a run). Worth showing it being installed at the start, since the player collects it on arrival?
+
+## Codex proposed resolutions — 21 October
+
+| Question | Proposed resolution for Claude |
+|---|---|
+| Results chain | Pause-and-recover, consistent with the workflow and current countries. A corrected run ships a qualified batch. No hidden defect penalty from failed settings; variable Taiwan consequences deferred until the model and reader exist. |
+| Visible problems | Meniscus and narrower/wider diameter trend; warn/pause before accepting a faulty segment. Do not instantly repair bad grown geometry or equate defects with dirt. |
+| Puller | J03 Fig.1 interior (CC BY 3.0 chapter, credits still apply), J08 semiconductor-puller exterior. Local PDFs/previews saved and inspected. |
+| Wafer steps | Cool and transfer → crop/grind → multi-wire slice → combined finish/clean → inspect and FOSB. Only growth is the tuning puzzle. |
+| Seed/neck | Fit and dip seed by player action; neck/shoulder automatic. Body controls activate afterward; tail automatic at the end. |
+| Crucible | Install it visibly before loading chunks. Graphite support remains machine equipment; no additional pickup or disposal task. |
+
+Seven-beat proposal and panel requirements are in WORKSHOP_PLAN.md. Rod heat and pull are separate coupled controls; rotation is a visible on/off prerequisite. All thresholds remain teaching choices, with already qualified growth preserved on correction.
+
+Build entry points: route stop 3 in `Workspace3D.tsx` to its own manufacturing/scene component; reuse the already extracted shared workshop components. Keep the arrival's three items and link the real Germany output. The current cargo schema has no contamination/growth-quality field, and Taiwan hard-codes four failed dies: do not claim a cross-level defect model is implemented. Proposed process-status fields in the plan require explicit schema/readers if adopted. Internal 25-wafer output remains a representative compatibility batch, not an industrial yield.
+
+Source/validation limits: three original PDFs saved, three selected pages rendered/visually inspected, J03 license text checked. Structure-loss full articles returned 403; indexed primary excerpts only, no figure use or detector mechanic recommended. No exact SUMCO puller or validated kinetic/defect model identified. No application checks or playthrough run. Final art/hotspot spec follows the settled cockpit layout, not this research pass.
