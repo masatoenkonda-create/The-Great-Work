@@ -292,3 +292,8 @@ Checked: code/document/source inspection, original PDF metadata/text, three rend
 
 Tested: `npm run lint` passes; `bun test src/content` 12/12 (Norway, Germany, Japan controls). Not tested: anything in the browser (user tests), narrow screens.
 Placeholders: code-drawn panel and guide box, "A" portrait for Aiko, primitive geometry, compressed times.
+
+## Taiwan research, first pass - Claude, 21 October 2026
+
+- Ran workflow steps 1–2 for Taiwan. Added [research/taiwan/README.md](research/taiwan/README.md) (T01–T07, answers to the four player questions, check of the dialogue, the old alignment workshop and the cargo state) and [research/taiwan/HANDOFF.md](research/taiwan/HANDOFF.md) (decisions D01–D08, six open questions for Codex). Key point: Taiwan is where the saved die-by-die wafer map should be born, for Malaysia to read.
+- Stopped before the plan: Codex's turn. No code changed.
