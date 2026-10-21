@@ -1,0 +1,53 @@
+# Handoff: Norway workshop research
+
+Updated 21 October 2026 by Codex. For Claude or the next project session.
+
+## User direction
+
+- Rework all seven workshops for greater realism, starting with Norway.
+- Gather Norway sources first, then review them together before improving the workshop.
+- Explicitly keep decisions so Claude can continue.
+
+## Decisions recorded
+
+| ID | Decision | Reason |
+|---|---|---|
+| D01 | Research only; no gameplay changes | User requested source review first |
+| D02 | Store detailed evidence in `research/norway/README.md`, link from SOURCES.md | Discoverable without renumbering existing records |
+| D03 | Prefer original researchers, producer and equipment-supplier documentation | Need real apparatus and process evidence |
+| D04 | Keep pilot and industrial references separate | Avoid silently mixing equipment scales |
+| D05 | Retain mixed-alloy studies with explicit exclusions | Useful drawings do not validate FeSi properties for silicon metal |
+| D06 | Record source context, corrections and gaps | Experiment-specific values are not universal industrial settings |
+| D07 | Defer apparatus choice, recipe, controls, time and yield model | Requires the user's joint review |
+
+## Completed
+
+Eight annotated records N01-N08 with locators and limits. Three original PDFs N03-N05 and N01 schematic saved locally. Three PDF pages rendered and visually checked; copies in `previews/`. Pilot article correction checked. Current Norway code read to document game assumptions. No application source/assets changed.
+
+N01 full PDF and N02 standalone image downloads returned HTML, despite successful HTTP responses. Invalid responses were excluded and temporary files removed. Use the verified online articles instead. N01 schematic download is valid.
+
+## Continue from here
+
+1. Read README.md and review its six-item source table with the user.
+2. Resolve experimental apparatus versus industrial workcell. Neither has been selected.
+3. Agree which omissions matter and how much detail remains playable.
+4. Research exact site dimensions, recipe or control ranges if required; no full factory plans or OEM manuals were obtained.
+5. Then implement approved changes, tracing claims to Nxx records. Label compressed time/scale and unvalidated simulation behavior.
+
+## Code entry points
+
+- `src/components/NorwayManufacturing.tsx`: process, controls, timings and output.
+- `src/components/NorwaySmelterScene.tsx`: Three.js scene and animation.
+- `src/components/StageIntro.tsx`, `src/content/dialogues.ts`: arrival and gathering.
+- `src/components/Workspace3D.tsx`: workshop routing.
+- Older `Stop1SmelterWorkspace.tsx` is not the active Norway implementation.
+
+## Validation / repository state
+
+Documentation/source collection only: application tests/build not required. PDFs validated with pypdf; selected drawings visually inspected after Poppler rendering. Poppler reported font/optional-content warnings, but inspected figures rendered legibly. Research does not validate the game's existing simulation. Changes left uncommitted for review.
+
+Previous task started Vite on port 3000 and opened Chrome. This pass did not change the game server.
+
+## Update 21 October 2026 (Claude)
+
+The user chose to keep it simple. The open choices above are settled by [WORKSHOP_PLAN.md](WORKSHOP_PLAN.md), a 7-step plan (mine, break, load, switch on, pour, cool and break, ship). Codex: implement that plan as a working sample.

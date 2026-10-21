@@ -237,3 +237,7 @@ The old generated PNG is withdrawn. Its artwork is not evidence, even when it wa
 8. The seven-stop graph in GUIDELINES.md is the active prototype graph. New polished artwork is deferred; use a simple code-rendered map for the skeleton.
 
 Current conclusion: enough evidence exists to plan the broad worldwide route. The production graph, package implementation, parameter model and exact commercial itinerary are not all verified, and the last is intentionally fictional for this prototype.
+
+## Norway fidelity research - 21 October 2026
+
+The user requested detailed Norway workshop research before redesigning the stages. See [Norway evidence pack](research/norway/README.md) for eight annotated primary-source records, actual schematics, page/figure locators, offline technical PDFs and source limitations. See [handoff and decision log](research/norway/HANDOFF.md) for Claude's continuation context. This extends R03 without changing existing IDs. Pilot apparatus and industrial plant evidence remain distinct; no workshop redesign has been implemented or approved in this research pass.

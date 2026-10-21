@@ -145,3 +145,16 @@ Untested:
 
 Stubbed / placeholder:
 - Sigurd has one supplied pose, with the existing subtle talking motion; no mouth-animation sheet was supplied. Other country guides and material piles retain their placeholders.
+
+## Norway fidelity research - Codex, 21 October 2026
+
+- User requested real Norway furnace sources before a joint workshop redesign review, and an explicit decision trail for Claude.
+- Created [Norway evidence pack](research/norway/README.md): eight annotated records covering a Norwegian pilot experiment, industrial reaction zones, Elkem tapping, furnace equipment, Salten casting and ladle refining. Includes three original PDFs, one schematic image and three rendered review pages.
+- Added [Claude handoff and decision log](research/norway/HANDOFF.md), with unresolved choices and continuation steps; linked the pack from SOURCES.md. Pilot/industrial scales and silicon/ferrosilicon evidence are kept distinct.
+- Verified PDFs with pypdf, inspected key drawings, and checked local document links. Invalid HTML download responses excluded. Application tests not run because no game code changed.
+- Pending: joint source review and selection of the workshop's equipment/process basis. No redesign, simulation parameters or new artwork approved or implemented.
+
+## Norway simple workshop plan - Claude, 21 October 2026
+
+- Reviewed Codex's Norway research with the user. Agreed a simple 7-step plan in [research/norway/WORKSHOP_PLAN.md](research/norway/WORKSHOP_PLAN.md): mine with a pickaxe, break to fist size, load quartz + carbon, switch on, pour, cool and break into shiny grey lumps, ship. The plan drops rock-colour sorting and all temperature/pressure/purity detail.
+- No game code changed. Next: Codex implements the plan.
