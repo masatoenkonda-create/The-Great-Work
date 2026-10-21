@@ -223,3 +223,22 @@ Tested: `npm run lint` passes; one screenshot of the title screen. Untested: Con
 - Arrival scene (shared by all stops): dark theme to match the workshop. Top bar is just "◀ MAP", the country and its one-liner (stage number, location, lot number and arrival goal removed). Right panel is "COLLECT n / 3" with item cards and "?" slots; "IN HALL"/"NEW" tags and the long purpose line removed. Pixel "ENTER WORKSHOP" button.
 
 Tested: `npm run lint` passes; one screenshot each of the map and Norway arrival. Untested: narrow screens, completed-stop states.
+
+## Norway panel review and lighter Sigurd dialogue - Codex, 21 October 2026
+
+- Reviewed Claude's fixed cockpit against the process: it covers material loading, main power, power level, electrode selection, working heat, reaction progress, liquid silicon, cooling and dispatch. Kept the 480x400 layout and every art/hotspot rectangle. Added a compact dynamic POWER n/5 label, on/off tooltips and accessible pressed states for main power/electrodes, and numeric accessibility values for gauges.
+- Replaced the accumulating chat history with one current message. New step guidance or furnace feedback replaces the old text; intermediate tool animations retain their step's message. Turning the main power off now produces relevant feedback too.
+- Gave Sigurd's box a teal frame/header, amber portrait/name, mint accents and a distinct amber warning bubble. Shorter, friendlier lines include occasional parenthetical jokes in warm gold italics. No chat typing animation or layout resizing added; 3D and furnace mechanics unchanged.
+- Updated [control-panel art spec](research/norway/CONTROL_PANEL_SPEC.md) with the reviewed coverage and dynamic overlays to preserve in code when artwork arrives.
+
+Tested: no automated checks or browser tests run; the user's standing instruction leaves testing to them.
+Untested: current-message transitions, visual styling and panel readouts in the browser; typecheck/build for this revision.
+Stubbed / placeholder: existing code-drawn panel/chat artwork and teaching furnace model remain.
+
+## Norway complete for now; reusable workshop instructions — 21 October 2026
+
+- User declared Norway complete for now and requested today's full workflow be recorded for the other levels.
+- Added [WORKSHOP_WORKFLOW.md](WORKSHOP_WORKFLOW.md), covering research, process simplification, pre-coding review, 3D interactions, causal controls/failure, stable cockpit UI, current-step guide dialogue, art handoff and the user's testing preference. Includes a per-level design checklist and links to the Norway reference files.
+- Linked the workflow prominently from GUIDELINES.md and recorded Norway's accepted baseline in its handoff. Historical design decisions remain available; the workflow identifies which later directions supersede them.
+
+Tested: documentation task only; no application tests run. No game code or assets changed in this task. Other levels remain unchanged.

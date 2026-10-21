@@ -44,17 +44,17 @@ const SMELT_SECONDS = 6;
 
 /** Sigurd's line when each step begins. */
 const SIGURD_STEP: Partial<Record<SmelterPhase, string>> = {
-  mine: "Welcome to the furnace hall! First we need quartz. Take the pickaxe and break a piece off that rock.",
-  break: "Good piece. Too big for the furnace though. Hammer it into fist-sized chunks.",
-  loadQuartz: 'Now tip the quartz into the top of the furnace.',
-  loadCarbon: 'Quartz is silicon stuck to oxygen. Add the carbon: it pulls the oxygen away.',
-  power: "Loaded. Switch on the main power and bring the furnace up to heat. I'll tell you how it looks.",
-  tap: 'Liquid silicon is pooling at the bottom. Open the taphole!',
-  pouring: 'Look at it run. Silicon, straight out of rock.',
-  cooling: "Let it cool. Don't touch it while it glows.",
-  breakCast: "It's solid now. Break it up with the hammer.",
-  bag: 'See how it shines? That is silicon metal. Bag the lumps.',
-  ship: "Send it to Germany. They'll clean it until it's pure enough for chips.",
+  mine: 'Quartz first! Use the pickaxe to free a piece. (A piece, not the whole mountain.)',
+  break: 'Nice! Hammer that piece into smaller chunks. Think chunks, not powder.',
+  loadQuartz: 'Into the top opening it goes. Load the quartz!',
+  loadCarbon: 'Quartz contains silicon bound to oxygen. Add carbon to help remove the oxygen.',
+  power: "All loaded! Switch on, adjust the power and electrodes, and watch the heat. I'll keep an eye on it.",
+  tap: 'There it is: liquid silicon! Open the taphole and fill the mould.',
+  pouring: 'Look at it flow! Quartz and carbon went in; liquid silicon comes out.',
+  cooling: 'Let the glow fade before touching it. (Admire it. Don’t hug it.)',
+  breakCast: 'Solid at last! Use the hammer to break the casting into lumps.',
+  bag: 'That silver-grey shine? Silicon metal! Bag the lumps.',
+  ship: 'Next stop: Germany for purification. (A spa day for silicon.)',
   done: 'Good work. On to Germany!',
 };
 
@@ -64,7 +64,7 @@ const SOUND: Partial<Record<SmelterPhase, () => void>> = {
   smelting: () => sound.playCrystalHum(), pouring: () => sound.playBubble(), shipping: () => sound.playConfirm(),
 };
 
-type ChatLine = { id: number; text: string; warning: boolean };
+type ChatLine = { text: string; warning: boolean };
 type Led = 'off' | 'on' | 'next';
 
 /** Norway work screen: 3D workcell, fixed control panel, and Sigurd's chat below it. The caller owns the arrival dialogue. */
@@ -75,9 +75,7 @@ export function NorwayManufacturing({ onReturnToMap, onComplete }: Props) {
   const [power, setPower] = useState(1);
   const [electrodes, setElectrodes] = useState<ElectrodePosition>('raised');
   const [temperature, setTemperature] = useState(ROOM_TEMPERATURE);
-  const [chat, setChat] = useState<ChatLine[]>([]);
-  const chatId = useRef(0);
-  const chatBox = useRef<HTMLDivElement>(null);
+  const [chat, setChat] = useState<ChatLine>({ text: SIGURD_STEP.mine!, warning: false });
   const completed = useRef(false);
   const completeRef = useRef(onComplete);
   completeRef.current = onComplete;
@@ -86,7 +84,7 @@ export function NorwayManufacturing({ onReturnToMap, onComplete }: Props) {
 
   const say = useCallback((text: string, warning = false) => {
     if (!text) return;
-    setChat(previous => [...previous.slice(-29), { id: ++chatId.current, text, warning }]);
+    setChat({ text, warning });
   }, []);
 
   // Speak once per step and once per furnace change (refs keep dev double-renders from repeating lines).
@@ -101,7 +99,6 @@ export function NorwayManufacturing({ onReturnToMap, onComplete }: Props) {
     spoken.current.zone = zone;
     say(SIGURD_FURNACE[zone], zone === 'cold' || zone === 'hot' || zone === 'escaping');
   }, [zone, phase, say]);
-  useEffect(() => { if (chatBox.current) chatBox.current.scrollTop = chatBox.current.scrollHeight; }, [chat]);
 
   // Timed animations between player actions.
   useEffect(() => {
@@ -213,7 +210,7 @@ export function NorwayManufacturing({ onReturnToMap, onComplete }: Props) {
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.key !== ' ' && event.key !== 'Enter') return;
-      if (event.repeat || (event.target instanceof HTMLElement && event.target.closest('button, input, select, textarea, [contenteditable="true"]'))) return;
+      if (event.repeat || (event.target instanceof HTMLElement && event.target.closest('button, input, select, textarea, [contenteditable="true"], [data-asset="norway-chat-box"]'))) return;
       event.preventDefault();
       if (targetRef.current) actRef.current(targetRef.current);
     };
@@ -257,7 +254,7 @@ export function NorwayManufacturing({ onReturnToMap, onComplete }: Props) {
           </div>
           <div className="flex min-h-0 flex-col gap-3">
             <ControlPanel lamps={lamps} led={led} onPress={press} readings={{ temperature, smelted, liquid, mouldTemperature, power }} />
-            <SigurdChat lines={chat} box={chatBox} />
+            <SigurdChat line={chat} />
           </div>
         </div>
       </div>
@@ -291,7 +288,10 @@ function ControlPanel({ lamps, led, onPress, readings }: { lamps: Record<PanelLa
       {PANEL_GAUGES.map(gauge => <Gauge key={gauge.id} id={gauge.id} rect={gauge} readings={readings} />)}
       {PANEL_CONTROLS.map(control => {
         const state = led(control.id);
-        return <button key={control.id} type="button" onClick={() => onPress(control.id)} aria-label={control.label} title={control.label} className="group absolute focus-visible:outline-2 focus-visible:outline-amber-300" style={pct(control)}>
+        const toggle = control.id === 'main' || control.id === 'electrodesUp' || control.id === 'electrodesDown';
+        const selected = control.id === 'main' ? lamps.mainOn : state === 'on';
+        const description = toggle ? `${control.label}: ${selected ? 'on' : 'off'}` : control.label;
+        return <button key={control.id} type="button" onClick={() => onPress(control.id)} aria-label={control.label} aria-pressed={toggle ? selected : undefined} title={description} className="group absolute focus-visible:outline-2 focus-visible:outline-amber-300" style={pct(control)}>
           <span aria-hidden="true" className={`absolute left-1/2 top-[4%] h-[11%] aspect-square -translate-x-1/2 rounded-full ${state === 'next' ? 'animate-pulse bg-amber-300 shadow-[0_0_8px_#fcd34d]' : state === 'on' ? 'bg-emerald-400 shadow-[0_0_6px_#34d399]' : 'bg-[#2c3439]'}`} />
           <span aria-hidden="true" className={`absolute inset-x-[12%] top-[20%] bottom-[24%] rounded-md border-b-4 transition-transform group-active:translate-y-0.5 group-active:border-b-2 ${control.id === 'main' || control.id === 'tap' ? 'border-[#7a1d18] bg-[#c8332b]' : 'border-[#20282c] bg-[#56656e] group-hover:bg-[#64757f]'}`} />
           <span className={LABEL}>{control.label}</span>
@@ -328,10 +328,10 @@ function Gauge({ id, rect, readings }: { id: PanelGaugeId; rect: PanelRect; read
       <div className="absolute inset-x-[6%] top-[14%] bottom-[24%] flex items-end gap-[6%] rounded border border-black/60 bg-black/50 p-[5%]">
         {Array.from({ length: POWER_LEVELS }, (_, i) => <span key={i} className={`flex-1 rounded-sm ${i < readings.power ? 'bg-amber-300' : 'bg-[#2c3439]'}`} style={{ height: `${30 + i * 17}%` }} />)}
       </div>
-      <span className={LABEL}>{rect.label}</span>
+      <span className={LABEL}>POWER {readings.power}/{POWER_LEVELS}</span>
     </div>;
   }
-  return <div className="absolute" style={pct(rect)} role="meter" aria-label={rect.label} aria-valuetext={text}>
+  return <div className="absolute" style={pct(rect)} role="meter" aria-label={rect.label} aria-valuemin={0} aria-valuemax={id === 'temperature' ? GAUGE_MAX : id === 'mould' ? 1400 : 100} aria-valuenow={id === 'temperature' ? Math.round(readings.temperature) : id === 'mould' ? Math.round(readings.mouldTemperature ?? 0) : Math.round(fill * 100)} aria-valuetext={text} title={id === 'temperature' ? 'Furnace temperature · green band marks the working range' : `${rect.label}: ${text}`}>
     <div className="absolute inset-x-[6%] top-[10%] bottom-[34%] overflow-hidden rounded border border-black/60 bg-black/60">
       {band && <span aria-hidden="true" className="absolute inset-x-0 border-y border-emerald-400/70 bg-emerald-400/15" style={{ bottom: `${band[0] * 100}%`, height: `${(band[1] - band[0]) * 100}%` }} />}
       <span aria-hidden="true" className={`absolute bottom-0 left-[30%] right-[30%] ${color}`} style={{ height: `${Math.min(1, Math.max(0, fill)) * 100}%` }} />
@@ -341,18 +341,21 @@ function Gauge({ id, rect, readings }: { id: PanelGaugeId; rect: PanelRect; read
   </div>;
 }
 
-/** Sigurd's running commentary, below the panel. */
-function SigurdChat({ lines, box }: { lines: ChatLine[]; box: React.RefObject<HTMLDivElement | null> }) {
+/** One current-step message; new guidance replaces old guidance without moving the frame. */
+function SigurdChat({ line }: { line: ChatLine }) {
   return (
-    <section className="flex min-h-[150px] flex-1 flex-col overflow-hidden rounded-xl border-2 border-[#4b5a63] bg-[#101a20]" aria-label="Sigurd" data-asset="norway-chat-box">
-      <div className="flex shrink-0 items-center gap-3 border-b border-white/10 px-3 py-2">
-        <div className="h-10 w-10 shrink-0 overflow-hidden rounded border border-white/15 bg-[#22313a]">
+    <section className="flex min-h-[170px] flex-1 flex-col overflow-hidden rounded-xl border-2 border-[#528b89] bg-[#142d35] shadow-[inset_0_0_0_2px_#0b2029]" aria-label="Sigurd" data-asset="norway-chat-box">
+      <div className="flex shrink-0 items-center gap-3 border-b border-[#73b5ad]/25 bg-gradient-to-r from-[#24565a] via-[#234650] to-[#18323d] px-3 py-2">
+        <div className="h-11 w-11 shrink-0 overflow-hidden rounded-lg border-2 border-amber-300/70 bg-[#476a67] shadow-[2px_2px_0_#10252c]">
           <img src={ASSETS.norwayGuide.image} alt="" className="h-full w-full object-cover object-top [image-rendering:pixelated]" />
         </div>
-        <p className="font-mono text-xs font-bold tracking-widest text-amber-200">SIGURD</p>
+        <p className="font-mono text-sm font-bold tracking-widest text-amber-200">SIGURD</p>
+        <span aria-hidden="true" className={`ml-auto h-2.5 w-2.5 rounded-sm ${line.warning ? 'bg-amber-300 shadow-[0_0_8px_#fcd34d66]' : 'bg-[#84dac5] shadow-[0_0_8px_#84dac555]'}`} />
       </div>
-      <div ref={box} role="log" aria-live="polite" aria-relevant="additions" className="min-h-0 flex-1 space-y-2 overflow-y-auto px-3 py-2 text-sm leading-snug">
-        {lines.map(line => <p key={line.id} className={line.warning ? 'text-amber-200' : 'text-slate-200'}>{line.text}</p>)}
+      <div tabIndex={0} className="min-h-0 flex-1 overflow-y-auto p-3 focus-visible:outline-2 focus-visible:outline-amber-300">
+        <div role="status" aria-live="polite" aria-atomic="true" className={`rounded-lg border-l-[3px] px-3 py-2.5 text-sm leading-relaxed ${line.warning ? 'border-amber-300 bg-[#463a25] text-amber-100' : 'border-[#83cabc] bg-[#203f49] text-[#edf5eb]'}`}>
+          <p>{line.text.split(/(\([^)]*\))/g).map((part, i) => part.startsWith('(') ? <span key={i} className="italic text-[#f0cc88]">{part}</span> : part)}</p>
+        </div>
       </div>
     </section>
   );

@@ -59,3 +59,9 @@ The user explicitly deferred coding and requested a final review of Claude's pla
 ## Update 21 October 2026 (Claude; implemented)
 
 The user approved coding. DESIGN_REVIEW.md is now implemented in `NorwayManufacturing.tsx` and `NorwaySmelterScene.tsx`; see BUILD_NOTES.md. The user played it through and reported it works.
+
+## Completion for now — user decision, 21 October 2026
+
+Norway is complete for now. The final direction includes Claude's fixed cockpit/live furnace controls and Codex's single-current-message Sigurd box with warmer styling and light jokes. Those later approved changes supersede older exclusions of panels/parameters and accumulating message histories. Preserve the current implementation unless asked to change it.
+
+The full reusable process is recorded in [WORKSHOP_WORKFLOW.md](../../WORKSHOP_WORKFLOW.md), linked from the main guidelines. Follow it for the other levels: primary-source research, minimal physical process, review before coding, visible 3D transformations, meaningful controls with recoverable failure, stable panel layout, concise current-step guide feedback and an asset specification. The user handles testing; record untested revisions accurately. No other level has been redesigned by this documentation task.

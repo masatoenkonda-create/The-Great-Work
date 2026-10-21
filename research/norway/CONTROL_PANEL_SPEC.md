@@ -49,6 +49,16 @@ Separate small sprites, if wanted: lamp on (amber, green, orange), button presse
 
 Any width ≈ 420 px, at least 150 px tall; frame plus a portrait slot (Sigurd, 40 × 40 shown; the current 64 × 72 guide sprite is used for now). Text is rendered in code.
 
+### Review update: current-message dialogue and art handoff
+
+The control layout remains **480 × 400**, with all rectangles above unchanged. The existing lamps, gauges and buttons cover the current seven-step process; no additional panel sections or controls are needed before creating the artwork.
+
+- Keep lamp illumination, working-band overlay, gauge fills/readouts, five power bars, the dynamic `POWER n/5` label, button highlights and pressed states in code. Leave space for these overlays in the art; do not bake their live values into the background.
+- Main power and electrode selections expose their on/off state through tooltips and accessible pressed states. Furnace temperature retains its green working band; other gauges retain their compact readings.
+- Sigurd's box now shows **one current message**, replaced by step guidance or live furnace feedback. It is not a scrolling conversation history. Text may scroll only if the current message does not fit.
+- Chat styling: deep teal frame, warmer teal header, amber portrait border/name, pale readable dialogue, mint accents and amber warning state. Parenthetical jokes use warm gold italics. Preserve contrast and space for runtime text; do not bake dialogue into the artwork.
+- The current code portrait is 44 × 44 and the chat's minimum height is 170 px. Keep the panel above and Sigurd below; no machine geometry or process changes accompany this style update.
+
 ## Furnace rules (for reference)
 
 Power level 1–5 and electrodes up/down set the furnace temperature. Only power 4 with electrodes down sits in the working band (~1750–2150 °C), and smelting only progresses there. Teaching values, not an operating recipe; see `src/content/norwayControls.ts`.

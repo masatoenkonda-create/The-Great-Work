@@ -26,10 +26,10 @@ export function furnaceZone(on: boolean, power: number, electrodes: ElectrodePos
 
 /** Sigurd describes what is happening, not which button to press. */
 export const SIGURD_FURNACE: Record<FurnaceZone, string> = {
-  off: '',
-  escaping: "The heat is going straight up the chimney. The electrodes aren't touching the charge.",
-  cold: 'Too cold. Nothing is reacting in there.',
-  heating: "It's warming up. Hold it steady.",
-  ok: "That's it, about two thousand degrees. The carbon is pulling the oxygen out of the quartz.",
-  hot: "Way too hot! You're wasting power and burning up the electrodes.",
+  off: 'Main power is off. The batch is loaded and waiting!',
+  escaping: "The electrodes aren't touching the charge. (We're not here to heat the chimney.)",
+  cold: 'Too cold for the reaction. The quartz is staying quartz.',
+  heating: "Warming up nicely. Hold it steady!",
+  ok: 'That’s the working range! Carbon removes oxygen; liquid silicon collects below.',
+  hot: 'Above the working range! The reaction is paused. (The electricity bill just winced.)',
 };

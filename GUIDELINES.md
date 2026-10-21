@@ -1,5 +1,7 @@
 # Build guidelines: The Great Work
 
+> **Workshop direction, 21 October 2026:** Norway is complete for now. Use [WORKSHOP_WORKFLOW.md](WORKSHOP_WORKFLOW.md) to apply today's research, design-review, implementation, cockpit, guide-message and asset-handoff process to the other levels. For workshop work it supersedes the older milestones and UI directions below. It records the user's testing preference too. The game's current title is **Supply Chain Gang**.
+
 Updated: 20 October 2026  
 Basis: [UNIFIED_OPINION.md](UNIFIED_OPINION.md) plus Maxence's feedback and three visual references supplied on 20 October 2026.  
 Where this file and the opinion files differ, **this file wins**.
