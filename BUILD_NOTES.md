@@ -208,3 +208,11 @@ Stubbed / placeholder: unchanged simplified furnace simulation and existing comp
 Tested: `npm run lint` passes; `bun test src/content/norwayControls.test.ts` 4/4. Browser: workshop layout renders; panel buttons drive mine, break, load quartz, load carbon, main power, electrodes; Sigurd's furnace feedback appears. Stopped there at the user's request (user tests).
 Untested by agent: rest of the run after smelting, narrow screens.
 Stubbed / placeholder: panel and chat box are code-drawn until the pixel art arrives; temperatures are teaching values.
+
+## Rename and title screen - Claude, 21 October 2026
+
+- Game renamed **Supply Chain Gang** (title screen, page title, og:title, metadata.json, code comments). Tagline: "One chip. Seven countries. Zero shortcuts."
+- Removed the full-screen dark gradient over the title art; the logo and tagline stay readable with a pixel outline instead. Added the Press Start 2P pixel font (Google Fonts).
+- New chunky pixel buttons with bevel, press-down effect and blinking ▶ ◀ cursor; "PRESS ENTER" blinks at the bottom. Keyboard (Up/Down, Enter/Space, M) and Continue/New game logic unchanged. Animations stop under reduced-motion.
+
+Tested: `npm run lint` passes; one screenshot of the title screen. Untested: Continue state, narrow screens.

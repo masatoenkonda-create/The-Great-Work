@@ -1,5 +1,5 @@
 /**
- * Asset manifest and asset loader for The Great Work
+ * Asset manifest and asset loader for Supply Chain Gang
  * As required by GUIDELINES.md §3 and the approved assets specification.
  * Maps asset names to exact approved file paths.
  */

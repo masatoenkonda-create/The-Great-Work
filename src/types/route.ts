@@ -1,7 +1,7 @@
 /**
  * Definitions for the 7-stop worldwide chip journey
  * Exact route: Norway -> Germany -> Japan -> Taiwan -> Malaysia -> China mainland -> User
- * Scope defined in GUIDELINES.md: The Great Work
+ * Scope defined in GUIDELINES.md: Supply Chain Gang
  * Coordinates calibrated to the 1376x768 approved map background.
  */
 

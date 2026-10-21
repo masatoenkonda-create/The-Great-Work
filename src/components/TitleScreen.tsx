@@ -61,18 +61,30 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 
+  const startNew = () => {
+    sound.playConfirm();
+    sound.startCozyAmbience();
+    onNewGame();
+  };
+  const resume = () => {
+    sound.playConfirm();
+    sound.startCozyAmbience();
+    onContinue();
+  };
+  const menu = [
+    ...(hasSaveData ? [{ id: 'continue' as const, label: 'Continue', hint: 'Resume your route', onClick: resume }] : []),
+    { id: 'new' as const, label: hasSaveData ? 'New game' : 'Start', hint: hasSaveData ? 'Restart from Norway' : 'Norway awaits', onClick: startNew },
+  ];
+
   return (
-    <div className="relative w-full h-full font-mono select-none overflow-hidden text-white bg-[#020409]">
-      {/* Approved Corridor Artwork (1376x768 JPEG), scaled to cover the whole screen */}
+    <div className="relative w-full h-full select-none overflow-hidden text-white bg-[#020409]">
+      {/* Approved corridor artwork (1376x768), shown unfiltered */}
       <img
         src={ASSETS.titleBackground}
         alt=""
-        className="absolute inset-0 w-full h-full object-cover pixelated"
+        className="absolute inset-0 w-full h-full object-cover"
         style={{ imageRendering: 'pixelated' }}
       />
-
-      {/* Quiet upper area scrim for clean readability per GUIDELINES §Current implementation */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#030612]/92 via-[#030612]/55 to-transparent pointer-events-none" />
 
       <div className="absolute top-4 right-4 z-20">
         <ScreenControls
@@ -83,53 +95,43 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({
         />
       </div>
 
-      {/* Title & Menu */}
-      <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6 pb-[12vh]">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-widest text-[#fbbf24] uppercase drop-shadow-[4px_4px_0_#000] stroke-black">
-          THE GREAT WORK
+      <div className="relative z-10 flex h-full flex-col items-center px-4 pt-[9vh] text-center">
+        {/* Logo: pixel outline instead of a dark overlay, so the art stays visible */}
+        <h1 className="title-logo font-pixel leading-[1.15] text-[#fcd34d]">
+          <span className="block text-[clamp(1.6rem,5.2vw,3.6rem)]">SUPPLY CHAIN</span>
+          <span className="block text-[clamp(2.2rem,7.4vw,5.2rem)] text-[#fb923c]">GANG</span>
         </h1>
-        <p className="mt-2 text-xs md:text-sm text-[#bae6fd] tracking-wide font-medium drop-shadow-[2px_2px_0_#000] max-w-xl">
-          From Raw Quartz in Norway to Pocket Smartphone in America
+        <p className="title-tagline font-pixel mt-4 text-[clamp(0.5rem,1.15vw,0.8rem)] leading-relaxed text-[#e0f2fe]">
+          One chip. Seven countries. Zero shortcuts.
         </p>
 
-        {/* New Game / Continue Menu */}
-        <div className="mt-8 flex flex-col items-stretch gap-2.5 w-64 max-w-full">
-          {hasSaveData && (
-            <button
-              onClick={() => {
-                sound.playConfirm();
-                sound.startCozyAmbience();
-                onContinue();
-              }}
-              onMouseEnter={() => setSelectedMenuItem('continue')}
-              className={`flex items-center justify-between px-4 py-2.5 border-2 text-sm font-bold tracking-wider uppercase transition-all shadow-[3px_3px_0_#000] cursor-pointer ${
-                selectedMenuItem === 'continue'
-                  ? 'bg-[#10b981] border-white text-white translate-x-1 scale-[1.02]'
-                  : 'bg-[#0f172a]/90 border-[#38bdf8] text-[#93c5fd] hover:border-white'
-              }`}
-            >
-              <span>{selectedMenuItem === 'continue' ? '▶ CONTINUE' : '  CONTINUE'}</span>
-              <span className="text-xs opacity-80">RESUME</span>
-            </button>
-          )}
+        <nav className="mt-[6vh] flex w-[min(20rem,90vw)] flex-col gap-4" aria-label="Main menu">
+          {menu.map((item) => {
+            const active = selectedMenuItem === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={item.onClick}
+                onMouseEnter={() => setSelectedMenuItem(item.id)}
+                onFocus={() => setSelectedMenuItem(item.id)}
+                className={`title-button group relative font-pixel flex flex-col items-center gap-1.5 px-5 py-4 transition-transform ${
+                  active ? 'title-button--active -translate-y-0.5' : 'title-button--idle'
+                }`}
+              >
+                <span className="flex items-center gap-3 text-[clamp(0.8rem,1.6vw,1.05rem)] tracking-wider">
+                  <span aria-hidden="true" className={active ? 'title-cursor' : 'invisible'}>▶</span>
+                  {item.label.toUpperCase()}
+                  <span aria-hidden="true" className={active ? 'title-cursor title-cursor--right' : 'invisible'}>◀</span>
+                </span>
+                <span className="text-[0.5rem] tracking-wide opacity-75">{item.hint}</span>
+              </button>
+            );
+          })}
+        </nav>
 
-          <button
-            onClick={() => {
-              sound.playConfirm();
-              sound.startCozyAmbience();
-              onNewGame();
-            }}
-            onMouseEnter={() => setSelectedMenuItem('new')}
-            className={`flex items-center justify-between px-4 py-2.5 border-2 text-sm font-bold tracking-wider uppercase transition-all shadow-[3px_3px_0_#000] cursor-pointer ${
-              selectedMenuItem === 'new'
-                ? 'bg-[#fbbf24] border-white text-stone-950 translate-x-1 scale-[1.02]'
-                : 'bg-[#0f172a]/90 border-[#38bdf8] text-[#93c5fd] hover:border-white'
-            }`}
-          >
-            <span>{selectedMenuItem === 'new' ? '▶ NEW GAME' : '  NEW GAME'}</span>
-            <span className="text-xs opacity-80">{hasSaveData ? 'RESET' : 'START'}</span>
-          </button>
-        </div>
+        <p className="title-blink font-pixel mt-auto mb-[5vh] text-[0.55rem] tracking-widest text-white">
+          PRESS ENTER
+        </p>
       </div>
     </div>
   );
