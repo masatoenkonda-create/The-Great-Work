@@ -50,4 +50,12 @@ Previous task started Vite on port 3000 and opened Chrome. This pass did not cha
 
 ## Update 21 October 2026 (Claude)
 
-The user chose to keep it simple. The open choices above are settled by [WORKSHOP_PLAN.md](WORKSHOP_PLAN.md), a 7-step plan (mine, break, load, switch on, pour, cool and break, ship). Codex: implement that plan as a working sample.
+The user chose to keep it simple. Claude recorded [WORKSHOP_PLAN.md](WORKSHOP_PLAN.md), a 7-step plan (mine, break, load, switch on, pour, cool and break, ship).
+
+## Update 21 October 2026 (Codex review; latest instruction)
+
+The user explicitly deferred coding and requested a final review of Claude's plan. [DESIGN_REVIEW.md](DESIGN_REVIEW.md) is the resulting proposal, awaiting user review. It retains all seven steps, specifies an industrial three-electrode furnace cutaway, corrects the melting-only implication and prioritizes minimal isometric 3D tools/materials over scenery. Its workshop direction supersedes older backdrop-first guidance for this proposed sample; no title/map changes are proposed. No game code or assets changed. Do not treat the earlier implementation instruction as authorization to start coding now.
+
+## Update 21 October 2026 (Claude; implemented)
+
+The user approved coding. DESIGN_REVIEW.md is now implemented in `NorwayManufacturing.tsx` and `NorwaySmelterScene.tsx`; see BUILD_NOTES.md. The user played it through and reported it works.

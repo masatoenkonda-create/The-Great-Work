@@ -158,3 +158,14 @@ Stubbed / placeholder:
 
 - Reviewed Codex's Norway research with the user. Agreed a simple 7-step plan in [research/norway/WORKSHOP_PLAN.md](research/norway/WORKSHOP_PLAN.md): mine with a pickaxe, break to fist size, load quartz + carbon, switch on, pour, cool and break into shiny grey lumps, ship. The plan drops rock-colour sorting and all temperature/pressure/purity detail.
 - No game code changed. Next: Codex implements the plan.
+
+## Norway 7-step workshop sample - Claude, 21 October 2026
+
+- Implemented [research/norway/DESIGN_REVIEW.md](research/norway/DESIGN_REVIEW.md) (Codex) on top of the [simple step plan](research/norway/WORKSHOP_PLAN.md), after the user approved coding. Rewrote `NorwaySmelterScene.tsx` and `NorwayManufacturing.tsx`; no other files changed.
+- Fixed isometric workcell, left to right: quartz outcrop + pickaxe -> breaking pad + hammer -> quartz and carbon feed bins -> round three-electrode furnace with the front wedge cut away (lined shell, visible wall thickness, hood, duct) -> low taphole, runner, mould and second hammer -> bulk bag on a pallet. Plain background; the blurred Norway illustration is gone from this screen.
+- Steps: mine, break, load quartz, load carbon, switch on, open taphole, cool, hammer the casting, bag, send. Each action animates on its object: block breaks free and lands on the pad, chunks hop into the bin, bins tip and chunks arc into the feed opening, charge glows low under the electrodes, carbon lumps shrink, gas rises, liquid pools and runs down the runner, casting cools from orange to reflective silver-grey, splits into lumps, lumps fly into the bag, bag ties and leaves.
+- One instruction at a time, three short result lines (oxygen removal, "This is silicon metal.", Germany purifies next). A yellow arrow and label mark the next object. Click the object, press the single button, or press Space/Enter. Power before carbon: "Add carbon first."; hammering hot casting: "Too hot. Let it cool first." Removed rock-colour sorting. Completion only fires after the bag leaves; still passes `siliconMetalBatchKg: 12` for stop 2 compatibility (not shown to the player).
+
+Tested: `npm run lint` passes. Browser: map -> Norway arrival -> workshop renders; mining, breaking, loading and smelting animations checked; the user then played it to the end and reported it works.
+Untested: narrow/phone layouts, touch input, WebGL-unavailable fallback.
+Stubbed / placeholder: no ladle or refining (direct runner-to-mould casting, as DESIGN_REVIEW records); primitive shapes, not final art; times and sizes compressed.

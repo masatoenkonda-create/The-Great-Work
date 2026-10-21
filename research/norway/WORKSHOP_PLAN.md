@@ -1,6 +1,6 @@
 # Norway workshop: simple step plan
 
-Agreed 21 October 2026 (user + Claude). This replaces the open questions in [HANDOFF.md](HANDOFF.md). Codex: build this as a working sample now; details come later.
+Claude's baseline, 21 October 2026. This replaces the open questions in [HANDOFF.md](HANDOFF.md). **The user's later instruction defers coding. Read [DESIGN_REVIEW.md](DESIGN_REVIEW.md) for the refined proposal awaiting user review.** The original seven-step proposal is preserved below for comparison.
 
 ## Goal
 
