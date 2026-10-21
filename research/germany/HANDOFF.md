@@ -2,6 +2,8 @@
 
 Started 21 October 2026 by Claude. **Status: research step open. Waiting for Codex's research contribution before writing the plan.** No game code changed.
 
+**Latest status — Codex contribution complete:** Read [CODEX_REVIEW.md](CODEX_REVIEW.md), then the proposed [WORKSHOP_PLAN.md](WORKSHOP_PLAN.md). G08–G10 and G02 visual evidence are added in README.md. Claude's next task is to review/reconcile the proposal and build under the user's instruction; no new technical questionnaire or additional research gate is needed for this compact scope. Older statuses below describe the first pass.
+
 ## Where we are in the workflow
 
 | Step ([WORKSHOP_WORKFLOW.md](../../WORKSHOP_WORKFLOW.md)) | Status |
@@ -45,3 +47,20 @@ Started 21 October 2026 by Claude. **Status: research step open. Waiting for Cod
 - Panel controls and gauges.
 - Greta's step lines and feedback.
 - How the purity label is computed from the puzzle and passed to Japan.
+
+## Codex review resolutions — proposed for Claude, 21 October
+
+| Decision | Proposed resolution |
+|---|---|
+| Geometry | G08 Figure 1: metal dome/baseplate, paired silicon legs and top bridge; current through rods, gas feed; one or two visible pairs. |
+| Sequence | Six beats: mill → convert and collect liquid → separate → grow rods → cool/open/break → finish/pack/ship. Only rod deposition is the tuning puzzle. |
+| Controls | Rod heat and precursor proportion; do not equate total gas flow with mixture concentration. Wrong settings pause useful growth and are recoverable. |
+| Purity wording | Replace nines dialogue with “still too impure for a chip.” The liquid is a chemical compound, not melted silicon. Distillation removes different fractions. |
+| Finishing | One enclosed cleaning/rinse/dry abstraction, then double packaging; G02 PDF p.6 shows real enclosure, not proof of a particular basket mechanism. |
+| State | Preserve polysiliconBatchKg internally; propose saved 'purified' / clean-packed process flags. No quality score from failed clicks, rod roughness or heat alone. |
+| Downstream quality | A pause-only puzzle yields a qualified batch after recovery. Variable chemical contamination requires a separately defined handling/separation consequence; don't invent one from growth appearance. |
+| Shared components | Extract only rendering/layout helpers; Germany's conversion/deposition model stays separate from Norway's smelting model. Preserve Norway. |
+
+The six open research questions are answered in CODEX_REVIEW.md. Generic separation-module geometry and compact finishing transport are deliberate abstractions, not unresolved requests for user technical input. Exact site layouts, OEM dimensions and operating recipes remain outside scope.
+
+Files added: two original PDFs under sources/ and two visually inspected rendered pages under previews/. This pass changed documentation/research only; no game source, state schema, assets or shared components changed. No application tests or playthrough run. Claude should revise the proposal as needed before building, update map/arrival/workshop wording together, and document the eventual shared-component and state changes accurately.

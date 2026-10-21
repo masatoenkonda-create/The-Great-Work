@@ -2,6 +2,8 @@
 
 Research started 21 October 2026 by Claude, following [WORKSHOP_WORKFLOW.md](../../WORKSHOP_WORKFLOW.md) steps 1–2. **Research only; no plan or code yet.** Codex is invited to add records (G08 onward) and challenge the ones below. Decisions and open questions are in [HANDOFF.md](HANDOFF.md).
 
+**Codex contribution completed, 21 October:** [CODEX_REVIEW.md](CODEX_REVIEW.md) reviews this first pass and answers the six research questions; [WORKSHOP_PLAN.md](WORKSHOP_PLAN.md) is a proposed compact plan for Claude's review before building. No game code changed. The original research below is retained; apply the corrections in the review, especially liquid compound versus molten silicon, light/heavy distillation fractions, and purity versus rod morphology.
+
 ## What the research says, in player terms
 
 | Question | Answer | Records |
@@ -78,3 +80,47 @@ Patents on trichlorosilane production, e.g. [US 10294109 B2, primary distillatio
 - **Arrival dialogue (`src/content/dialogues.ts`, stop 2).** Mostly consistent: powder, hydrogen chloride → trichlorosilane, distillation, hydrogen and hot rods, ~1,100 °C. One fix: Greta's "We need 99.9999999 %" (nine nines) understates G02's figure (over 99.9999999999 %). See HANDOFF.
 - **Old workshop (`src/components/Stop2PurifyWorkspace.tsx`).** Slider screen with unsourced values (reflux ratio, 1080–1120 °C window, multiplied ppm→ppb counter flagged in UNIFIED_OPINION.md). The 280–340 °C hydrochlorination window is roughly in line with G04 but should not be carried over as a recipe. To be replaced by the Norway-style workshop, not extended.
 - **Route data (`src/types/route.ts`).** `summary` says trichlorosilane "gas"; G01 says liquid (it is distilled as a liquid and fed as vapour). Minor wording fix.
+
+## Codex supplemental records and visual inspection
+
+### G08 — Shin-Etsu reactor geometry and current path
+
+**Shin-Etsu Chemical, US20200239321A1, _Method for Producing Polycrystalline Silicon_, published 30 July 2020.** [Patent text](https://patents.justia.com/patent/20200239321), [original PDF](https://patentimages.storage.googleapis.com/f5/8f/d3/084c78c1283e45/US20200239321A1.pdf), [local copy](sources/G08-shin-etsu-reactor-2020.pdf), [inspected preview](previews/G08-reactor-figure1.png).
+
+**Locator:** Background Art; Figure 1 / drawing Sheet 1 / PDF page 2; Detailed Description of reactor 200.
+
+**Evidence:** Two vertical silicon cores join through a top bridge; base electrodes and current heat this inverted-U assembly. A dome and baseplate enclose the reaction space, with cooling and gas connections. Figure 1 visually distinguishes the slim core from a thicker deposited rod outline.
+
+**Build use:** Primary geometry reference for a representative Siemens cutaway. Show both legs and bridge growing radially.
+
+**Limits:** Japanese producer patent, not a German site drawing. It discusses a special startup-heater improvement; omit that mechanism from gameplay. The conventional Figure 1 is a reference rather than a complete modern plant specification. Patent PDF and selected figure validated with Poppler and visually inspected; reuse rights for game artwork were not assessed.
+
+### G09 — Distillation separates lighter and heavier fractions
+
+**US20120325645A1, _Process and System for the Purification of Trichlorosilane and Silicon Tetrachloride_, publication 27 December 2012.** [Primary patent text](https://patents.justia.com/patent/20120325645).
+
+**Locator:** Detailed Description; Table 1 (low/high boiling compounds); description of sequential separation and complexation.
+
+**Evidence:** The feed contains compounds both more and less volatile than the desired material. Some contaminants are difficult to separate by simple distillation and the disclosed process adds a specific treatment. Condensing/separating fractions is a better general model than filtering dirt or sending every impurity downward.
+
+**Build use:** Represent separation with reject fractions and a product receiver; do not teach “all impurities stay at the bottom.”
+
+**Limits:** One disclosed purification scheme, not proof of WACKER's installed train. Do not import its additive chemistry, temperatures or column count as a general recipe. Text checked online; no apparatus drawing from this record was downloaded or visually verified.
+
+### G10 — Producer account of clean finishing
+
+**WACKER Annual Report 2023, _We Invest in Molecules_, Germany / polysilicon cleaning case study.** [Producer account](https://reports.wacker.com/2023/annual-report/investing-in-the-future/we-invest-in-molecules.html).
+
+**Locator:** Germany polysilicon-cleaning passage (deposition, crushing, checking, etching and cleanroom film packaging).
+
+**Evidence:** The producer separates bulk production from surface finishing and contamination-controlled packaging.
+
+**Limits:** Narrative/photographic reference, no detailed bath mechanics. The web tool returned mostly page navigation; the relevant passage was available in its indexed excerpt. Use G02's inspected PDF as the stronger finishing reference.
+
+### G02 visual supplement — actual enclosed cleaning line
+
+Saved [WACKER's original 17 July 2025 release](sources/G02-wacker-etching-line-2025.pdf). PDF page 3 describes acid surface removal followed by rinsing and packing under largely automated cleanroom conditions. PDF page 6 / [inspected preview](previews/G02-cleaning-line.png) shows an enclosed production line. It does **not** establish a specific open basket/dip sequence. Proposed tray motion, drying and compact module geometry remain teaching abstractions. This source supports surface cleaning; it does not imply that a rinse alone fixes bulk impurities. The original is seven pages; page 6 was rendered with Poppler and visually checked.
+
+### Recheck of G05 — control effects, not a purity formula
+
+The [US9446957B2 description](https://patents.google.com/patent/US9446957B2/en), especially its discussion of deposition parameters and limits, confirms rod current/temperature, gas composition and flow as distinct variables. Excess silicon-containing precursor concentration can cause deposition within the gas; excessive rod temperature can disrupt rod morphology or cause melting in particular conditions. This supports qualitative cues, not a universal “high flow = bad” rule or a chemical-purity penalty for rough rods. No recipe thresholds adopted. G03's original PDF timed out through the web tool and was not independently downloaded in this pass.

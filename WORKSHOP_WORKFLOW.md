@@ -40,6 +40,16 @@ Every stop has the same three parts, and they must agree with each other:
 
 Work one level at a time and stop at the phase the user asked for.
 
+### Review checks before the build handoff
+
+Germany's second research pass added these reusable checks:
+
+- **Trace material states.** Check every handoff from arriving object through intermediate solid/liquid/vapor to shipped output. A liquid chemical compound is not a melt, a vapor flow is not poured liquid, and a change of size needs a visible handling step. Align map, arrival and workshop wording.
+- **Name what each control changes.** Temperature, total flow and mixture concentration are different variables. For every failure cue, record whether the relationship is sourced or a chosen teaching rule; do not turn one patent example into a universal recipe.
+- **Separate purity, appearance and success.** Roughness, color or time spent trying controls is not a chemical assay. A pause-and-retry puzzle can legitimately produce the same qualified output after recovery. If downstream quality must vary, define an explicit choice and carry its real saved result; do not attach an arbitrary purity score to failed attempts.
+- **Make the review usable by the builder.** Resolve technical choices in a short proposed plan, provide figure/page locators and source limits, and label generic geometry or omitted utilities as intentional abstractions. Do not leave a research questionnaire when the next task is coding. A reviewer can refine the proposal without restarting the research.
+- **Bound shared-component work.** Reuse layout/panel/guide rendering while keeping each process model separate. Preserve the accepted reference level; generalization must support the new scene rather than become a whole-game rewrite.
+
 ## Rules that apply to every level
 
 **Scene**

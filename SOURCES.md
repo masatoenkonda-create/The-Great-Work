@@ -244,4 +244,6 @@ The user requested detailed Norway workshop research before redesigning the stag
 
 ## Germany research - 21 October 2026
 
+Codex's second pass adds G08–G10, the [review and build contribution](research/germany/CODEX_REVIEW.md), and a [proposed workshop plan](research/germany/WORKSHOP_PLAN.md). The evidence pack now includes a saved original Shin-Etsu reactor patent/inspected Figure 1, WACKER's original 2025 cleaning-line release/inspected page 6, and corrected distillation/control semantics. Research/design only; no Germany implementation in this pass.
+
 Germany workshop research is in the [Germany evidence pack](research/germany/README.md) (records G01–G07: WACKER process account and 2025 etching line, Siemens reactor paper, and patents on trichlorosilane, rod growth, crushing and packaging), with decisions and open questions in [research/germany/HANDOFF.md](research/germany/HANDOFF.md). It extends R04 and R13 without changing their IDs.

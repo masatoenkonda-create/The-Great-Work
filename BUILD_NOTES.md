@@ -252,3 +252,12 @@ Tested: documentation task only; no application tests run. No game code or asset
 
 - Ran workflow steps 1–2 for Germany. Added [research/germany/README.md](research/germany/README.md) (G01–G07, answers to the four player questions, check of the existing dialogue/workshop) and [research/germany/HANDOFF.md](research/germany/HANDOFF.md) (decisions D01–D08, suggested text fixes, six open research questions for Codex). Linked from SOURCES.md.
 - Stopped before the plan, per the user: Codex adds research next. No code changed.
+
+## Germany independent review and build handoff — Codex, 21 October 2026
+
+- Reviewed Claude's G01–G07, the revised workflow, active Germany form/scene wiring, arrival items and cargo schema. Added [CODEX_REVIEW.md](research/germany/CODEX_REVIEW.md) and a compact [WORKSHOP_PLAN.md](research/germany/WORKSHOP_PLAN.md) for Claude to review before building.
+- Added G08–G10 and rechecked G05: reactor geometry/current path, lighter/heavier separation fractions, clean finishing and control limits. Saved original G08 reactor patent and G02 producer PDF; rendered/visually inspected Figure 1 and cleaning-line page 6.
+- Proposed six visual beats, rod heat + precursor-proportion puzzle, cold solid rod handling and clean-pack output. Corrected melting-versus-chemical conversion, all-dirt-at-bottom distillation, purity-percent dialogue and the unsupported equivalence of rod roughness with chemical purity. Proposed process-status fields explicitly remain unimplemented.
+- Added reusable workflow review checks for material-state continuity, control meaning, sourced relationships versus teaching rules, purity versus appearance, bounded reuse and a concrete builder handoff. Updated evidence/handoff/source links.
+
+Checked: code/document inspection and primary-source research; original PDF metadata/text checked with Poppler, two pages rendered and visually inspected. No application tests/playthrough; no code or game assets changed. G01 detailed narrative not independently recovered through page extraction; G03 PDF access timed out. No validated kinetics, OEM plan or exact Burghausen apparatus reconstruction claimed.
