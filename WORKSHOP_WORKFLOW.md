@@ -29,7 +29,7 @@ Every stop has the same three parts, and they must agree with each other:
 ## The workflow
 
 1. **Look first.** Read the current code, research folder and build notes for the level. Keep anything the user already likes, and find the components that actually run (old unused ones still exist).
-2. **Research briefly.** Use primary sources (producers, equipment makers, papers) to learn the real machine shape, inputs and output. Save links, page locators and limits in `research/<country>/README.md`. Reference images guide our geometry; they are not game art.
+2. **Research properly** to the [research standard](#research-standard) below. Use primary sources (producers, equipment makers, papers, standards) to learn the real machine shape, inputs and output. Save links, page locators and limits in `research/<country>/README.md`. Reference images guide our geometry; they are not game art.
 3. **Write a one-page plan** in `research/<country>/WORKSHOP_PLAN.md` using the template below. Plain words, short. Make the technical calls yourself and **don't ask the user technical questions**. Ask only about feel or direction. The user says go, then build without further permission requests.
 4. **Build the physical sequence.** Simple 3D geometry, real contact: tools touch objects, materials travel from container to machine, the same material becomes the output. Nothing appears from nowhere. Get this working before polishing anything.
 5. **Add one small cause-and-effect puzzle.** One to three controls that really drive the process (Norway: power level and electrode position). Wrong settings pause progress and never ruin the batch. The guide describes what is happening ("too cold", "the heat is escaping") but not which button to press.
@@ -39,6 +39,18 @@ Every stop has the same three parts, and they must agree with each other:
 9. **Log it.** Add a short entry to `BUILD_NOTES.md` (what changed, what was checked, what's a placeholder) and update the level's handoff.
 
 Work one level at a time and stop at the phase the user asked for.
+
+### Research standard
+
+Keep the *game* simple; keep the *research* rigorous. Each pass must stand on its own: never rely on the next agent to fix thin work.
+
+- **Done means:** the facts the build depends on come from primary documents that were actually opened and read. Save PDFs in `research/<country>/sources/` (pages that can't be saved: record the URL and date read). Several solid sources beat many weak ones.
+- **Every record states its status:**
+  - **Read**: opened and read; give pages or sections.
+  - **Skimmed**: opened, only part checked; say which part.
+  - **Lead**: not opened (search result, blog, summary). It can suggest where to look but cannot support a build decision.
+- **Reviewing someone else's pass:** open the sources the build depends on, read the cited passages and look at the figures. "The file exists" or "the page count matches" is not a review.
+- **Report depth honestly:** every research or review report says what was read, what is only a lead, and what wasn't checked (for example, "read 5 PDFs; 2 records are leads").
 
 ### Review checks before the build handoff
 

@@ -277,3 +277,9 @@ Placeholders: code-drawn panel, insets and guide box, "F" portrait for Farid, pr
 - Wrote [CODEX_REVIEW.md](research/china/CODEX_REVIEW.md), [WORKSHOP_PLAN.md](research/china/WORKSHOP_PLAN.md) and [TV_HANDOFF_CONTRACT.md](research/china/TV_HANDOFF_CONTRACT.md): six TV assembly beats, heat/belt-speed puzzle, joint cooling, bounded X-ray claims, representative LCD architecture and coherent USA TV ending.
 - Proposed save v3 with chip-bound TV identity, preservation of valid progress through Malaysia, replay of old phone completion, and downstream invalidation on Malaysia/China replay. Specific TV SoC package and factory-exact order remain unverified, declared teaching limits.
 - Updated handoff, source index and reusable workflow checks. Verified documentation links and diff formatting. No application code changes, application tests, browser playthrough or new game art in this pass. Claude reviews the proposal before building; user playtests.
+
+## Research standard and agent notes - Claude, 21 October 2026
+
+- After the user found search-only research passes (China first pass; most of Claude's Germany, Taiwan and Malaysia records), WORKSHOP_WORKFLOW.md step 2 now points to a short **research standard**: facts the build depends on must come from primary documents actually read and saved; every record is marked Read / Skimmed / Lead; reviews must open the sources; reports must say how deep they went.
+- Added CLAUDE.md and CODEX.md (project in one line, files to read first, working rules) and a one-line AGENTS.md pointing Codex to CODEX.md, since Codex loads AGENTS.md automatically.
+- Not yet done: relabelling earlier records by status and re-reviewing Taiwan and Malaysia sources (planned for the next quality pass over all levels).
