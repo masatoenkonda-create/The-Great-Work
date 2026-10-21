@@ -258,3 +258,8 @@ Tested: documentation task only; no application tests run. No game code or asset
 
 Tested: `npm run lint` passes; `bun test src` 27/27. Not tested: anything in the browser (user tests).
 Placeholders: code-drawn panel, insets and guide box, "F" portrait for Farid, primitive geometry, compressed times.
+
+## China research, first pass - Claude, 21 October 2026
+
+- Ran workflow steps 1–2 for China. Added [research/china/README.md](research/china/README.md) (C01–C08, four player questions, check of the dialogue, old workshop, route and USA stop) and [research/china/HANDOFF.md](research/china/HANDOFF.md). Key open decision for the user (D02): TV or phone. Claude recommends TV: it fits the story and the wire-bonded package we built in Malaysia, which a modern phone's main processor would not use.
+- Stopped before the plan: user decision and Codex's turn. No code changed.
