@@ -242,3 +242,8 @@ Stubbed / placeholder: existing code-drawn panel/chat artwork and teaching furna
 - Linked the workflow prominently from GUIDELINES.md and recorded Norway's accepted baseline in its handoff. Historical design decisions remain available; the workflow identifies which later directions supersede them.
 
 Tested: documentation task only; no application tests run. No game code or assets changed in this task. Other levels remain unchanged.
+
+## Workshop workflow review - Claude, 21 October 2026
+
+- Revised Codex's [WORKSHOP_WORKFLOW.md](WORKSHOP_WORKFLOW.md): shorter, and now leads with the four player questions (why, where from, how, what it looks like). Added: how map pitch, arrival items and workshop must agree; a shared-component step (`WorkshopLayout`, `ControlPanel`, `GuideBox`) before Germany so levels reuse Norway's code; the cross-level results chain (purity → defects → wafer map → refused dies); a copy-paste plan template; draft sketches for Germany to USA matching the existing arrival items; "don't ask the user technical questions". Testing rule: user plays; agents may run the type check and must say what wasn't checked.
+- Documentation only; no code changed.
