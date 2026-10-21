@@ -2,6 +2,8 @@
 
 Research started 21 October 2026 by Claude, following [WORKSHOP_WORKFLOW.md](../../WORKSHOP_WORKFLOW.md) steps 1–2. **Research only; no plan or code yet.** Codex is invited to add records (T08 onward) and challenge the ones below. Decisions and open questions are in [HANDOFF.md](HANDOFF.md).
 
+**Codex contribution complete:** [CODEX_REVIEW.md](CODEX_REVIEW.md) answers the six handoff questions; [WORKSHOP_PLAN.md](WORKSHOP_PLAN.md) proposes the layer/overlay/test experience; [WAFER_MAP_CONTRACT.md](WAFER_MAP_CONTRACT.md) defines the Taiwan-to-Malaysia result. Claude reviews these before coding. Original notes below are preserved; apply the review's corrections on optics, resist states, edge exclusions and outcome provenance. No application code changed.
+
 ## What the research says, in player terms
 
 | Question | Answer | Records |
@@ -76,3 +78,53 @@ Used-equipment listings for Tokyo Electron's CLEAN TRACK LITHIUS (e.g. [Moov](ht
 - **Old workshop (`Stop4CircuitWorkspace.tsx`).** Its mask-alignment task is the right idea (T01, T04), but the "Δ < 0.5 nm" readout and nm offsets are unsourced, and it produces a fixed count of 4 bad dies. To be replaced by the Norway-style workshop.
 - **Cargo state.** `diesOnWaferCount` and `goodDiesCount` exist, but no die-by-die map. UNIFIED_OPINION.md asks for one saved wafer map that Malaysia reuses; today Malaysia invents its own.
 - **Route data.** Consistent ("coat resist, expose, plasma etch, probe-test dies").
+
+## Codex supplemental records
+
+### T08 — Coherent optics and alignment metrology
+
+**ASML primary equipment explanations:** [Lenses & Mirrors](https://www.asml.com/en/technology/lithography-principles/lenses-and-mirrors), [Measuring Accuracy](https://www.asml.com/technology/lithography-principles/measuring-accuracy), [EUV systems](https://www.asml.com/en/products/euv-lithography-systems).
+
+**Locator/evidence:** DUV/EUV optical-components and EUV-reticle sections distinguish DUV lens projection from EUV mirror/reflective-mask paths. Metrology sections describe measured positional corrections; optical pattern inspection is distinct from electrical probe testing.
+
+**Build use:** Select DUV for the through-mask/lens cutaway, enlarged alignment marks and per-field positional records. Manual X/Y buttons abstract automated equipment control.
+
+**Limits:** No exact TSMC layout, actual field dimensions or calibrated game yield model. No image-reuse license assessed. EUV source/pellicle complexity is outside this sample.
+
+### T09 — Primary track reference replaces T07
+
+**Tokyo Electron, [Coater/Developer LITHIUS Series](https://www.tel.com/product/lithius.html).** Product overview and Pro DICE / Pro Z descriptions establish purpose-built coating/developing platforms supporting lithography, including DUV.
+
+**Build use:** Compact track modules for wafer handling, coating, bake and development. Avoid portraying a single scanner as performing every chemical operation.
+
+**Limits:** Replaces T07's weak secondhand-listing evidence; not proof of a model installed at the fictional fab. Product images identified but not downloaded/visually verified here. No specific throughput or recipe adopted.
+
+### T10 — Primary wafer-test map handoff and prober
+
+**Masahide Ozawa, _Wafer Test: Value & Future_, SWTest Asia, October 2019.** [Original PDF](https://www.swtestasia.org/2019proc/SWTestAsia_2019_Masahide-Ozawa_Keynote.pdf), [local copy](sources/T10-wafer-test-2019.pdf), [inspected p.2](previews/T10-wafer-map-handoff.png).
+
+**Locator:** Slides/PDF pp.2–3. The presentation connects pass/fail, wafer-map generation and the packaging handoff; testing determines which dies are usable. This strengthens T03 beyond secondary summaries.
+
+**Equipment supplement:** [ACCRETECH AP3000/AP3000e](https://www.accretech.com/en/product/semicon/semi/probe_semi/probingmachine_ap3000ap3000e.html), a producer's intact 300 mm wafer-prober reference, preferable to a framed/diced-wafer model for our stage.
+
+**Limits:** No selected game failure count or electrical recipe is established. Sequential single-site animation is a simplification; multi-site probing exists. Original 31-page PDF validated and slide 2 visually inspected. Prober product page checked; no exact interior drawing or art license established.
+
+### T11 — Positive resist: exposure is not etching
+
+**MicroChemicals, _Development of Photoresists_.** [Original note](https://www.microchemicals.com/dokumente/application_notes/development_photoresist.pdf), [local PDF](sources/T11-resist-development.pdf), [inspected p.1](previews/T11-development.png); [supplier explanation](https://www.microchemicals.com/PRODUCTS/Photochemicals/Developer/).
+
+**Locator/evidence:** Introduction distinguishes latent chemical image from development: exposed areas dissolve for positive-tone resist, unexposed areas for negative-tone resist.
+
+**Build use:** Choose positive tone consistently. Light changes chemistry; development opens resist; later etching transfers openings into target material.
+
+**Limits:** The molecular example is not a modern DUV process recipe. No chemistry, dose or bake values transferred. Original nine-page PDF validated; p.1 rendered/visually inspected. No artwork-reuse permission claimed.
+
+### T12 — Map statuses and baseline failures: design limits
+
+T08/T10 distinguish optical process inspection and electrical pass/fail. The proposed game additionally distinguishes **untested**, **excluded**, **pass** and **fail**. Its 6×8 circular geometry and binary per-field failure rule are design assumptions, not an exchange standard or measured yield dataset. Incomplete boundary positions are excluded rather than electrically failed. No source justifies the old forced four-corner result or a mandatory baseline fail count. No Poisson parameters adopted.
+
+### T01 / T04 inspection and access notes
+
+Saved [ASML's original strategic report](sources/T01-asml-process-2025.pdf), a 72-page extract. PDF p.13 / printed p.14 contains the [inspected layer-loop diagram](previews/T01-layer-loop.png); PDF p.14 / printed p.15 describes projection, stepping and edge-placement error. It is a broad illustration, not a complete recipe for our generic chip.
+
+NXP's T04 was readable through the web tool, but direct downloading returned an access-denial page; no local T04 PDF was retained. It supports qualitative alignment importance, not our detents or field-failure equation. Sources and illustrations remain research references, not cleared game artwork.

@@ -297,3 +297,12 @@ Placeholders: code-drawn panel and guide box, "A" portrait for Aiko, primitive g
 
 - Ran workflow steps 1–2 for Taiwan. Added [research/taiwan/README.md](research/taiwan/README.md) (T01–T07, answers to the four player questions, check of the dialogue, the old alignment workshop and the cargo state) and [research/taiwan/HANDOFF.md](research/taiwan/HANDOFF.md) (decisions D01–D08, six open questions for Codex). Key point: Taiwan is where the saved die-by-die wafer map should be born, for Malaysia to read.
 - Stopped before the plan: Codex's turn. No code changed.
+
+## Taiwan independent review, workshop proposal and wafer-map contract — Codex, 21 October 2026
+
+- Reviewed T01–T07, all six handoff questions, old Taiwan/Malaysia task code, cargo/storage and completion logic. Added [CODEX_REVIEW.md](research/taiwan/CODEX_REVIEW.md), [WORKSHOP_PLAN.md](research/taiwan/WORKSHOP_PLAN.md) and [WAFER_MAP_CONTRACT.md](research/taiwan/WAFER_MAP_CONTRACT.md) for Claude to review before building.
+- Added T08–T12: coherent DUV optics/metrology, primary TEL track and ACCRETECH prober references, original SWTest map-to-packaging evidence, and positive-resist development semantics. Saved three valid primary PDFs; rendered/inspected ASML PDF p.13 (printed 14), wafer-test p.2 and development p.1. NXP's PDF was web-readable but direct download denied; no local copy retained.
+- Proposed seven visual beats with a first reference pass, a second alignment pass and a compressed remaining process before electrical probing. Proposed a reviewed Taiwan-specific exposure-error consequence with free fresh-wafer retry, rather than silently changing the earlier pause-only levels. Baseline failures are not forced; edge exclusions are distinct from electrical failures.
+- Specified stable wafer/die IDs and orientation, 40 active positions in a 6x8 teaching layout, field exposure capture, derived counts, versioned save migration, exact Malaysia map consumption and replay invalidation. These remain design proposals; no map/schema/reader is implemented in this pass. Added reusable workflow checks for committed errors and positional result handoffs.
+
+Checked: code/document inspection, primary-source research, PDF metadata/text and three rendered reference pages. Poppler emitted annotation/font-substitution warnings; inspected pages were readable. No application code or game assets changed; no build/tests/playthrough run. No exact TSMC line, chip design, process recipe or calibrated yield equation claimed.

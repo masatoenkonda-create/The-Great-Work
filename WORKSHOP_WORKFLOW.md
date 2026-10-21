@@ -51,6 +51,8 @@ Germany's second research pass added these reusable checks:
 - **Bound shared-component work.** Reuse layout/panel/guide rendering while keeping each process model separate. Preserve the accepted reference level; generalization must support the new scene rather than become a whole-game rewrite.
 - **Respect phase-specific control regimes.** A setting appropriate for startup, necking or finishing may be wrong during steady production. Apply a toy working band only to the phase it represents; automate brief specialist phases when they add no useful player decision.
 - **Design recovery before drawing failure.** A pause-only model should warn before producing permanent faulty material. Do not show cracks, lost crystal structure or a misshapen finished segment, then visually erase them when a knob is corrected. Use observable interface/trend cues and retain already qualified progress.
+- **Review committed errors explicitly.** Pause/recover remains the default. A per-level proposal such as Taiwan's committed overlay error must identify the commit point, visible warning, saved consequence and fresh-material retry before adoption. Do not silently add permanent penalties or pretend a processed object heals after a knob adjustment.
+- **Carry positional results as data.** Define object IDs, coordinate/orientation conventions, untested/excluded/failed states and one saved result. Derive counts from it and implement the next level's reader with the producer. Old saves without that result need explicit migration/replay, not fabricated data.
 
 ## Rules that apply to every level
 
