@@ -1,80 +1,111 @@
-# China workshop: board assembly and final product evidence pack
+# China workshop: TV main board and TV assembly evidence pack
 
-Research started 21 October 2026 by Claude, following [WORKSHOP_WORKFLOW.md](../../WORKSHOP_WORKFLOW.md) steps 1–2. **Research only; no plan or code yet.** Codex is invited to add records (C09 onward). Decisions and open questions are in [HANDOFF.md](HANDOFF.md). **One decision belongs to the user: does China build a TV or a phone?** (HANDOFF D02.)
+Research by Claude, 21 October 2026, following [WORKSHOP_WORKFLOW.md](../../WORKSHOP_WORKFLOW.md) steps 1–2. **Research only; no plan or code yet.** The user decided China builds a **TV** (HANDOFF D02). Codex is invited to add records from C17 onward and challenge these. Decisions and open questions: [HANDOFF.md](HANDOFF.md).
+
+**Revision note.** A first pass earlier the same day relied on web searches and industry blogs only. The user rejected it as too thin. This second pass is built on primary documents. Eight PDFs are saved in `sources/` and were read with pdftotext; one key figure is rendered in `previews/`. Blog-only claims are now marked as leads, not evidence.
 
 ## What the research says, in player terms
 
 | Question | Answer | Records |
 |---|---|---|
-| **Why do I need this?** | A packaged chip on its own does nothing. It has to be soldered onto a circuit board with the other parts it works with, and the board built into a product with a screen and power. | C01, C05 |
-| **Where does it come from?** | Malaysia's packaged chip (solder balls underneath) plus a bare circuit board, solder paste and the product's other parts. China is the world's main assembly hub for electronics. | C01, C06, C07 |
-| **How do I do it?** | Board line ("SMT"): print solder paste through a stencil → check the paste → a pick-and-place machine sets the chip on its pads → a reflow oven melts paste and balls together (peak around 240–250 °C for lead-free solder) → camera inspection, and **X-ray for the joints hidden under the chip** → final product assembly → power on and test. | C01–C05 |
-| **What does it look like?** | A green board with grey paste dots; the chip dropped on top; a long tunnel oven; an X-ray picture showing the round solder joints under the chip; then the board disappearing into the product, and the screen lighting up. | C01, C04, C05 |
+| **Why do I need this?** | A packaged chip on its own does nothing. It has to be soldered onto the TV's main circuit board, and that board built into a TV with a screen and power. | C01, C05 |
+| **Where does it come from?** | Malaysia's packaged chip (solder balls underneath), a bare main board, solder paste, and the TV's panel, power board and back cover. China produced about 207 million colour TVs in 2024. | C01, C06 |
+| **How do I do it?** | Print solder paste through a stencil → place the chip by camera → reflow oven: paste and balls melt together, and surface tension even pulls the chip straight → X-ray check of the joints hidden under the chip → build the board into the TV → power on → **aging** (run it to catch faults and settle the brightness) → calibrate the picture. | C01–C05, C09–C14 |
+| **What does it look like?** | Grey paste dots on a green board; the black chip set on top; a long glowing tunnel oven; an **X-ray picture** where the solder balls show as dark circles and the chip's thin bond wires (from Malaysia) are visible inside; then the board vanishing into the TV, and the screen lighting up. | C13 (Fig. 7), C05 |
 
-The core lesson: **you can't see the most important connections. They're under the chip, so the factory checks them with X-rays.**
+The core lesson: **the most important connections are hidden under the chip, so the factory looks at them with X-rays. And you can still see the gold wires you bonded in Malaysia.**
 
-## Records
+## Primary records (second pass)
 
-### C01 — The board line (SMT) sequence
+### C09 — Head-in-pillow: when ball and paste melt but don't join
 
-[Auburn University EMRL, SMT assembly](https://emrl.auburn.edu/?p=789) (university lab: stencil printer, 8-zone nitrogen reflow oven, optical inspection before reflow, X-ray after); contract-manufacturer overviews, e.g. [Sierra Circuits, PCB assembly process](https://www.protoexpress.com/kb/pcb-assembly-process-overview/) and [PCBOnline, SMT process](https://www.pcbonline.com/blog/smt-manufacturing-process.html).
+M. Scalzo, _Addressing the Challenge of Head-In-Pillow Defects in Electronics Assembly_, IPC APEX technical paper (Indium Corporation support referenced). [Original PDF](https://www.ipc.org/system/files/technical_resource/E7%26S15_02.pdf), [saved](sources/C09-ipc-hip-paper.pdf) (22 pp.).
 
-**Supports:** stencil + squeegee print paste onto the pads → solder paste inspection (volume, height, position) → pick-and-place from reels/trays → reflow (preheat, soak, peak, cool) → automated optical inspection (bridges, misplacement, insufficient solder) → X-ray for BGA and other hidden joints.
+**Locator:** abstract (p. 1); "Process issues" (p. 2); reflow section (pp. 3–4).
 
-**Limits:** one university page and industry blogs; step order varies a little between lines. Good for the sequence, not for numbers.
+**Supports:** head-in-pillow = the paste and the BGA ball **both melt but do not join**; in cross-section "a head pressed into a soft pillow". Two main causes: **poor wetting** and **board or package warpage**. Poor wetting can come from oxidised balls, an inappropriate reflow profile or weak flux. Printing matters: poor registration or too little paste (insufficient deposits) can keep the ball from touching enough paste. Four reflow levers: ramp rate, time above liquidus, peak temperature, cool-down. Running **too hot** increases warpage: one OEM cut head-in-pillow by lowering the peak, finding they "had been running too hot for many years". Long reflow can exhaust the flux, giving head-in-pillow and "graping".
 
-### C02 — Reflow temperatures
+**Limits:** one support engineer's paper, cases not quantified for our board. Qualitative cues only.
 
-Vendor and industry notes, e.g. [Advanced Energy reflow profile](https://WWW.advancedenergy.COM/getmedia/c4265281-0e67-4bc7-85eb-2f9a61cf8c6a/lga50d_reflow_soldering_profil1538746335_techref.pdf), [Atlas PCB on BGA profiling](https://atlaspcb.com/blog/pcb-reflow-oven-profiling-peak-temperature-soak-bga-assembly).
+### C10 — Head-on-pillow case study (phone maker)
 
-**Supports:** common lead-free solder (SAC305) peaks around 240–250 °C, roughly 40–90 s above its 217 °C melting point; oven setpoints differ from the real board temperature, so lines profile with thermocouples; the goal is that every ball under the BGA melts and collapses into a joint. JEDEC J-STD-020 profiles are for classifying packages, **not** a board recipe.
+C. Oliphant et al. (Research In Motion), _Head-On-Pillow Defect – A Pain in the Neck_. [Original PDF](https://www.electronics.org/system/files/technical_resource/E7&S30_01.pdf), [saved](sources/C10-ipc-head-on-pillow.pdf) (23 pp.).
 
-**Limits:** vendor notes, not the standard. Use "about 240 °C" at most.
+**Supports:** an OEM's real investigation; plastic packages warp because a silicon die is embedded in plastic; smaller paste deposits and smaller balls plus warpage let the two solders melt apart. **Limits:** one company's case.
 
-### C03 — BGA inspection and defects (IPC-7095)
+### C11 — Indium: reflow profile basics
 
-[IPC-7095 (BGA design and assembly)](https://shop.ipc.org/general-electronics/standards/7095-0-c-english); [I-Connect007, roadmap to BGA standards](https://iconnect007.com/index.php/article/51622/roadmap-to-bga-standards/51625); [IPC/Agilent paper on 7095A voids](https://www.ipc.org/system/files/technical_resource/E16%26S16-02.pdf).
+E. Briggs and R. C. Lasky, _Best Practices Reflow Profiling for Lead-Free SMT Assembly_, Indium Corporation tech paper. [Copy](https://kicthermal.com/wp-content/uploads/2012/11/Best-Practices-Reflow-Profiling-98675.pdf.pdf), [saved](sources/C11-indium-reflow-profiling.pdf) (8 pp.).
 
-**Supports:** IPC-7095 is the industry standard for BGA assembly, inspection and repair; X-ray is used to see joints under the package; named defects include voids inside balls and **head-in-pillow** (ball and paste touch but don't fuse); revision C adds pad cratering and laminate defects.
+**Locator:** "Reflow" section.
 
-**Limits:** the standard itself is paywalled; these are summaries. No pass/fail numbers adopted.
+**Supports:** profiles are ramp-to-peak or ramp/soak/spike; in the reflow phase the two critical parameters are **peak temperature** (generally **20–30 °C above the alloy's liquidus**) and **time above liquidus** (typically **30–90 s**), which form the tin-copper intermetallic bond; cooling sets the grain structure; voiding, graping and head-in-pillow are profile-related defects.
 
-### C04 — Wire-bonded BGA vs. a phone's main processor
+**Limits:** paste maker's general guidance, not our paste. Lead-free SAC solder's liquidus is about 217 °C, so a peak in the high 230s to mid 240s °C (C02).
 
-[AnandTech on SoC packaging](https://at-web1.www.anandtech.com/show/5688/apple-ipad-2012-review/13); [Semiconductor Engineering, mobile packaging](https://semiengineering.com/mobile-packaging-market-heats-up); [Exynos 990 teardown study (arXiv)](https://web3.arxiv.org/pdf/2502.16166).
+### C13 — Infineon: board assembly of BGA packages (main source)
 
-**Supports:** smartphone application processors are typically **flip-chip**, usually with memory stacked on top (package-on-package), to save space and get more connections and better cooling. Wire bonding routes wires from the die edge, limits pin count and is the cheaper, conventional option.
+Infineon, _Recommendations for Board Assembly of Infineon Ball Grid Array Packages_, rev. 4.0, 2020-11-09. [Original PDF](https://www.infineon.com/dgdl/Infineon-Board_Assembly_Recommendations-BGA-Package-v04_00-EN.pdf?fileId=5546d462580663ef015806ac2d7405f8), [saved](sources/C13-infineon-bga-board-assembly.pdf) (18 pp.); [Figure 7 preview](previews/C13-xray-14.png).
 
-**Use:** our Malaysia package (wire-bonded plastic BGA) is **not** what a modern phone's main processor looks like. It is believable for a cost-sensitive chip such as a TV's main processor. **Limits:** no source yet confirms TV main processors' package type (Codex question).
+**Locator:** §3.1 stencil (p. 9), §3.3 placement (pp. 9–10), §3.4 reflow (p. 10), §6.2 X-ray (pp. 13–14, Fig. 7).
 
-### C05 — Final product assembly and test
+**Supports:**
+- **Stencil:** paste is printed through a laser-cut stainless (or electroformed nickel) stencil; BGA apertures are circular; stencil 100–150 µm thick; Type 3/4 paste.
+- **Placement:** automatic pick-and-place with vision, accuracy ±50 µm or better; fiducials on the board; centre BGAs by **recognising the balls**; placement force high enough but not so high it squeezes paste out and causes shorts. **The self-alignment effect from the surface tension of liquid solder helps form good joints.**
+- **Reflow:** forced-convection oven; nitrogen helps but isn't required; follow the paste maker's profile; minimum conditions must reach solderability-test levels, maximum must not exceed the package's J-STD-020 rating.
+- **X-ray:** automated X-ray inspection is for BGAs "whose terminations cannot be inspected properly by optical systems"; it finds poor soldering, bridging, voiding, missing parts, but not all broken joints. **Figure 7: an X-ray of a properly soldered BGA where "balls and bond wires as well as vias are visible".**
 
-TV: [Patent CN112492304B background](https://patents.google.com/patent/CN112492304B/en) (an LCD TV = main board + T-con board + panel; some main boards integrate the T-con); [EIZO, how monitors are made](https://eizo.com/library/basics/making/index3.html) (power and main boards fitted after the panel is in its bezel, flat cables connected; screen check, then aging to stabilise and catch faults, then colour adjustment); [LG OLED factory tour](https://www.koreajoongangdaily.com/business/inside-lg-electronics-oled-operations/11734020) (accelerated aging checks colour and power of each TV).
+**Limits:** one package maker's recommendations; values are guidance, not our board's recipe. Figure 7 is a reference for our art style, not a licensed asset.
 
-Phone: SOURCES.md R11 ([Apple Supply Chain Innovation](https://www.apple.com/supply-chain/)): "iPhone assembly, China mainland".
+### C14 — NASA: BGA selection, assembly and X-ray
 
-**Limits:** monitor and OLED-TV factory accounts, a patent background; no specific Chinese TV line documented yet.
+R. Ghaffarian (JPL), _NASA Guidelines for Ball Grid Array (BGA) and Die-Size BGA (DSBGA) Selection and Application_, 2022. [Original PDF](https://nepp.nasa.gov/docs/tasks/076-Packaging-Assurance/Guidelines-BGA-DSBGA-Ghaffarian-2022July20-CL22-3574.pdf), [saved](sources/C14-nasa-bga-guidelines-2022.pdf) (58 pp.).
 
-### C06 — China as the assembly hub
+**Locator:** §1 introduction (self-alignment benefit); §2.7 X-ray characterisation after assembly; assembly-defect passages (package blistering from overheating).
 
-[Yicai Global (May 2023), China's status as the world's TV manufacturing hub](https://yicaiglobal.com/news/20230505-07-chinas-status-as-worlds-tv-manufacturing-hub-is-not-affected-by-china-us-trade-frictions); [Yicai Global, Hisense and TCL top Samsung and LG in Q4 shipments](https://www.yicaiglobal.com/news/chinas-hisense-tcl-top-samsung-lg-by-global-tv-shipments-for-first-time-in-fourth-quarter) (Omdia: Chinese brands about 43 % of global TV shipments in Q4 2024).
+**Supports:** BGAs self-align during reflow; X-ray is needed to find shorts and sometimes opens; overheating can blister a package. **Limits:** high-reliability (space) context; stricter than consumer TVs.
 
-**Supports:** China is described as the world's TV manufacturing hub, and Chinese brands lead global TV shipments. Some production is moving to Vietnam, India and Mexico.
+### C15 — MediaTek TV processors (product brief)
 
-**Limits:** brand shipment share is not the same as where sets are assembled. Use "China builds a huge share of the world's TVs", not a percentage.
+MediaTek, _MT9980 / MT9686 / MT9685 / MT9675_ product briefs (hosted by ATSC). [Original PDF](https://www.atsc.org/wp-content/uploads/2021/01/MT9980-MT9686-MT9685-MT9675.pdf), [saved](sources/C15-mediatek-tv-soc.pdf) (4 pp.).
 
-### C07 — Phone assembly in China
+**Supports:** TVs have a dedicated **main processor (SoC)** that decodes video, runs the smart-TV software, drives the panel and handles HDR. That is "our chip's job" in the TV. **Limits:** marketing briefs; **no package type stated**. A reseller listing describes an MStar 4K TV SoC as a BGA but gives no detail (lead only). Whether real TV SoCs are wire-bonded or flip-chip is not established; see C04.
 
-SOURCES.md R11 (Apple). The route's current location is Zhengzhou. **Limits:** no specific factory or brand should be named for our fictional product (UNIFIED_OPINION.md asks for neutral IDs, not "A18").
+### C16 — IPC/Agilent: X-ray inspection of BGA voids
 
-### C08 — Visual references (to collect)
+_X-ray Inspection of Voids in BGA Joints with Respect to IPC-7095A_, IPC APEX 2006. [Original PDF](https://www.ipc.org/system/files/technical_resource/E16%26S16-02.pdf), [saved](sources/C16-ipc-bga-voids-7095a.pdf) (4 pp.).
 
-For the scene: a stencil printer, a pick-and-place head, a reflow tunnel oven, an X-ray image of BGA joints, a TV main board. Codex to find usable reference images (as G08/J03 did).
+**Supports:** IPC-7095 is the BGA assembly and inspection standard; voids show in X-ray and are measured at the ball's package and board interfaces. **Limits:** 2006, measurement-method focus.
+
+### C05 — TV/display final assembly, aging and calibration
+
+- EIZO, [How monitors are made](https://eizo.com/library/basics/making/index3.html) (manufacturer factory account), and FlatpanelsHD's [factory visit, 30 June 2010](https://flatpanelshd.com/focus.php?amp=&id=1277885543&subaction=showfull): panel face-down → frame → into the bezel → **power board and main board** added → flat cables connect the power board and main controller → shield fixed → back cover and stand → powered on → camera checks the image → **aging** "for a short period" to check image retention, confirm the circuit boards work and stabilise brightness → automatic colour temperature, gamma, white balance and brightness adjustment → visual and audio inspection → packing.
+- [LG OLED factory (Korea JoongAng Daily)](https://www.koreajoongangdaily.com/business/inside-lg-electronics-oled-operations/11734020): accelerated aging tests check colour accuracy and power supply of **each TV**.
+- [Patent CN112492304B background](https://patents.google.com/patent/CN112492304B/en): an LCD TV = main board + T-con board + panel; some main boards integrate the T-con.
+
+**Limits:** EIZO builds monitors, not TVs; the order is representative of display assembly, confirmed for TVs only by LG's aging test. No Chinese TV maker's line document found yet (Codex question).
+
+### C06 — China's TV production
+
+- National Bureau of Statistics of China, [Statistical Communiqué on the 2024 National Economic and Social Development](https://www.stats.gov.cn/english/PressRelease/202502/t20250228_1958822.html), 28 Feb 2025, Table 3: **colour TV sets 207.454 million units (+4.6 %)**; also mobile phones 1,669.5 million and integrated circuits 451.4 billion pieces.
+- [TrendForce, 19 Nov 2024](https://www.trendforce.com/presscenter/news/20241119-12368.html): 2024 global TV shipments projected at **196.7 million**.
+- [Yicai Global, May 2023](https://yicaiglobal.com/news/20230505-07-chinas-status-as-worlds-tv-manufacturing-hub-is-not-affected-by-china-us-trade-frictions): China described as the world's TV manufacturing hub; some production moving to Vietnam, India and Mexico.
+
+**Limits:** production (NBS) and shipments (TrendForce) are different measures; don't compute a share. Say "China builds a huge share of the world's TVs".
+
+## First-pass records (kept as leads)
+
+- **C01 SMT sequence:** [Auburn University EMRL](https://emrl.auburn.edu/?p=789) (university lab: stencil printer, 8-zone nitrogen reflow oven, optical inspection before and X-ray after reflow) plus industry blogs. Now backed by C13.
+- **C02 Reflow temperatures:** vendor/blog notes (peak about 240–250 °C, 40–90 s above 217 °C; J-STD-020 is a package classification, not a board recipe). Now backed by C11 and C13.
+- **C03 IPC-7095:** standard summaries. Now backed by C16.
+- **C04 Phone vs. TV packaging:** [AnandTech](https://at-web1.www.anandtech.com/show/5688/apple-ipad-2012-review/13), [Semiconductor Engineering](https://semiengineering.com/mobile-packaging-market-heats-up), [Exynos 990 teardown (arXiv)](https://web3.arxiv.org/pdf/2502.16166): phone application processors are flip-chip, usually package-on-package; wire bonding is the cheaper, conventional option with fewer pins. Supports the decision that our wire-bonded chip suits a TV better than a phone. TV SoC packaging itself remains unconfirmed (C15).
+- **C07 Phone assembly:** SOURCES.md R11 (Apple). No longer used: the product is a TV.
+- **C08 Reference images:** C13 Fig. 7 rendered; stencil printer, placement head, reflow oven and TV main board images still wanted.
 
 ## Existing game content checked against this pack
 
-- **Arrival dialogue (`dialogues.ts`, stop 6).** Built around a **phone**: logic board, display, battery, "flies to America". The SMT line ("solder paste, then the chip, then through the reflow oven") is correct (C01). If China builds a TV, items and lines change (HANDOFF D02).
-- **Old workshop (`Stop6AssemblyWorkspace.tsx`).** SMT tick-box, chassis checklist and "diagnostics" (power rail, bus comms, display sync) with timers. Phone serial `PHONE-A18-8842` is the Apple-style ID UNIFIED_OPINION.md asked to make neutral. To be replaced.
-- **Route data (`route.ts`, stop 6).** "China · Phone", "Build a phone around the chip", Zhengzhou: phone-specific.
-- **Next stop (USA).** Its arrival items are a phone box, charging cable and SIM card, so the product decision changes stop 7 too.
-- **Carried input.** `selectedChipSerial` from Malaysia (wafer + die). China should carry it into the product's ID.
+- **Arrival dialogue (`dialogues.ts`, stop 6)** is about a **phone** (logic board, display, battery, "flies to America"). Must change to TV parts: packaged chip, main board, panel, power board (or back cover). The SMT line ("paste, then the chip, then the reflow oven") is correct.
+- **Old workshop (`Stop6AssemblyWorkspace.tsx`).** Phone chassis checklist, unsourced "power rail / bus comms / display sync" diagnostics, serial `PHONE-A18-8842` (Apple-style, flagged in UNIFIED_OPINION.md). To be replaced.
+- **Route (`route.ts`, stop 6).** "China · Phone", "Build a phone around the chip", Zhengzhou, phone outputs. Change to TV; Zhengzhou is phone-specific (Codex: pick a TV-manufacturing location or keep it region-level).
+- **USA stop.** Arrival items are a phone box, charging cable and SIM card: must become TV delivery and set-up, matching the story ending (plug in, the TV works).
+- **Carried input.** `selectedChipSerial` from Malaysia. The TV's ID should be derived from it. `phoneSerial` and `isPhoneOperational` in the save are phone-named and need a TV equivalent or rename (with migration).

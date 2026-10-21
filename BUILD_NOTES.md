@@ -263,3 +263,9 @@ Placeholders: code-drawn panel, insets and guide box, "F" portrait for Farid, pr
 
 - Ran workflow steps 1–2 for China. Added [research/china/README.md](research/china/README.md) (C01–C08, four player questions, check of the dialogue, old workshop, route and USA stop) and [research/china/HANDOFF.md](research/china/HANDOFF.md). Key open decision for the user (D02): TV or phone. Claude recommends TV: it fits the story and the wire-bonded package we built in Malaysia, which a modern phone's main processor would not use.
 - Stopped before the plan: user decision and Codex's turn. No code changed.
+
+## China research, second pass (primary sources, TV) - Claude, 21 October 2026
+
+- The user rejected the first, search-only pass as too thin and chose **TV** for China. Redid step 2 properly: 8 primary PDFs saved in research/china/sources and read (IPC head-in-pillow papers, Indium reflow profiling, Infineon BGA board-assembly guide, NASA BGA guidelines, MediaTek TV SoC briefs, IPC X-ray voids paper), Infineon's X-ray figure rendered, plus China's 2024 statistical communiqué (207.5 million colour TVs) and EIZO's factory account of display assembly and aging.
+- README and HANDOFF rewritten for TV (decisions D01–D09, six questions for Codex). Puzzle basis: reflow peak temperature and time above melting (C09–C11, C13, C14).
+- No code changed.
