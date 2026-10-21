@@ -216,3 +216,10 @@ Stubbed / placeholder: panel and chat box are code-drawn until the pixel art arr
 - New chunky pixel buttons with bevel, press-down effect and blinking ▶ ◀ cursor; "PRESS ENTER" blinks at the bottom. Keyboard (Up/Down, Enter/Space, M) and Continue/New game logic unchanged. Animations stop under reduced-motion.
 
 Tested: `npm run lint` passes; one screenshot of the title screen. Untested: Continue state, narrow screens.
+
+## Map and arrival screen cleanup - Claude, 21 October 2026
+
+- Map: route paths, markers and keyboard/click behaviour unchanged. Removed the dark vignette and the DEV badge. Stop callouts are now pixel-font country tags (yellow when selected, green when done) with drop shadows; the Pacific "TO USA / FROM ASIA" cues are plain outlined text. Japan's tag moved above its pin so wide screens don't crop it. Bottom card shows "STOP n OF 7", the country and one friendly line (new `pitch` field in `route.ts`), with a pixel GO button. Progress chip reads "n / 7 DONE".
+- Arrival scene (shared by all stops): dark theme to match the workshop. Top bar is just "◀ MAP", the country and its one-liner (stage number, location, lot number and arrival goal removed). Right panel is "COLLECT n / 3" with item cards and "?" slots; "IN HALL"/"NEW" tags and the long purpose line removed. Pixel "ENTER WORKSHOP" button.
+
+Tested: `npm run lint` passes; one screenshot each of the map and Norway arrival. Untested: narrow screens, completed-stop states.

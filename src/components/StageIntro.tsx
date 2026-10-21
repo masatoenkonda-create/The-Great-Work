@@ -201,32 +201,21 @@ export const StageIntro: React.FC<StageIntroProps> = ({ stop, lotId, backdrop, s
         : null;
 
   return (
-    <div className="flex flex-col h-full bg-[#f8f6f0] text-stone-900 select-none overflow-hidden font-sans">
-      {/* Top Bar: same frame as the workshops */}
-      <div className="px-6 py-3 bg-[#ece8de] border-b border-stone-300 flex flex-wrap items-center justify-between gap-3 shadow-2xs">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-stone-900 text-white rounded">
-              STAGE 0{stop.id}
-            </span>
-            <span className="text-xs text-stone-600 font-bold">
-              {stop.location} — {stop.name}
-            </span>
-            <span className="text-xs text-stone-400 font-mono">Lot #{lotId}</span>
-          </div>
-          <div className="text-xs text-stone-600 mt-0.5">
-            <strong>Arrival:</strong> {script.goal}
-          </div>
-        </div>
+    <div className="flex flex-col h-full bg-[#0c1821] text-slate-100 select-none overflow-hidden font-sans">
+      <div className="flex shrink-0 items-center gap-4 border-b-4 border-[#1a0b02] bg-[#101d27] px-4 py-3">
         <button
           onClick={() => {
             sound.playSelect();
             onReturnToMap();
           }}
-          className="px-3 py-1.5 text-xs font-semibold bg-white hover:bg-stone-100 text-stone-800 border border-stone-300 rounded-lg shadow-2xs transition cursor-pointer"
+          className="map-chip map-chip--dark font-pixel px-3 py-2 text-[9px] text-white cursor-pointer"
         >
-          Back to Map
+          ◀ MAP
         </button>
+        <div className="min-w-0">
+          <h1 className="font-pixel text-sm text-[#fcd34d] sm:text-base">{stop.country.replace(/\./g, '')}</h1>
+          <p className="mt-1 truncate text-xs text-slate-300">{stop.pitch}</p>
+        </div>
       </div>
 
       <div className="flex-1 flex flex-col md:flex-row overflow-hidden relative">
@@ -321,15 +310,12 @@ export const StageIntro: React.FC<StageIntroProps> = ({ stop, lotId, backdrop, s
           )}
         </div>
 
-        {/* Right: materials panel, filled as the guide talks and as you gather */}
-        <div className="w-full md:w-96 bg-[#f7f5ef] border-t md:border-t-0 md:border-l border-stone-300 p-5 flex flex-col justify-between overflow-y-auto">
+        {/* Right: what to collect, filled as the guide talks and as you gather */}
+        <div className="flex w-full flex-col justify-between gap-4 overflow-y-auto border-t-4 border-[#1a0b02] bg-[#101d27] p-5 md:w-80 md:border-l-4 md:border-t-0">
           <div className="space-y-4">
-            <div>
-              <span className="text-[10px] uppercase font-bold tracking-wider text-stone-500">MATERIALS</span>
-              <h3 className="text-base font-bold text-stone-900 mt-0.5">{stop.purpose}</h3>
-              <p className="text-xs text-stone-500 mt-1">
-                {collected.length} / {script.items.length} gathered
-              </p>
+            <div className="flex items-baseline justify-between">
+              <span className="font-pixel text-[10px] tracking-widest text-[#fb923c]">COLLECT</span>
+              <span className="font-pixel text-xs text-[#fcd34d]">{collected.length} / {script.items.length}</span>
             </div>
 
             <ul className="space-y-2">
@@ -338,46 +324,40 @@ export const StageIntro: React.FC<StageIntroProps> = ({ stop, lotId, backdrop, s
                 return (
                   <li
                     key={item.id}
-                    className={`flex items-start gap-3 p-3 rounded-xl border text-xs animate-[fadeIn_0.4s_ease-out] ${
-                      have ? 'bg-emerald-50 border-emerald-300' : 'bg-white border-stone-200'
+                    className={`flex items-center gap-3 border-2 p-2.5 animate-[fadeIn_0.4s_ease-out] ${
+                      have ? 'border-emerald-400/70 bg-emerald-400/10' : 'border-white/15 bg-black/20'
                     }`}
                   >
                     <span
-                      className={`mt-0.5 h-8 w-8 shrink-0 rounded border-2 ${have ? 'border-emerald-500' : 'border-dashed border-stone-300 opacity-50'}`}
+                      className={`h-9 w-9 shrink-0 border-2 ${have ? 'border-emerald-300' : 'border-[#1a0b02]'}`}
                       style={{ background: item.color }}
                       aria-hidden="true"
                     />
-                    <div className="flex-1">
-                      <div className="font-bold text-stone-900 text-sm">{item.name}</div>
-                      <div className="text-stone-600 leading-snug">{item.note}</div>
+                    <div className="min-w-0 flex-1">
+                      <div className="text-sm font-bold">{item.name}</div>
+                      <div className="text-xs leading-snug text-slate-400">{item.note}</div>
                     </div>
-                    {have ? (
-                      <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
-                    ) : (
-                      <span className="text-[10px] font-bold text-stone-400 shrink-0">{mode === 'explore' ? 'IN HALL' : 'NEW'}</span>
-                    )}
+                    {have && <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-400" />}
                   </li>
                 );
               })}
               {Array.from({ length: script.items.length - revealed.length }, (_, i) => (
-                <li key={`empty-${i}`} className="h-[58px] rounded-xl border border-dashed border-stone-300" />
+                <li key={`empty-${i}`} className="flex h-[60px] items-center justify-center border-2 border-dashed border-white/15 font-pixel text-xs text-white/30">?</li>
               ))}
             </ul>
           </div>
 
-          <div className="space-y-2 pt-4">
-            <p className="text-[11px] text-stone-500 text-center">
-              {mode === 'explore'
-                ? '← → walk · Space pick up · or click the floor'
-                : 'Click or press Space to continue'}
+          <div className="space-y-3">
+            <p className="text-center font-pixel text-[8px] leading-relaxed text-slate-400">
+              {mode === 'explore' ? '← → WALK · SPACE PICK UP' : 'CLICK OR SPACE TO CONTINUE'}
             </p>
             <button
               onClick={finish}
               disabled={!allCollected}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold bg-stone-900 text-white hover:bg-stone-700 disabled:bg-stone-300 disabled:text-stone-500 disabled:cursor-default cursor-pointer transition"
+              className={`title-button font-pixel flex w-full items-center justify-center gap-2 px-4 py-3 text-[10px] ${allCollected ? 'title-button--active' : 'title-button--idle opacity-60 cursor-default'}`}
             >
-              <span>Enter the workshop</span>
-              <ArrowRight className="w-4 h-4" />
+              ENTER WORKSHOP
+              <ArrowRight className="h-4 w-4" />
             </button>
           </div>
         </div>

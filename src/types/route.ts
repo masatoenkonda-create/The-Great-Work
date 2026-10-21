@@ -16,6 +16,8 @@ export interface RouteStop {
   location: string;
   purpose: string;
   activity: string;
+  /** One friendly line for the map card. */
+  pitch: string;
   x: number;
   y: number;
   coordinates: { x: number; y: number };
@@ -53,6 +55,7 @@ export const ROUTE_STOPS: RouteStop[] = [
   {
     id: 1,
     order: 1,
+    pitch: 'Turn rock into silicon.',
     label: 'Norway · Silicon',
     name: 'Make silicon',
     country: 'NORWAY',
@@ -70,6 +73,7 @@ export const ROUTE_STOPS: RouteStop[] = [
   {
     id: 2,
     order: 2,
+    pitch: 'Make the silicon super pure.',
     label: 'Germany · Purify',
     name: 'Purify it',
     country: 'GERMANY',
@@ -87,6 +91,7 @@ export const ROUTE_STOPS: RouteStop[] = [
   {
     id: 3,
     order: 3,
+    pitch: 'Grow a crystal and slice it into wafers.',
     label: 'Japan · Wafers',
     name: 'Make wafers',
     country: 'JAPAN',
@@ -96,7 +101,7 @@ export const ROUTE_STOPS: RouteStop[] = [
     x: 1200,
     y: 280,
     coordinates: { x: 1200, y: 280 },
-    callout: { dx: 65, dy: -28, align: 'left' },
+    callout: { dx: 0, dy: -52, align: 'center' },
     inputDescription: 'Electronic-grade polysilicon chunks + Quartz crucible',
     outputDescription: 'Mirror-polished blank Silicon Wafers',
     summary: 'Melt polysilicon, pull a monocrystal ingot, slice into thin wafers, and chemical-mechanically polish to a mirror finish.'
@@ -104,6 +109,7 @@ export const ROUTE_STOPS: RouteStop[] = [
   {
     id: 4,
     order: 4,
+    pitch: 'Print tiny circuits onto the wafer.',
     label: 'Taiwan · Circuits',
     name: 'Build circuits',
     country: 'TAIWAN',
@@ -121,6 +127,7 @@ export const ROUTE_STOPS: RouteStop[] = [
   {
     id: 5,
     order: 5,
+    pitch: 'Cut out the chip and package it.',
     label: 'Malaysia · Package',
     name: 'Cut and package',
     country: 'MALAYSIA',
@@ -138,6 +145,7 @@ export const ROUTE_STOPS: RouteStop[] = [
   {
     id: 6,
     order: 6,
+    pitch: 'Build a phone around the chip.',
     label: 'China · Phone',
     name: 'Assemble phone',
     country: 'CHINA',
@@ -155,6 +163,7 @@ export const ROUTE_STOPS: RouteStop[] = [
   {
     id: 7,
     order: 7,
+    pitch: 'Hand the phone to its new owner.',
     label: 'USA · User',
     name: 'The user',
     country: 'U.S.A.',

@@ -70,3 +70,17 @@
 @media (prefers-reduced-motion: reduce) {
   .title-cursor, .title-blink { animation: none; }
 }
+
+/* Map screen */
+.map-chip {
+  background: #fcd34d;
+  border: 3px solid #1a0b02;
+  box-shadow: 3px 3px 0 #1a0b02;
+}
+.map-chip--dark { background: rgba(12, 24, 33, 0.85); }
+.map-chip--dark:hover { background: rgba(30, 50, 64, 0.95); }
+.map-card {
+  background: rgba(12, 24, 33, 0.88);
+  border: 4px solid #1a0b02;
+  box-shadow: inset 0 0 0 2px #fcd34d55, 6px 6px 0 #1a0b02;
+}

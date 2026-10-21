@@ -168,7 +168,7 @@ export const WorldMap: React.FC<WorldMapProps> = ({
   const selectedIsCompleted = isStopCompleted(selectedId);
 
   return (
-    <div className="relative w-full h-full bg-[#020409] text-white font-mono select-none overflow-hidden">
+    <div className="relative w-full h-full bg-[#020409] text-white select-none overflow-hidden">
       {/* Top-left overlay: back to title + progress */}
       <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
         {onOpenTitle && (
@@ -177,22 +177,19 @@ export const WorldMap: React.FC<WorldMapProps> = ({
               sound.playClick();
               onOpenTitle();
             }}
-            className="p-2 bg-[#030612]/70 hover:bg-[#030612]/90 border border-white/20 rounded text-white/80 hover:text-white cursor-pointer transition-colors"
+            className="map-chip map-chip--dark p-2 text-white cursor-pointer"
             title="Title screen"
           >
             <ArrowLeft size={16} />
           </button>
         )}
-        <div className="px-3 py-1.5 bg-[#030612]/70 border border-white/20 rounded text-xs font-bold text-[#10b981]">
-          {cargo.completedStops.length} / 7
+        <div className="map-chip font-pixel px-3 py-2 text-[10px] text-[#1a0b02]">
+          {cargo.completedStops.length} / 7 DONE
         </div>
       </div>
 
       {/* Top-right overlay: sound + fullscreen (P still toggles dev preview, shown only when on) */}
       <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
-        {devPreviewMode && (
-          <span className="px-2 py-1 bg-[#ca8a04] text-stone-950 rounded text-[10px] font-black">DEV</span>
-        )}
         <ScreenControls
           isMuted={isMuted}
           onToggleMute={onToggleMute}
@@ -219,21 +216,6 @@ export const WorldMap: React.FC<WorldMapProps> = ({
               height="768"
               preserveAspectRatio="none"
             />
-
-            {/* Subtle retro scanline / grid vignette pattern */}
-            <rect
-              width="1376"
-              height="768"
-              fill="url(#vignetteGrad)"
-              pointerEvents="none"
-            />
-
-            <defs>
-              <radialGradient id="vignetteGrad" cx="50%" cy="50%" r="70%">
-                <stop offset="60%" stopColor="#000000" stopOpacity="0" />
-                <stop offset="100%" stopColor="#000000" stopOpacity="0.45" />
-              </radialGradient>
-            </defs>
 
             {/* 1. ROUTE LEGS (Behind markers per GUIDELINES §How to draw the road) */}
             <g id="route-legs">
@@ -329,203 +311,60 @@ export const WorldMap: React.FC<WorldMapProps> = ({
                       className={isActive ? 'animate-pulse' : ''}
                     />
 
-                    {/* Pacific Seam Continuation Cues (inset so they survive edge cropping on narrow screens) */}
-                    <g transform="translate(1290, 305)">
-                      <rect
-                        x="-52"
-                        y="-10"
-                        width="64"
-                        height="20"
-                        rx="3"
-                        fill="#0b0f1d"
-                        stroke="#38bdf8"
-                        strokeWidth="1"
-                        fillOpacity="0.85"
-                      />
-                      <text
-                        x="-20"
-                        y="4"
-                        fill="#38bdf8"
-                        fontSize="9"
-                        fontWeight="bold"
-                        textAnchor="middle"
-                        fontFamily="monospace"
-                      >
-                        TO USA ▶
-                      </text>
-                    </g>
-
-                    <g transform="translate(90, 250)">
-                      <rect
-                        x="-5"
-                        y="-10"
-                        width="70"
-                        height="20"
-                        rx="3"
-                        fill="#0b0f1d"
-                        stroke="#38bdf8"
-                        strokeWidth="1"
-                        fillOpacity="0.85"
-                      />
-                      <text
-                        x="30"
-                        y="4"
-                        fill="#38bdf8"
-                        fontSize="9"
-                        fontWeight="bold"
-                        textAnchor="middle"
-                        fontFamily="monospace"
-                      >
-                        ◀ FROM ASIA
-                      </text>
-                    </g>
+                    {/* Pacific seam cues (inset so they survive edge cropping on narrow screens) */}
+                    <text x="1300" y="300" textAnchor="end" className="font-pixel" fontSize="10" fill="#e0f2fe" stroke="#050814" strokeWidth="4" paintOrder="stroke">TO USA ▶</text>
+                    <text x="70" y="252" className="font-pixel" fontSize="10" fill="#e0f2fe" stroke="#050814" strokeWidth="4" paintOrder="stroke">◀ FROM ASIA</text>
                   </g>
                 );
               })}
             </g>
 
-            {/* 2. LEADER LINES & CALLOUT LABELS (Staggered to prevent overlap in East Asia) */}
+            {/* 2. COUNTRY TAGS with leader lines (staggered to avoid overlap in East Asia) */}
             <g id="callout-labels">
               {ROUTE_STOPS.map((stop) => {
                 const isSelected = stop.id === selectedId;
                 const isCompleted = isStopCompleted(stop.id);
-                const isUnlocked = isStopUnlocked(stop.id);
+                const text = stop.country.replace(/\./g, '');
+                const fontSize = isSelected ? 13 : 11;
+                const labelWidth = text.length * fontSize + 22;
+                const labelHeight = fontSize + 16;
 
-                const labelWidth = 145;
-                const labelHeight = 28;
-
-                // Callout coordinates
-                const anchorX = stop.x;
-                const anchorY = stop.y;
-                let targetX = anchorX + stop.callout.dx;
-                let targetY = anchorY + stop.callout.dy;
-
-                // Adjust box placement based on alignment
-                let boxX = targetX;
-                if (stop.callout.align === 'center') {
-                  boxX = targetX - labelWidth / 2;
-                } else if (stop.callout.align === 'right') {
-                  boxX = targetX - labelWidth;
-                }
-
-                // Clamp within SVG boundary
+                let boxX = stop.x + stop.callout.dx;
+                if (stop.callout.align === 'center') boxX -= labelWidth / 2;
+                else if (stop.callout.align === 'right') boxX -= labelWidth;
                 boxX = Math.max(10, Math.min(1376 - labelWidth - 10, boxX));
-                const boxY = Math.max(10, Math.min(768 - labelHeight - 10, targetY - labelHeight / 2));
-
+                const boxY = Math.max(10, Math.min(768 - labelHeight - 10, stop.y + stop.callout.dy - labelHeight / 2));
                 const leaderEndX =
-                  stop.callout.align === 'left'
-                    ? boxX
-                    : stop.callout.align === 'right'
-                    ? boxX + labelWidth
-                    : boxX + labelWidth / 2;
-                const leaderEndY = boxY + labelHeight / 2;
+                  stop.callout.align === 'left' ? boxX : stop.callout.align === 'right' ? boxX + labelWidth : boxX + labelWidth / 2;
+                const leaderEndY = stop.callout.align === 'center' ? boxY + labelHeight : boxY + labelHeight / 2;
+                const fill = isSelected ? '#fcd34d' : isCompleted ? '#34d399' : '#0c1821';
+                const ink = isSelected || isCompleted ? '#1a0b02' : '#e0f2fe';
 
                 return (
                   <g
                     key={`label-${stop.id}`}
-                    className="cursor-pointer transition-opacity"
+                    className="cursor-pointer"
                     onClick={() => {
-                      sound.playClick();
-                      setSelectedId(stop.id);
+                      if (selectedId === stop.id) handleEnterStage(stop.id);
+                      else {
+                        sound.playClick();
+                        setSelectedId(stop.id);
+                      }
                     }}
-                    onDoubleClick={() => handleEnterStage(stop.id)}
                   >
-                    {/* Leader Line with dark outline */}
-                    <line
-                      x1={anchorX}
-                      y1={anchorY}
-                      x2={leaderEndX}
-                      y2={leaderEndY}
-                      stroke="#050814"
-                      strokeWidth="3.5"
-                    />
-                    <line
-                      x1={anchorX}
-                      y1={anchorY}
-                      x2={leaderEndX}
-                      y2={leaderEndY}
-                      stroke={
-                        isSelected
-                          ? '#fbbf24'
-                          : isCompleted
-                          ? '#10b981'
-                          : isUnlocked
-                          ? '#38bdf8'
-                          : '#64748b'
-                      }
-                      strokeWidth="1.5"
-                      strokeDasharray={isSelected ? 'none' : '3 3'}
-                    />
-
-                    {/* Callout Box */}
-                    <rect
-                      x={boxX}
-                      y={boxY}
-                      width={labelWidth}
-                      height={labelHeight}
-                      rx="4"
-                      fill="#070c1b"
-                      fillOpacity="0.92"
-                      stroke={
-                        isSelected
-                          ? '#fbbf24'
-                          : isCompleted
-                          ? '#10b981'
-                          : isUnlocked
-                          ? '#38bdf8'
-                          : '#334155'
-                      }
-                      strokeWidth={isSelected ? '2.5' : '1.5'}
-                      className="transition-all"
-                    />
-
-                    {/* Label Badge / Order */}
-                    <rect
-                      x={boxX + 4}
-                      y={boxY + 4}
-                      width="20"
-                      height="20"
-                      rx="3"
-                      fill={
-                        isCompleted
-                          ? '#10b981'
-                          : isSelected
-                          ? '#fbbf24'
-                          : isUnlocked
-                          ? '#0284c7'
-                          : '#1e293b'
-                      }
-                    />
+                    <line x1={stop.x} y1={stop.y} x2={leaderEndX} y2={leaderEndY} stroke="#050814" strokeWidth="4" />
+                    <line x1={stop.x} y1={stop.y} x2={leaderEndX} y2={leaderEndY} stroke={isSelected ? '#fcd34d' : '#e0f2fe'} strokeWidth="1.5" />
+                    <rect x={boxX + 3} y={boxY + 3} width={labelWidth} height={labelHeight} fill="#050814" />
+                    <rect x={boxX} y={boxY} width={labelWidth} height={labelHeight} fill={fill} stroke="#050814" strokeWidth="2.5" />
                     <text
-                      x={boxX + 14}
-                      y={boxY + 18}
-                      fill={isSelected && !isCompleted ? '#050814' : '#ffffff'}
-                      fontSize="11"
-                      fontWeight="bold"
+                      x={boxX + labelWidth / 2}
+                      y={boxY + labelHeight / 2 + fontSize / 2 - 1}
+                      fill={ink}
+                      fontSize={fontSize}
                       textAnchor="middle"
-                      fontFamily="monospace"
+                      className="font-pixel"
                     >
-                      {isCompleted ? '✓' : stop.order}
-                    </text>
-
-                    {/* Label Text */}
-                    <text
-                      x={boxX + 28}
-                      y={boxY + 18}
-                      fill={
-                        isSelected
-                          ? '#fbbf24'
-                          : isCompleted
-                          ? '#a7f3d0'
-                          : isUnlocked
-                          ? '#ffffff'
-                          : '#94a3b8'
-                      }
-                      fontSize="10"
-                      fontWeight={isSelected ? 'bold' : 'normal'}
-                      fontFamily="monospace"
-                    >
-                      {stop.label}
+                      {text}
                     </text>
                   </g>
                 );
@@ -667,38 +506,24 @@ export const WorldMap: React.FC<WorldMapProps> = ({
         </div>
       )}
 
-      {/* Selected stop panel, floating over the map */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 w-[min(720px,calc(100%-2rem))] px-4 py-3 bg-[#030612]/80 border border-white/20 rounded flex items-center gap-4 shadow-lg">
-        <div className="flex-1 min-w-0">
-          <div className="flex items-baseline gap-2">
-            <span className="text-sm font-bold text-[#fbbf24]">{selectedStop.label}</span>
-            <span className="text-xs text-stone-400 truncate">{selectedStop.location}</span>
-          </div>
-          {/* Activity caption per GUIDELINES §How to draw the road */}
-          <p className="mt-1 text-xs text-[#bae6fd] leading-relaxed">{selectedStop.activity}</p>
+      {/* Selected stop card, floating over the map */}
+      <div className="map-card absolute bottom-6 left-1/2 z-20 flex w-[min(560px,calc(100%-2rem))] -translate-x-1/2 items-center gap-4 px-5 py-4">
+        <div className="min-w-0 flex-1">
+          <p className="font-pixel text-[9px] tracking-widest text-[#fb923c]">STOP {selectedStop.order} OF 7</p>
+          <h2 className="font-pixel mt-2 text-[clamp(0.9rem,2.2vw,1.25rem)] text-[#fcd34d]">{selectedStop.country.replace(/\./g, '')}</h2>
+          <p className="mt-2 text-sm text-[#e0f2fe]">{selectedStop.pitch}</p>
         </div>
-
         <button
           onClick={() => handleEnterStage(selectedId)}
-          className={`shrink-0 flex items-center gap-1.5 px-4 py-2 rounded border-2 text-xs font-bold tracking-wider uppercase transition-all shadow-[3px_3px_0_#000] cursor-pointer ${
-            selectedIsUnlocked
-              ? 'bg-[#10b981] hover:bg-[#059669] border-white text-white'
-              : 'bg-[#1e293b] border-stone-500 text-stone-400'
-          }`}
+          className={`title-button font-pixel flex shrink-0 items-center gap-2 px-5 py-3 text-xs ${selectedIsUnlocked ? 'title-button--active' : 'title-button--idle cursor-not-allowed'}`}
         >
-          {selectedIsUnlocked ? (
-            <>
-              <span>{selectedIsCompleted ? 'REPLAY' : 'ENTER'}</span>
-              <ChevronRight size={14} />
-            </>
-          ) : (
-            <>
-              <Lock size={12} />
-              <span>LOCKED</span>
-            </>
-          )}
+          {selectedIsUnlocked ? (selectedIsCompleted ? 'REPLAY' : 'GO') : <><Lock size={12} /> LOCKED</>}
+          {selectedIsUnlocked && <ChevronRight size={16} />}
         </button>
       </div>
+      <p className="font-pixel pointer-events-none absolute bottom-1 left-1/2 z-20 hidden -translate-x-1/2 whitespace-nowrap text-[7px] text-white/80 sm:block" style={{ textShadow: '0 0 3px #000, 0 0 3px #000' }}>
+        ← → CHOOSE · ENTER GO
+      </p>
     </div>
   );
 };
