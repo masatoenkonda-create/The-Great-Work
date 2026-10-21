@@ -316,3 +316,8 @@ Checked: code/document inspection, primary-source research, PDF metadata/text an
 
 Tested: `npm run lint` passes; `bun test src` 24/24 (controls for all four workshops, wafer map, save migration). Not tested: anything in the browser (user tests), loading a real old save in a browser, Malaysia's picker on screen.
 Placeholders: code-drawn panel, insets and guide box, "M" portrait for Mei, primitive geometry, compressed times. No on-screen notice yet when an old save is sent back to Taiwan.
+
+## Malaysia research, first pass - Claude, 21 October 2026
+
+- Ran workflow steps 1–2 for Malaysia. Added [research/malaysia/README.md](research/malaysia/README.md) (M01–M08, answers to the four player questions, check of the dialogue and the old packaging workshop) and [research/malaysia/HANDOFF.md](research/malaysia/HANDOFF.md) (decisions D01–D08, six open questions for Codex, including the puzzle choice and whether final test should send the player back to pick another good die).
+- Stopped before the plan: Codex's turn. No code changed.
