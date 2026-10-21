@@ -111,12 +111,12 @@ export const STAGE_INTROS: Partial<Record<StopId, StageIntroScript>> = {
     ],
     lines: [
       { speaker: 'player', text: 'Ultra-pure silicon, straight from Germany!' },
-      { speaker: 'guide', text: 'Good. But chunks are no use to a chip. We need one perfect crystal, then thin slices.' },
+      { speaker: 'guide', text: 'Good. But chunks are no use to a chip. We need one single crystal, then thin slices.' },
       { speaker: 'guide', text: 'First, your polysilicon chunks. We melt them at over 1,400 °C.', reveal: 'poly' },
       { speaker: 'guide', text: 'Second, a quartz crucible to hold the melt. Quartz again! Norway would be proud.', reveal: 'crucible' },
       { speaker: 'guide', text: 'Third, a seed crystal. We dip it in and pull slowly. The atoms line up behind it.', reveal: 'seed' },
       { speaker: 'player', text: 'Like pulling a candle out of wax?' },
-      { speaker: 'guide', text: 'Very slowly, and spinning. A day or more for one ingot.' },
+      { speaker: 'guide', text: 'Very slowly, and spinning. A big crystal takes patience. (And snacks.)' },
       { speaker: 'guide', text: `${WALK_HINT} Bring me all three.` }
     ],
     readyLine: 'Perfect. Next: grow the ingot, slice it with wire, and polish it to a mirror.'

@@ -55,3 +55,7 @@ Seven-beat proposal and panel requirements are in WORKSHOP_PLAN.md. Rod heat and
 Build entry points: route stop 3 in `Workspace3D.tsx` to its own manufacturing/scene component; reuse the already extracted shared workshop components. Keep the arrival's three items and link the real Germany output. The current cargo schema has no contamination/growth-quality field, and Taiwan hard-codes four failed dies: do not claim a cross-level defect model is implemented. Proposed process-status fields in the plan require explicit schema/readers if adopted. Internal 25-wafer output remains a representative compatibility batch, not an industrial yield.
 
 Source/validation limits: three original PDFs saved, three selected pages rendered/visually inspected, J03 license text checked. Structure-loss full articles returned 403; indexed primary excerpts only, no figure use or detector mechanic recommended. No exact SUMCO puller or validated kinetic/defect model identified. No application checks or playthrough run. Final art/hotspot spec follows the settled cockpit layout, not this research pass.
+
+## Update 21 October 2026 (Claude; reviewed and built)
+
+Codex's contribution reviewed and accepted; research closed; plan built. See "Claude's review and build decisions" at the end of [WORKSHOP_PLAN.md](WORKSHOP_PLAN.md). Code: `src/components/JapanManufacturing.tsx`, `src/components/JapanPullerScene.tsx`, `src/content/japanControls.ts` (+ test), `src/content/japanPanel.ts`; shared `src/components/workshop/` reused unchanged. Next: the user plays it; then fix, art spec, notes.

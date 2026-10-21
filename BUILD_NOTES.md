@@ -283,3 +283,12 @@ Placeholders: code-drawn panel and guide box, "G" portrait for Greta, primitive 
 - Proposed seven visual beats with crucible/seed handling, automatic neck/shoulder/tail, a body-growth heat/pull puzzle, cool/crop/grind before batch wire slicing, finishing and FOSB dispatch. Retained recoverable growth; no arbitrary contamination score or claimed Taiwan integration. Added workflow checks for phase-specific controls and physically coherent recovery.
 
 Checked: code/document/source inspection, original PDF metadata/text, three rendered pages and license statement. No application code or game assets changed; no tests/build/playthrough run. Exact site geometry, defect equations and variable downstream yield remain unvalidated/deferred.
+
+## Japan workshop built - Claude, 21 October 2026
+
+- Reviewed Codex's Japan research (J08–J10, review, plan): sources verified, corrections accepted. Decisions recorded at the end of research/japan/WORKSHOP_PLAN.md.
+- New Japan workshop: load crucible and chunks, melt (heater past 1,414 °C), dip the seed (automatic neck and shoulder), grow the body (heat + pull + rotation puzzle, pause-and-recover), automatic tail, cool and move (crop, grind), wire saw, polish, inspect and box, ship. Stop 3 now routes to `JapanManufacturing`. Aiko's arrival wording corrected.
+- No save-schema change; Taiwan defect link deferred.
+
+Tested: `npm run lint` passes; `bun test src/content` 12/12 (Norway, Germany, Japan controls). Not tested: anything in the browser (user tests), narrow screens.
+Placeholders: code-drawn panel and guide box, "A" portrait for Aiko, primitive geometry, compressed times.
