@@ -80,17 +80,17 @@ export const STAGE_INTROS: Partial<Record<StopId, StageIntroScript>> = {
     playerEndX: 1060,
     guideX: 820,
     items: [
-      { id: 'silicon', name: 'Silicon metal', note: 'Your 99% silicon from Norway, ground to powder.', color: '#78716c', x: 200 },
-      { id: 'hcl', name: 'Hydrogen chloride', note: 'Turns silicon into trichlorosilane, a liquid that can be distilled.', color: '#bef264', x: 560 },
+      { id: 'silicon', name: 'Silicon metal', note: 'Your silicon lumps from Norway. We mill them to powder here.', color: '#78716c', x: 200 },
+      { id: 'hcl', name: 'Hydrogen chloride', note: 'Reacts with the powder to make a liquid compound we can purify.', color: '#bef264', x: 560 },
       { id: 'hydrogen', name: 'Hydrogen', note: 'Carries pure silicon back out onto hot rods, layer by layer.', color: '#7dd3fc', x: 1240 }
     ],
     lines: [
-      { speaker: 'player', text: 'I brought silicon from Norway! 99% pure!' },
-      { speaker: 'guide', text: 'Wunderbar. For a chip, that is still far too dirty. We need 99.9999999%.' },
-      { speaker: 'player', text: "That's... a lot of nines." },
-      { speaker: 'guide', text: 'First, your silicon metal, ground to a powder.', reveal: 'silicon' },
-      { speaker: 'guide', text: 'Second, hydrogen chloride. It turns the silicon into a liquid called trichlorosilane.', reveal: 'hcl' },
-      { speaker: 'guide', text: 'A liquid we can distill, again and again, like the finest schnapps, until the dirt is gone.' },
+      { speaker: 'player', text: 'I brought silicon from Norway! Fresh from the furnace!' },
+      { speaker: 'guide', text: 'Wunderbar. Good for the smelter. For a chip? Still far too dirty.' },
+      { speaker: 'player', text: 'How clean does it have to be?' },
+      { speaker: 'guide', text: 'So clean we count the dirt in parts per trillion. First, your silicon metal. We mill it to powder.', reveal: 'silicon' },
+      { speaker: 'guide', text: 'Second, hydrogen chloride. With the powder it makes trichlorosilane, a liquid compound. Not melted silicon!', reveal: 'hcl' },
+      { speaker: 'guide', text: 'A liquid we can distill, like the finest schnapps, until the impurities are separated out.' },
       { speaker: 'guide', text: 'Third, hydrogen. With it, pure silicon grows back onto hot rods, layer by layer.', reveal: 'hydrogen' },
       { speaker: 'guide', text: `${WALK_HINT} Bring all three to the reactor.` }
     ],

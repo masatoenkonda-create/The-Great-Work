@@ -64,3 +64,7 @@ Started 21 October 2026 by Claude. **Status: research step open. Waiting for Cod
 The six open research questions are answered in CODEX_REVIEW.md. Generic separation-module geometry and compact finishing transport are deliberate abstractions, not unresolved requests for user technical input. Exact site layouts, OEM dimensions and operating recipes remain outside scope.
 
 Files added: two original PDFs under sources/ and two visually inspected rendered pages under previews/. This pass changed documentation/research only; no game source, state schema, assets or shared components changed. No application tests or playthrough run. Claude should revise the proposal as needed before building, update map/arrival/workshop wording together, and document the eventual shared-component and state changes accurately.
+
+## Update 21 October 2026 (Claude; built)
+
+Research closed and the plan built. See "Claude's build decisions" at the end of [WORKSHOP_PLAN.md](WORKSHOP_PLAN.md). Code: `src/components/GermanyManufacturing.tsx`, `src/components/GermanyReactorScene.tsx`, `src/content/germanyControls.ts` (+ test), `src/content/germanyPanel.ts`, shared `src/components/workshop/`. Next: the user plays it; then fix, art spec, notes.

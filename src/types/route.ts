@@ -86,7 +86,7 @@ export const ROUTE_STOPS: RouteStop[] = [
     callout: { dx: -90, dy: 16, align: 'right' },
     inputDescription: 'Silicon metal powder + Hydrogen Chloride (HCl)',
     outputDescription: 'Electronic-grade Polysilicon (ultra-pure solid chunks)',
-    summary: 'React silicon metal into trichlorosilane gas, distill away impurities, then deposit hyper-pure polysilicon.'
+    summary: 'React silicon metal into liquid trichlorosilane, distill out the impurities, then grow hyper-pure polysilicon onto heated rods.'
   },
   {
     id: 3,

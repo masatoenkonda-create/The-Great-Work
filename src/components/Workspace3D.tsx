@@ -14,6 +14,7 @@ import { ASSETS } from '../content/assets';
 import { STAGE_INTROS } from '../content/dialogues';
 import { StageIntro } from './StageIntro';
 import { NorwayManufacturing } from './NorwayManufacturing';
+import { GermanyManufacturing } from './GermanyManufacturing';
 import {
   RotateCcw,
   Eye,
@@ -233,6 +234,10 @@ export const Workspace3D: React.FC<Workspace3DProps> = ({
 
   if (Number(stop.id) === 1) {
     return <NorwayManufacturing onComplete={onComplete} onReturnToMap={onReturnToMap} />;
+  }
+
+  if (Number(stop.id) === 2) {
+    return <GermanyManufacturing onComplete={onComplete} onReturnToMap={onReturnToMap} />;
   }
 
   return (

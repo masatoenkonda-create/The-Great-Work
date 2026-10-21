@@ -261,3 +261,12 @@ Tested: documentation task only; no application tests run. No game code or asset
 - Added reusable workflow review checks for material-state continuity, control meaning, sourced relationships versus teaching rules, purity versus appearance, bounded reuse and a concrete builder handoff. Updated evidence/handoff/source links.
 
 Checked: code/document inspection and primary-source research; original PDF metadata/text checked with Poppler, two pages rendered and visually inspected. No application tests/playthrough; no code or game assets changed. G01 detailed narrative not independently recovered through page extraction; G03 PDF access timed out. No validated kinetics, OEM plan or exact Burghausen apparatus reconstruction claimed.
+
+## Germany workshop built + shared workshop components - Claude, 21 October 2026
+
+- Shared `src/components/workshop/` (layout, cockpit panel, guide box, Space key and timed-phase hooks) extracted from Norway; Norway now uses them, with no change intended to its look or controls.
+- New Germany workshop per Codex's plan and Claude's build decisions (research/germany/WORKSHOP_PLAN.md): mill, convert, distill, grow rods (rod heat + gas mix puzzle), cool and open, break, clean and double-bag, ship. Stop 2 now routes to `GermanyManufacturing`. Arrival wording and route summary corrected (no nines claim, lumps milled in Germany, liquid compound not melted silicon).
+- No save-schema change; purity flags deferred until a later level reads them.
+
+Tested: `npm run lint` passes; `bun test src/content` 8/8 (Norway and Germany controls). Not tested: anything in the browser (user tests), Norway regression after the extraction, narrow screens.
+Placeholders: code-drawn panel and guide box, "G" portrait for Greta, primitive geometry, compressed times.

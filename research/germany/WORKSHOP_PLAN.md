@@ -61,3 +61,21 @@ Mill, conversion, separation, cooldown and finishing are time/scale compressions
 ## Sources
 
 G01–G07 in [README.md](README.md) establish Claude's baseline. G08 gives the rod/baseplate/dome reference; G09 corrects separation logic; G10 reinforces clean handling. G02 PDF page 6 supplies a real cleaning-line photograph. G05 supports qualitative control effects. See the review for source-access limits. All machine/game thresholds remain design choices.
+
+## Claude's build decisions — implemented 21 October 2026
+
+Codex's plan was accepted and built. Where the build differs or fills a gap:
+
+| Topic | Built as |
+|---|---|
+| Beats | Codex's six beats as eight panel actions: MILL → CONVERT → DISTILL → MAIN POWER (rod growth puzzle) → COOL & OPEN → BREAK → CLEAN & PACK → SHIP. Hydrogen connects automatically with main power. Every action can also be done by clicking its object in 3D or pressing Space. |
+| Puzzle | ROD HEAT 1–5 and GAS MIX 1–5 (precursor proportion). Rod temperature eases toward 700 + 130 × heat °C; working band 1,000–1,150 °C, so only heat 3 works, and only mix 3 works. Order of Greta's feedback: too hot → too cold → warming up → too rich (dust in the gas) → too thin → growing. Growth pauses outside the band and keeps the thickness already grown. 8 s of good settings finishes the rods. Teaching values only (`src/content/germanyControls.ts`, 4 tests). |
+| Scene | `GermanyReactorScene.tsx`: Norway's bag of lumps → enclosed mill → powder bin → converter with green HCl bottle and condenser into a clear receiver → two columns with lit sight strips; dark specks go to a top reject drum and a bottom reject drum, clear drops to the product receiver → reactor from G08 Fig. 1 (baseplate, four electrode holders, two inverted-U rod pairs, gas nozzles, steel bell with front cut away, sight glass, top port), blue H₂ bottle, power switch → enclosed crusher → tray through an enclosed cleaning tunnel → clear inner bag, outer bag and seal → ships right. |
+| Panel | Same 480 × 400 canvas (`src/content/germanyPanel.ts`). Lamps: POWDER, HCl ON, COMPOUND, PURIFIED, H₂ ON, GROWING, PACKED. Gauges: ROD TEMP (green band), ROD GROWTH %, PURE LIQUID level, REACTOR HOT/COOL/OPEN, plus HEAT n/5 and MIX n/5 bars. No purity percentage. |
+| Guide | Greta, single current message, shared `GuideBox`. No portrait sprite yet: the box shows a "G" placeholder. |
+| State | No new save field. Every shipped batch is equally "purified" (pause-only puzzle), and Japan doesn't read a purity flag yet, so `polysiliconPurity` / `polysiliconCleanPacked` are **deferred** until a later level uses them. `polysiliconBatchKg: 10` is still sent internally for the existing code; it isn't shown. |
+| Text | Arrival: the nines line is gone ("Good for the smelter. For a chip? Still far too dirty." / "parts per trillion" per G01), silicon arrives as lumps and is milled here, trichlorosilane is "a liquid compound, not melted silicon", distillation "separates the impurities out". Route summary says liquid trichlorosilane. |
+| Old code | `Stop2PurifyWorkspace.tsx` is no longer reached (stop 2 now routes to `GermanyManufacturing`, like Norway). File left in place for now. |
+| Shared code | `src/components/workshop/`: `WorkshopLayout` (+ `useActKey`, `useTimedPhase`), `CockpitPanel`, `GuideBox`. Norway moved onto them with no visual or behaviour change intended. Each level keeps its own process model. |
+
+Not done yet: user playtest; Germany panel art spec (after the layout is confirmed); Greta portrait art.
