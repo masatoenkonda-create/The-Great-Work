@@ -1,6 +1,6 @@
 {
   "name": "Supply Chain Gang",
-  "description": "Follow one generic silicon chip around the world, from raw material to a phone someone uses, across Norway, Germany, Japan, Taiwan, Malaysia, China, and the User.",
+  "description": "Follow one generic silicon chip around the world, from raw material to a TV someone watches, across Norway, Germany, Japan, Taiwan, Malaysia, China, and the User.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

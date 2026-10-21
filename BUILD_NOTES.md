@@ -283,3 +283,12 @@ Placeholders: code-drawn panel, insets and guide box, "F" portrait for Farid, pr
 - After the user found search-only research passes (China first pass; most of Claude's Germany, Taiwan and Malaysia records), WORKSHOP_WORKFLOW.md step 2 now points to a short **research standard**: facts the build depends on must come from primary documents actually read and saved; every record is marked Read / Skimmed / Lead; reviews must open the sources; reports must say how deep they went.
 - Added CLAUDE.md and CODEX.md (project in one line, files to read first, working rules) and a one-line AGENTS.md pointing Codex to CODEX.md, since Codex loads AGENTS.md automatically.
 - Not yet done: relabelling earlier records by status and re-reviewing Taiwan and Malaysia sources (planned for the next quality pass over all levels).
+
+## China TV workshop + save v3 + minimum USA ending - Claude, 21 October 2026
+
+- Reviewed Codex's China pass (C17 and C18 opened; C19, C20 not opened by Claude) and built it: print paste, place the chip, reflow (heat + belt puzzle with predicted profile), X-ray (balls and bond wires), assemble the TV, power and check, pack and ship. Decisions at the end of research/china/WORKSHOP_PLAN.md.
+- Save format v3: TV fields replace phone fields, with a validated map → chip → TV chain, per-version backups and a one-time notice; replaying Taiwan, Malaysia or China clears later stops.
+- Minimum USA ending for the TV and TV wording across the game.
+
+Tested: `npm run lint`, `bun test src` 33/33, `npm run build` all pass. Not tested: anything in the browser (user tests), loading a real old save in a browser.
+Placeholders: code-drawn panel, insets and guide boxes, "X" and "S" portraits, primitive geometry, compressed times.

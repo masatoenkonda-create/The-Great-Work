@@ -34,8 +34,8 @@ export interface RouteStop {
 }
 
 export interface CargoState {
-  /** Save format version; 2 added the Taiwan wafer map. */
-  saveVersion: 2;
+  /** Save format version; 2 added the Taiwan wafer map, 3 replaced the phone with a TV. */
+  saveVersion: 3;
   lotId: string;
   currentStopId: StopId;
   completedStops: StopId[];
@@ -49,8 +49,10 @@ export interface CargoState {
   /** Stop 4 tested wafer map; Malaysia picks only its passing dies. Null until Taiwan ships. */
   waferMap: WaferMap | null;
   selectedChipSerial: string | null; // Stop 5 chosen good chip (lot-derived)
-  phoneSerial: string | null;        // Stop 6 assembled phone (lot-derived)
-  isPhoneOperational: boolean;       // Stop 6 & 7 test
+  /** Stop 6: the chip installed in the TV (must equal selectedChipSerial), the TV's ID, and whether it passed its checks. */
+  tvChipSerial: string | null;
+  tvSerial: string | null;
+  isTvOperational: boolean;
   
   // Tracking whether a stage was completed via real interaction or skeleton placeholder
   completionMethod: Record<StopId, 'interactive' | 'placeholder' | null>;
@@ -151,37 +153,37 @@ export const ROUTE_STOPS: RouteStop[] = [
   {
     id: 6,
     order: 6,
-    pitch: 'Build a phone around the chip.',
-    label: 'China · Phone',
-    name: 'Assemble phone',
+    pitch: 'Build a TV around the chip.',
+    label: 'China · TV',
+    name: 'Build the TV',
     country: 'CHINA',
-    location: 'Zhengzhou',
-    purpose: 'Packaged chip + components -> working phone',
-    activity: 'Surface-mount packaged chip to logic board, assemble smartphone chassis.',
+    location: 'Huizhou, Guangdong',
+    purpose: 'Packaged chip + main board + display module -> working TV',
+    activity: 'Solder the chip onto the main board, X-ray the hidden joints, build and check the TV.',
     x: 1090,
     y: 300,
     coordinates: { x: 1090, y: 300 },
     callout: { dx: -80, dy: -30, align: 'right' },
-    inputDescription: 'Packaged chip + Logic circuit board + Display + Battery + Enclosure',
-    outputDescription: 'Fully assembled and factory-tested smartphone',
-    summary: 'Surface-mount the chip onto the main circuit board, assemble internal modules into chassis, and run boot test.'
+    inputDescription: 'Packaged chip + main board + display module + power board',
+    outputDescription: 'Assembled TV with picture and sound checked',
+    summary: 'Print solder paste, place the chip, reflow it, X-ray the hidden joints, then build the board into a TV and check picture and sound.'
   },
   {
     id: 7,
     order: 7,
-    pitch: 'Hand the phone to its new owner.',
-    label: 'USA · User',
-    name: 'The user',
+    pitch: 'Plug in the TV and finally watch.',
+    label: 'USA · Home',
+    name: 'Home',
     country: 'U.S.A.',
     location: 'San Francisco, CA',
-    purpose: 'Finished phone -> someone using it',
-    activity: 'Unbox the smartphone, boot the operating system, and reflect on the road.',
+    purpose: 'Finished TV -> watching it at home',
+    activity: 'Unbox the TV, fit the stand, plug it in and turn it on.',
     x: 260,
     y: 260,
     coordinates: { x: 260, y: 260 },
     callout: { dx: -70, dy: -40, align: 'right' },
-    inputDescription: 'Packaged retail phone box',
-    outputDescription: 'Operational phone powered on and running daily apps',
-    summary: 'Unbox the finished phone, press the power button, observe the initial setup screen, and reflect on the worldwide supply chain.'
+    inputDescription: 'Boxed TV, stand and remote',
+    outputDescription: 'A TV working at home',
+    summary: 'Unbox the TV, fit the stand, plug it in, turn it on, and look back at the road the chip travelled.'
   }
 ];

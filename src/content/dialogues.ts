@@ -60,7 +60,7 @@ export const STAGE_INTROS: Partial<Record<StopId, StageIntroScript>> = {
       { id: 'woodchips', name: 'Wood chips', note: 'Keep the mix loose so furnace gas can flow through.', color: '#b45309', x: 1130 }
     ],
     lines: [
-      { speaker: 'player', text: "Hi! I'm here to build a chip for a smartphone. Where do you keep the chips?" },
+      { speaker: 'player', text: "Hi! I need a chip for my TV. Where do you keep the chips?" },
       { speaker: 'guide', text: 'Chips? Ha! This is Norway, friend. Here we start with rocks.' },
       { speaker: 'guide', text: 'First, quartz. Pale, hard stone. Silicon and oxygen, locked together.', reveal: 'quartz' },
       { speaker: 'guide', text: 'Second, coal. Its carbon steals the oxygen out of the quartz inside the furnace.', reveal: 'coal' },
@@ -162,7 +162,7 @@ export const STAGE_INTROS: Partial<Record<StopId, StageIntroScript>> = {
     ],
     lines: [
       { speaker: 'player', text: 'One wafer full of chips, fresh from Taiwan!' },
-      { speaker: 'guide', text: 'Selamat datang! Those chips are naked. Too tiny and fragile for a phone. We dress them.' },
+      { speaker: 'guide', text: 'Selamat datang! Those chips are naked. Too tiny and fragile to go in a TV. We dress them.' },
       { speaker: 'guide', text: 'First, your tested wafer. The die map tells us which chips passed.', reveal: 'wafer' },
       { speaker: 'guide', text: "Second, the substrate. It's the little board each chip sits on.", reveal: 'substrate' },
       { speaker: 'guide', text: 'Third, gold wire. These tiny wires connect the chip to its little board.', reveal: 'wire' },
@@ -174,50 +174,49 @@ export const STAGE_INTROS: Partial<Record<StopId, StageIntroScript>> = {
 
   6: {
     guideName: 'XIAO LIN',
-    goal: 'meet Xiao Lin and gather the phone parts',
+    goal: 'meet Xiao Lin and gather the TV parts',
     feetY: 730,
     enterFrom: 'left',
     playerEndX: 300,
     guideX: 720,
     items: [
-      { id: 'chip', name: 'Packaged chip', note: 'Your chip from Penang, ready for the main board.', color: '#18181b', x: 120 },
-      { id: 'board', name: 'Logic board', note: 'Solder paste, then the chip, then through the reflow oven.', color: '#15803d', x: 500 },
-      { id: 'display', name: 'Display', note: 'The part everyone will touch.', color: '#38bdf8', x: 960 },
-      { id: 'battery', name: 'Battery', note: 'Powers it all. Goes in before the case is closed.', color: '#a3a3a3', x: 1220 }
+      { id: 'chip', name: 'Packaged chip', note: "Your chip from Penang. It goes on the TV's main board.", color: '#18181b', x: 120 },
+      { id: 'board', name: 'Main board', note: 'Solder paste, then the chip, then through the reflow oven.', color: '#15803d', x: 500 },
+      { id: 'panel', name: 'Display module', note: 'Screen and backlight in one, made by another factory.', color: '#38bdf8', x: 960 },
+      { id: 'power', name: 'Power board', note: 'Feeds the main board and lights the backlight.', color: '#a3a3a3', x: 1220 }
     ],
     lines: [
-      { speaker: 'player', text: "One packaged chip from Penang. Careful, it's precious." },
-      { speaker: 'guide', text: 'Welcome! Today it becomes a phone. It is one of hundreds of parts on this line.' },
-      { speaker: 'guide', text: "Your chip, of course. It's going onto the main circuit board.", reveal: 'chip' },
-      { speaker: 'guide', text: 'The logic board. Solder paste, then the chip, then through the reflow oven.', reveal: 'board' },
-      { speaker: 'guide', text: 'The display. The part everyone will touch.', reveal: 'display' },
-      { speaker: 'guide', text: 'And the battery. Then the case, then testing, testing, testing.', reveal: 'battery' },
-      { speaker: 'guide', text: `${WALK_HINT} Bring all four to the bench.` }
+      { speaker: 'player', text: "One packaged chip from Penang. It's for my TV. Careful, it's precious." },
+      { speaker: 'guide', text: 'A TV? Good. We build a lot of those here in Huizhou. Your chip goes on the main board.', reveal: 'chip' },
+      { speaker: 'guide', text: 'The main board. Paste, then your chip, then through the reflow oven.', reveal: 'board' },
+      { speaker: 'guide', text: 'The display module: screen and backlight, made by another factory.', reveal: 'panel' },
+      { speaker: 'guide', text: 'And the power board. It feeds the main board and lights the backlight.', reveal: 'power' },
+      { speaker: 'guide', text: `${WALK_HINT} Bring all four to the line.` }
     ],
-    readyLine: "All parts here. Let's build a phone. Then it flies to America."
+    readyLine: "All here. Let's build your TV. Then it goes home with you."
   },
 
   7: {
     guideName: 'SAM',
-    goal: 'deliver the phone to Sam and gather what it needs',
+    goal: 'bring the TV home and get it running',
     feetY: 700,
     enterFrom: 'left',
     playerEndX: 400,
     guideX: 780,
     items: [
-      { id: 'box', name: 'Phone box', note: 'Seven countries, one box.', color: '#f8fafc', x: 180 },
-      { id: 'cable', name: 'Charging cable', note: 'The phone needs power before anything else.', color: '#e5e5e5', x: 620 },
-      { id: 'sim', name: 'SIM card', note: 'Connects the phone to Sam’s mobile network.', color: '#eab308', x: 1150 }
+      { id: 'box', name: 'TV box', note: 'Your TV, all the way from Huizhou.', color: '#f8fafc', x: 180 },
+      { id: 'stand', name: 'Stand', note: "Screws onto the bottom. TVs don't stand up on their own.", color: '#a3a3a3', x: 620 },
+      { id: 'remote', name: 'Remote', note: 'Batteries included. Probably.', color: '#1c1917', x: 1150 }
     ],
     lines: [
-      { speaker: 'player', text: 'Package for Sam? One smartphone, all the way from Norway. Sort of.' },
-      { speaker: 'guide', text: 'Finally! Wait, Norway? I thought phones came from the store.' },
-      { speaker: 'player', text: 'It started as a rock in Norway. Then Germany, Japan, Taiwan, Malaysia, China...' },
-      { speaker: 'guide', text: 'Wow. Okay, can you grab the box? You left it by the door.', reveal: 'box' },
-      { speaker: 'guide', text: 'And the charging cable. Somewhere on the shelf.', reveal: 'cable' },
-      { speaker: 'guide', text: "And my SIM card, next to the desk. Don't lose it.", reveal: 'sim' },
-      { speaker: 'guide', text: `${WALK_HINT} Then let's turn this thing on.` }
+      { speaker: 'player', text: 'Sam! Remember my broken TV? You said the chip was impossible to get.' },
+      { speaker: 'guide', text: 'Yeah... supply chain problems. Nothing I could do.' },
+      { speaker: 'player', text: 'So I made one. It started as a rock in Norway. Then Germany, Japan, Taiwan, Malaysia, China...' },
+      { speaker: 'guide', text: 'You WHAT? Okay. Grab the box, it\'s by the door.', reveal: 'box' },
+      { speaker: 'guide', text: "The stand. TVs don't stand up on their own.", reveal: 'stand' },
+      { speaker: 'guide', text: "And the remote. Don't lose it in the sofa.", reveal: 'remote' },
+      { speaker: 'guide', text: `${WALK_HINT} Then let's plug it in.` }
     ],
-    readyLine: "That's everything. Seven countries for this? Let's see if it boots."
+    readyLine: "Seven countries for one chip. Let's see if it turns on."
   }
 };

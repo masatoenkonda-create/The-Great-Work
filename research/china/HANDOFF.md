@@ -48,3 +48,7 @@ Started 21 October 2026 by Claude. **Status: Codex review, independent research 
 4. **Reflow puzzle bands.** C11 gives peak 20–30 °C above liquidus and 30–90 s above liquidus as normal. Confirm whether a two-control (peak + time) puzzle is a fair teaching model, and how to show warpage vs. non-joining before the board is committed (pause/recover).
 5. **Reference images** (C08): stencil printer, placement head, reflow oven cross-section, TV main board layout.
 6. **Save fields.** Propose TV names for `phoneSerial` / `isPhoneOperational` and how old saves migrate (the save format is v2 since Taiwan).
+
+## Update 21 October 2026 (Claude; reviewed and built)
+
+Codex's review, plan and TV contract accepted; build decisions and review depth at the end of [WORKSHOP_PLAN.md](WORKSHOP_PLAN.md). Code: `ChinaManufacturing.tsx`, `ChinaTvScene.tsx`, `UsaHomeEnding.tsx`, `src/content/chinaControls.ts` (+ test), `chinaPanel.ts`, save v3 in `src/services/storage.ts` (+ tests), `App.tsx` replay resets and notice, TV text in dialogues/route. Next: the user plays Taiwan → Malaysia → China → USA.

@@ -18,6 +18,8 @@ import { GermanyManufacturing } from './GermanyManufacturing';
 import { JapanManufacturing } from './JapanManufacturing';
 import { TaiwanManufacturing } from './TaiwanManufacturing';
 import { MalaysiaManufacturing } from './MalaysiaManufacturing';
+import { ChinaManufacturing } from './ChinaManufacturing';
+import { UsaHomeEnding } from './UsaHomeEnding';
 import {
   RotateCcw,
   Eye,
@@ -253,6 +255,14 @@ export const Workspace3D: React.FC<Workspace3DProps> = ({
 
   if (Number(stop.id) === 5) {
     return <MalaysiaManufacturing waferMap={cargo.waferMap} onComplete={onComplete} onReturnToMap={onReturnToMap} />;
+  }
+
+  if (Number(stop.id) === 6) {
+    return <ChinaManufacturing cargo={cargo} onComplete={onComplete} onReturnToMap={onReturnToMap} />;
+  }
+
+  if (Number(stop.id) === 7) {
+    return <UsaHomeEnding cargo={cargo} onComplete={onComplete} onReturnToMap={onReturnToMap} />;
   }
 
   return (
@@ -552,7 +562,7 @@ export const Workspace3D: React.FC<Workspace3DProps> = ({
                             <div className="text-emerald-400 font-bold">CHIP MONITOR v1.0</div>
                             <div className="text-stone-300">Lot: {cargo.lotId}</div>
                             <div className="text-stone-300">Serial: {cargo.selectedChipSerial ?? 'none yet: finish Malaysia'}</div>
-                            <div className="text-stone-300">Phone: {cargo.phoneSerial || 'PHONE-A18-8842'}</div>
+                            <div className="text-stone-300">TV: {cargo.tvSerial ?? 'none yet'}</div>
                             <div className="text-amber-300 font-bold pt-1 border-t border-stone-700">
                               STATUS: ACTIVE 60 FPS
                             </div>
@@ -654,7 +664,7 @@ export const Workspace3D: React.FC<Workspace3DProps> = ({
                   if (stop.id === 3) updates = { wafersProducedCount: stop3WafersCount };
                   if (stop.id === 4) updates = { diesOnWaferCount: stop4TotalDies, goodDiesCount: stop4GoodDies };
                   if (stop.id === 5) updates = { selectedChipSerial: stop5ChipSerial };
-                  if (stop.id === 6) updates = { phoneSerial: stop6PhoneSerial, isPhoneOperational: true };
+                  // Stop 6 now completes in ChinaManufacturing, which saves the TV fields.
 
                   onComplete(false, updates);
                 }}
@@ -684,7 +694,7 @@ export const Workspace3D: React.FC<Workspace3DProps> = ({
                   if (stop.id === 3) demoUpdates = { wafersProducedCount: 25 };
                   if (stop.id === 4) demoUpdates = { diesOnWaferCount: 48, goodDiesCount: 42 };
                   if (stop.id === 5) demoUpdates = { selectedChipSerial: 'CHIP-DEMO-D14' };
-                  if (stop.id === 6) demoUpdates = { phoneSerial: 'PHONE-DEMO-001', isPhoneOperational: true };
+                  // No demo TV: a placeholder China completion must not create a working TV.
 
                   onComplete(true, demoUpdates);
                 }}

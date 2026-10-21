@@ -82,3 +82,10 @@ export function isValidWaferMap(value: unknown, lotId: string): value is WaferMa
 
 /** Serial for the chip Malaysia packages, derived from the wafer and die identity. */
 export const chipSerial = (map: WaferMap, die: Die) => `${map.waferId}-${die.id.toUpperCase()}`;
+
+/** The passing die a chip serial refers to, or null if the serial doesn't match this map. */
+export const dieForSerial = (map: WaferMap, serial: string | null) =>
+  serial ? map.dies.find(d => d.status === 'pass' && chipSerial(map, d) === serial) ?? null : null;
+
+/** The TV's ID, derived from the chip installed in it. */
+export const tvSerialFor = (chip: string) => `TV-${chip}`;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { RouteStop, ROUTE_STOPS, StopId, CargoState } from './types/route';
-import { loadSavedCargo, saveCargoState, clearCargoState, resetFromTaiwan } from './services/storage';
+import { loadSavedCargo, saveCargoState, clearCargoState, resetFrom, takeMigrationNotice } from './services/storage';
 import { TitleScreen } from './components/TitleScreen';
 import { WorldMap } from './components/WorldMap';
 import { Workspace3D } from './components/Workspace3D';
@@ -12,6 +12,8 @@ export default function App() {
   const [view, setView] = useState<'title' | 'map' | 'workspace'>('title');
   const [activeStopId, setActiveStopId] = useState<StopId>(cargo.currentStopId);
   const [isMuted, setIsMuted] = useState<boolean>(sound.getMuted());
+  // Shown once when an old save had to be sent back to an earlier stop.
+  const [notice, setNotice] = useState<string | null>(() => takeMigrationNotice());
   const { isFullscreen, toggleFullscreen } = useFullscreen();
 
   // One music player for the whole game; changing screens never restarts the track.
@@ -40,9 +42,9 @@ export default function App() {
     sound.playStageClear();
 
     setCargo((prev) => {
-      // Replaying an earlier stop never moves progress backwards. Replaying Taiwan makes a new
-      // wafer map, so everything built from the old map (Malaysia onward) is cleared.
-      const base = activeStopId === 4 ? resetFromTaiwan(prev) : prev;
+      // Replaying an earlier stop never moves progress backwards. Taiwan, Malaysia and China make
+      // the map, the chip and the TV, so replaying one clears everything built from its old result.
+      const base = activeStopId >= 4 && activeStopId <= 6 ? resetFrom(activeStopId as 4 | 5 | 6, prev) : prev;
       const completed = Array.from(new Set([...base.completedStops, activeStopId]));
       const nextStopId = (Math.min(7, Math.max(base.currentStopId, activeStopId + 1))) as StopId;
 
@@ -52,7 +54,7 @@ export default function App() {
         completedStops: completed,
         currentStopId: nextStopId,
         completionMethod: {
-          ...prev.completionMethod,
+          ...base.completionMethod,
           [activeStopId]: isPlaceholder ? 'placeholder' : 'interactive'
         }
       };
@@ -112,6 +114,12 @@ export default function App() {
           isFullscreen={isFullscreen}
           onToggleFullscreen={toggleFullscreen}
         />
+      )}
+
+      {notice && view === 'map' && (
+        <button onClick={() => setNotice(null)} className="font-pixel fixed left-1/2 top-16 z-50 max-w-[90vw] -translate-x-1/2 border-4 border-[#1a0b02] bg-[#fcd34d] px-4 py-3 text-[10px] leading-relaxed text-[#1a0b02] shadow-[4px_4px_0_#1a0b02]">
+          {notice} <span className="opacity-60">(click to close)</span>
+        </button>
       )}
 
       {view === 'map' && (
