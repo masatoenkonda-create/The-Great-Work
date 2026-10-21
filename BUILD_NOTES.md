@@ -306,3 +306,13 @@ Placeholders: code-drawn panel and guide box, "A" portrait for Aiko, primitive g
 - Specified stable wafer/die IDs and orientation, 40 active positions in a 6x8 teaching layout, field exposure capture, derived counts, versioned save migration, exact Malaysia map consumption and replay invalidation. These remain design proposals; no map/schema/reader is implemented in this pass. Added reusable workflow checks for committed errors and positional result handoffs.
 
 Checked: code/document inspection, primary-source research, PDF metadata/text and three rendered reference pages. Poppler emitted annotation/font-substitution warnings; inspected pages were readable. No application code or game assets changed; no build/tests/playthrough run. No exact TSMC line, chip design, process recipe or calibrated yield equation claimed.
+
+## Taiwan workshop built + saved wafer map - Claude, 21 October 2026
+
+- Reviewed Codex's Taiwan research, plan and wafer-map contract (accepted; decisions at the end of research/taiwan/WORKSHOP_PLAN.md).
+- New Taiwan workshop: load, automatic first layer, align and expose four fields (small offsets fail their field, large ones are blocked), finish the layers, probe test, ship or retry with a new wafer. Live layer-detail and wafer-map insets.
+- First real carried result: `waferMap` saved with the stop (save format v2, validated, old saves migrated back to Taiwan with a backup). Malaysia now picks only dies that passed this map, with a wafer-derived serial. Replaying an earlier stop no longer rewinds progress; replaying Taiwan clears stops 5–7.
+- Mei's dialogue: unsourced comparisons removed; "photomask set".
+
+Tested: `npm run lint` passes; `bun test src` 24/24 (controls for all four workshops, wafer map, save migration). Not tested: anything in the browser (user tests), loading a real old save in a browser, Malaysia's picker on screen.
+Placeholders: code-drawn panel, insets and guide box, "M" portrait for Mei, primitive geometry, compressed times. No on-screen notice yet when an old save is sent back to Taiwan.

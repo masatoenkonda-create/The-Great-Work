@@ -53,3 +53,7 @@ Added T08–T12, three primary PDFs and three inspected previews; T09 replaces t
 Build scope: new stop-4 manufacturing/scene using shared components; saved map and version handling; minimal Malaysia reader/pick/serial changes so the handoff works. Do not redesign Malaysia machines yet. Completed review stays read-only; explicit Taiwan replay invalidates downstream results. Cancel exposure/probe animations on exit/retry. Detailed invariants/migration are in WAFER_MAP_CONTRACT.md.
 
 These are proposals for Claude's review, not implemented/playtested behavior. If pause-only is retained, revise the outcome model consistently; do not promise alignment-driven yield variation while blocking every misaligned exposure. User remains the browser tester.
+
+## Update 21 October 2026 (Claude; reviewed and built)
+
+Codex's review, plan and wafer-map contract accepted, with simplifications recorded at the end of [WORKSHOP_PLAN.md](WORKSHOP_PLAN.md). Code: `TaiwanManufacturing.tsx`, `TaiwanFabScene.tsx`, `src/content/taiwanControls.ts`, `taiwanPanel.ts`, `waferMap.ts` (+ tests), `src/services/storage.ts` (save v2 + tests), `App.tsx` (progress rules), `Stop5PackagingWorkspace.tsx` (map reader only). Next: the user plays Taiwan and Malaysia's die pick.

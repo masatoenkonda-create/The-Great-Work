@@ -132,16 +132,16 @@ export const STAGE_INTROS: Partial<Record<StopId, StageIntroScript>> = {
     items: [
       { id: 'wafers', name: 'Blank wafers', note: 'Mirror-polished discs from Japan. Hold them by the edge only.', color: '#e2e8f0', x: 200 },
       { id: 'resist', name: 'Photoresist', note: 'Light-sensitive coating, spun onto the wafer.', color: '#f59e0b', x: 560 },
-      { id: 'mask', name: 'Photomask', note: 'The circuit pattern that light projects onto the resist.', color: '#0f766e', x: 1250 }
+      { id: 'mask', name: 'Photomask set', note: 'One pattern per layer; light projects it onto the resist.', color: '#0f766e', x: 1250 }
     ],
     lines: [
       { speaker: 'player', text: 'Mirror-polished wafers from Japan!' },
-      { speaker: 'guide', text: 'Beautiful. Now we print billions of transistors on them. Smaller than a virus.' },
+      { speaker: 'guide', text: 'Beautiful. Now we build the circuits on them, one patterned layer at a time.' },
       { speaker: 'guide', text: 'First, the blank wafers. Handle them by the edge, never the face.', reveal: 'wafers' },
       { speaker: 'guide', text: 'Second, photoresist. A light-sensitive coating, spun onto the wafer.', reveal: 'resist' },
-      { speaker: 'guide', text: 'Third, the photomask. The circuit pattern, which light projects onto the resist.', reveal: 'mask' },
+      { speaker: 'guide', text: "Third, the photomasks. Each holds one layer's pattern, which light projects onto the resist.", reveal: 'mask' },
       { speaker: 'player', text: "So it's... photography?" },
-      { speaker: 'guide', text: 'Photography with machines the size of a bus. Then etch, and repeat, layer after layer.' },
+      { speaker: 'guide', text: 'Like photography, then chemistry. And a lot of repetition.' },
       { speaker: 'guide', text: `${WALK_HINT} Bring all three to the line.` }
     ],
     readyLine: 'Ready. Pattern the wafer, then we probe every chip to see which ones work.'

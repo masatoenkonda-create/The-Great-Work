@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { CargoState } from '../types/route';
 import { CheckCircle2, AlertCircle, ArrowRight, ShieldCheck, Scissors, Cpu, Zap, Microscope } from 'lucide-react';
 import { sound } from '../services/audio';
+import { chipSerial } from '../content/waferMap';
 
 interface Stop5PackagingWorkspaceProps {
   cargo: CargoState;
@@ -22,7 +23,8 @@ export const Stop5PackagingWorkspace: React.FC<Stop5PackagingWorkspaceProps> = (
   const [isDiced, setIsDiced] = useState<boolean>(false);
 
   // Substep 2: Pick good die
-  const [selectedDieIndex, setSelectedDieIndex] = useState<number | null>(null);
+  const map = cargo.waferMap;
+  const [selectedDieId, setSelectedDieId] = useState<string | null>(null);
   const [diePicked, setDiePicked] = useState<boolean>(false);
   const [pickError, setPickError] = useState<string | null>(null);
 
@@ -38,7 +40,7 @@ export const Stop5PackagingWorkspace: React.FC<Stop5PackagingWorkspaceProps> = (
   const [clockSpeedPass, setClockSpeedPass] = useState<boolean>(false);
   const [thermalCyclePass, setThermalCyclePass] = useState<boolean>(false);
   const [testComplete, setTestComplete] = useState<boolean>(false);
-  const [assignedSerial, setAssignedSerial] = useState<string>('CHIP-LOT26-D28');
+  const [assignedSerial, setAssignedSerial] = useState<string>('');
 
   const handleCut = (axis: 'h' | 'v') => {
     sound.playClink();
@@ -59,17 +61,20 @@ export const Stop5PackagingWorkspace: React.FC<Stop5PackagingWorkspaceProps> = (
     }
   };
 
-  const handleSelectDie = (dieIndex: number) => {
-    // Indices 0, 7, 40, 47 are defective edge dies identified in Stop 4
-    if (dieIndex === 0 || dieIndex === 7 || dieIndex === 40 || dieIndex === 47) {
+  // Only dies that passed Taiwan's probe test (the saved wafer map) can be picked.
+  const handleSelectDie = (id: string) => {
+    const die = map?.dies.find(d => d.id === id);
+    if (!map || !die || die.status !== 'pass') {
       sound.playProbePing(false);
-      setPickError(`Die #${dieIndex + 1} was marked DEFECTIVE during Taiwan wafer probe. You must pick a verified good die.`);
+      setPickError(die?.status === 'fail'
+        ? `Die ${id.toUpperCase()} failed Taiwan's probe test. Pick a die that passed.`
+        : 'That position has no complete chip.');
       return;
     }
     sound.playSelect();
     setPickError(null);
-    setSelectedDieIndex(dieIndex);
-    setAssignedSerial(`CHIP-LOT26-D${dieIndex + 1}`);
+    setSelectedDieId(id);
+    setAssignedSerial(chipSerial(map, die));
     setDiePicked(true);
   };
 
@@ -119,7 +124,7 @@ export const Stop5PackagingWorkspace: React.FC<Stop5PackagingWorkspaceProps> = (
       <div className="p-3 bg-stone-100 border border-stone-200 rounded-xl text-[11px] text-stone-600">
         <strong className="text-stone-900 block font-sans">Ready-Made Packaging Materials:</strong>
         Package substrate carriers, gold bonding wire, and epoxy resin mold compound arrive pre-manufactured.
-        Material transformed: <strong>Tested wafer ({cargo.goodDiesCount || 44} good dies) $\rightarrow$ 1 released packaged chip</strong>.
+        Material transformed: <strong>{map ? `Tested wafer ${map.waferId} (${cargo.goodDiesCount} good dies)` : 'No tested wafer map yet: complete Taiwan first'} → 1 released packaged chip</strong>.
       </div>
 
       {/* 5 Substep Navigation Pills */}
@@ -256,31 +261,31 @@ export const Stop5PackagingWorkspace: React.FC<Stop5PackagingWorkspaceProps> = (
 
           {/* Die Selection Array */}
           <div className="p-3 bg-stone-950 rounded-xl flex flex-col items-center">
-            <div className="grid grid-cols-8 gap-1 p-2 bg-stone-900 rounded-lg">
-              {Array.from({ length: 48 }).map((_, idx) => {
-                const isDefect = idx === 0 || idx === 7 || idx === 40 || idx === 47;
-                const isSelected = selectedDieIndex === idx;
-
+            {!map && <p className="p-3 text-[11px] text-amber-300">No tested wafer map. Complete Taiwan's probe test first.</p>}
+            {map && <div className="grid grid-cols-8 gap-1 p-2 bg-stone-900 rounded-lg" aria-label={`Wafer map ${map.waferId}, notch down`}>
+              {map.dies.map(die => {
+                const isSelected = selectedDieId === die.id;
+                if (die.status === 'excluded') return <span key={die.id} className="w-5 h-5" aria-hidden="true" />;
                 return (
                   <button
-                    key={idx}
-                    onClick={() => handleSelectDie(idx)}
-                    className={`w-5 h-5 rounded-xs flex items-center justify-center text-[8px] font-mono font-bold transition-all cursor-pointer ${
+                    key={die.id}
+                    onClick={() => handleSelectDie(die.id)}
+                    className={`w-5 h-5 rounded-xs flex items-center justify-center text-[9px] font-mono font-bold transition-all cursor-pointer ${
                       isSelected
                         ? 'bg-amber-400 text-stone-950 ring-2 ring-white scale-110 z-10'
-                        : isDefect
+                        : die.status === 'fail'
                         ? 'bg-red-500 text-white'
                         : 'bg-emerald-600 hover:bg-emerald-500 text-white'
                     }`}
-                    title={`Die #${idx + 1} (${isDefect ? 'DEFECT' : 'GOOD'})`}
+                    title={`Die ${die.id.toUpperCase()} (${die.status === 'pass' ? 'passed' : 'failed'} probe test)`}
                   >
-                    {isDefect ? '✗' : idx + 1}
+                    {die.status === 'fail' ? '✗' : '✓'}
                   </button>
                 );
               })}
-            </div>
+            </div>}
             <div className="text-[10px] text-stone-400 font-mono mt-2">
-              Green = Verified Good Dies · Red = Defective Edge Dies
+              Taiwan's probe map · Green ✓ = passed · Red ✗ = failed · notch down
             </div>
           </div>
 
@@ -296,7 +301,7 @@ export const Stop5PackagingWorkspace: React.FC<Stop5PackagingWorkspaceProps> = (
               onClick={() => changeSubstep('wire')}
               className="w-full py-2 bg-stone-800 hover:bg-stone-900 text-white font-bold rounded-lg transition flex items-center justify-center gap-1.5 cursor-pointer text-xs"
             >
-              <span>Die #{selectedDieIndex! + 1} Attached to Carrier ✓ Advance to Wire Bonding</span>
+              <span>Die {selectedDieId?.toUpperCase()} Attached to Carrier ✓ Advance to Wire Bonding</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           )}

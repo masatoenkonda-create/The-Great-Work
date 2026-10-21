@@ -1,3 +1,5 @@
+import type { WaferMap } from '../content/waferMap';
+
 /**
  * Definitions for the 7-stop worldwide chip journey
  * Exact route: Norway -> Germany -> Japan -> Taiwan -> Malaysia -> China mainland -> User
@@ -32,6 +34,8 @@ export interface RouteStop {
 }
 
 export interface CargoState {
+  /** Save format version; 2 added the Taiwan wafer map. */
+  saveVersion: 2;
   lotId: string;
   currentStopId: StopId;
   completedStops: StopId[];
@@ -42,6 +46,8 @@ export interface CargoState {
   wafersProducedCount: number;       // Stop 3 output
   diesOnWaferCount: number;          // Stop 4 total dies
   goodDiesCount: number;             // Stop 4 good dies
+  /** Stop 4 tested wafer map; Malaysia picks only its passing dies. Null until Taiwan ships. */
+  waferMap: WaferMap | null;
   selectedChipSerial: string | null; // Stop 5 chosen good chip (lot-derived)
   phoneSerial: string | null;        // Stop 6 assembled phone (lot-derived)
   isPhoneOperational: boolean;       // Stop 6 & 7 test

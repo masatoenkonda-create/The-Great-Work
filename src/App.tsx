@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { RouteStop, ROUTE_STOPS, StopId, CargoState } from './types/route';
-import { loadSavedCargo, saveCargoState, clearCargoState } from './services/storage';
+import { loadSavedCargo, saveCargoState, clearCargoState, resetFromTaiwan } from './services/storage';
 import { TitleScreen } from './components/TitleScreen';
 import { WorldMap } from './components/WorldMap';
 import { Workspace3D } from './components/Workspace3D';
@@ -40,11 +40,14 @@ export default function App() {
     sound.playStageClear();
 
     setCargo((prev) => {
-      const completed = Array.from(new Set([...prev.completedStops, activeStopId]));
-      const nextStopId = (Math.min(7, activeStopId + 1)) as StopId;
-      
+      // Replaying an earlier stop never moves progress backwards. Replaying Taiwan makes a new
+      // wafer map, so everything built from the old map (Malaysia onward) is cleared.
+      const base = activeStopId === 4 ? resetFromTaiwan(prev) : prev;
+      const completed = Array.from(new Set([...base.completedStops, activeStopId]));
+      const nextStopId = (Math.min(7, Math.max(base.currentStopId, activeStopId + 1))) as StopId;
+
       const nextCargo: CargoState = {
-        ...prev,
+        ...base,
         ...updates,
         completedStops: completed,
         currentStopId: nextStopId,
