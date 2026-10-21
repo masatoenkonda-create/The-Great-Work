@@ -71,7 +71,7 @@ The core lesson: **a chip starts as one giant perfect crystal, grown slowly out 
 ## Existing game content checked against this pack
 
 - **Arrival dialogue (`dialogues.ts`, stop 3).** Mostly consistent: chunks melted above 1,400 °C, quartz crucible, seed dipped and pulled slowly while spinning, wire slicing and mirror polish. **One fix:** "A day or more for one ingot" → several days (J02: 3–4.5 days for a 2 m crystal).
-- **Old workshop (`Stop3WaferWorkspace.tsx`).** Slider screen. Melt 1,420 °C is sourced (J01, J02). Pull-rate window "1.0–1.4 mm/min" is not: J02 gives 0.4–1.2 and J03 "at or below 1 mm/min". "Roughness below 0.2 nm / atomic flatness" is unsourced (UNIFIED_OPINION.md asked for "mirror-polished"). The wire feed-tension control has no effect (UNIFIED_OPINION.md). To be replaced by the Norway/Germany-style workshop, not extended.
+- **Old workshop (`Stop3WaferWorkspace.tsx`).** Slider screen. Melt 1,420 °C is sourced (J01, J02). Pull-rate window "1.0–1.4 mm/min" is not: J02 gives 0.4–1.2 and J03 "at or below 1 mm/min". "Roughness below 0.2 nm / atomic flatness" is unsourced (docs/history/UNIFIED_OPINION.md asked for "mirror-polished"). The wire feed-tension control has no effect (docs/history/UNIFIED_OPINION.md). To be replaced by the Norway/Germany-style workshop, not extended.
 - **Route data (`route.ts`, stop 3).** Consistent. "Chemical-mechanically polish" is fine (J01: mechano-chemical polishing).
 
 ## Codex supplemental evidence

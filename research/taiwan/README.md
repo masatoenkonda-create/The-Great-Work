@@ -76,7 +76,7 @@ Used-equipment listings for Tokyo Electron's CLEAN TRACK LITHIUS (e.g. [Moov](ht
 
 - **Arrival dialogue (`dialogues.ts`, stop 4).** Consistent: blank wafers held by the edge, photoresist spun on, photomask projected, "etch, and repeat, layer after layer" (T01). "Billions of transistors" and "machines the size of a bus" are common descriptions; **to verify** with a source if kept.
 - **Old workshop (`Stop4CircuitWorkspace.tsx`).** Its mask-alignment task is the right idea (T01, T04), but the "Δ < 0.5 nm" readout and nm offsets are unsourced, and it produces a fixed count of 4 bad dies. To be replaced by the Norway-style workshop.
-- **Cargo state.** `diesOnWaferCount` and `goodDiesCount` exist, but no die-by-die map. UNIFIED_OPINION.md asks for one saved wafer map that Malaysia reuses; today Malaysia invents its own.
+- **Cargo state.** `diesOnWaferCount` and `goodDiesCount` exist, but no die-by-die map. docs/history/UNIFIED_OPINION.md asks for one saved wafer map that Malaysia reuses; today Malaysia invents its own.
 - **Route data.** Consistent ("coat resist, expose, plasma etch, probe-test dies").
 
 ## Codex supplemental records

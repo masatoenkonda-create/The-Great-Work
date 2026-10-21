@@ -32,7 +32,7 @@ Started 21 October 2026 by Claude. **Status: independent research and proposed p
 | D03 | Chain to show: tape-mount → blade dicing → **map-driven pick of a good die** → die attach → **wire bonding** → transfer molding → cure, mark, balls → **final test** → pack | M02–M07 |
 | D04 | The pick reads **Taiwan's saved `waferMap`** (already wired); only `pass` dies can be picked; coordinates and notch exactly as Taiwan | M03 (SEMI E142 shared coordinates); WAFER_MAP_CONTRACT.md |
 | D05 | Main visuals: the blade cutting streets with water spray; the bonder drawing a fan of wire loops from die to substrate; the black mold closing over it | Answers "what does it look like" |
-| D06 | Text fixes: no "hermetic seal" (say "protected in molded resin"); no clock-speed or thermal readouts in final test | M05; UNIFIED_OPINION.md |
+| D06 | Text fixes: no "hermetic seal" (say "protected in molded resin"); no clock-speed or thermal readouts in final test | M05; docs/history/UNIFIED_OPINION.md |
 | D07 | Old `Stop5PackagingWorkspace.tsx` replaced, keeping only its map-driven pick logic | Button-count dicing, wrong seal claim, unsourced test values |
 | D08 | Output to China: one packaged chip with its wafer-derived serial (`selectedChipSerial`) | Existing state; China reads it |
 

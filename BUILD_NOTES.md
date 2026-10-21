@@ -371,3 +371,11 @@ Placeholders: code-drawn panel, insets and guide boxes, "X" and "S" portraits, p
 - Restored the nine deleted entries unchanged in their original place.
 - Added a six-line **hand-over checklist** to WORKSHOP_WORKFLOW.md (labels, no vague words, test result lines, logs only grow, `git diff --stat` before committing the other agent's work, one-page plans) and clarified that "read" means the cited passage, not the whole paper. CLAUDE.md and CODEX.md point to it.
 - Both agents' self-audits are the starting list for tomorrow's quality pass.
+
+## End-of-day cleanup - Claude, 21 October 2026
+
+- `Workspace3D.tsx` reduced from 908 to ~65 lines: it now only shows the arrival scene, then routes each stop to its workshop (Escape returns to the map). The old procedural 3D stage and phone/old-level panels were unreachable since every stop got its own workshop.
+- Removed the six unused old workshops (`Stop1SmelterWorkspace` … `Stop6AssemblyWorkspace`) and the unused `src/content/stops.ts` and `src/types/game.ts`; research notes that mention them describe history. Removed the empty `tmp/` folder.
+- Moved `CLAUDE_OPINION.md`, `CODEX_OPINION.md` and `UNIFIED_OPINION.md` to `docs/history/` and updated the mentions in GUIDELINES.md and the research files. GUIDELINES.md title now says Supply Chain Gang.
+
+Tests: `npm run lint` passes; `bun test src` 33 pass; `npm run build` "built in 511ms" (existing bundle-size warning). Not run: browser.

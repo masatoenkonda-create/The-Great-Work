@@ -23,7 +23,7 @@ Started 21 October 2026 by Claude. **Status: research step open. Waiting for Cod
 | D03 | The chain to represent: powder + HCl → liquid trichlorosilane → distillation → rods grow in reactor → break → acid clean → double bag | Every link is sourced (G01–G07). The plan decides which links are player steps and which are short animations |
 | D04 | Main visual is the **rods growing thicker** inside a glowing dome (cutaway or sight-glass view) | It's the one transformation nobody expects: silicon grown back from a gas. Answers "how" and "what does it look like" |
 | D05 | Puzzle candidates must come from real controls: **rod temperature** and **gas flow** (G05) | Norway rule: every control has a real effect. Sliders for reflux ratio etc. are out |
-| D06 | Numbers allowed on screen: ~1,100 °C rods; "several days" (game time compressed); purity as a toy scale | Sourced (G01, G03) or explicitly a game scale (UNIFIED_OPINION.md asks for a toy contamination scale) |
+| D06 | Numbers allowed on screen: ~1,100 °C rods; "several days" (game time compressed); purity as a toy scale | Sourced (G01, G03) or explicitly a game scale (docs/history/UNIFIED_OPINION.md asks for a toy contamination scale) |
 | D07 | The old `Stop2PurifyWorkspace.tsx` is replaced, not extended | Unsourced values and the ppm/ppb counter bug; Norway pattern supersedes it |
 | D08 | Output carried to Japan: polysilicon chunks + a toy purity label | WORKSHOP_WORKFLOW.md results chain; `polysiliconBatchKg` stays for compatibility |
 

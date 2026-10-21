@@ -32,7 +32,7 @@ Started 21 October 2026 by Claude. **Status: Codex review, independent research 
 | D04 | Main visuals: stencil/squeegee deposits; oriented placement and small self-centering during reflow; enclosed convection conveyor with cooling; X-ray inset showing balls and representative internal wires; TV assembly and picture/audio payoff | C13 §3.3, Fig. 7; C14; Codex review |
 | D05 | Proposed puzzle: **heat setting and belt speed**, producing a predicted board profile with derived peak/exposure. Inadequate exposure risks incomplete reflow/wetting; excessive exposure risks warpage/flux exhaustion. Head-in-pillow can occur despite both solders melting. Gate before feed; no damage/healing loop or universal numeric recipe | C09–C11, C13, C18; Codex review |
 | D06 | Final checks: **power on → aging → picture calibration → inspection**; no invented "bus comms" diagnostics | C05 |
-| D07 | IDs: TV ID derived from Malaysia's chip serial; no "A18" | UNIFIED_OPINION.md |
+| D07 | IDs: TV ID derived from Malaysia's chip serial; no "A18" | docs/history/UNIFIED_OPINION.md |
 | D08 | Old `Stop6AssemblyWorkspace.tsx` replaced, not extended | Phone checklist, unsourced diagnostics, Apple-style serial |
 | D09 | Text changes needed (with the build): arrival items and Xiao Lin's lines to TV parts; route stop 6 name/pitch/summary to TV; USA arrival items and lines to TV delivery; `phoneSerial` / `isPhoneOperational` to TV equivalents with save migration | README "Existing game content" |
 | D10 | Codex proposal: generic LED-backlit LCD architecture; do not identify our wire-bonded package as a verified named TV SoC | C15/C17 limits; CODEX_REVIEW.md |

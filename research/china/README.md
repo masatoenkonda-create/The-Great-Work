@@ -149,7 +149,7 @@ All saved reference diagrams/photos are research evidence for original geometry,
 ## Existing game content checked against this pack
 
 - **Arrival dialogue (`dialogues.ts`, stop 6)** is about a **phone** (logic board, display, battery, "flies to America"). Must change to TV parts: packaged chip, main board, panel, power board (or back cover). The SMT line ("paste, then the chip, then the reflow oven") is correct.
-- **Old workshop (`Stop6AssemblyWorkspace.tsx`).** Phone chassis checklist, unsourced "power rail / bus comms / display sync" diagnostics, serial `PHONE-A18-8842` (Apple-style, flagged in UNIFIED_OPINION.md). To be replaced.
+- **Old workshop (`Stop6AssemblyWorkspace.tsx`).** Phone chassis checklist, unsourced "power rail / bus comms / display sync" diagnostics, serial `PHONE-A18-8842` (Apple-style, flagged in docs/history/UNIFIED_OPINION.md). To be replaced.
 - **Route (`route.ts`, stop 6).** "China · Phone", "Build a phone around the chip", Zhengzhou, phone outputs. Change to TV; Zhengzhou is phone-specific (Codex: pick a TV-manufacturing location or keep it region-level).
 - **USA stop.** Arrival items are a phone box, charging cable and SIM card: must become TV delivery and set-up, matching the story ending (plug in, the TV works).
 - **Carried input.** `selectedChipSerial` from Malaysia. The TV's ID should be derived from it. `phoneSerial` and `isPhoneOperational` in the save are phone-named and need a TV equivalent or rename (with migration).

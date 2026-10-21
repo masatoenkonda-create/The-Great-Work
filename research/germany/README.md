@@ -78,7 +78,7 @@ Patents on trichlorosilane production, e.g. [US 10294109 B2, primary distillatio
 ## Existing game content checked against this pack
 
 - **Arrival dialogue (`src/content/dialogues.ts`, stop 2).** Mostly consistent: powder, hydrogen chloride → trichlorosilane, distillation, hydrogen and hot rods, ~1,100 °C. One fix: Greta's "We need 99.9999999 %" (nine nines) understates G02's figure (over 99.9999999999 %). See HANDOFF.
-- **Old workshop (`src/components/Stop2PurifyWorkspace.tsx`).** Slider screen with unsourced values (reflux ratio, 1080–1120 °C window, multiplied ppm→ppb counter flagged in UNIFIED_OPINION.md). The 280–340 °C hydrochlorination window is roughly in line with G04 but should not be carried over as a recipe. To be replaced by the Norway-style workshop, not extended.
+- **Old workshop (`src/components/Stop2PurifyWorkspace.tsx`).** Slider screen with unsourced values (reflux ratio, 1080–1120 °C window, multiplied ppm→ppb counter flagged in docs/history/UNIFIED_OPINION.md). The 280–340 °C hydrochlorination window is roughly in line with G04 but should not be carried over as a recipe. To be replaced by the Norway-style workshop, not extended.
 - **Route data (`src/types/route.ts`).** `summary` says trichlorosilane "gas"; G01 says liquid (it is distilled as a liquid and fed as vapour). Minor wording fix.
 
 ## Codex supplemental records and visual inspection

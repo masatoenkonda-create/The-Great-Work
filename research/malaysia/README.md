@@ -53,7 +53,7 @@ The core lesson: **the chip you know (the black square) is mostly protection and
 
 **Supports:** epoxy molding compound is pushed by a plunger into a heated mold around the dies and wires (typically about 170–190 °C, 15–20 s transfer, partial cure in the mold); post-mold cure around 175 °C for 4–6 hours in an oven.
 
-**Limits:** typical values from training material and patents; vary by compound. **Plastic molding is not a hermetic seal** (UNIFIED_OPINION.md: say "protected in molded resin").
+**Limits:** typical values from training material and patents; vary by compound. **Plastic molding is not a hermetic seal** (docs/history/UNIFIED_OPINION.md: say "protected in molded resin").
 
 ### M06 — Final test, binning and packing
 
