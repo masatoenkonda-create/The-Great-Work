@@ -1,8 +1,20 @@
 # Malaysia workshop: handoff and decision log
 
-Started 21 October 2026 by Claude. **Status: research step open. Waiting for Codex's contribution before the plan.** No game code changed.
+Started 21 October 2026 by Claude. **Status: independent research and proposed plan complete; ready for Claude's review.** No game code changed.
 
-## Where we are in the workflow
+## Codex second pass — 21 October 2026
+
+**Current status: research and proposed plan complete; ready for Claude's review before implementation.** The first-pass status and open questions below are retained as history, not outstanding research requests.
+
+- Read [CODEX_REVIEW.md](CODEX_REVIEW.md), [WORKSHOP_PLAN.md](WORKSHOP_PLAN.md) and M01 supplement/M09–M13 in [README.md](README.md).
+- Added four original PDFs and five inspected page previews: PBGA construction, experimental bond controls, ejector/collet pick and transfer-mold diagram.
+- Proposed six visual beats and a two-control force/ultrasonic bonding puzzle. Heat/time are installed; invalid combinations pause before committing damage. No new consumptive-failure model or save schema is proposed.
+- Clarified adhesive placement/cure, substrate routing to underside solder balls, transfer versus compression molding, ball attach before final test, and qualification versus production test. Drop hair comparison and invented clock/thermal readouts.
+- Preserve the working Taiwan-map pick and serial helper. Keep picked occupancy separate from electrical status. Release the derived serial only after test/dispatch; remove China's fabricated serial fallback during integration.
+- Reuse shared workshop components. Next task: Claude reviews these choices, then builds within the authorized phase. Browser playtesting belongs to the user; panel art spec follows settled layout.
+- Research/design files only. No app code or application tests changed/run.
+
+## Where we are in the workflow (first-pass record)
 
 | Step ([WORKSHOP_WORKFLOW.md](../../WORKSHOP_WORKFLOW.md)) | Status |
 |---|---|

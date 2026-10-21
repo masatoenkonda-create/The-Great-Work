@@ -262,4 +262,6 @@ Taiwan workshop research is in the [Taiwan evidence pack](research/taiwan/README
 
 ## Malaysia research - 21 October 2026
 
+Codex's second pass adds M09–M13 and an M01 construction supplement, the [independent review](research/malaysia/CODEX_REVIEW.md) and [proposed workshop plan](research/malaysia/WORKSHOP_PLAN.md). Four original PDFs and five inspected previews strengthen wire-bond controls, ejector/collet pickup, PBGA routing/contacts and transfer molding. The proposal preserves Taiwan's actual map, distinguishes picked occupancy from test status, and avoids unsupported final-test metrics. Research/design only; no application changes in this pass.
+
 Malaysia workshop research is in the [Malaysia evidence pack](research/malaysia/README.md) (records M01–M08: wire-bonded plastic BGA, wafer mounting and blade dicing, SEMI E142 wafer maps driving the die pick, ball-and-stitch wire bonding, transfer molding and cure, final test and binning, marking and solder balls, Malaysia's assembly/test share), with decisions and open questions in [research/malaysia/HANDOFF.md](research/malaysia/HANDOFF.md). It extends R15 without changing its ID.

@@ -56,6 +56,11 @@ Germany's second research pass added these reusable checks:
 
 ## Rules that apply to every level
 
+Malaysia's second pass adds two review checks:
+
+- **Keep test result and physical availability separate.** A passing die that has been picked is no longer on the tape, but its recorded electrical result has not changed to failed. Use separate occupancy/consumption data if retries consume material; never rewrite upstream test evidence to represent handling.
+- **Check the finished interface and the meaning of test.** Follow internal connections through to the contacts used at the next level. Separate production electrical checks, structural inspection and qualification/reliability testing; a quick functional PASS does not prove every lifetime property. Do not turn a supplier's qualification table into invented live measurements.
+
 **Scene**
 - Fixed orthographic isometric camera, plain background, readable lighting. Inputs, then tools, then machine, then output, arranged so the eye follows the process.
 - Cutaways show hidden transformations, but the machine still looks like the real one from outside.
