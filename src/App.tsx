@@ -14,6 +14,19 @@ export default function App() {
   const [isMuted, setIsMuted] = useState<boolean>(sound.getMuted());
   const { isFullscreen, toggleFullscreen } = useFullscreen();
 
+  // One music player for the whole game; changing screens never restarts the track.
+  useEffect(() => {
+    const startMusic = () => sound.startBackgroundMusic();
+    startMusic();
+    window.addEventListener('pointerdown', startMusic);
+    window.addEventListener('keydown', startMusic);
+    return () => {
+      window.removeEventListener('pointerdown', startMusic);
+      window.removeEventListener('keydown', startMusic);
+      sound.stopBackgroundMusic();
+    };
+  }, []);
+
   // Check if save data exists
   const hasSaveData = cargo.completedStops.length > 0 || cargo.currentStopId > 1;
 

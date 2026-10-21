@@ -16,6 +16,17 @@ export const ASSETS = {
 
   // Character and vehicle sprites
   workerSprite: '/assets/characters/worker.png',
+  menuMusic: '/assets/audio/music/menu-theme.mp3',
+  playerWalk: {
+    image: '/assets/characters/player/player-walk.png',
+    frameWidth: 64, frameHeight: 72, frameCount: 4,
+    anchorX: 32, anchorY: 69, characterHeight: 64, framesPerSecond: 7.142857,
+  },
+  norwayGuide: {
+    image: '/assets/characters/norway-guide/norway-guide.png',
+    frameWidth: 64, frameHeight: 72, frameCount: 1,
+    anchorX: 32, anchorY: 69, characterHeight: 64,
+  },
   vehicle: '/assets/map/vehicle.png',
 
   // Stage backdrops

@@ -1,16 +1,33 @@
 /**
- * Procedural Web Audio Synthesizer for 16-bit SNES style SFX & cozy ambient soundscapes
- * 100% procedural Web Audio API (zero external audio file dependencies)
+ * Shared background music player and procedural Web Audio sound effects.
  */
+import { ASSETS } from '../content/assets';
 
 class SoundEngine {
   private ctx: AudioContext | null = null;
   private isMuted: boolean = false;
-  private musicInterval: number | null = null;
   private masterGain: GainNode | null = null;
-  private ambienceGain: GainNode | null = null;
+  private backgroundMusic: HTMLAudioElement | null = null;
 
   constructor() {}
+
+  public startBackgroundMusic() {
+    if (!this.backgroundMusic) {
+      this.backgroundMusic = new Audio(ASSETS.menuMusic);
+      this.backgroundMusic.loop = true;
+      this.backgroundMusic.volume = 0.35;
+      this.backgroundMusic.preload = 'auto';
+    }
+    this.backgroundMusic.muted = this.isMuted;
+    if (this.backgroundMusic.paused) {
+      // Autoplay may be blocked on load; App retries on the first user gesture.
+      void this.backgroundMusic.play().catch(() => {});
+    }
+  }
+
+  public stopBackgroundMusic() {
+    this.backgroundMusic?.pause();
+  }
 
   private initContext() {
     if (!this.ctx) {
@@ -20,9 +37,6 @@ class SoundEngine {
       this.masterGain.gain.setValueAtTime(this.isMuted ? 0 : 0.7, this.ctx.currentTime);
       this.masterGain.connect(this.ctx.destination);
 
-      this.ambienceGain = this.ctx.createGain();
-      this.ambienceGain.gain.setValueAtTime(this.isMuted ? 0 : 0.12, this.ctx.currentTime);
-      this.ambienceGain.connect(this.masterGain);
     }
     if (this.ctx.state === 'suspended') {
       this.ctx.resume();
@@ -31,6 +45,10 @@ class SoundEngine {
 
   public toggleMute(): boolean {
     this.isMuted = !this.isMuted;
+    if (this.backgroundMusic) {
+      this.backgroundMusic.muted = this.isMuted;
+      if (!this.isMuted) this.startBackgroundMusic();
+    }
     if (this.masterGain && this.ctx) {
       this.masterGain.gain.setTargetAtTime(this.isMuted ? 0 : 0.7, this.ctx.currentTime, 0.05);
     }
@@ -41,45 +59,12 @@ class SoundEngine {
     return this.isMuted;
   }
 
-  /**
-   * Cozy ambient generator: Gentle pentatonic chime
-   */
+  /** Legacy screen hooks use the shared track; screen changes never stop it. */
   public startCozyAmbience() {
-    this.initContext();
-    if (this.musicInterval) return;
-
-    const scale = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25]; // Major pentatonic (C, D, E, G, A)
-
-    const playChime = () => {
-      if (this.isMuted || !this.ctx || !this.ambienceGain) return;
-      const freq = scale[Math.floor(Math.random() * scale.length)];
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
-
-      gain.gain.setValueAtTime(0.001, this.ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.08, this.ctx.currentTime + 0.1);
-      gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 3.0);
-
-      osc.connect(gain);
-      gain.connect(this.ambienceGain);
-
-      osc.start();
-      osc.stop(this.ctx.currentTime + 3.1);
-    };
-
-    playChime();
-    this.musicInterval = window.setInterval(playChime, 4500);
+    this.startBackgroundMusic();
   }
 
-  public stopCozyAmbience() {
-    if (this.musicInterval) {
-      clearInterval(this.musicInterval);
-      this.musicInterval = null;
-    }
-  }
+  public stopCozyAmbience() {}
 
   /**
    * Retro 16-bit UI select blip

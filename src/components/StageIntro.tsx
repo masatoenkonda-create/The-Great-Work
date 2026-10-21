@@ -3,6 +3,7 @@ import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { sound } from '../services/audio';
 import { RouteStop } from '../types/route';
 import { ArrivalItem, PLAYER_NAME, StageIntroScript } from '../content/dialogues';
+import { ASSETS } from '../content/assets';
 
 interface StageIntroProps {
   stop: RouteStop;
@@ -13,7 +14,8 @@ interface StageIntroProps {
   onReturnToMap: () => void;
 }
 
-// Scene geometry in backdrop pixels (1376x768). Characters are placeholders until real art arrives.
+// Scene geometry in backdrop pixels (1376x768).
+const FRAME_MS = 1000 / ASSETS.playerWalk.framesPerSecond;
 const BODY_W = 64;
 const BODY_H = 150;
 const MIN_X = 60;
@@ -74,7 +76,7 @@ export const StageIntro: React.FC<StageIntroProps> = ({ stop, lotId, backdrop, s
     const tick = (now: number) => {
       const t = Math.min(1, (now - start) / WALK_MS);
       movePlayer(startX + (script.playerEndX - startX) * t);
-      setStep(Math.floor((now - start) / 150) % 2);
+      setStep(Math.floor((now - start) / FRAME_MS) % ASSETS.playerWalk.frameCount);
       if (t < 1) raf = requestAnimationFrame(tick);
       else setMode('talk');
     };
@@ -113,7 +115,7 @@ export const StageIntro: React.FC<StageIntroProps> = ({ stop, lotId, backdrop, s
       if (dir !== 0) {
         movePlayer(Math.max(MIN_X, Math.min(MAX_X, xRef.current + dir * SPEED * dt)));
         setFacing(dir > 0 ? 1 : -1);
-        setStep(Math.floor(now / 150) % 2);
+        setStep(Math.floor(now / FRAME_MS) % ASSETS.playerWalk.frameCount);
       } else {
         setStep(0);
       }
@@ -276,18 +278,20 @@ export const StageIntro: React.FC<StageIntroProps> = ({ stop, lotId, backdrop, s
               </g>
             ))}
 
-            <PlaceholderCharacter
+            <SceneCharacter
               x={script.guideX}
               feetY={feetY}
               label={script.guideName}
+              sprite={stop.id === 1 ? ASSETS.norwayGuide : undefined}
               color="#c9772f"
               facing={playerX < script.guideX ? -1 : 1}
               talking={speaking === 'guide'}
             />
-            <PlaceholderCharacter
+            <SceneCharacter
               x={playerX}
               feetY={feetY}
               label={PLAYER_NAME}
+              sprite={ASSETS.playerWalk}
               color="#2f6fd6"
               facing={facing}
               talking={speaking === 'player'}
@@ -383,6 +387,40 @@ export const StageIntro: React.FC<StageIntroProps> = ({ stop, lotId, backdrop, s
 };
 
 /** Stand-in figure until real character art arrives */
+function SceneCharacter(props: Parameters<typeof PlaceholderCharacter>[0] & {
+  sprite?: {
+    image: string; frameWidth: number; frameHeight: number; frameCount: number;
+    anchorX: number; anchorY: number; characterHeight: number;
+  };
+}) {
+  const [failed, setFailed] = useState(false);
+  const { sprite, x, feetY, label, facing, talking, bob = 0 } = props;
+  if (!sprite || failed) return <PlaceholderCharacter {...props} />;
+  const scale = 3;
+  const frame = bob % sprite.frameCount;
+  return (
+    <g pointerEvents="none" aria-label={label}>
+      <ellipse cx={x} cy={feetY - 2} rx="40" ry="9" fill="#000" fillOpacity="0.45" />
+      <g transform={`translate(${x} ${feetY})`}>
+        <g className={talking ? 'sprite-talk' : undefined}>
+          <g transform={`scale(${facing} 1)`}>
+            <svg
+              x={-sprite.anchorX * scale} y={-sprite.anchorY * scale}
+              width={sprite.frameWidth * scale} height={sprite.frameHeight * scale}
+              viewBox={`${frame * sprite.frameWidth} 0 ${sprite.frameWidth} ${sprite.frameHeight}`}
+              overflow="hidden"
+            >
+              <image href={sprite.image} width={sprite.frameWidth * sprite.frameCount} height={sprite.frameHeight}
+                style={{ imageRendering: 'pixelated' }} onError={() => setFailed(true)} />
+            </svg>
+          </g>
+        </g>
+      </g>
+      <text x={x} y={feetY - sprite.characterHeight * scale - 16} textAnchor="middle" fontSize="18" fontWeight="bold" fill="#fff" stroke="#000" strokeWidth="4" paintOrder="stroke">{label}</text>
+    </g>
+  );
+}
+
 function PlaceholderCharacter({
   x,
   feetY,

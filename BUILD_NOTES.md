@@ -129,3 +129,19 @@ Untested: full gather run on stops 2, 4-7 (same code path as Japan); touch and p
 ## Fullscreen preference - 20 October 2026
 - Removed automatic fullscreen from New Game and Continue. Manual fullscreen controls remain available.
 - Tested: TypeScript check passed. Untested: browser interaction in this small change. Stubbed / placeholder: none added.
+
+## Supplied player, Sigurd, and background music integration - 20 October 2026
+
+- Added supplied MP3 and character sheets to the asset manifest. Player: four 64x72 cells at ~7.14 FPS, right-facing with horizontal mirroring. Sigurd: one 64x72 explaining pose, used only for Norway. Both use the supplied (32,69) foot anchor, 3x scene scale and pixelated rendering.
+- Player sheet replaces arrival/exploration placeholders across stages. Walking advances frames; stopped characters keep a static frame. Norway uses the supplied guide; other guides retain placeholders. Dialogue, material gathering and workshop progression are preserved.
+- Shared looping background track continues through title, map, arrivals and workshops without restarting at screen transitions. Browser-blocked autoplay retries on click/keypress. Existing sound toggle mutes music and SFX; removed the procedural chime layer. No fullscreen changes.
+
+Tested:
+- TypeScript and production build passed (existing bundle-size warning).
+- Focused browser check: title -> map -> Norway arrival; supplied player and Sigurd render on the floor; no runtime errors.
+
+Untested:
+- Full campaign replay, audible loop seam, and music mute/unmute across every screen.
+
+Stubbed / placeholder:
+- Sigurd has one supplied pose, with the existing subtle talking motion; no mouth-animation sheet was supplied. Other country guides and material piles retain their placeholders.
