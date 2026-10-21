@@ -1,8 +1,8 @@
 # China workshop: TV main board and TV assembly evidence pack
 
-Research by Claude, 21 October 2026, following [WORKSHOP_WORKFLOW.md](../../WORKSHOP_WORKFLOW.md) steps 1–2. **Research only; no plan or code yet.** The user decided China builds a **TV** (HANDOFF D02). Codex is invited to add records from C17 onward and challenge these. Decisions and open questions: [HANDOFF.md](HANDOFF.md).
+Research by Claude, 21 October 2026, following [WORKSHOP_WORKFLOW.md](../../WORKSHOP_WORKFLOW.md) steps 1–2. **Codex's independent review and proposed plan are complete; no application code changed in this pass.** The user decided China builds a **TV** (HANDOFF D02). Read [CODEX_REVIEW.md](CODEX_REVIEW.md), [WORKSHOP_PLAN.md](WORKSHOP_PLAN.md) and [TV_HANDOFF_CONTRACT.md](TV_HANDOFF_CONTRACT.md). Current status: [HANDOFF.md](HANDOFF.md).
 
-**Revision note.** A first pass earlier the same day relied on web searches and industry blogs only. The user rejected it as too thin. This second pass is built on primary documents. Seven PDFs are saved in `sources/` and were read with pdftotext; one key figure is rendered in `previews/`. Blog-only claims are now marked as leads, not evidence.
+**Revision note.** A first pass earlier the same day relied on web searches and industry blogs only. The user rejected it as too thin. This second pass is built on primary documents. Claude saved seven PDFs in `sources/` and read them with pdftotext, with one key figure rendered in `previews/`. Codex's supplement adds two PDFs and four inspected previews below. Blog-only claims are now marked as leads, not evidence.
 
 ## What the research says, in player terms
 
@@ -10,7 +10,7 @@ Research by Claude, 21 October 2026, following [WORKSHOP_WORKFLOW.md](../../WORK
 |---|---|---|
 | **Why do I need this?** | A packaged chip on its own does nothing. It has to be soldered onto the TV's main circuit board, and that board built into a TV with a screen and power. | C01, C05 |
 | **Where does it come from?** | Malaysia's packaged chip (solder balls underneath), a bare main board, solder paste, and the TV's panel, power board and back cover. China produced about 207 million colour TVs in 2024. | C01, C06 |
-| **How do I do it?** | Print solder paste through a stencil → place the chip by camera → reflow oven: paste and balls melt together, and surface tension even pulls the chip straight → X-ray check of the joints hidden under the chip → build the board into the TV → power on → **aging** (run it to catch faults and settle the brightness) → calibrate the picture. | C01–C05, C09–C14 |
+| **How do I do it?** | Stencil-print paste → camera-guided placement of the chip and supporting parts → preheat/reflow/cool to join and solidify solder → X-ray the hidden connections → install and connect the board in a complete display module → powered stabilization, picture/audio checks and automatic adjustment → pack. | C01–C05, C09–C20 |
 | **What does it look like?** | Grey paste dots on a green board; the black chip set on top; a long glowing tunnel oven; an **X-ray picture** where the solder balls show as dark circles and the chip's thin bond wires (from Malaysia) are visible inside; then the board vanishing into the TV, and the screen lighting up. | C13 (Fig. 7), C05 |
 
 The core lesson: **the most important connections are hidden under the chip, so the factory looks at them with X-rays. And you can still see the gold wires you bonded in Malaysia.**
@@ -93,12 +93,56 @@ _X-ray Inspection of Voids in BGA Joints with Respect to IPC-7095A_, IPC APEX 20
 
 **Limits:** production (NBS) and shipments (TrendForce) are different measures; don't compute a share. Say "China builds a huge share of the world's TVs".
 
+## Codex primary-source supplement
+
+21 October 2026. Added two original PDFs, four new inspected page previews and manufacturer equipment/location references. The original seven PDFs and X-ray preview remain. The [review](CODEX_REVIEW.md) resolves the six handoff questions with explicit limits, rather than treating unavailable factory details as established facts.
+
+### C17 — TV-specific internal wiring and factory settings
+
+Haier, _LED TV Service Manual, MSD3393 chassis_, supplied through the Encompass service-document repository. [Manufacturer-authored PDF](https://research.encompass.com/HAI/sm/LE32F32200A.pdf), [saved copy](sources/C17-haier-lcd-tv-service.pdf), 53 PDF pages. The cover/extracted filename/model strings differ; identify this reference by chassis and hosted filename rather than asserting a clean exact-model match.
+
+**Inspected locators:** [PDF p.31 wiring photo](previews/C17-tv-wiring.png) and [PDF p.35 factory settings](previews/C17-factory-adjustment.png). Wiring distinguishes display data, backlight, speakers and control connections. Factory settings include aging and picture adjustments.
+
+**Limits:** historical service manual, not a current factory-line account or evidence of the chip's internal package. It illustrates integrated main/power electronics; our separate-board TV is a declared alternative architecture. Do not copy its service menu, access sequence or nominal test duration into player instructions.
+
+### C18 — Board profiling, prediction and validation are different things
+
+Bjorn Dahle (KIC) and Marc Peo (Heller), _The User Benefits of a Supplier Partnership_. [Supplier-hosted original](https://hellerindustries.com/wp-content/uploads/2022/04/supplier-partnership-benefits-1.pdf), [saved copy](sources/C18-heller-kic-profiling.pdf), [inspected PDF p.2](previews/C18-board-profiling.png). Publication is an older vendor-authored SMT article; the 2022 hosting path is not its demonstrated publication date.
+
+**Supports:** a profiled test board supplies a thermal curve; software predicts revised profiles; a validation run follows. Supplier/customer descriptions include blocking production unless the oven is in control. This is a useful physical basis for the game's pre-feed readiness gate.
+
+**Limits:** not a calibrated model for this TV board. A software preview is not a thermocouple measurement of an untouched production board. The game's heat/speed-to-curve relation and working bands remain declared teaching assumptions. Also see [Heller's current monitoring description](https://hellerindustries.com/software), distinguishing simulated profiles and thermocouple-assisted monitoring.
+
+### C19 — Printer and placement geometry from the equipment maker
+
+[Yamaha YRP10 printer](https://global.yamaha-motor.com/business/smt/printer/yrp10/) and [YRM20 surface mounter](https://global.yamaha-motor.com/business/smt/mounter/yrm20/), consulted 21 October 2026. Manufacturer pages include external-machine references and describe stencil/squeegee printing, camera-based placement checks and conveyor handling.
+
+**Use:** original simple geometry for an enclosed printer, squeegee over supported PCB and a camera/vacuum placement head taking the incoming chip from its tray. C13 remains the BGA-specific source for ball recognition and placement.
+
+**Limits:** not evidence that the fictional factory uses these models; no claimed throughput/precision or need to reproduce dual lanes. Images were consulted as web references, not downloaded as game art or claimed as inspected PDF pages.
+
+### C20 — A sourced TV-manufacturing setting
+
+[TCL's own company/recruitment account](https://zhaopin.tcl.com/en/), MOKA company section, consulted 21 October 2026: MOKA makes smart TVs and lists Huizhou and Chengdu among its manufacturing bases. Supports choosing **Huizhou, Guangdong** instead of the old phone-focused Zhengzhou setting.
+
+**Limits:** corporate description supports the place/industry, not the exact assembly order, chip supplier or export route. Hisense Qingdao factory accounts also appeared in search indexing, but their direct page requests returned 404; they are not used here to certify a particular current factory process.
+
+### C09/C11/C13 corrections after independent inspection
+
+- Head-in-pillow means ball/paste failed to coalesce even though both melted. Below-liquidus or inadequate exposure should be called incomplete reflow/wetting risk, not automatically head-in-pillow.
+- [C11 PDF p.2 profile preview](previews/C11-profile-phases.png) was rendered and inspected: belt speed contributes to the heating history. Use heat/speed as controls; peak and time above liquidus are outcomes. General paste guidance is not a qualified board recipe.
+- [C13's existing Figure 7 preview](previews/C13-xray-14.png) was independently inspected: balls, fine wires and vias are visible. Section 6.2 says some broken joints are difficult to detect. The image cannot certify electrical operation or guarantee all defects are absent.
+- Self-alignment is bounded by correct placement/footprint and orientation. It does not repair wrong pin mapping. The reflow process must include cooling before handling.
+- C05's monitor process remains useful comparative evidence. C17 strengthens TV-specific construction and factory-adjustment evidence, but a Chinese maker's complete station sequence and our precise TV SoC package remain unverified. The proposed plan labels both as representative choices.
+
+All saved reference diagrams/photos are research evidence for original geometry, not assets cleared for redistribution in the game. No new game art was generated.
+
 ## First-pass records (kept as leads)
 
 - **C01 SMT sequence:** [Auburn University EMRL](https://emrl.auburn.edu/?p=789) (university lab: stencil printer, 8-zone nitrogen reflow oven, optical inspection before and X-ray after reflow) plus industry blogs. Now backed by C13.
 - **C02 Reflow temperatures:** vendor/blog notes (peak about 240–250 °C, 40–90 s above 217 °C; J-STD-020 is a package classification, not a board recipe). Now backed by C11 and C13.
 - **C03 IPC-7095:** standard summaries. Now backed by C16.
-- **C04 Phone vs. TV packaging:** [AnandTech](https://at-web1.www.anandtech.com/show/5688/apple-ipad-2012-review/13), [Semiconductor Engineering](https://semiengineering.com/mobile-packaging-market-heats-up), [Exynos 990 teardown (arXiv)](https://web3.arxiv.org/pdf/2502.16166): phone application processors are flip-chip, usually package-on-package; wire bonding is the cheaper, conventional option with fewer pins. Supports the decision that our wire-bonded chip suits a TV better than a phone. TV SoC packaging itself remains unconfirmed (C15).
+- **C04 Phone vs. TV packaging:** [AnandTech](https://at-web1.www.anandtech.com/show/5688/apple-ipad-2012-review/13), [Semiconductor Engineering](https://semiengineering.com/mobile-packaging-market-heats-up), [Exynos 990 teardown (arXiv)](https://web3.arxiv.org/pdf/2502.16166): phone application processors are flip-chip, usually package-on-package; wire bonding is the cheaper, conventional option with fewer pins. Motivates avoiding a claimed modern phone application-processor replica; it does not verify the chosen TV package. TV SoC packaging itself remains unconfirmed (C15).
 - **C07 Phone assembly:** SOURCES.md R11 (Apple). No longer used: the product is a TV.
 - **C08 Reference images:** C13 Fig. 7 rendered; stencil printer, placement head, reflow oven and TV main board images still wanted.
 

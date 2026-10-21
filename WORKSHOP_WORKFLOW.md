@@ -8,7 +8,7 @@ The player should think **"Oh, that's how it's done."** They get there by handli
 
 Every workshop answers four questions, and nothing more:
 
-1. **Why do I need this?** (What this step adds to the phone.)
+1. **Why do I need this?** (What this step adds to the finished product; now a TV.)
 2. **Where does it come from?** (The input, and the stop before.)
 3. **How do I do it?** (The machine and the one or two controls that matter.)
 4. **What does it look like when I handle it?** (Shape, size and finish of input and output.)
@@ -56,6 +56,11 @@ Germany's second research pass added these reusable checks:
 
 ## Rules that apply to every level
 
+China's independent review adds two checks:
+
+- **Distinguish controls, predictions and measurements.** An oven setting is not a joint temperature, and a simulated curve is not a measured production result. Show what the machine controls, derive the process readouts consistently, and name the limit of each inspection method.
+- **Propagate product and identity changes through the ending.** If the final product changes, update current arrival items, map pitch, assembly output, save schema and final-use scene together. Back up and migrate old saves without silently certifying a different product. Replaying an upstream producer must clear dependent outputs and their completion methods.
+
 Malaysia's second pass adds two review checks:
 
 - **Keep test result and physical availability separate.** A passing die that has been picked is no longer on the tape, but its recorded electrical result has not changed to failed. Use separate occupancy/consumption data if retries consume material; never rewrite upstream test evidence to represent handling.
@@ -100,8 +105,8 @@ The stops are linked by what the player produces (from `GUIDELINES.md`). Keep th
 | 2 Germany | Polysilicon chunks with a purity label | Defects in Japan, red dies in Taiwan |
 | 3 Japan | Wafer stack with a contamination level | Red dies in Taiwan |
 | 4 Taiwan | **The wafer map** (which dies are good or bad) | Malaysia refuses bad dies |
-| 5 Malaysia | One packaged chip with a serial number | Goes into the phone |
-| 6 China | A working phone | Delivered in the USA |
+| 5 Malaysia | One packaged chip with a serial number | Mounted on the TV's main board |
+| 6 China | A working TV bound to the installed chip | Delivered in the USA |
 | 7 USA | A route recap of this run's real results | End |
 
 Good play upstream should visibly mean fewer bad dies later. That is the game's payoff.
@@ -137,7 +142,7 @@ Copy into `research/<country>/WORKSHOP_PLAN.md`:
 
 ## Starting sketches for the remaining levels
 
-Rough drafts to research and refine. Arrival items are the ones already in `dialogues.ts`.
+Historical starting drafts, retained for context. Later country research/plans supersede them. The user subsequently chose a TV for China/USA; active code/arrival inventory must be updated together using [China's proposed plan](research/china/WORKSHOP_PLAN.md).
 
 - **Germany (Greta).** Silicon metal, hydrogen chloride, hydrogen. Turn the lumps into a liquid (trichlorosilane), boil off the dirt, then grow ultra-pure silicon back onto glowing rods in a bell-jar reactor, then break the rods into chunks. *Takeaway: you can't scrub silicon clean, so you turn it into a liquid, clean that, and grow it back.* Puzzle: rod temperature and gas mix. Output: polysilicon with a purity label.
 - **Japan (Aiko).** Polysilicon, quartz crucible, seed crystal. Melt in the crucible, dip the seed, pull slowly while spinning, and a cylinder grows; saw it into thin wafers and polish them. *Takeaway: a chip starts as one giant perfect crystal, sliced like bread.* Puzzle: pull speed and spin. Output: wafer stack with a contamination level.
@@ -160,4 +165,4 @@ Rough drafts to research and refine. Arrival items are the ones already in `dial
 - Code: `src/components/NorwayManufacturing.tsx` (workshop, panel, guide), `src/components/NorwaySmelterScene.tsx` (3D), `src/content/norwayControls.ts` (furnace model and Sigurd's feedback), `src/content/norwayPanel.ts` (panel coordinates)
 - History: [BUILD_NOTES.md](BUILD_NOTES.md), [HANDOFF.md](research/norway/HANDOFF.md)
 
-Next in the route: **Germany**. Start with the shared-component step, then Germany's plan.
+Current research handoff: **China's TV workshop**, with [review](research/china/CODEX_REVIEW.md), [proposed plan](research/china/WORKSHOP_PLAN.md) and [save/handoff contract](research/china/TV_HANDOFF_CONTRACT.md), ready for Claude's review. Shared workshop components already exist; reuse them. Earlier drafts above record the workflow's starting point.

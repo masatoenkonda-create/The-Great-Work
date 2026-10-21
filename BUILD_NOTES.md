@@ -269,3 +269,11 @@ Placeholders: code-drawn panel, insets and guide box, "F" portrait for Farid, pr
 - The user rejected the first, search-only pass as too thin and chose **TV** for China. Redid step 2 properly: 7 primary PDFs saved in research/china/sources and read (IPC head-in-pillow papers, Indium reflow profiling, Infineon BGA board-assembly guide, NASA BGA guidelines, MediaTek TV SoC briefs, IPC X-ray voids paper), Infineon's X-ray figure rendered, plus China's 2024 statistical communiqué (207.5 million colour TVs) and EIZO's factory account of display assembly and aging.
 - README and HANDOFF rewritten for TV (decisions D01–D09, six questions for Codex). Puzzle basis: reflow peak temperature and time above melting (C09–C11, C13, C14).
 - No code changed.
+
+
+## China independent research and TV proposal - Codex, 21 October 2026
+
+- Reviewed Claude's second primary-source pass, workflow and active assembly/ending/storage code. Added C17?C20 to [the evidence pack](research/china/README.md), two saved original PDFs and four new inspected page previews; independently inspected the existing X-ray figure.
+- Wrote [CODEX_REVIEW.md](research/china/CODEX_REVIEW.md), [WORKSHOP_PLAN.md](research/china/WORKSHOP_PLAN.md) and [TV_HANDOFF_CONTRACT.md](research/china/TV_HANDOFF_CONTRACT.md): six TV assembly beats, heat/belt-speed puzzle, joint cooling, bounded X-ray claims, representative LCD architecture and coherent USA TV ending.
+- Proposed save v3 with chip-bound TV identity, preservation of valid progress through Malaysia, replay of old phone completion, and downstream invalidation on Malaysia/China replay. Specific TV SoC package and factory-exact order remain unverified, declared teaching limits.
+- Updated handoff, source index and reusable workflow checks. Verified documentation links and diff formatting. No application code changes, application tests, browser playthrough or new game art in this pass. Claude reviews the proposal before building; user playtests.
