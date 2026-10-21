@@ -266,6 +266,6 @@ Placeholders: code-drawn panel, insets and guide box, "F" portrait for Farid, pr
 
 ## China research, second pass (primary sources, TV) - Claude, 21 October 2026
 
-- The user rejected the first, search-only pass as too thin and chose **TV** for China. Redid step 2 properly: 8 primary PDFs saved in research/china/sources and read (IPC head-in-pillow papers, Indium reflow profiling, Infineon BGA board-assembly guide, NASA BGA guidelines, MediaTek TV SoC briefs, IPC X-ray voids paper), Infineon's X-ray figure rendered, plus China's 2024 statistical communiqué (207.5 million colour TVs) and EIZO's factory account of display assembly and aging.
+- The user rejected the first, search-only pass as too thin and chose **TV** for China. Redid step 2 properly: 7 primary PDFs saved in research/china/sources and read (IPC head-in-pillow papers, Indium reflow profiling, Infineon BGA board-assembly guide, NASA BGA guidelines, MediaTek TV SoC briefs, IPC X-ray voids paper), Infineon's X-ray figure rendered, plus China's 2024 statistical communiqué (207.5 million colour TVs) and EIZO's factory account of display assembly and aging.
 - README and HANDOFF rewritten for TV (decisions D01–D09, six questions for Codex). Puzzle basis: reflow peak temperature and time above melting (C09–C11, C13, C14).
 - No code changed.

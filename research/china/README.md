@@ -2,7 +2,7 @@
 
 Research by Claude, 21 October 2026, following [WORKSHOP_WORKFLOW.md](../../WORKSHOP_WORKFLOW.md) steps 1–2. **Research only; no plan or code yet.** The user decided China builds a **TV** (HANDOFF D02). Codex is invited to add records from C17 onward and challenge these. Decisions and open questions: [HANDOFF.md](HANDOFF.md).
 
-**Revision note.** A first pass earlier the same day relied on web searches and industry blogs only. The user rejected it as too thin. This second pass is built on primary documents. Eight PDFs are saved in `sources/` and were read with pdftotext; one key figure is rendered in `previews/`. Blog-only claims are now marked as leads, not evidence.
+**Revision note.** A first pass earlier the same day relied on web searches and industry blogs only. The user rejected it as too thin. This second pass is built on primary documents. Seven PDFs are saved in `sources/` and were read with pdftotext; one key figure is rendered in `previews/`. Blog-only claims are now marked as leads, not evidence.
 
 ## What the research says, in player terms
 

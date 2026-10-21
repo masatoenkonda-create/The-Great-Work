@@ -7,7 +7,7 @@ Started 21 October 2026 by Claude. **Status: research step open (second, primary
 | Step ([WORKSHOP_WORKFLOW.md](../../WORKSHOP_WORKFLOW.md)) | Status |
 |---|---|
 | 1. Look at what exists | Done (README, "Existing game content") |
-| 2. Research | First pass (search-only) rejected by the user as too thin; **second pass done on primary documents** (C09–C16: 8 PDFs saved and read, Infineon Fig. 7 rendered). **Codex to add and review.** |
+| 2. Research | First pass (search-only) rejected by the user as too thin; **second pass done on primary documents** (C09–C16: 7 PDFs saved and read, Infineon Fig. 7 rendered; an Analog Devices BGA note timed out). **Codex to add and review.** |
 | 3. One-page plan | Not started |
 | 4+ Build, puzzle, panel, playtest, art spec | Not started. Shared `src/components/workshop/` ready to reuse |
 
