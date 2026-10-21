@@ -247,3 +247,8 @@ Tested: documentation task only; no application tests run. No game code or asset
 
 - Revised Codex's [WORKSHOP_WORKFLOW.md](WORKSHOP_WORKFLOW.md): shorter, and now leads with the four player questions (why, where from, how, what it looks like). Added: how map pitch, arrival items and workshop must agree; a shared-component step (`WorkshopLayout`, `ControlPanel`, `GuideBox`) before Germany so levels reuse Norway's code; the cross-level results chain (purity → defects → wafer map → refused dies); a copy-paste plan template; draft sketches for Germany to USA matching the existing arrival items; "don't ask the user technical questions". Testing rule: user plays; agents may run the type check and must say what wasn't checked.
 - Documentation only; no code changed.
+
+## Germany research, first pass - Claude, 21 October 2026
+
+- Ran workflow steps 1–2 for Germany. Added [research/germany/README.md](research/germany/README.md) (G01–G07, answers to the four player questions, check of the existing dialogue/workshop) and [research/germany/HANDOFF.md](research/germany/HANDOFF.md) (decisions D01–D08, suggested text fixes, six open research questions for Codex). Linked from SOURCES.md.
+- Stopped before the plan, per the user: Codex adds research next. No code changed.

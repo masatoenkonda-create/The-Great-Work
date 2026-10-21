@@ -241,3 +241,7 @@ Current conclusion: enough evidence exists to plan the broad worldwide route. Th
 ## Norway fidelity research - 21 October 2026
 
 The user requested detailed Norway workshop research before redesigning the stages. See [Norway evidence pack](research/norway/README.md) for eight annotated primary-source records, actual schematics, page/figure locators, offline technical PDFs and source limitations. See [handoff and decision log](research/norway/HANDOFF.md) for Claude's continuation context. This extends R03 without changing existing IDs. Pilot apparatus and industrial plant evidence remain distinct; no workshop redesign has been implemented or approved in this research pass.
+
+## Germany research - 21 October 2026
+
+Germany workshop research is in the [Germany evidence pack](research/germany/README.md) (records G01–G07: WACKER process account and 2025 etching line, Siemens reactor paper, and patents on trichlorosilane, rod growth, crushing and packaging), with decisions and open questions in [research/germany/HANDOFF.md](research/germany/HANDOFF.md). It extends R04 and R13 without changing their IDs.
