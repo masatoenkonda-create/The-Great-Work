@@ -9,6 +9,7 @@ A browser game (React, Three.js, Vite) following one chip from quartz in Norway 
 
 ## Working rules
 - Keep the game simple; keep the research rigorous. Never present a source as read if it wasn't opened.
+- Before handing over, run the **hand-over checklist** in WORKSHOP_WORKFLOW.md (6 lines).
 - When reviewing Claude's pass, open the sources the build depends on; don't accept records at face value.
 - Don't ask the user technical questions; make the call and record it. Ask only about feel or direction.
 - The user does the browser testing. Say plainly what you did and didn't check.

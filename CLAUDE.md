@@ -9,6 +9,7 @@ A browser game (React, Three.js, Vite) following one chip from quartz in Norway 
 
 ## Working rules
 - Keep the game simple; keep the research rigorous. Never present a source as read if it wasn't opened.
+- Before handing over, run the **hand-over checklist** in WORKSHOP_WORKFLOW.md (6 lines).
 - Don't ask the user technical questions; make the call and record it. Ask only about feel or direction.
 - The user does the browser testing. Run `npm run lint` and `bun test src` and say what wasn't checked.
 - Don't touch the repo while Codex is working, unless the user says so. Commit Codex's work separately from your own.

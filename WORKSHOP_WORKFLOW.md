@@ -51,6 +51,18 @@ Keep the *game* simple; keep the *research* rigorous. Each pass must stand on it
   - **Lead**: not opened (search result, blog, summary). It can suggest where to look but cannot support a build decision.
 - **Reviewing someone else's pass:** open the sources the build depends on, read the cited passages and look at the figures. "The file exists" or "the page count matches" is not a review.
 - **Report depth honestly:** every research or review report says what was read, what is only a lead, and what wasn't checked (for example, "read 5 PDFs; 2 records are leads").
+- **"Read" means the passage you cite**, not the whole paper. Open it, check it says what you claim, note the page. No expert deep-dives needed.
+
+### Hand-over checklist
+
+Before saying a pass is done:
+
+1. Every source record is marked **Read / Skimmed / Lead**.
+2. No vague words: instead of "validated", "checked" or "complete", say what was done ("opened p. 31, the wiring photo").
+3. Tests: paste the result line (e.g. "33 pass"), or write "not run".
+4. Logs only grow: never delete or rewrite entries in `BUILD_NOTES.md` or a `HANDOFF.md`; add a new entry.
+5. Before committing the other agent's work, run `git diff --stat` and question any large deletion.
+6. Plans stay about one page.
 
 ### Review checks before the build handoff
 

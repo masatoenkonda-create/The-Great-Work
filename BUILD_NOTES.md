@@ -250,6 +250,78 @@ Tested: documentation task only; no application tests run. No game code or asset
 
 ## Germany research, first pass - Claude, 21 October 2026
 
+- Ran workflow steps 1–2 for Germany. Added [research/germany/README.md](research/germany/README.md) (G01–G07, answers to the four player questions, check of the existing dialogue/workshop) and [research/germany/HANDOFF.md](research/germany/HANDOFF.md) (decisions D01–D08, suggested text fixes, six open research questions for Codex). Linked from SOURCES.md.
+- Stopped before the plan, per the user: Codex adds research next. No code changed.
+
+## Germany independent review and build handoff — Codex, 21 October 2026
+
+- Reviewed Claude's G01–G07, the revised workflow, active Germany form/scene wiring, arrival items and cargo schema. Added [CODEX_REVIEW.md](research/germany/CODEX_REVIEW.md) and a compact [WORKSHOP_PLAN.md](research/germany/WORKSHOP_PLAN.md) for Claude to review before building.
+- Added G08–G10 and rechecked G05: reactor geometry/current path, lighter/heavier separation fractions, clean finishing and control limits. Saved original G08 reactor patent and G02 producer PDF; rendered/visually inspected Figure 1 and cleaning-line page 6.
+- Proposed six visual beats, rod heat + precursor-proportion puzzle, cold solid rod handling and clean-pack output. Corrected melting-versus-chemical conversion, all-dirt-at-bottom distillation, purity-percent dialogue and the unsupported equivalence of rod roughness with chemical purity. Proposed process-status fields explicitly remain unimplemented.
+- Added reusable workflow review checks for material-state continuity, control meaning, sourced relationships versus teaching rules, purity versus appearance, bounded reuse and a concrete builder handoff. Updated evidence/handoff/source links.
+
+Checked: code/document inspection and primary-source research; original PDF metadata/text checked with Poppler, two pages rendered and visually inspected. No application tests/playthrough; no code or game assets changed. G01 detailed narrative not independently recovered through page extraction; G03 PDF access timed out. No validated kinetics, OEM plan or exact Burghausen apparatus reconstruction claimed.
+
+## Germany workshop built + shared workshop components - Claude, 21 October 2026
+
+- Shared `src/components/workshop/` (layout, cockpit panel, guide box, Space key and timed-phase hooks) extracted from Norway; Norway now uses them, with no change intended to its look or controls.
+- New Germany workshop per Codex's plan and Claude's build decisions (research/germany/WORKSHOP_PLAN.md): mill, convert, distill, grow rods (rod heat + gas mix puzzle), cool and open, break, clean and double-bag, ship. Stop 2 now routes to `GermanyManufacturing`. Arrival wording and route summary corrected (no nines claim, lumps milled in Germany, liquid compound not melted silicon).
+- No save-schema change; purity flags deferred until a later level reads them.
+
+Tested: `npm run lint` passes; `bun test src/content` 8/8 (Norway and Germany controls). Not tested: anything in the browser (user tests), Norway regression after the extraction, narrow screens.
+Placeholders: code-drawn panel and guide box, "G" portrait for Greta, primitive geometry, compressed times.
+
+## Japan research, first pass - Claude, 21 October 2026
+
+- Ran workflow steps 1–2 for Japan. Added [research/japan/README.md](research/japan/README.md) (J01–J05, answers to the four player questions, check of the existing dialogue and the old slider workshop) and [research/japan/HANDOFF.md](research/japan/HANDOFF.md) (decisions D01–D08, one dialogue fix, six open questions for Codex, including whether Japan's pull speed should finally feed red dies in Taiwan). Linked from SOURCES.md.
+- Stopped before the plan: Codex's turn. No code changed.
+
+## Japan independent review and proposed workshop — Codex, 21 October 2026
+
+- Reviewed J01–J05, all six handoff questions, old Japan/Taiwan task code, current cargo schema and the shared workshop components. Added [CODEX_REVIEW.md](research/japan/CODEX_REVIEW.md) and [WORKSHOP_PLAN.md](research/japan/WORKSHOP_PLAN.md) for Claude to review before building.
+- Added J08–J10, saved the original J03 chapter, PVA semiconductor-puller brochure and Siltronic process presentation. Inspected J03 Fig.1, PVA exterior and Siltronic slide 14 after rendering; checked J03's CC BY 3.0 statement. Full structure-loss article pages returned 403; only primary indexed excerpts were used to bound the finding, not prescribe a detector.
+- Proposed seven visual beats with crucible/seed handling, automatic neck/shoulder/tail, a body-growth heat/pull puzzle, cool/crop/grind before batch wire slicing, finishing and FOSB dispatch. Retained recoverable growth; no arbitrary contamination score or claimed Taiwan integration. Added workflow checks for phase-specific controls and physically coherent recovery.
+
+Checked: code/document/source inspection, original PDF metadata/text, three rendered pages and license statement. No application code or game assets changed; no tests/build/playthrough run. Exact site geometry, defect equations and variable downstream yield remain unvalidated/deferred.
+
+## Japan workshop built - Claude, 21 October 2026
+
+- Reviewed Codex's Japan research (J08–J10, review, plan): sources verified, corrections accepted. Decisions recorded at the end of research/japan/WORKSHOP_PLAN.md.
+- New Japan workshop: load crucible and chunks, melt (heater past 1,414 °C), dip the seed (automatic neck and shoulder), grow the body (heat + pull + rotation puzzle, pause-and-recover), automatic tail, cool and move (crop, grind), wire saw, polish, inspect and box, ship. Stop 3 now routes to `JapanManufacturing`. Aiko's arrival wording corrected.
+- No save-schema change; Taiwan defect link deferred.
+
+Tested: `npm run lint` passes; `bun test src/content` 12/12 (Norway, Germany, Japan controls). Not tested: anything in the browser (user tests), narrow screens.
+Placeholders: code-drawn panel and guide box, "A" portrait for Aiko, primitive geometry, compressed times.
+
+## Taiwan research, first pass - Claude, 21 October 2026
+
+- Ran workflow steps 1–2 for Taiwan. Added [research/taiwan/README.md](research/taiwan/README.md) (T01–T07, answers to the four player questions, check of the dialogue, the old alignment workshop and the cargo state) and [research/taiwan/HANDOFF.md](research/taiwan/HANDOFF.md) (decisions D01–D08, six open questions for Codex). Key point: Taiwan is where the saved die-by-die wafer map should be born, for Malaysia to read.
+- Stopped before the plan: Codex's turn. No code changed.
+
+## Taiwan independent review, workshop proposal and wafer-map contract — Codex, 21 October 2026
+
+- Reviewed T01–T07, all six handoff questions, old Taiwan/Malaysia task code, cargo/storage and completion logic. Added [CODEX_REVIEW.md](research/taiwan/CODEX_REVIEW.md), [WORKSHOP_PLAN.md](research/taiwan/WORKSHOP_PLAN.md) and [WAFER_MAP_CONTRACT.md](research/taiwan/WAFER_MAP_CONTRACT.md) for Claude to review before building.
+- Added T08–T12: coherent DUV optics/metrology, primary TEL track and ACCRETECH prober references, original SWTest map-to-packaging evidence, and positive-resist development semantics. Saved three valid primary PDFs; rendered/inspected ASML PDF p.13 (printed 14), wafer-test p.2 and development p.1. NXP's PDF was web-readable but direct download denied; no local copy retained.
+- Proposed seven visual beats with a first reference pass, a second alignment pass and a compressed remaining process before electrical probing. Proposed a reviewed Taiwan-specific exposure-error consequence with free fresh-wafer retry, rather than silently changing the earlier pause-only levels. Baseline failures are not forced; edge exclusions are distinct from electrical failures.
+- Specified stable wafer/die IDs and orientation, 40 active positions in a 6x8 teaching layout, field exposure capture, derived counts, versioned save migration, exact Malaysia map consumption and replay invalidation. These remain design proposals; no map/schema/reader is implemented in this pass. Added reusable workflow checks for committed errors and positional result handoffs.
+
+Checked: code/document inspection, primary-source research, PDF metadata/text and three rendered reference pages. Poppler emitted annotation/font-substitution warnings; inspected pages were readable. No application code or game assets changed; no build/tests/playthrough run. No exact TSMC line, chip design, process recipe or calibrated yield equation claimed.
+
+## Taiwan workshop built + saved wafer map - Claude, 21 October 2026
+
+- Reviewed Codex's Taiwan research, plan and wafer-map contract (accepted; decisions at the end of research/taiwan/WORKSHOP_PLAN.md).
+- New Taiwan workshop: load, automatic first layer, align and expose four fields (small offsets fail their field, large ones are blocked), finish the layers, probe test, ship or retry with a new wafer. Live layer-detail and wafer-map insets.
+- First real carried result: `waferMap` saved with the stop (save format v2, validated, old saves migrated back to Taiwan with a backup). Malaysia now picks only dies that passed this map, with a wafer-derived serial. Replaying an earlier stop no longer rewinds progress; replaying Taiwan clears stops 5–7.
+- Mei's dialogue: unsourced comparisons removed; "photomask set".
+
+Tested: `npm run lint` passes; `bun test src` 24/24 (controls for all four workshops, wafer map, save migration). Not tested: anything in the browser (user tests), loading a real old save in a browser, Malaysia's picker on screen.
+Placeholders: code-drawn panel, insets and guide box, "M" portrait for Mei, primitive geometry, compressed times. No on-screen notice yet when an old save is sent back to Taiwan.
+
+## Malaysia research, first pass - Claude, 21 October 2026
+
+- Ran workflow steps 1–2 for Malaysia. Added [research/malaysia/README.md](research/malaysia/README.md) (M01–M08, answers to the four player questions, check of the dialogue and the old packaging workshop) and [research/malaysia/HANDOFF.md](research/malaysia/HANDOFF.md) (decisions D01–D08, six open questions for Codex, including the puzzle choice and whether final test should send the player back to pick another good die).
+- Stopped before the plan: Codex's turn. No code changed.
+
 ## Malaysia workshop built - Claude, 21 October 2026
 
 - Reviewed Codex's Malaysia research and plan (accepted; decisions at the end of research/malaysia/WORKSHOP_PLAN.md).
@@ -292,3 +364,10 @@ Placeholders: code-drawn panel, insets and guide box, "F" portrait for Farid, pr
 
 Tested: `npm run lint`, `bun test src` 33/33, `npm run build` all pass. Not tested: anything in the browser (user tests), loading a real old save in a browser.
 Placeholders: code-drawn panel, insets and guide boxes, "X" and "S" portraits, primitive geometry, compressed times.
+
+## Self-audits and hand-over checklist - Claude, 21 October 2026
+
+- Read Codex's self-audit (from its local session log; it changed no files). It confirms that its records lacked Read / Skimmed / Lead labels, used broad words such as "validated" and "research complete", had no retained test output, and that commit `3962a69` deleted 72 lines of this file (nine entries, Germany to Malaysia). Claude committed that deletion without checking the diff.
+- Restored the nine deleted entries unchanged in their original place.
+- Added a six-line **hand-over checklist** to WORKSHOP_WORKFLOW.md (labels, no vague words, test result lines, logs only grow, `git diff --stat` before committing the other agent's work, one-page plans) and clarified that "read" means the cited passage, not the whole paper. CLAUDE.md and CODEX.md point to it.
+- Both agents' self-audits are the starting list for tomorrow's quality pass.
