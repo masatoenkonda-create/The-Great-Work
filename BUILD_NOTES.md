@@ -169,3 +169,31 @@ Stubbed / placeholder:
 Tested: `npm run lint` passes. Browser: map -> Norway arrival -> workshop renders; mining, breaking, loading and smelting animations checked; the user then played it to the end and reported it works.
 Untested: narrow/phone layouts, touch input, WebGL-unavailable fallback.
 Stubbed / placeholder: no ladle or refining (direct runner-to-mould casting, as DESIGN_REVIEW records); primitive shapes, not final art; times and sizes compressed.
+
+## Norway workshop controls and stable layout - Codex, 21 October 2026
+
+- Replaced the top step strip and variable-height bottom action area with a stable 3D viewport and a separate control panel. On desktop the panel scrolls independently; narrower screens stack a viewport with a fixed viewport-relative height above the panel. Buttons, progress and feedback no longer determine the canvas size.
+- Removed floating object text labels and the small cutaway/compression caption; retained the existing 3D arrow, models and process animations. Added clear stage titles and material explanations covering quartz, carbon, electrical heat, casting, cooling and downstream purification.
+- Added relative electrical-power and electrode-position controls. Starting with an invalid combination leaves the batch loaded, prevents the smelting animation and explains each needed correction. Working power with electrodes in the charge starts the existing process. The button, scene switch and keyboard share this validation. Controls lock during the run; focused form controls and held keys do not accidentally advance the process.
+- These are teaching controls, not industrial temperature/pressure recipes or a validated furnace simulation. No pressure control was introduced for this furnace. A failed start does not consume the batch. Earlier design exclusions of control panels/parameter choices are superseded for Norway by the user's current request.
+
+Tested:
+- Three furnace-control tests passed (`bun test src/content/norwayControls.test.ts`), covering all six setting combinations and corrective feedback.
+- `bun run lint` and `bun run build` passed. Existing bundle-size warning remains.
+- User completed the browser test and reported: "Test is done it works." Agent browser navigation reached Norway arrival; the user took over the interactive check.
+
+Untested:
+- Agent measurements of canvas dimensions during transitions, phone/narrow-screen interaction, WebGL-unavailable fallback, and full campaign replay.
+
+Stubbed / placeholder:
+- Existing simplified furnace physics, fixed compatibility output quantity and compressed process times remain. No new artwork or machine geometry was introduced.
+
+## Norway: controls only, persistent workshop log - Codex, 21 October 2026
+
+- Removed the explanatory content and feedback from the control panel. The narrower panel now contains icon-led tool buttons, three power buttons with level bars, and an electrode lever with Up/Down buttons. Short labels, accessible names and tooltips identify the controls.
+- Moved brief material explanations, guidance and failed-start feedback into a permanent, fixed-height workshop log below the workcell. History is scrollable, capped at 30 entries, and follows new messages; animation starts do not repeat their stage's instructions. The log stays visible while the upper work area scrolls on smaller screens.
+- Preserved furnace validation, retries, process timing and all 3D geometry/animations. No added pressure or numeric recipe controls. Older requests for explanatory text inside the control panel are superseded by this latest user direction.
+
+Tested: no tests or browser interactions run for this pass, at the user's explicit request to handle testing themselves.
+Untested: this revision's layout, controls and message log in the browser, typecheck and production build.
+Stubbed / placeholder: unchanged simplified furnace simulation and existing compatibility output quantity.

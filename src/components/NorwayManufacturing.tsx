@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { NorwaySmelterScene, SMELTER_PHASES, SmelterPhase, SmelterTarget } from './NorwaySmelterScene';
 import { sound } from '../services/audio';
+import { checkFurnace, FurnacePower, ElectrodePosition } from '../content/norwayControls';
+import { Pickaxe, Hammer, ArrowDownToLine, Power, Truck, Package, Check, LoaderCircle, ChevronUp, ChevronDown, MessageSquare, SlidersHorizontal } from 'lucide-react';
 
 interface Props {
   onReturnToMap: () => void;
@@ -47,24 +49,35 @@ const INSTRUCTION: Record<SmelterPhase, string> = {
   ship: 'Send the bag to Germany.', shipping: 'Send the bag to Germany.', done: 'Sent to Germany.',
 };
 
-/** Short result lines at the reveals that matter; the animation carries the rest. */
-const RESULT: Partial<Record<SmelterPhase, string>> = {
-  break: 'Silicon comes from quartz rock.',
-  smelting: 'Carbon helps remove oxygen from quartz.',
-  tap: 'The quartz has become liquid silicon.',
-  bag: 'This is silicon metal.', bagging: 'This is silicon metal.',
-  ship: 'Next: purify the silicon in Germany.', shipping: 'Next: purify the silicon in Germany.',
+const GUIDANCE: { phases: SmelterPhase[]; text: string }[] = [
+  { phases: ['mine', 'mining'], text: 'Quartz contains silicon bound to oxygen. Free a piece with the pickaxe.' },
+  { phases: ['break', 'breaking'], text: 'Break the quartz into small chunks for the furnace.' },
+  { phases: ['loadQuartz', 'loadingQuartz'], text: 'Tip the quartz into the furnace’s top opening.' },
+  { phases: ['loadCarbon', 'loadingCarbon'], text: 'Add carbon. It helps remove the oxygen from quartz.' },
+  { phases: ['power'], text: 'Set the power and lower the electrodes into the charge, then start the furnace.' },
+  { phases: ['smelting'], text: 'Electricity supplies heat. Carbon removes oxygen; liquid silicon collects below.' },
+  { phases: ['tap', 'pouring'], text: 'Liquid silicon is ready. Open the taphole to fill the mould.' },
+  { phases: ['cooling'], text: 'Wait for the glow to fade. The silicon must cool before breaking.' },
+  { phases: ['breakCast', 'breakingCast'], text: 'The casting is solid. Break it into silicon metal lumps.' },
+  { phases: ['bag', 'bagging'], text: 'Bag the silicon lumps for shipping.' },
+  { phases: ['ship', 'shipping', 'done'], text: 'Send the bag to Germany for further purification.' },
+];
+
+const TOOL = {
+  mine: Pickaxe, mining: Pickaxe, break: Hammer, breaking: Hammer,
+  loadQuartz: ArrowDownToLine, loadingQuartz: ArrowDownToLine,
+  loadCarbon: ArrowDownToLine, loadingCarbon: ArrowDownToLine,
+  power: Power, smelting: Power, tap: ChevronDown, pouring: ChevronDown,
+  cooling: LoaderCircle, breakCast: Hammer, breakingCast: Hammer,
+  bag: Package, bagging: Package, ship: Truck, shipping: Truck, done: Check,
 };
 
-const STEPS: { label: string; phases: SmelterPhase[] }[] = [
-  { label: 'Mine', phases: ['mine', 'mining'] },
-  { label: 'Break', phases: ['break', 'breaking'] },
-  { label: 'Load', phases: ['loadQuartz', 'loadingQuartz', 'loadCarbon', 'loadingCarbon'] },
-  { label: 'Power', phases: ['power', 'smelting'] },
-  { label: 'Pour', phases: ['tap', 'pouring'] },
-  { label: 'Cool & break', phases: ['cooling', 'breakCast', 'breakingCast'] },
-  { label: 'Ship', phases: ['bag', 'bagging', 'ship', 'shipping', 'done'] },
-];
+const BUTTON_LABEL: Partial<Record<SmelterPhase, string>> = {
+  mine: 'Mine', break: 'Break', loadQuartz: 'Load quartz', loadCarbon: 'Load carbon',
+  power: 'Start', tap: 'Pour', breakCast: 'Break', bag: 'Bag', ship: 'Ship',
+};
+
+type WorkshopMessage = { id: number; text: string; warning: boolean };
 
 const SOUND: Partial<Record<SmelterPhase, () => void>> = {
   mining: () => sound.playClink(), breaking: () => sound.playClink(), breakingCast: () => sound.playClink(),
@@ -77,11 +90,37 @@ export function NorwayManufacturing({ onReturnToMap, onComplete }: Props) {
   const [phase, setPhase] = useState<SmelterPhase>('mine');
   const [progress, setProgress] = useState(0);
   const [message, setMessage] = useState('');
+  const [power, setPower] = useState<FurnacePower>('low');
+  const [electrodes, setElectrodes] = useState<ElectrodePosition>('raised');
+  const [messages, setMessages] = useState<WorkshopMessage[]>([]);
+  const messageId = useRef(0);
+  const lastGuidance = useRef('');
+  const chat = useRef<HTMLDivElement>(null);
   const completed = useRef(false);
   const completeRef = useRef(onComplete);
   completeRef.current = onComplete;
   const waiting = ACTIONS[phase];
-  const step = STEPS.findIndex(s => s.phases.includes(phase));
+  const guidance = GUIDANCE.find(p => p.phases.includes(phase))!.text;
+  const ToolIcon = TOOL[phase];
+  const furnaceControls = phase === 'power' || phase === 'smelting';
+
+  // Keep a short, persistent history without repeating a tip when its animation starts.
+  useEffect(() => {
+    if (lastGuidance.current === guidance) return;
+    lastGuidance.current = guidance;
+    const entry = { id: ++messageId.current, text: guidance, warning: false };
+    setMessages(previous => [...previous.slice(-29), entry]);
+  }, [guidance]);
+
+  useEffect(() => {
+    if (!message) return;
+    const entry = { id: ++messageId.current, text: message, warning: true };
+    setMessages(previous => [...previous.slice(-29), entry]);
+  }, [message]);
+
+  useEffect(() => {
+    if (chat.current) chat.current.scrollTop = chat.current.scrollHeight;
+  }, [messages]);
 
   useEffect(() => {
     setMessage('');
@@ -116,6 +155,14 @@ export function NorwayManufacturing({ onReturnToMap, onComplete }: Props) {
     if (!waiting) return;
     const loading = phase === 'loadQuartz' || phase === 'loadCarbon';
     if (target === waiting.target || (target === 'furnace' && loading)) {
+      if (phase === 'power') {
+        const problem = checkFurnace(power, electrodes);
+        if (problem) {
+          setMessage(problem);
+          sound.playError();
+          return;
+        }
+      }
       setPhase(waiting.next);
       return;
     }
@@ -123,7 +170,7 @@ export function NorwayManufacturing({ onReturnToMap, onComplete }: Props) {
       setMessage(phase === 'loadCarbon' ? 'Add carbon first.' : 'Load quartz and carbon first.');
       sound.playError();
     }
-  }, [phase, waiting]);
+  }, [phase, waiting, power, electrodes]);
 
   // Space or Enter uses the highlighted object, the same as clicking it.
   const actRef = useRef(act);
@@ -133,7 +180,7 @@ export function NorwayManufacturing({ onReturnToMap, onComplete }: Props) {
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.key !== ' ' && event.key !== 'Enter') return;
-      if (event.target instanceof HTMLButtonElement) return;
+      if (event.repeat || (event.target instanceof HTMLElement && event.target.closest('button, input, select, textarea, [contenteditable="true"]'))) return;
       event.preventDefault();
       if (targetRef.current) actRef.current(targetRef.current);
     };
@@ -142,31 +189,50 @@ export function NorwayManufacturing({ onReturnToMap, onComplete }: Props) {
   }, []);
 
   return (
-    <section className="h-full overflow-y-auto bg-[#0c1821] text-slate-100 font-sans" aria-label="Norway silicon workshop">
-      <div className="mx-auto flex min-h-full max-w-[1500px] flex-col p-3 sm:p-5 gap-3">
-        <header className="flex items-center justify-between gap-3">
-          <div><p className="text-[10px] font-bold tracking-[0.2em] text-amber-300">01 / NORWAY</p><h1 className="text-xl sm:text-2xl font-bold">From quartz to silicon</h1></div>
+    <section className="h-full overflow-hidden bg-[#0c1821] text-slate-100 font-sans" aria-label="Norway silicon workshop">
+      <div className="mx-auto flex h-full min-h-0 max-w-[1800px] flex-col p-3 sm:p-5 gap-4">
+        <header className="flex shrink-0 items-center justify-between gap-3">
+          <div><p className="text-sm font-medium text-amber-300">Norway · Silicon workshop</p><h1 className="text-xl sm:text-2xl font-bold">From quartz to silicon</h1></div>
           <button onClick={onReturnToMap} className="rounded-lg border border-white/20 px-3 py-2 text-xs hover:bg-white/10">← Map</button>
         </header>
-        <ol className="grid grid-cols-7 gap-1.5 text-[10px] sm:text-xs" aria-label="Steps">
-          {STEPS.map((s, i) => <li key={s.label} aria-current={step === i ? 'step' : undefined} className={`truncate rounded-lg border px-2 py-1.5 text-center ${step === i ? 'border-amber-300/70 bg-amber-300/10 text-amber-200' : i < step ? 'border-emerald-400/30 text-emerald-300' : 'border-white/10 text-slate-400'}`}>{i < step || phase === 'done' ? '✓ ' : ''}{s.label}</li>)}
-        </ol>
-        <div className="relative flex-1 min-h-[320px] sm:min-h-[420px]">
-          <NorwaySmelterScene phase={phase} progress={progress} target={waiting?.target ?? null} targetLabel={waiting?.label ?? ''} onAct={act} />
-        </div>
-        <div className="flex flex-col gap-3 rounded-2xl border border-white/10 bg-[#152732] p-4 sm:flex-row sm:items-center">
-          <div className="flex-1" aria-live="polite">
-            <h2 className="text-lg font-bold text-amber-100">{INSTRUCTION[phase]}</h2>
-            {RESULT[phase] && <p className="mt-1 text-sm text-emerald-300">{RESULT[phase]}</p>}
-            {message && <p role="alert" className="mt-1 text-sm text-amber-300">{message}</p>}
+        <div className="grid flex-1 min-h-0 gap-4 overflow-y-auto lg:overflow-visible lg:grid-cols-[minmax(0,1fr)_240px] xl:grid-cols-[minmax(0,1fr)_260px]">
+          <div className="relative h-[48svh] min-h-[300px] lg:h-full lg:min-h-0" data-testid="norway-viewport">
+            <NorwaySmelterScene phase={phase} progress={progress} target={waiting?.target ?? null} onAct={act} />
           </div>
-          <div className="flex flex-col gap-1.5 sm:w-72">
-            {waiting
-              ? <button onClick={() => act(waiting.target)} className="min-h-12 rounded-xl bg-amber-300 px-4 py-3 text-sm font-bold text-slate-950 hover:bg-amber-200">{waiting.action}</button>
-              : phase !== 'done' && <div role="progressbar" aria-label={INSTRUCTION[phase]} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progress * 100)} className="h-2 overflow-hidden rounded-full bg-white/10"><div className="h-full bg-amber-400" style={{ width: `${progress * 100}%` }} /></div>}
-            {waiting && <p className="text-center text-[10px] text-slate-400">Click the highlighted object or press Space</p>}
-          </div>
+          <aside className="flex min-h-[340px] flex-col gap-5 rounded-2xl border border-white/10 bg-[#152732] p-4 lg:min-h-0 lg:overflow-y-auto" aria-label="Workshop control panel">
+            <h2 className="flex items-center gap-2 text-sm font-semibold text-slate-300"><SlidersHorizontal size={18} aria-hidden="true" />Controls</h2>
+            {furnaceControls && <div className="space-y-5">
+              <fieldset disabled={phase !== 'power'}>
+                <legend className="mb-3 text-sm font-semibold">Power</legend>
+                <div className="grid grid-cols-3 gap-2">
+                  {(['low', 'working', 'high'] as const).map((value, index) => <button key={value} type="button" aria-label={`${value === 'working' ? 'Medium' : value === 'low' ? 'Low' : 'High'} power`} title={`${value === 'working' ? 'Medium' : value === 'low' ? 'Low' : 'High'} power`} aria-pressed={power === value} onClick={() => { setPower(value); setMessage(''); }} className={`flex h-20 flex-col items-center justify-center gap-2 rounded-lg border shadow-inner disabled:opacity-60 ${power === value ? 'border-amber-300 bg-amber-300/15 text-amber-200' : 'border-white/20 bg-black/20 text-slate-400 hover:bg-white/5'}`}><span className="flex h-7 items-end gap-1" aria-hidden="true">{[0, 1, 2].map(bar => <span key={bar} className={`w-2 rounded-sm ${bar <= index ? 'bg-current' : 'bg-white/10'}`} style={{ height: `${12 + bar * 7}px` }} />)}</span><span className="text-xs">{['Low', 'Med', 'High'][index]}</span></button>)}
+                </div>
+              </fieldset>
+              <fieldset disabled={phase !== 'power'}>
+                <legend className="mb-3 text-sm font-semibold">Electrodes</legend>
+                <div className="flex items-center justify-center gap-5 rounded-xl border border-white/10 bg-black/20 p-3">
+                  <div className="relative h-24 w-8 rounded-full border border-white/15 bg-black/40" aria-hidden="true"><span className={`absolute left-1 right-1 h-9 rounded-lg border border-slate-300/40 bg-gradient-to-b from-slate-400 to-slate-700 shadow-lg transition-transform ${electrodes === 'raised' ? 'translate-y-1' : 'translate-y-13'}`} /></div>
+                  <div className="grid gap-2">
+                    {(['raised', 'inCharge'] as const).map(value => <button key={value} type="button" aria-label={value === 'raised' ? 'Raise electrodes' : 'Lower electrodes into charge'} aria-pressed={electrodes === value} onClick={() => { setElectrodes(value); setMessage(''); }} className={`flex min-h-11 items-center justify-center gap-2 rounded-lg border px-4 text-sm font-semibold disabled:opacity-60 ${electrodes === value ? 'border-amber-300 bg-amber-300/15 text-amber-200' : 'border-white/20 hover:bg-white/5'}`}>{value === 'raised' ? <ChevronUp size={20} aria-hidden="true" /> : <ChevronDown size={20} aria-hidden="true" />}{value === 'raised' ? 'Up' : 'Down'}</button>)}
+                  </div>
+                </div>
+              </fieldset>
+            </div>}
+            <div className={`flex flex-1 flex-col items-center justify-center gap-4 ${furnaceControls ? 'pt-2' : ''}`}>
+              <button disabled={!waiting} aria-label={waiting?.action ?? INSTRUCTION[phase]} title={waiting?.action ?? INSTRUCTION[phase]} onClick={() => waiting && act(waiting.target)} className="flex min-h-28 w-full flex-col items-center justify-center gap-3 rounded-xl border border-amber-200/40 bg-gradient-to-b from-amber-200 to-amber-400 p-4 font-bold text-slate-950 shadow-[0_5px_0_#926021] hover:brightness-110 active:translate-y-1 active:shadow-none disabled:translate-y-0 disabled:border-white/10 disabled:bg-none disabled:bg-white/5 disabled:text-slate-400 disabled:shadow-none disabled:cursor-wait">
+                {!waiting && phase !== 'done' ? <LoaderCircle size={34} className="animate-spin" aria-hidden="true" /> : <ToolIcon size={38} strokeWidth={1.6} aria-hidden="true" />}
+                <span className="text-sm">{waiting ? BUTTON_LABEL[phase] : phase === 'done' ? 'Sent' : phase === 'cooling' ? 'Cooling' : 'Running'}</span>
+              </button>
+              <div role="progressbar" aria-label={INSTRUCTION[phase]} aria-valuemin={0} aria-valuemax={100} aria-valuenow={waiting ? 0 : Math.round(progress * 100)} className={`h-1.5 w-full overflow-hidden rounded-full bg-white/10 ${waiting ? 'invisible' : ''}`}><div className="h-full bg-amber-400" style={{ width: `${progress * 100}%` }} /></div>
+            </div>
+          </aside>
         </div>
+        <section className="flex h-36 shrink-0 flex-col rounded-2xl border border-white/10 bg-[#101d27]" aria-label="Workshop messages">
+          <h2 className="flex shrink-0 items-center gap-2 border-b border-white/10 px-4 py-2 text-sm font-semibold text-slate-300"><MessageSquare size={16} aria-hidden="true" />Workshop log</h2>
+          <div ref={chat} role="log" aria-live="polite" aria-relevant="additions" tabIndex={0} className="min-h-0 flex-1 space-y-2 overflow-y-auto px-4 py-3 text-sm leading-relaxed focus-visible:outline-2 focus-visible:outline-amber-300">
+            {messages.map(entry => <p key={entry.id} className={`flex items-start gap-3 ${entry.warning ? 'text-amber-200' : 'text-slate-300'}`}><span aria-hidden="true" className={`mt-2 h-1.5 w-1.5 shrink-0 rounded-full ${entry.warning ? 'bg-amber-300' : 'bg-slate-500'}`} />{entry.text}</p>)}
+          </div>
+        </section>
       </div>
     </section>
   );

@@ -16,7 +16,6 @@ interface Props {
   progress: number;
   /** The object the player should use next, or null while an animation runs. */
   target: SmelterTarget | null;
-  targetLabel: string;
   onAct: (target: SmelterTarget) => void;
 }
 
@@ -36,7 +35,6 @@ const span = (t: number, a: number, b: number) => clamp01((t - a) / (b - a));
  */
 export function NorwaySmelterScene(props: Props) {
   const host = useRef<HTMLDivElement>(null);
-  const label = useRef<HTMLSpanElement>(null);
   const current = useRef(props);
   current.current = props;
   const [unavailable, setUnavailable] = useState(false);
@@ -494,11 +492,6 @@ export function NorwaySmelterScene(props: Props) {
       if (target) {
         const [x, y, z] = ANCHORS[target];
         arrow.position.set(x, y + 0.35 + Math.sin(t * 4) * 0.12, z);
-        const projected = arrow.position.clone().setY(y + 0.75).project(camera);
-        if (label.current) {
-          label.current.style.left = `${(projected.x + 1) * 50}%`;
-          label.current.style.top = `${(1 - projected.y) * 50}%`;
-        }
       }
 
       renderer.render(scene, camera);
@@ -523,9 +516,7 @@ export function NorwaySmelterScene(props: Props) {
   return (
     <div className="absolute inset-0 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-[#1b2f3b] to-[#0c1821]">
       <div ref={host} className="absolute inset-0" />
-      <span ref={label} className={`absolute pointer-events-none -translate-x-1/2 -translate-y-full whitespace-nowrap rounded border border-amber-300/50 bg-[#0c1821]/90 px-2 py-1 text-[10px] sm:text-xs font-bold tracking-wider text-amber-200 ${props.target ? '' : 'hidden'}`}>{props.targetLabel}</span>
       {unavailable && <p className="absolute inset-0 flex items-center justify-center p-8 text-center text-white">3D view unavailable in this browser. Use the button below to run each step.</p>}
-      <span className="absolute bottom-3 left-4 text-[10px] text-slate-300">Simplified cutaway · time and size compressed</span>
     </div>
   );
 }
