@@ -197,3 +197,14 @@ Stubbed / placeholder:
 Tested: no tests or browser interactions run for this pass, at the user's explicit request to handle testing themselves.
 Untested: this revision's layout, controls and message log in the browser, typecheck and production build.
 Stubbed / placeholder: unchanged simplified furnace simulation and existing compatibility output quantity.
+
+## Norway cockpit panel and Sigurd chat (placeholders) - Claude, 21 October 2026
+
+- Layout per the user: 3D workshop on the left (unchanged), fixed cockpit-style control panel top right, Sigurd's chat box beneath it. Replaces Codex's side panel and full-width workshop log.
+- Panel (placeholder, `src/content/norwayPanel.ts` + `NorwayManufacturing.tsx`): fixed 480x400 canvas scaled to fit; 7 status lamps, 4 gauges (furnace temp with working band, reaction %, liquid level, mould temp), power-level bars, and 12 buttons with a light above and a name below (MAIN POWER, POWER −/+, ELEC ▲/▼, TAPHOLE, PICKAXE, HAMMER, LOAD QUARTZ, LOAD CARBON, BAG, SHIP). The next useful button's light blinks. Art spec with every rectangle: [research/norway/CONTROL_PANEL_SPEC.md](research/norway/CONTROL_PANEL_SPEC.md).
+- Furnace is now a small puzzle: main power on, then power level 1-5 and electrodes up/down set a target temperature the gauge eases toward. Smelting only progresses inside the working band (power 4, electrodes down). Sigurd reports what he sees ("heat going up the chimney", "too cold", "way too hot", "that's it") without naming the fix. `norwayControls.ts` replaces Codex's start check; tests updated.
+- 3D scene: only two new optional props (`heat`, `electrodesRaised`) so electrodes visibly rise/lower and the glow follows the panel.
+
+Tested: `npm run lint` passes; `bun test src/content/norwayControls.test.ts` 4/4. Browser: workshop layout renders; panel buttons drive mine, break, load quartz, load carbon, main power, electrodes; Sigurd's furnace feedback appears. Stopped there at the user's request (user tests).
+Untested by agent: rest of the run after smelting, narrow screens.
+Stubbed / placeholder: panel and chat box are code-drawn until the pixel art arrives; temperatures are teaching values.

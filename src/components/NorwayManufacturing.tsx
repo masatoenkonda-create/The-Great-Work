@@ -1,8 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { NorwaySmelterScene, SMELTER_PHASES, SmelterPhase, SmelterTarget } from './NorwaySmelterScene';
 import { sound } from '../services/audio';
-import { checkFurnace, FurnacePower, ElectrodePosition } from '../content/norwayControls';
-import { Pickaxe, Hammer, ArrowDownToLine, Power, Truck, Package, Check, LoaderCircle, ChevronUp, ChevronDown, MessageSquare, SlidersHorizontal } from 'lucide-react';
+import { ASSETS } from '../content/assets';
+import {
+  ElectrodePosition, FurnaceZone, furnaceZone, targetTemperature, SIGURD_FURNACE,
+  POWER_LEVELS, ROOM_TEMPERATURE, WORKING_TEMPERATURE, GAUGE_MAX,
+} from '../content/norwayControls';
+import { PANEL_SIZE, PANEL_SECTIONS, PANEL_LAMPS, PANEL_GAUGES, PANEL_CONTROLS, PanelControlId, PanelLampId, PanelGaugeId, PanelRect } from '../content/norwayPanel';
 
 interface Props {
   onReturnToMap: () => void;
@@ -11,73 +15,48 @@ interface Props {
 
 const order = (phase: SmelterPhase) => SMELTER_PHASES.indexOf(phase);
 
-/** Each waiting phase: the object to use, its label, the button text, and the animation it starts. */
-const ACTIONS: Partial<Record<SmelterPhase, { target: SmelterTarget; label: string; action: string; next: SmelterPhase }>> = {
-  mine: { target: 'outcrop', label: 'QUARTZ ROCK', action: 'Swing the pickaxe', next: 'mining' },
-  break: { target: 'bigRock', label: 'HAMMER', action: 'Hammer the rock', next: 'breaking' },
-  loadQuartz: { target: 'quartzBin', label: 'QUARTZ', action: 'Tip the quartz in', next: 'loadingQuartz' },
-  loadCarbon: { target: 'carbonBin', label: 'CARBON', action: 'Tip the carbon in', next: 'loadingCarbon' },
-  power: { target: 'switch', label: 'POWER SWITCH', action: 'Switch on', next: 'smelting' },
-  tap: { target: 'tap', label: 'TAP CONTROL', action: 'Open the taphole', next: 'pouring' },
-  breakCast: { target: 'cast', label: 'SOLID SILICON', action: 'Hammer the casting', next: 'breakingCast' },
-  bag: { target: 'lumps', label: 'SILICON LUMPS', action: 'Bag the lumps', next: 'bagging' },
-  ship: { target: 'bag', label: 'BAG', action: 'Send to Germany →', next: 'shipping' },
+/** Each waiting phase: the object (or panel button) to use, and the animation it starts. */
+const ACTIONS: Partial<Record<SmelterPhase, { target: SmelterTarget; control: PanelControlId; next: SmelterPhase }>> = {
+  mine: { target: 'outcrop', control: 'pickaxe', next: 'mining' },
+  break: { target: 'bigRock', control: 'hammer', next: 'breaking' },
+  loadQuartz: { target: 'quartzBin', control: 'quartz', next: 'loadingQuartz' },
+  loadCarbon: { target: 'carbonBin', control: 'carbon', next: 'loadingCarbon' },
+  power: { target: 'switch', control: 'main', next: 'smelting' },
+  tap: { target: 'tap', control: 'tap', next: 'pouring' },
+  breakCast: { target: 'cast', control: 'hammer', next: 'breakingCast' },
+  bag: { target: 'lumps', control: 'bag', next: 'bagging' },
+  ship: { target: 'bag', control: 'ship', next: 'shipping' },
 };
 
+/** Smelting is not timed: it advances only while the furnace is in its working band. */
 const TIMED: Partial<Record<SmelterPhase, { duration: number; next: SmelterPhase }>> = {
   mining: { duration: 1500, next: 'break' },
   breaking: { duration: 1300, next: 'loadQuartz' },
   loadingQuartz: { duration: 1600, next: 'loadCarbon' },
   loadingCarbon: { duration: 1600, next: 'power' },
-  smelting: { duration: 6000, next: 'tap' },
   pouring: { duration: 3200, next: 'cooling' },
   cooling: { duration: 3500, next: 'breakCast' },
   breakingCast: { duration: 1300, next: 'bag' },
   bagging: { duration: 1700, next: 'ship' },
   shipping: { duration: 1600, next: 'done' },
 };
+const SMELT_SECONDS = 6;
 
-const INSTRUCTION: Record<SmelterPhase, string> = {
-  mine: 'Break a piece of quartz free.', mining: 'Break a piece of quartz free.',
-  break: 'Break the quartz into smaller chunks.', breaking: 'Break the quartz into smaller chunks.',
-  loadQuartz: 'Load the quartz into the furnace.', loadingQuartz: 'Load the quartz into the furnace.',
-  loadCarbon: 'Now load the carbon.', loadingCarbon: 'Now load the carbon.',
-  power: 'Switch on the electric furnace.', smelting: 'The furnace is working.',
-  tap: 'Release the liquid silicon into the mould.', pouring: 'Release the liquid silicon into the mould.',
-  cooling: 'Let it cool.', breakCast: 'Break the solid silicon.', breakingCast: 'Break the solid silicon.',
-  bag: 'Bag the silicon for Germany.', bagging: 'Bag the silicon for Germany.',
-  ship: 'Send the bag to Germany.', shipping: 'Send the bag to Germany.', done: 'Sent to Germany.',
+/** Sigurd's line when each step begins. */
+const SIGURD_STEP: Partial<Record<SmelterPhase, string>> = {
+  mine: "Welcome to the furnace hall! First we need quartz. Take the pickaxe and break a piece off that rock.",
+  break: "Good piece. Too big for the furnace though. Hammer it into fist-sized chunks.",
+  loadQuartz: 'Now tip the quartz into the top of the furnace.',
+  loadCarbon: 'Quartz is silicon stuck to oxygen. Add the carbon: it pulls the oxygen away.',
+  power: "Loaded. Switch on the main power and bring the furnace up to heat. I'll tell you how it looks.",
+  tap: 'Liquid silicon is pooling at the bottom. Open the taphole!',
+  pouring: 'Look at it run. Silicon, straight out of rock.',
+  cooling: "Let it cool. Don't touch it while it glows.",
+  breakCast: "It's solid now. Break it up with the hammer.",
+  bag: 'See how it shines? That is silicon metal. Bag the lumps.',
+  ship: "Send it to Germany. They'll clean it until it's pure enough for chips.",
+  done: 'Good work. On to Germany!',
 };
-
-const GUIDANCE: { phases: SmelterPhase[]; text: string }[] = [
-  { phases: ['mine', 'mining'], text: 'Quartz contains silicon bound to oxygen. Free a piece with the pickaxe.' },
-  { phases: ['break', 'breaking'], text: 'Break the quartz into small chunks for the furnace.' },
-  { phases: ['loadQuartz', 'loadingQuartz'], text: 'Tip the quartz into the furnace’s top opening.' },
-  { phases: ['loadCarbon', 'loadingCarbon'], text: 'Add carbon. It helps remove the oxygen from quartz.' },
-  { phases: ['power'], text: 'Set the power and lower the electrodes into the charge, then start the furnace.' },
-  { phases: ['smelting'], text: 'Electricity supplies heat. Carbon removes oxygen; liquid silicon collects below.' },
-  { phases: ['tap', 'pouring'], text: 'Liquid silicon is ready. Open the taphole to fill the mould.' },
-  { phases: ['cooling'], text: 'Wait for the glow to fade. The silicon must cool before breaking.' },
-  { phases: ['breakCast', 'breakingCast'], text: 'The casting is solid. Break it into silicon metal lumps.' },
-  { phases: ['bag', 'bagging'], text: 'Bag the silicon lumps for shipping.' },
-  { phases: ['ship', 'shipping', 'done'], text: 'Send the bag to Germany for further purification.' },
-];
-
-const TOOL = {
-  mine: Pickaxe, mining: Pickaxe, break: Hammer, breaking: Hammer,
-  loadQuartz: ArrowDownToLine, loadingQuartz: ArrowDownToLine,
-  loadCarbon: ArrowDownToLine, loadingCarbon: ArrowDownToLine,
-  power: Power, smelting: Power, tap: ChevronDown, pouring: ChevronDown,
-  cooling: LoaderCircle, breakCast: Hammer, breakingCast: Hammer,
-  bag: Package, bagging: Package, ship: Truck, shipping: Truck, done: Check,
-};
-
-const BUTTON_LABEL: Partial<Record<SmelterPhase, string>> = {
-  mine: 'Mine', break: 'Break', loadQuartz: 'Load quartz', loadCarbon: 'Load carbon',
-  power: 'Start', tap: 'Pour', breakCast: 'Break', bag: 'Bag', ship: 'Ship',
-};
-
-type WorkshopMessage = { id: number; text: string; warning: boolean };
 
 const SOUND: Partial<Record<SmelterPhase, () => void>> = {
   mining: () => sound.playClink(), breaking: () => sound.playClink(), breakingCast: () => sound.playClink(),
@@ -85,45 +64,47 @@ const SOUND: Partial<Record<SmelterPhase, () => void>> = {
   smelting: () => sound.playCrystalHum(), pouring: () => sound.playBubble(), shipping: () => sound.playConfirm(),
 };
 
-/** Norway work screen: quartz rock to bagged silicon metal. The caller owns the arrival dialogue. */
+type ChatLine = { id: number; text: string; warning: boolean };
+type Led = 'off' | 'on' | 'next';
+
+/** Norway work screen: 3D workcell, fixed control panel, and Sigurd's chat below it. The caller owns the arrival dialogue. */
 export function NorwayManufacturing({ onReturnToMap, onComplete }: Props) {
   const [phase, setPhase] = useState<SmelterPhase>('mine');
   const [progress, setProgress] = useState(0);
-  const [message, setMessage] = useState('');
-  const [power, setPower] = useState<FurnacePower>('low');
+  const [mainOn, setMainOn] = useState(false);
+  const [power, setPower] = useState(1);
   const [electrodes, setElectrodes] = useState<ElectrodePosition>('raised');
-  const [messages, setMessages] = useState<WorkshopMessage[]>([]);
-  const messageId = useRef(0);
-  const lastGuidance = useRef('');
-  const chat = useRef<HTMLDivElement>(null);
+  const [temperature, setTemperature] = useState(ROOM_TEMPERATURE);
+  const [chat, setChat] = useState<ChatLine[]>([]);
+  const chatId = useRef(0);
+  const chatBox = useRef<HTMLDivElement>(null);
   const completed = useRef(false);
   const completeRef = useRef(onComplete);
   completeRef.current = onComplete;
   const waiting = ACTIONS[phase];
-  const guidance = GUIDANCE.find(p => p.phases.includes(phase))!.text;
-  const ToolIcon = TOOL[phase];
-  const furnaceControls = phase === 'power' || phase === 'smelting';
+  const zone: FurnaceZone = furnaceZone(mainOn, power, electrodes, temperature);
 
-  // Keep a short, persistent history without repeating a tip when its animation starts.
-  useEffect(() => {
-    if (lastGuidance.current === guidance) return;
-    lastGuidance.current = guidance;
-    const entry = { id: ++messageId.current, text: guidance, warning: false };
-    setMessages(previous => [...previous.slice(-29), entry]);
-  }, [guidance]);
+  const say = useCallback((text: string, warning = false) => {
+    if (!text) return;
+    setChat(previous => [...previous.slice(-29), { id: ++chatId.current, text, warning }]);
+  }, []);
 
+  // Speak once per step and once per furnace change (refs keep dev double-renders from repeating lines).
+  const spoken = useRef({ phase: '', zone: '' });
   useEffect(() => {
-    if (!message) return;
-    const entry = { id: ++messageId.current, text: message, warning: true };
-    setMessages(previous => [...previous.slice(-29), entry]);
-  }, [message]);
+    if (spoken.current.phase === phase) return;
+    spoken.current.phase = phase;
+    say(SIGURD_STEP[phase] ?? '');
+  }, [phase, say]);
+  useEffect(() => {
+    if (spoken.current.zone === zone || (phase !== 'power' && phase !== 'smelting')) return;
+    spoken.current.zone = zone;
+    say(SIGURD_FURNACE[zone], zone === 'cold' || zone === 'hot' || zone === 'escaping');
+  }, [zone, phase, say]);
+  useEffect(() => { if (chatBox.current) chatBox.current.scrollTop = chatBox.current.scrollHeight; }, [chat]);
 
+  // Timed animations between player actions.
   useEffect(() => {
-    if (chat.current) chat.current.scrollTop = chat.current.scrollHeight;
-  }, [messages]);
-
-  useEffect(() => {
-    setMessage('');
     SOUND[phase]?.();
     const timed = TIMED[phase];
     if (!timed) return;
@@ -146,31 +127,83 @@ export function NorwayManufacturing({ onReturnToMap, onComplete }: Props) {
     return () => cancelAnimationFrame(frame);
   }, [phase]);
 
-  const act = useCallback((target: SmelterTarget) => {
-    if ((target === 'cast' || target === 'lumps') && (phase === 'pouring' || phase === 'cooling')) {
-      setMessage('Too hot. Let it cool first.');
-      sound.playError();
-      return;
-    }
-    if (!waiting) return;
-    const loading = phase === 'loadQuartz' || phase === 'loadCarbon';
-    if (target === waiting.target || (target === 'furnace' && loading)) {
-      if (phase === 'power') {
-        const problem = checkFurnace(power, electrodes);
-        if (problem) {
-          setMessage(problem);
-          sound.playError();
-          return;
-        }
+  // Furnace temperature follows the panel settings; smelting only advances inside the working band.
+  const furnace = useRef({ mainOn, power, electrodes, phase, temperature, progress });
+  furnace.current = { mainOn, power, electrodes, phase, temperature, progress };
+  useEffect(() => {
+    let frame = 0;
+    let last = performance.now();
+    const tick = (now: number) => {
+      const dt = Math.min(0.1, (now - last) / 1000);
+      last = now;
+      const f = furnace.current;
+      const target = targetTemperature(f.mainOn, f.power, f.electrodes);
+      const next = f.temperature + (target - f.temperature) * (1 - Math.exp(-dt / 1.1));
+      if (Math.abs(next - f.temperature) > 0.5) setTemperature(next);
+      if (f.phase === 'smelting' && furnaceZone(f.mainOn, f.power, f.electrodes, next) === 'ok') {
+        const done = f.progress + dt / SMELT_SECONDS;
+        if (done >= 1) { setProgress(0); setPhase('tap'); } else setProgress(done);
       }
-      setPhase(waiting.next);
-      return;
+      frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
+  /** Returns false when the action does not apply right now. */
+  const act = useCallback((target: SmelterTarget): boolean => {
+    if ((target === 'cast' || target === 'lumps') && (phase === 'pouring' || phase === 'cooling')) {
+      say("Careful! It's still glowing hot. Wait for it to cool.", true);
+      sound.playError();
+      return true;
     }
-    if (target === 'switch' && order(phase) < order('power')) {
-      setMessage(phase === 'loadCarbon' ? 'Add carbon first.' : 'Load quartz and carbon first.');
+    if (target === 'switch') {
+      if (order(phase) < order('power')) {
+        say(phase === 'loadCarbon' ? 'Carbon first, then power.' : 'Load the quartz and carbon before switching on.', true);
+        sound.playError();
+        return true;
+      }
+      if (phase === 'power' || phase === 'smelting') {
+        setMainOn(on => !on);
+        if (phase === 'power') setPhase('smelting');
+        sound.playSelect();
+        return true;
+      }
+    }
+    if (!waiting) return false;
+    if (target === waiting.target || (target === 'furnace' && (phase === 'loadQuartz' || phase === 'loadCarbon'))) {
+      setPhase(waiting.next);
+      return true;
+    }
+    return false;
+  }, [phase, waiting, say]);
+
+  const press = (id: PanelControlId) => {
+    const furnaceAdjustable = phase === 'power' || phase === 'smelting';
+    let handled = true;
+    switch (id) {
+      case 'pickaxe': handled = act('outcrop'); break;
+      case 'hammer': handled = act(phase === 'break' ? 'bigRock' : 'cast'); break;
+      case 'quartz': handled = act('quartzBin'); break;
+      case 'carbon': handled = act('carbonBin'); break;
+      case 'main': handled = act('switch'); break;
+      case 'tap': handled = act('tap'); break;
+      case 'bag': handled = act('lumps'); break;
+      case 'ship': handled = act('bag'); break;
+      case 'powerDown': case 'powerUp': case 'electrodesUp': case 'electrodesDown':
+        if (!furnaceAdjustable) { handled = false; break; }
+        if (id === 'powerDown') setPower(p => Math.max(1, p - 1));
+        if (id === 'powerUp') setPower(p => Math.min(POWER_LEVELS, p + 1));
+        if (id === 'electrodesUp') setElectrodes('raised');
+        if (id === 'electrodesDown') setElectrodes('inCharge');
+        sound.playSelect();
+        break;
+    }
+    if (!handled) {
+      say(`Not now. ${SIGURD_STEP[phase] ?? 'Wait for this step to finish.'}`, true);
       sound.playError();
     }
-  }, [phase, waiting, power, electrodes]);
+  };
 
   // Space or Enter uses the highlighted object, the same as clicking it.
   const actRef = useRef(act);
@@ -188,51 +221,138 @@ export function NorwayManufacturing({ onReturnToMap, onComplete }: Props) {
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
+  // Panel readings.
+  const from = (other: SmelterPhase) => order(phase) >= order(other);
+  const smelted = phase === 'smelting' ? progress : from('tap') ? 1 : 0;
+  const liquid = phase === 'smelting' ? progress : phase === 'tap' ? 1 : phase === 'pouring' ? 1 - progress : 0;
+  const mouldTemperature = phase === 'pouring' ? 1400 * progress : phase === 'cooling' ? 1400 - 1380 * progress : from('breakCast') ? ROOM_TEMPERATURE : null;
+  const lamps: Record<PanelLampId, boolean> = {
+    quartzIn: from('loadCarbon'), carbonIn: from('power'), mainOn,
+    heatOk: zone === 'ok', molten: phase === 'tap' || phase === 'pouring', cool: from('breakCast'), bagged: from('ship'),
+  };
+  const furnaceAdjustable = phase === 'power' || phase === 'smelting';
+  const led = (id: PanelControlId): Led => {
+    if (waiting?.control === id) return 'next';
+    if (id === 'main') return mainOn ? 'on' : 'off';
+    if (id === 'electrodesUp') return electrodes === 'raised' ? 'on' : 'off';
+    if (id === 'electrodesDown') return electrodes === 'inCharge' ? 'on' : 'off';
+    if (id === 'powerUp' || id === 'powerDown') return furnaceAdjustable ? 'on' : 'off';
+    return 'off';
+  };
+
   return (
     <section className="h-full overflow-hidden bg-[#0c1821] text-slate-100 font-sans" aria-label="Norway silicon workshop">
-      <div className="mx-auto flex h-full min-h-0 max-w-[1800px] flex-col p-3 sm:p-5 gap-4">
+      <div className="mx-auto flex h-full min-h-0 max-w-[1800px] flex-col gap-3 p-3 sm:p-4">
         <header className="flex shrink-0 items-center justify-between gap-3">
-          <div><p className="text-sm font-medium text-amber-300">Norway · Silicon workshop</p><h1 className="text-xl sm:text-2xl font-bold">From quartz to silicon</h1></div>
+          <div><p className="text-sm font-medium text-amber-300">Norway · Silicon workshop</p><h1 className="text-xl font-bold sm:text-2xl">From quartz to silicon</h1></div>
           <button onClick={onReturnToMap} className="rounded-lg border border-white/20 px-3 py-2 text-xs hover:bg-white/10">← Map</button>
         </header>
-        <div className="grid flex-1 min-h-0 gap-4 overflow-y-auto lg:overflow-visible lg:grid-cols-[minmax(0,1fr)_240px] xl:grid-cols-[minmax(0,1fr)_260px]">
-          <div className="relative h-[48svh] min-h-[300px] lg:h-full lg:min-h-0" data-testid="norway-viewport">
-            <NorwaySmelterScene phase={phase} progress={progress} target={waiting?.target ?? null} onAct={act} />
+        <div className="grid min-h-0 flex-1 gap-3 overflow-y-auto lg:grid-cols-[minmax(0,1fr)_420px] lg:overflow-hidden">
+          <div className="relative h-[48svh] min-h-[300px] lg:h-full lg:min-h-0">
+            <NorwaySmelterScene
+              phase={phase} progress={progress} target={waiting?.target ?? null} onAct={act}
+              heat={mainOn ? Math.min(1.3, Math.max(0, (temperature - 600) / 1300)) : 0}
+              electrodesRaised={electrodes === 'raised' && order(phase) <= order('smelting')}
+            />
           </div>
-          <aside className="flex min-h-[340px] flex-col gap-5 rounded-2xl border border-white/10 bg-[#152732] p-4 lg:min-h-0 lg:overflow-y-auto" aria-label="Workshop control panel">
-            <h2 className="flex items-center gap-2 text-sm font-semibold text-slate-300"><SlidersHorizontal size={18} aria-hidden="true" />Controls</h2>
-            {furnaceControls && <div className="space-y-5">
-              <fieldset disabled={phase !== 'power'}>
-                <legend className="mb-3 text-sm font-semibold">Power</legend>
-                <div className="grid grid-cols-3 gap-2">
-                  {(['low', 'working', 'high'] as const).map((value, index) => <button key={value} type="button" aria-label={`${value === 'working' ? 'Medium' : value === 'low' ? 'Low' : 'High'} power`} title={`${value === 'working' ? 'Medium' : value === 'low' ? 'Low' : 'High'} power`} aria-pressed={power === value} onClick={() => { setPower(value); setMessage(''); }} className={`flex h-20 flex-col items-center justify-center gap-2 rounded-lg border shadow-inner disabled:opacity-60 ${power === value ? 'border-amber-300 bg-amber-300/15 text-amber-200' : 'border-white/20 bg-black/20 text-slate-400 hover:bg-white/5'}`}><span className="flex h-7 items-end gap-1" aria-hidden="true">{[0, 1, 2].map(bar => <span key={bar} className={`w-2 rounded-sm ${bar <= index ? 'bg-current' : 'bg-white/10'}`} style={{ height: `${12 + bar * 7}px` }} />)}</span><span className="text-xs">{['Low', 'Med', 'High'][index]}</span></button>)}
-                </div>
-              </fieldset>
-              <fieldset disabled={phase !== 'power'}>
-                <legend className="mb-3 text-sm font-semibold">Electrodes</legend>
-                <div className="flex items-center justify-center gap-5 rounded-xl border border-white/10 bg-black/20 p-3">
-                  <div className="relative h-24 w-8 rounded-full border border-white/15 bg-black/40" aria-hidden="true"><span className={`absolute left-1 right-1 h-9 rounded-lg border border-slate-300/40 bg-gradient-to-b from-slate-400 to-slate-700 shadow-lg transition-transform ${electrodes === 'raised' ? 'translate-y-1' : 'translate-y-13'}`} /></div>
-                  <div className="grid gap-2">
-                    {(['raised', 'inCharge'] as const).map(value => <button key={value} type="button" aria-label={value === 'raised' ? 'Raise electrodes' : 'Lower electrodes into charge'} aria-pressed={electrodes === value} onClick={() => { setElectrodes(value); setMessage(''); }} className={`flex min-h-11 items-center justify-center gap-2 rounded-lg border px-4 text-sm font-semibold disabled:opacity-60 ${electrodes === value ? 'border-amber-300 bg-amber-300/15 text-amber-200' : 'border-white/20 hover:bg-white/5'}`}>{value === 'raised' ? <ChevronUp size={20} aria-hidden="true" /> : <ChevronDown size={20} aria-hidden="true" />}{value === 'raised' ? 'Up' : 'Down'}</button>)}
-                  </div>
-                </div>
-              </fieldset>
-            </div>}
-            <div className={`flex flex-1 flex-col items-center justify-center gap-4 ${furnaceControls ? 'pt-2' : ''}`}>
-              <button disabled={!waiting} aria-label={waiting?.action ?? INSTRUCTION[phase]} title={waiting?.action ?? INSTRUCTION[phase]} onClick={() => waiting && act(waiting.target)} className="flex min-h-28 w-full flex-col items-center justify-center gap-3 rounded-xl border border-amber-200/40 bg-gradient-to-b from-amber-200 to-amber-400 p-4 font-bold text-slate-950 shadow-[0_5px_0_#926021] hover:brightness-110 active:translate-y-1 active:shadow-none disabled:translate-y-0 disabled:border-white/10 disabled:bg-none disabled:bg-white/5 disabled:text-slate-400 disabled:shadow-none disabled:cursor-wait">
-                {!waiting && phase !== 'done' ? <LoaderCircle size={34} className="animate-spin" aria-hidden="true" /> : <ToolIcon size={38} strokeWidth={1.6} aria-hidden="true" />}
-                <span className="text-sm">{waiting ? BUTTON_LABEL[phase] : phase === 'done' ? 'Sent' : phase === 'cooling' ? 'Cooling' : 'Running'}</span>
-              </button>
-              <div role="progressbar" aria-label={INSTRUCTION[phase]} aria-valuemin={0} aria-valuemax={100} aria-valuenow={waiting ? 0 : Math.round(progress * 100)} className={`h-1.5 w-full overflow-hidden rounded-full bg-white/10 ${waiting ? 'invisible' : ''}`}><div className="h-full bg-amber-400" style={{ width: `${progress * 100}%` }} /></div>
-            </div>
-          </aside>
+          <div className="flex min-h-0 flex-col gap-3">
+            <ControlPanel lamps={lamps} led={led} onPress={press} readings={{ temperature, smelted, liquid, mouldTemperature, power }} />
+            <SigurdChat lines={chat} box={chatBox} />
+          </div>
         </div>
-        <section className="flex h-36 shrink-0 flex-col rounded-2xl border border-white/10 bg-[#101d27]" aria-label="Workshop messages">
-          <h2 className="flex shrink-0 items-center gap-2 border-b border-white/10 px-4 py-2 text-sm font-semibold text-slate-300"><MessageSquare size={16} aria-hidden="true" />Workshop log</h2>
-          <div ref={chat} role="log" aria-live="polite" aria-relevant="additions" tabIndex={0} className="min-h-0 flex-1 space-y-2 overflow-y-auto px-4 py-3 text-sm leading-relaxed focus-visible:outline-2 focus-visible:outline-amber-300">
-            {messages.map(entry => <p key={entry.id} className={`flex items-start gap-3 ${entry.warning ? 'text-amber-200' : 'text-slate-300'}`}><span aria-hidden="true" className={`mt-2 h-1.5 w-1.5 shrink-0 rounded-full ${entry.warning ? 'bg-amber-300' : 'bg-slate-500'}`} />{entry.text}</p>)}
-          </div>
-        </section>
+      </div>
+    </section>
+  );
+}
+
+const pct = (rect: PanelRect) => ({
+  left: `${rect.x / PANEL_SIZE.width * 100}%`, top: `${rect.y / PANEL_SIZE.height * 100}%`,
+  width: `${rect.w / PANEL_SIZE.width * 100}%`, height: `${rect.h / PANEL_SIZE.height * 100}%`,
+});
+const LABEL = 'absolute inset-x-0 bottom-0 truncate text-center font-mono text-[8px] leading-none tracking-wide text-slate-300 sm:text-[9px]';
+
+interface Readings { temperature: number; smelted: number; liquid: number; mouldTemperature: number | null; power: number }
+
+/**
+ * Placeholder cockpit panel. Fixed: nothing on it moves or reflows, only lights and needles change.
+ * Final pixel art replaces the drawn shapes; hotspots stay at the rectangles in norwayPanel.ts.
+ */
+function ControlPanel({ lamps, led, onPress, readings }: { lamps: Record<PanelLampId, boolean>; led: (id: PanelControlId) => Led; onPress: (id: PanelControlId) => void; readings: Readings }) {
+  return (
+    <div className="relative w-full shrink-0 select-none overflow-hidden rounded-xl border-2 border-[#4b5a63] bg-[#232c31] shadow-[inset_0_0_0_3px_#151b1f]" style={{ aspectRatio: `${PANEL_SIZE.width} / ${PANEL_SIZE.height}` }} role="group" aria-label="Furnace control panel" data-asset="norway-control-panel">
+      {[[1.5, 1.5], [98.5, 1.5], [1.5, 98.5], [98.5, 98.5]].map(([x, y]) => <span key={`${x}${y}`} aria-hidden="true" className="absolute h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#5f6e77]" style={{ left: `${x}%`, top: `${y}%` }} />)}
+      {PANEL_SECTIONS.map(section => <div key={section.id} aria-hidden="true" className="absolute rounded-md border border-[#3a464d] bg-[#1b2226]" style={pct(section)}>
+        <span className="absolute -top-px left-2 bg-[#1b2226] px-1 font-mono text-[7px] font-bold tracking-[0.2em] text-amber-200/70 sm:text-[8px]">{section.label}</span>
+      </div>)}
+      {PANEL_LAMPS.map(lamp => <div key={lamp.id} className="absolute" style={pct(lamp)} role="status" aria-label={`${lamp.label}: ${lamps[lamp.id] ? 'on' : 'off'}`}>
+        <span className={`absolute left-1/2 top-[18%] h-[38%] aspect-square -translate-x-1/2 rounded-full border border-black/60 ${lamps[lamp.id] ? (lamp.id === 'heatOk' || lamp.id === 'cool' || lamp.id === 'bagged' ? 'bg-emerald-400 shadow-[0_0_8px_#34d399]' : lamp.id === 'molten' ? 'bg-orange-400 shadow-[0_0_8px_#fb923c]' : 'bg-amber-300 shadow-[0_0_8px_#fcd34d]') : 'bg-[#2c3439]'}`} />
+        <span className={LABEL}>{lamp.label}</span>
+      </div>)}
+      {PANEL_GAUGES.map(gauge => <Gauge key={gauge.id} id={gauge.id} rect={gauge} readings={readings} />)}
+      {PANEL_CONTROLS.map(control => {
+        const state = led(control.id);
+        return <button key={control.id} type="button" onClick={() => onPress(control.id)} aria-label={control.label} title={control.label} className="group absolute focus-visible:outline-2 focus-visible:outline-amber-300" style={pct(control)}>
+          <span aria-hidden="true" className={`absolute left-1/2 top-[4%] h-[11%] aspect-square -translate-x-1/2 rounded-full ${state === 'next' ? 'animate-pulse bg-amber-300 shadow-[0_0_8px_#fcd34d]' : state === 'on' ? 'bg-emerald-400 shadow-[0_0_6px_#34d399]' : 'bg-[#2c3439]'}`} />
+          <span aria-hidden="true" className={`absolute inset-x-[12%] top-[20%] bottom-[24%] rounded-md border-b-4 transition-transform group-active:translate-y-0.5 group-active:border-b-2 ${control.id === 'main' || control.id === 'tap' ? 'border-[#7a1d18] bg-[#c8332b]' : 'border-[#20282c] bg-[#56656e] group-hover:bg-[#64757f]'}`} />
+          <span className={LABEL}>{control.label}</span>
+        </button>;
+      })}
+    </div>
+  );
+}
+
+function Gauge({ id, rect, readings }: { id: PanelGaugeId; rect: PanelRect; readings: Readings }) {
+  let fill = 0;
+  let text = '';
+  let color = 'bg-amber-300';
+  let band: [number, number] | null = null;
+  if (id === 'temperature') {
+    fill = readings.temperature / GAUGE_MAX;
+    text = `${Math.round(readings.temperature / 10) * 10} °C`;
+    band = [WORKING_TEMPERATURE[0] / GAUGE_MAX, WORKING_TEMPERATURE[1] / GAUGE_MAX];
+    color = readings.temperature > WORKING_TEMPERATURE[1] ? 'bg-red-500' : readings.temperature >= WORKING_TEMPERATURE[0] ? 'bg-emerald-400' : 'bg-sky-400';
+  } else if (id === 'reaction') {
+    fill = readings.smelted;
+    text = `${Math.round(readings.smelted * 100)} %`;
+  } else if (id === 'liquid') {
+    fill = readings.liquid;
+    text = readings.liquid > 0.01 ? 'POOLING' : 'EMPTY';
+    color = 'bg-orange-400';
+  } else if (id === 'mould') {
+    fill = (readings.mouldTemperature ?? 0) / 1400;
+    text = readings.mouldTemperature === null ? 'EMPTY' : `${Math.round(readings.mouldTemperature / 10) * 10} °C`;
+    color = 'bg-orange-400';
+  }
+  if (id === 'powerLevel') {
+    return <div className="absolute" style={pct(rect)} role="meter" aria-label="Power level" aria-valuemin={1} aria-valuemax={POWER_LEVELS} aria-valuenow={readings.power}>
+      <div className="absolute inset-x-[6%] top-[14%] bottom-[24%] flex items-end gap-[6%] rounded border border-black/60 bg-black/50 p-[5%]">
+        {Array.from({ length: POWER_LEVELS }, (_, i) => <span key={i} className={`flex-1 rounded-sm ${i < readings.power ? 'bg-amber-300' : 'bg-[#2c3439]'}`} style={{ height: `${30 + i * 17}%` }} />)}
+      </div>
+      <span className={LABEL}>{rect.label}</span>
+    </div>;
+  }
+  return <div className="absolute" style={pct(rect)} role="meter" aria-label={rect.label} aria-valuetext={text}>
+    <div className="absolute inset-x-[6%] top-[10%] bottom-[34%] overflow-hidden rounded border border-black/60 bg-black/60">
+      {band && <span aria-hidden="true" className="absolute inset-x-0 border-y border-emerald-400/70 bg-emerald-400/15" style={{ bottom: `${band[0] * 100}%`, height: `${(band[1] - band[0]) * 100}%` }} />}
+      <span aria-hidden="true" className={`absolute bottom-0 left-[30%] right-[30%] ${color}`} style={{ height: `${Math.min(1, Math.max(0, fill)) * 100}%` }} />
+    </div>
+    <span className="absolute inset-x-0 bottom-[14%] text-center font-mono text-[9px] font-bold text-amber-100 sm:text-[11px]">{text}</span>
+    <span className={LABEL}>{rect.label}</span>
+  </div>;
+}
+
+/** Sigurd's running commentary, below the panel. */
+function SigurdChat({ lines, box }: { lines: ChatLine[]; box: React.RefObject<HTMLDivElement | null> }) {
+  return (
+    <section className="flex min-h-[150px] flex-1 flex-col overflow-hidden rounded-xl border-2 border-[#4b5a63] bg-[#101a20]" aria-label="Sigurd" data-asset="norway-chat-box">
+      <div className="flex shrink-0 items-center gap-3 border-b border-white/10 px-3 py-2">
+        <div className="h-10 w-10 shrink-0 overflow-hidden rounded border border-white/15 bg-[#22313a]">
+          <img src={ASSETS.norwayGuide.image} alt="" className="h-full w-full object-cover object-top [image-rendering:pixelated]" />
+        </div>
+        <p className="font-mono text-xs font-bold tracking-widest text-amber-200">SIGURD</p>
+      </div>
+      <div ref={box} role="log" aria-live="polite" aria-relevant="additions" className="min-h-0 flex-1 space-y-2 overflow-y-auto px-3 py-2 text-sm leading-snug">
+        {lines.map(line => <p key={line.id} className={line.warning ? 'text-amber-200' : 'text-slate-200'}>{line.text}</p>)}
       </div>
     </section>
   );

@@ -17,6 +17,9 @@ interface Props {
   /** The object the player should use next, or null while an animation runs. */
   target: SmelterTarget | null;
   onAct: (target: SmelterTarget) => void;
+  /** Furnace glow 0..1 set by the control panel while the furnace runs; derived from the phase otherwise. */
+  heat?: number;
+  electrodesRaised?: boolean;
 }
 
 const ANCHORS: Record<SmelterTarget, [number, number, number]> = {
@@ -368,7 +371,7 @@ export function NorwaySmelterScene(props: Props) {
     let frame = 0;
 
     const animate = () => {
-      const { phase, progress: p, target } = current.current;
+      const { phase, progress: p, target, heat: panelHeat, electrodesRaised } = current.current;
       const t = clock.getElapsedTime();
       const now = order(phase);
       const after = (other: SmelterPhase) => now > order(other);
@@ -429,11 +432,11 @@ export function NorwaySmelterScene(props: Props) {
       carbonCharge.forEach((lump, i) => { lump.visible = i < carbonIn * carbonCharge.length && reacted < 0.97; lump.scale.setScalar(1 - reacted * 0.75); });
       chargeGroup.position.y = -reacted * 0.45;
 
-      const heat = phase === 'smelting' ? ease(span(p, 0, 0.3)) : phase === 'tap' || phase === 'pouring' ? 1 : phase === 'cooling' ? 0.5 * (1 - p) : 0;
+      const heat = panelHeat !== undefined && (phase === 'power' || phase === 'smelting') ? panelHeat : phase === 'smelting' ? ease(span(p, 0, 0.3)) : phase === 'tap' || phase === 'pouring' ? 1 : phase === 'cooling' ? 0.5 * (1 - p) : 0;
       glowMaterial.opacity = heat * (0.45 + Math.sin(t * 7) * 0.05);
       reactionGlow.visible = heat > 0;
       electrodeTips.forEach(tip => { tip.emissiveIntensity = heat * 1.6; });
-      electrodes.forEach(group => { group.position.y = from('smelting') ? -0.12 : 0; });
+      electrodes.forEach(group => { group.position.y = electrodesRaised ? 0.75 : from('smelting') ? -0.12 : 0; });
       furnaceGlow.intensity = heat * 25;
       const poolLevel = phase === 'smelting' ? span(p, 0.25, 1) : phase === 'tap' ? 1 : phase === 'pouring' ? 1 - p * 0.85 : 0;
       pool.visible = poolLevel > 0.01;
