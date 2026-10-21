@@ -157,7 +157,7 @@ export const STAGE_INTROS: Partial<Record<StopId, StageIntroScript>> = {
     items: [
       { id: 'wafer', name: 'Tested wafer', note: 'Its die map shows which chips passed the probe test.', color: '#0f766e', x: 120 },
       { id: 'substrate', name: 'Substrate', note: 'The tiny board each chip sits on, with pads to the outside world.', color: '#16a34a', x: 760 },
-      { id: 'wire', name: 'Gold wire', note: 'Thinner than a hair. Connects the chip to the substrate.', color: '#facc15', x: 1000 },
+      { id: 'wire', name: 'Gold wire', note: 'Tiny wires that connect the chip to its little board.', color: '#facc15', x: 1000 },
       { id: 'resin', name: 'Mold resin', note: 'Seals everything into the black package.', color: '#1c1917', x: 1230 }
     ],
     lines: [
@@ -165,7 +165,7 @@ export const STAGE_INTROS: Partial<Record<StopId, StageIntroScript>> = {
       { speaker: 'guide', text: 'Selamat datang! Those chips are naked. Too tiny and fragile for a phone. We dress them.' },
       { speaker: 'guide', text: 'First, your tested wafer. The die map tells us which chips passed.', reveal: 'wafer' },
       { speaker: 'guide', text: "Second, the substrate. It's the little board each chip sits on.", reveal: 'substrate' },
-      { speaker: 'guide', text: 'Third, gold wire, thinner than a hair, to connect chip to substrate.', reveal: 'wire' },
+      { speaker: 'guide', text: 'Third, gold wire. These tiny wires connect the chip to its little board.', reveal: 'wire' },
       { speaker: 'guide', text: 'And last, mold resin. It seals everything into the black package you know.', reveal: 'resin' },
       { speaker: 'guide', text: `${WALK_HINT} Bring me all four.` }
     ],

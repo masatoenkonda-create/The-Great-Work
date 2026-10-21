@@ -17,6 +17,7 @@ import { NorwayManufacturing } from './NorwayManufacturing';
 import { GermanyManufacturing } from './GermanyManufacturing';
 import { JapanManufacturing } from './JapanManufacturing';
 import { TaiwanManufacturing } from './TaiwanManufacturing';
+import { MalaysiaManufacturing } from './MalaysiaManufacturing';
 import {
   RotateCcw,
   Eye,
@@ -248,6 +249,10 @@ export const Workspace3D: React.FC<Workspace3DProps> = ({
 
   if (Number(stop.id) === 4) {
     return <TaiwanManufacturing lotId={cargo.lotId} onComplete={onComplete} onReturnToMap={onReturnToMap} />;
+  }
+
+  if (Number(stop.id) === 5) {
+    return <MalaysiaManufacturing waferMap={cargo.waferMap} onComplete={onComplete} onReturnToMap={onReturnToMap} />;
   }
 
   return (
@@ -546,7 +551,7 @@ export const Workspace3D: React.FC<Workspace3DProps> = ({
                           <div className="w-full bg-stone-800 p-2 rounded-xl text-left font-mono text-[9px] space-y-1">
                             <div className="text-emerald-400 font-bold">CHIP MONITOR v1.0</div>
                             <div className="text-stone-300">Lot: {cargo.lotId}</div>
-                            <div className="text-stone-300">Serial: {cargo.selectedChipSerial || 'CHIP-LOT26-D28'}</div>
+                            <div className="text-stone-300">Serial: {cargo.selectedChipSerial ?? 'none yet: finish Malaysia'}</div>
                             <div className="text-stone-300">Phone: {cargo.phoneSerial || 'PHONE-A18-8842'}</div>
                             <div className="text-amber-300 font-bold pt-1 border-t border-stone-700">
                               STATUS: ACTIVE 60 FPS

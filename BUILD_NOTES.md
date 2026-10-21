@@ -249,3 +249,12 @@ Tested: documentation task only; no application tests run. No game code or asset
 - Documentation only; no code changed.
 
 ## Germany research, first pass - Claude, 21 October 2026
+
+## Malaysia workshop built - Claude, 21 October 2026
+
+- Reviewed Codex's Malaysia research and plan (accepted; decisions at the end of research/malaysia/WORKSHOP_PLAN.md).
+- New Malaysia workshop: saw the wafer on its tape frame, choose a passing die on Taiwan's saved map and pick it, set bond force and ultrasonic (pause-only puzzle), wire-bond, transfer-mold, attach solder balls, test and laser-mark, ship. Map and package cross-section insets. The chip serial is derived from wafer + die and released only on shipping.
+- China no longer shows a made-up serial when none exists. Farid's hair comparison dropped.
+
+Tested: `npm run lint` passes; `bun test src` 27/27. Not tested: anything in the browser (user tests).
+Placeholders: code-drawn panel, insets and guide box, "F" portrait for Farid, primitive geometry, compressed times.

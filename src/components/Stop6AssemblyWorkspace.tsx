@@ -78,7 +78,7 @@ export const Stop6AssemblyWorkspace: React.FC<Stop6AssemblyWorkspaceProps> = ({
       <div className="p-3 bg-stone-100 border border-stone-200 rounded-xl text-[11px] text-stone-600">
         <strong className="text-stone-900 block font-sans">Ready-Made System Modules:</strong>
         Logic board PCB, flash memory, battery, camera module, and OLED display arrive pre-manufactured.
-        Material transformed: <strong>1 released packaged chip ({cargo.selectedChipSerial || 'CHIP-LOT26-D28'}) $\rightarrow$ 1 working phone</strong>.
+        Material transformed: <strong>1 released packaged chip ({cargo.selectedChipSerial ?? 'none yet: finish Malaysia'}) $\rightarrow$ 1 working phone</strong>.
       </div>
 
       {/* Substep tabs */}
@@ -140,7 +140,7 @@ export const Stop6AssemblyWorkspace: React.FC<Stop6AssemblyWorkspaceProps> = ({
             </div>
             <div className="flex justify-between">
               <span className="text-stone-400">Incoming Chip Serial:</span>
-              <span className="text-emerald-400 font-bold">{cargo.selectedChipSerial || 'CHIP-LOT26-D28'}</span>
+              <span className="text-emerald-400 font-bold">{cargo.selectedChipSerial ?? 'none yet: finish Malaysia'}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-stone-400">Solder Reflow Convection:</span>

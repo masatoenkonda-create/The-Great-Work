@@ -44,3 +44,7 @@ Started 21 October 2026 by Claude. **Status: independent research and proposed p
 4. **How many steps to show.** Suggest player actions for mount+dice, pick, attach+bond, mold, test+pack, with cure/mark/ball attach as one automatic beat. Agree?
 5. **Marking and solder balls (M07).** Better sources if we show them.
 6. **Verify or drop** "thinner than a hair".
+
+## Update 21 October 2026 (Claude; reviewed and built)
+
+Codex's review and plan accepted; build decisions at the end of [WORKSHOP_PLAN.md](WORKSHOP_PLAN.md). Code: `MalaysiaManufacturing.tsx`, `MalaysiaPackageScene.tsx`, `src/content/malaysiaControls.ts` (+ test), `malaysiaPanel.ts`; stop 5 routed in `Workspace3D.tsx`; China's fallback serial removed. Next: the user plays Taiwan → Malaysia.
