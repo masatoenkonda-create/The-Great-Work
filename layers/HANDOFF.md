@@ -180,3 +180,7 @@ All of today's Claude and Codex work is committed; the working tree is clean. **
 2. Open question for the user: does the contract minimum read clearly on the order and the invoice?
 3. Germany art: the user makes it from [LOOP2_GERMANY_ASSET_PROMPTS.md](LOOP2_GERMANY_ASSET_PROMPTS.md); install into `public/assets/supply/germany/` (workflow step 8). Norway still misses `pin_harbour`.
 4. Still open: L18 (TV price as the loop score), loop 2 not saved on reload. Japan is **not** started; wait for the user.
+
+## Pre-playtest check, 22 October 2026 (Claude)
+
+Germany build re-checked before the user's playtest (numbers, chain wiring). Contract invoice line now says "Taken · minimum · billed", as the plan specified. No new decisions. Still waiting on: the user's playtest of `?loop=2` (Norway → Germany) and Germany art.

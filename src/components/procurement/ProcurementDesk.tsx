@@ -260,7 +260,7 @@ export function ProcurementDesk({ config: c, state: s, dispatch, onReturnToMap, 
                     ? <button className={`${btn} mt-1`} onClick={() => act({ type: 'check', orderId: o.id })}>Check the delivery</button>
                     : <>
                       {c.gateExtra?.(o)}
-                      <p className="mt-1">Usable {usableOf(o)}{unusedMinimum(o) > 0 ? ` · contract minimum: ${billedUnits(o.terms, o.lots)} billed` : ''} · order said <b>{$(o.expected)}</b> · invoice <b>{$(o.invoice)}</b></p>
+                      <p className="mt-1">{unusedMinimum(o) > 0 ? `Taken ${o.terms.lot * o.lots} · minimum ${o.terms.minimum} · billed ${billedUnits(o.terms, o.lots)}` : `Usable ${usableOf(o)}`} · order said <b>{$(o.expected)}</b> · invoice <b>{$(o.invoice)}</b></p>
                       <div className="mt-1 flex gap-1.5">
                         <button className={btn} onClick={() => act({ type: 'pay', orderId: o.id })}>Pay</button>
                         <button className={btn} onClick={() => act({ type: 'dispute', orderId: o.id })}>Dispute</button>

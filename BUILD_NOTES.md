@@ -570,3 +570,11 @@ User: "keep going with the process" (taken as go for workflow steps 3-7).
 - Art list and prompts: `layers/LOOP2_GERMANY_ASSETS.md`, `_ASSET_PROMPTS.md` (files go in `public/assets/supply/germany/`).
 
 Tests: `npm run lint` passes; `bun test src` 51 pass, 0 fail; `npm run build` passes (existing bundle-size warning). Browser: not run. Placeholders: all Germany art (map, products, icons, pins, portraits); Norway unchanged visually but its screen now runs on the shared desk, so it needs a quick replay too.
+
+## Loop 2 Germany: pre-playtest check - Claude, 22 October 2026
+
+Resumed at workflow step 9 (hand over to play); no user playtest or Germany art yet.
+- Re-checked the plan's four routes against `germanyMarket.ts` by hand: +$68, −$12, +$34, −$209 all add up. App wiring checked: Germany opens only after Norway's sale; replaying Norway clears it.
+- One fix, to match the plan: a contract order's store line now reads "Taken 9 · minimum 10 · billed 10" (was "Usable 9 · contract minimum: 10 billed", which hid how much was taken). Non-contract orders unchanged.
+
+Tests: `npm run lint` passes; `bun test src` 51 pass, 0 fail. Browser: not run (user tests). Placeholders: all Germany art.
