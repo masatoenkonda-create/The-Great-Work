@@ -50,9 +50,6 @@ const ROUTES: Record<string, string> = {
 };
 const PIN_ART: Record<string, string> = { smelter: 'smelter', fjord: 'quarry', nordic: 'trader', hydro: 'power', bulk: 'bulk', harbour: 'harbour', sawmill: 'sawmill', customer: 'customer', alloy: 'customer', silicones: 'customer' };
 const CUSTOMERS = ['customer', 'alloy', 'silicones'];
-/** Pin colour = what the place sells (suppliers) or that it buys from you (customers). */
-const ITEM_COLOR: Record<string, string> = { quartz: '#e2e8f0', carbon: '#64748b', chips: '#d97706', power: '#facc15', customer: '#3b82f6', smelter: '#f97316' };
-const LEGEND = [['quartz', 'Quartz'], ['carbon', 'Carbon'], ['chips', 'Wood chips'], ['power', 'Electricity'], ['customer', 'Buys your silicon']] as const;
 
 /** True once the image has loaded; SVG <image> shows a broken icon otherwise, so it is only drawn when present. */
 function useLoaded(src: string) {
@@ -72,7 +69,7 @@ function nextStep(s: TradeState) {
     if (gate) return 'A truck is at the gate: check the delivery (right panel).';
     if (s.orders.some(o => o.paid === null)) return 'An invoice is waiting: compare it with your order, then pay or dispute.';
     const need = M.needs.find(n => missing(M, s, n.id) > 0);
-    if (need) return `Buy ${missing(M, s, need.id)} more ${need.unit} of ${need.name.toLowerCase()}: click a pin marked !`;
+    if (need) return `Buy ${missing(M, s, need.id)} more ${need.unit} of ${need.name.toLowerCase()}: click a place marked “needed”`;
     return 'Everything is in: click your smelter.';
   }
   if (s.phase === 'sell') return s.sale.quotes.length ? 'Show Germany your best quote, then sell.' : 'Ask the other customers what they pay, then negotiate with Germany.';
@@ -82,38 +79,31 @@ function nextStep(s: TradeState) {
 
 function Pin({ id, p, s, open, onOpen }: { id: string; p: { x: number; y: number; label: string }; s: TradeState; open: boolean; onOpen: () => void }) {
   const sup = M.suppliers.find(x => x.id === id);
-  const role = sup ? sup.item : CUSTOMERS.includes(id) ? 'customer' : 'smelter';
-  const size = id === 'smelter' ? 104 : 80;
+  const customer = CUSTOMERS.includes(id);
+  const size = id === 'smelter' ? 92 : 68;
   const art = ASSETS.supply.pin(PIN_ART[id]);
   const hasArt = useLoaded(art);
-  const iconSrc = sup ? ASSETS.supply.icon(ICON[sup.item].art) : role === 'customer' ? ASSETS.supply.icon('silicon') : '';
+  const iconSrc = sup ? ASSETS.supply.icon(ICON[sup.item].art) : customer ? ASSETS.supply.icon('silicon') : '';
   const hasIcon = useLoaded(iconSrc);
-  const sub = sup ? `sells ${needOf(M, sup.item).name.toLowerCase()}` : role === 'customer' ? (id === 'customer' ? 'next stop on your route' : 'another buyer') : 'makes silicon';
-  // Badge: ! still needed, ✓ covered, truck at the gate, $ ready to sell, GO ready to smelt.
-  let badge: { text: string; color: string; pulse?: boolean } | null = null;
-  if (sup && s.phase === 'buy') {
-    if (s.orders.some(o => o.supplierId === id && o.paid === null)) badge = { text: '🚚', color: '#f59e0b' };
-    else if (missing(M, s, sup.item) > 0) badge = { text: '!', color: '#ef4444', pulse: true };
-    else badge = { text: '✓', color: '#22c55e' };
-  }
-  if (id === 'smelter' && s.phase === 'buy' && readyToMake(M, s)) badge = { text: 'GO', color: '#22c55e', pulse: true };
-  if (role === 'customer' && s.phase === 'sell' && (id === 'customer' || !s.sale.quotes.includes(id))) badge = { text: '$', color: '#3b82f6', pulse: true };
-  const w = Math.max(p.label.length, sub.length) * 10 + 24;
+  // Second line: what the place is for, plus its status in plain words.
+  let sub = sup ? needOf(M, sup.item).name.toLowerCase() : customer ? (id === 'customer' ? 'your customer' : 'other buyer') : 'your smelter';
+  if (sup && s.phase === 'buy') sub += s.orders.some(o => o.supplierId === id && o.paid === null) ? ' · at the gate' : missing(M, s, sup.item) > 0 ? ' · needed' : ' · done';
+  if (id === 'smelter' && s.phase === 'buy' && readyToMake(M, s)) sub += ' · ready';
+  if (customer && id !== 'customer' && s.sale.quotes.includes(id)) sub += ` · quoted $${M.buyer.competitors.find(c => c.id === id)!.quote}`;
+  const w = Math.max(p.label.length * 8.6, sub.length * 7.2) + 20;
   return (
     <g transform={`translate(${p.x},${p.y})`} onClick={onOpen} className="cursor-pointer" role="button" tabIndex={0} aria-label={`${p.label}, ${sub}`}
       onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpen(); } }}>
-      <circle r={size / 2 + 6} fill="#0c1821" opacity="0.55" />
-      <circle r={size / 2} fill={ITEM_COLOR[role]} stroke={open ? '#fcd34d' : '#1a0b02'} strokeWidth={open ? 8 : 5} />
+      {open && <circle r={size / 2 + 4} fill="none" stroke="#f8fafc" strokeWidth="3" opacity="0.9" />}
       {hasArt ? <image href={art} x={-size / 2} y={-size / 2} width={size} height={size} style={{ imageRendering: 'pixelated' }} />
-        : hasIcon ? <image href={iconSrc} x={-size * 0.32} y={-size * 0.32} width={size * 0.64} height={size * 0.64} />
-        : <text y="14" textAnchor="middle" fontSize="40">{role === 'smelter' ? '🏭' : role === 'customer' ? '💰' : '?'}</text>}
-      {badge && <g transform={`translate(${size / 2 - 8},${-size / 2 + 8})`}>
-        <circle r="17" fill={badge.color} stroke="#1a0b02" strokeWidth="3">{badge.pulse && <animate attributeName="r" values="15;19;15" dur="1.2s" repeatCount="indefinite" />}</circle>
-        <text y="7" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#fff">{badge.text}</text>
-      </g>}
-      <rect x={-w / 2} y={size / 2 + 8} width={w} height="48" rx="6" fill="#0c1821" stroke={ITEM_COLOR[role]} strokeWidth="3" opacity="0.92" />
-      <text y={size / 2 + 30} textAnchor="middle" fill="#fef3c7" fontSize="19" fontFamily="monospace" fontWeight="bold">{p.label}</text>
-      <text y={size / 2 + 49} textAnchor="middle" fill={ITEM_COLOR[role]} fontSize="15" fontFamily="monospace">{sub}</text>
+        : <>
+          <circle r={size / 2 - 10} fill="#e7e5e4" stroke="#334155" strokeWidth="2" opacity="0.92" />
+          {hasIcon ? <image href={iconSrc} x={-size * 0.26} y={-size * 0.26} width={size * 0.52} height={size * 0.52} />
+            : <circle r="6" fill="#64748b" />}
+        </>}
+      <rect x={-w / 2} y={size / 2 + 2} width={w} height="38" rx="4" fill="#0f172a" opacity={open ? 0.92 : 0.72} />
+      <text y={size / 2 + 19} textAnchor="middle" fill="#f1f5f9" fontSize="15" fontWeight="600">{p.label}</text>
+      <text y={size / 2 + 34} textAnchor="middle" fill="#cbd5e1" fontSize="12">{sub}</text>
     </g>
   );
 }
@@ -191,24 +181,23 @@ export function NorwayProcurement({ state: s, dispatch, onReturnToMap, onDone }:
         <svg viewBox="0 0 1376 768" preserveAspectRatio="xMidYMid meet" className="h-full w-full" role="group" aria-label="Map of the smelter's suppliers, material origins and customer">
           {mapFailed ? <MapPlaceholder /> : <image href={ASSETS.supply.norwayMap} onError={() => setMapFailed(true)} x="0" y="0" width="1376" height="768" preserveAspectRatio="xMidYMid meet" style={{ imageRendering: 'pixelated' }} />}
           {Object.entries(PINS).filter(([id]) => id !== 'smelter').map(([id, p]) => (
-            <path key={id} d={ROUTES[id]} fill="none" stroke={open === id ? '#fcd34d' : '#7c5a3a'} strokeWidth={open === id ? 6 : 3} strokeDasharray="10 8" />
+            <path key={id} d={ROUTES[id]} fill="none" stroke={open === id ? '#f8fafc' : '#475569'} strokeWidth={open === id ? 3 : 2} strokeDasharray="5 6" opacity={open === id ? 0.95 : 0.45} />
           ))}
           {Object.entries(SOURCES).map(([id, source]) => <g key={id}>
-            {source.sellers.map(seller => <path key={seller} d={`M${source.x},${source.y} L${PINS[seller].x},${PINS[seller].y}`} fill="none" stroke={open === seller || open === id ? '#7dd3fc' : '#577b88'} strokeWidth="4" strokeDasharray="7 8" />)}
+            {source.sellers.map(seller => <path key={seller} d={`M${source.x},${source.y} L${PINS[seller].x},${PINS[seller].y}`} fill="none" stroke={open === seller || open === id ? '#f8fafc' : '#475569'} strokeWidth="2" strokeDasharray="3 6" opacity={open === seller || open === id ? 0.9 : 0.4} />)}
             <g transform={`translate(${source.x},${source.y})`} role="button" tabIndex={0} aria-label={`Material origin: ${source.label}`} className="cursor-pointer"
               onClick={() => setOpen(id)} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen(id); } }}>
-              <path d="M0,-16 L16,0 L0,16 L-16,0 Z" fill="#7dd3fc" stroke="#172b38" strokeWidth="3" />
-              <rect x="-112" y="22" width="224" height="27" rx="4" fill="#0c1821" opacity="0.9" />
-              <text y="41" textAnchor="middle" fontSize="16" fill="#bae6fd">{source.label}</text>
+              <circle r="6" fill="#f8fafc" stroke="#334155" strokeWidth="2" />
+              <text y="24" textAnchor="middle" fontSize="13" fill="#0f172a" stroke="#f8fafc" strokeWidth="3" paintOrder="stroke">{source.label}</text>
             </g>
           </g>)}
           {lastOrder && lastOrder.paid === null && !lastOrder.checked && (
             <g key={lastOrder.id}>
-              {lastOrder.item === 'power' ? <path d="M4,-20 L-12,4 H0 L-4,20 L14,-5 H2 Z" fill="#fde68a" /> : <>
+              {lastOrder.item === 'power' ? <circle r="7" fill="#e7e5e4" stroke="#334155" strokeWidth="2" /> : <>
                 {truckArt ? <image href={ASSETS.supply.truck} x="-40" y="-20" width="80" height="40" style={{ imageRendering: 'pixelated' }} />
-                  : <><rect x="-26" y="-14" width="52" height="28" rx="4" fill="#f59e0b" stroke="#1a0b02" strokeWidth="4" /><text y="8" textAnchor="middle" fontSize="20">🚚</text></>}
+                  : <rect x="-14" y="-9" width="28" height="18" rx="3" fill="#e7e5e4" stroke="#334155" strokeWidth="2" />}
               </>}
-              <animateMotion dur="1.6s" fill="freeze" path={ROUTES[lastOrder.supplierId]} />
+              <animateMotion dur="2.4s" fill="freeze" path={ROUTES[lastOrder.supplierId]} />
             </g>
           )}
           {Object.entries(PINS).map(([id, p]) => <Pin key={id} id={id} p={p} s={s} open={open === id} onOpen={() => { sound.playClick(); setOpen(id); }} />)}
@@ -216,11 +205,8 @@ export function NorwayProcurement({ state: s, dispatch, onReturnToMap, onDone }:
 
         <div className="absolute left-3 top-3 flex gap-2">
           <button onClick={onReturnToMap} className="rounded-lg border border-white/30 bg-[#0c1821]/90 px-3 py-2 text-xs">← World map</button>
-          <p className="rounded-lg border-2 border-amber-300 bg-[#0c1821]/95 px-3 py-2 text-sm font-semibold text-amber-200">▶ Next: {nextStep(s)}</p>
+          <p className="rounded-lg border border-white/20 bg-[#0c1821]/85 px-3 py-2 text-sm text-slate-200">Next: {nextStep(s)}</p>
         </div>
-        <ul className="absolute bottom-3 right-3 hidden gap-3 rounded-lg bg-[#0c1821]/90 px-3 py-2 text-xs md:flex" aria-label="Map legend">
-          {LEGEND.map(([k, label]) => <li key={k} className="flex items-center gap-1.5"><span className="h-3.5 w-3.5 rounded-full border-2 border-black" style={{ background: ITEM_COLOR[k] }} />{label}</li>)}
-        </ul>
 
         {open && (
           <div className="absolute inset-x-3 bottom-3 top-14 mx-auto max-w-md overflow-y-auto rounded-2xl border-4 border-[#1a0b02] bg-[#13232d] p-4 shadow-[6px_6px_0_#1a0b02] sm:inset-x-auto sm:left-6">

@@ -482,3 +482,9 @@ Tests: `npm run lint` passes; `bun test src` 42 pass. Browser: not run (user tes
 - Installed the user's snowy autumn map and the cargo-ship pin; moved two pins onto clearings.
 
 Tests: `npm run lint` passes; `bun test src` 42 pass. Browser: not run. Pin positions checked against the map image by overlay, not in the game.
+
+## Loop 2 Norway: calmer map and winter art - Claude, 22 October 2026
+
+- User: the map looked like a cheap mobile game. Removed coloured discs, pulsing badges, legend and bright borders; plain building pins with one neutral label and status in words; faint roads; plain "Next:" line. Installed the winter map. Decision L20 in layers/HANDOFF.md.
+
+Tests: `npm run lint` passes; `bun test src` 42 pass. Browser: not run (user tests).

@@ -110,3 +110,11 @@ Norway change for L17: the result panel now says what Germany paid and that it b
 | China | packaged chip | main board, display module, power board, solder paste | The big-ticket item from few makers; partial delivery in a shortage (deterministic) | the man (USA) |
 
 Art: new snowy autumn `norway_map.jpg` (same 2752 × 1536 size, slightly different layout; Nordic Minerals and River Power pins moved onto clearings); `pin_bulk` (cargo ship) installed. Still placeholders: `pin_harbour`, `pin_sawmill`, `pin_power`, `pin_customer`, truck, portraits.
+
+## Calmer map, winter art, 22 October 2026 (Claude)
+
+| ID | Decision | Who |
+|---|---|---|
+| L20 | **Modest, simple visuals.** The supplier map must not look like a cheap mobile game: no colour-coded discs, no pulsing badges or looping animation, no bright borders. Buildings (or a small neutral marker) with one quiet label; status in plain words in the label ("quartz · needed", "· at the gate", "· done", "quoted $610"). Thin faint roads; only the selected one is highlighted. The delivery marker still travels once along its road (slower, plain). | User, 22 Oct |
+
+Replaced L15's coloured pins, badges, legend and pulsing; kept the "Next:" line in a plain style. Map art: the user's **winter** map (`Winter_coastal_pixel_art_map…123250.jpg`) replaces the autumn one (same size and layout; pins unchanged).
