@@ -29,6 +29,16 @@ export const ASSETS = {
   },
   vehicle: '/assets/map/vehicle.png',
 
+  // Loop 2 supplier map (layers/LOOP2_NORWAY_ASSETS.md). Missing files fall back to code-drawn placeholders.
+  supply: {
+    norwayMap: '/assets/supply/norway_map.jpg',
+    truck: '/assets/supply/truck.png',
+    product: (id: string) => `/assets/supply/product_${id}.png`,
+    icon: (id: string) => `/assets/supply/icon_${id}.png`,
+    pin: (id: string) => `/assets/supply/pin_${id}.png`,
+    rep: (id: string) => `/assets/supply/rep_${id}.png`,
+  },
+
   // Stage backdrops
   stages: {
     1: '/assets/stages/stop1_backdrop.jpg',

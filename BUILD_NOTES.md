@@ -440,3 +440,12 @@ Placeholders: fictional suppliers, teaching prices; plain cards, no art; loop st
 - Reviewed Claude's buy/make/sell prototype and the user's feedback. Kept the selling/spares/profit engine. Restored the clickable supply map and source/seller distinction; added representative materials and a short delivery illustration. Buying now focuses on one input and one supplier, with numbered steps and optional negotiation controls. Outstanding invoices remain signposted when changing suppliers.
 - Restored all manufacturing actions, including mining and rock breaking, at the user's explicit request. Review and next visual suggestions: layers/NORWAY_BUYING_UI_REVIEW.md.
 - Checks: TypeScript passes; 38 pass, 0 fail; build built in 618ms (existing bundle warning). Browser/playtest not run; user tests. No new external research; fictional locations, initials badges and simple objects remain prototype presentation. Uncommitted for Claude.
+
+## Loop 2 Norway: supplier map with placeholders - Claude, 22 October 2026
+
+- Per the user's decisions (layers/LOOP2_NORWAY_ASSETS.md): loop 2 Norway is now a full-screen **supplier map**. Smelter in the centre, six supplier pins and a **Germany customer pin**, roads to the smelter. Clicking a supplier opens a panel with the **product view** (what you're buying), the supplier's portrait, offer, sample, negotiation asks, lots and Order. A truck runs along the road when you order (visual only).
+- A **store panel** on the right: cash, your stock as icons (grey = still needed, fines counted), the "at the gate" inbox (check delivery, then compare order vs invoice, Pay or Dispute), Sigurd's line, and "Go to the smelter". Smelter pin starts the unchanged loop-1 workshop; afterwards the Germany pin opens for selling, then the result and lessons.
+- Engine unchanged (`tradeEngine.ts`, `norwayMarket.ts`). Codex's inset `NorwaySupplyMap.tsx` removed (replaced by the full map). New `ASSETS.supply` paths; every image falls back to a placeholder (code-drawn map, coloured discs, emoji) until the user's art lands in `public/assets/supply/`.
+
+Tests: `npm run lint` passes; `bun test src` 38 pass. Browser: not run (user tests).
+Placeholders: everything visual on this screen.
