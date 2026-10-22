@@ -399,3 +399,7 @@ Checks: TypeScript exit 0; **43 pass, 0 fail** across 9 test files; production b
 ### Turn 6: Claude, 22 October 2026 — buy, make, sell
 
 User playtest: Claude's first prototype was "click click click" with no understanding; Codex's revision was better but too much text. User's idea: if we buy, we also sell; the goal at each stop is to balance cost, and success is a $0 bill or a profit. Rebuilt Norway on a shared engine (`tradeEngine.ts`): quote → negotiate (limited patience) → order → delivery check → invoice check (one deliberate billing error) → pay → furnace → sell to Germany (counter-offer) and sell spares. Keeps Codex's usable-vs-bought, receipt check and supplied-feed furnace. Details in BUILD_NOTES.md. Next: the user's playtest decides whether the step list feels like real work.
+
+### Turn 7: Claude, 22 October 2026 — supplier map decided, art requested
+
+User decisions: a separate **Norway supplier map** becomes loop 2's main screen (smelter in the middle, supplier pins, **Germany customer pin** for selling); a **store panel** shows owned goods, invoices and cash; a **product view** shows the physical item while buying or negotiating; the Norway workshop is not touched (mining and breaking stay). The user will draw the art: list in [LOOP2_NORWAY_ASSETS.md](LOOP2_NORWAY_ASSETS.md). Coding waits for the art (plain-shape placeholders allowed). The engine (`tradeEngine.ts`) stays as is.
