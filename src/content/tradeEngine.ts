@@ -97,6 +97,14 @@ export const orderCost = (t: Terms, lots: number) => t.lot * t.unitPrice * lots 
 export const usableOf = (o: Order) => Math.floor(o.terms.lot * o.terms.usable) * o.lots;
 /** Usable units that passed the delivery check. */
 export const accepted = (s: TradeState, item: string) => s.orders.filter(o => o.item === item && o.checked).reduce((n, o) => n + usableOf(o), 0);
+/** Purchase evidence stays unchanged; the store shows only what is physically still there. */
+export const stockOnHand = (m: Market, s: TradeState, item: string) => {
+  const received = accepted(s, item);
+  if (s.phase === 'buy') return received;
+  const unused = Math.max(0, received - needOf(m, item).need);
+  return s.sale.sparesSold && needOf(m, item).resale > 0 ? 0 : unused;
+};
+export const siliconInStore = (s: TradeState) => s.phase === 'sell' && s.sale.price === null;
 export const onOrder = (s: TradeState, item: string) => s.orders.filter(o => o.item === item && !o.checked).reduce((n, o) => n + usableOf(o), 0);
 export const missing = (m: Market, s: TradeState, item: string) => Math.max(0, needOf(m, item).need - accepted(s, item));
 export const paidTotal = (s: TradeState) => s.orders.reduce((n, o) => n + (o.paid ?? 0), 0);
@@ -131,7 +139,11 @@ export function tradeReducer(m: Market, s: TradeState, a: TradeAction): TradeSta
           lot: c.lot ?? t.lot, unitPrice: t.unitPrice + (c.priceAdd ?? 0),
           fee: t.fee + (c.feeAdd ?? 0), usable: c.usable ?? t.usable,
         } : t;
-        return say(`${sup.name}: "${lever.reply}"`, { terms: { ...s.terms, [sup.id]: terms }, asked: { ...s.asked, [sup.id]: [...asked, lever.id] } });
+        return say(`${sup.name}: "${lever.reply}"`, {
+          terms: { ...s.terms, [sup.id]: terms }, asked: { ...s.asked, [sup.id]: [...asked, lever.id] },
+          // A change to material preparation needs a fresh sample, not a stale approval.
+          sampled: terms.usable !== t.usable ? s.sampled.filter(id => id !== sup.id) : s.sampled,
+        });
       }
       if (!Number.isInteger(a.lots) || a.lots < 1 || a.lots > 3) return s;
       const id = `PO-${s.orders.length + 1}`;

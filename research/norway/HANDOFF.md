@@ -77,3 +77,7 @@ User likes Claude's selling/profit stage; preserve it. Restored a clickable supp
 ## Loop 2 supplier map - Claude, 22 October 2026
 
 Loop 2 Norway is now a supplier map with a store panel (`NorwayProcurement.tsx`, engine `src/content/tradeEngine.ts`, market `src/content/norwayMarket.ts`); `norwaySourcing.ts` and `NorwaySupplyMap.tsx` were replaced. The loop-1 workshop is unchanged and must stay so (user). Loop 2 state and decisions: [layers/HANDOFF.md](../../layers/HANDOFF.md).
+
+## Supplied coastal map and review fixes - Codex, 22 October 2026
+
+User authorized the review recommendations and supplied the map. Added the original JPEG, full-image coordinates and upstream source pins; fixed stock lifecycle, supplier quantity reset, early customer offer and negotiation comparison. Full mining/breaking sequence and selling retained. Detailed handoff: ../../layers/HANDOFF.md (latest entry). TypeScript/build pass; 41 tests pass. No browser/playtest; user checks artwork alignment and interaction. No external research; illustrative origins and teaching terms. Uncommitted.

@@ -5,7 +5,7 @@ import { NorwayManufacturing } from './NorwayManufacturing';
 import { GuideBox } from './workshop/GuideBox';
 import { NORWAY_MARKET as M } from '../content/norwayMarket';
 import {
-  TradeState, TradeAction, Supplier, accepted, needOf, orderCost, usableOf, missing,
+  TradeState, TradeAction, Supplier, Terms, accepted, stockOnHand, siliconInStore, needOf, orderCost, usableOf, missing,
   readyToMake, cashLeft, paidTotal, spares, sparesValue, profit, lessons,
 } from '../content/tradeEngine';
 
@@ -20,16 +20,29 @@ const $ = (n: number) => `${n < 0 ? '−' : ''}$${Math.abs(n).toLocaleString('en
 const btn = 'rounded-lg border border-white/20 px-2.5 py-1.5 text-xs hover:border-amber-300 disabled:cursor-not-allowed disabled:opacity-30';
 const primary = 'w-full rounded-xl bg-amber-300 px-4 py-3 font-bold text-slate-950 disabled:cursor-not-allowed disabled:opacity-40';
 
-/** Pin positions on the 1376×768 supplier map; x stays under 1000 because the store panel covers the right. */
+/** Coordinates on the supplied map (2752×1536, displayed in a 1376×768 viewBox). */
 const PINS: Record<string, { x: number; y: number; label: string }> = {
-  smelter: { x: 500, y: 410, label: 'Your smelter' },
-  fjord: { x: 170, y: 150, label: 'Fjord Quarry' },
-  nordic: { x: 190, y: 420, label: 'Nordic Minerals' },
-  hydro: { x: 520, y: 120, label: 'River Power' },
-  bulk: { x: 880, y: 170, label: 'Bulk Importer' },
-  harbour: { x: 860, y: 380, label: 'Harbour Coal' },
-  sawmill: { x: 790, y: 620, label: 'Valley Sawmill' },
-  customer: { x: 470, y: 690, label: 'Germany · customer' },
+  smelter: { x: 690, y: 390, label: 'Your smelter' },
+  fjord: { x: 220, y: 250, label: 'Fjord Quarry' },
+  nordic: { x: 460, y: 405, label: 'Nordic Minerals' },
+  hydro: { x: 710, y: 175, label: 'River Power' },
+  bulk: { x: 995, y: 340, label: 'Bulk Importer' },
+  harbour: { x: 975, y: 445, label: 'Harbour Coal' },
+  sawmill: { x: 870, y: 645, label: 'Valley Sawmill' },
+  customer: { x: 625, y: 705, label: 'To Germany · customer' },
+};
+const SOURCES = {
+  'source-plateau': { x: 235, y: 565, label: 'Plateau quarry', sellers: ['nordic'], detail: 'Nordic Minerals buys screened quartz here and stocks it at its depot. The depot is the seller; this quarry is the original source.' },
+  'source-overseas': { x: 1200, y: 220, label: 'Overseas coal supply', sellers: ['bulk', 'harbour'], detail: 'Coal is mined abroad and brought to the port. Harbour Coal sells from its stockyard; Bulk Importer sells larger lots at the terminal. This is an overseas connection, not a claimed mine location.' },
+};
+const ROUTES: Record<string, string> = {
+  fjord: 'M220,250 L350,325 L500,365 L690,390',
+  nordic: 'M460,405 L570,370 L690,390',
+  hydro: 'M710,175 L720,280 L690,390',
+  bulk: 'M995,340 L920,385 L830,390 L690,390',
+  harbour: 'M975,445 L920,385 L830,390 L690,390',
+  sawmill: 'M870,645 L800,560 L755,490 L720,430 L690,390',
+  customer: 'M690,390 L680,490 L640,580 L625,705',
 };
 const PIN_ART: Record<string, string> = { smelter: 'smelter', fjord: 'quarry', nordic: 'trader', hydro: 'power', bulk: 'bulk', harbour: 'harbour', sawmill: 'sawmill', customer: 'customer' };
 const ICON: Record<string, { art: string; emoji: string }> = {
@@ -44,8 +57,8 @@ function productOf(sup: Supplier, s: TradeState) {
 
 /** An image file that falls back to a placeholder until the art exists. */
 function Art({ src, alt, className, fallback }: { src: string; alt: string; className?: string; fallback: React.ReactNode }) {
-  const [failed, setFailed] = useState(false);
-  return failed ? <>{fallback}</> : <img src={src} alt={alt} onError={() => setFailed(true)} className={`[image-rendering:pixelated] ${className ?? ''}`} />;
+  const [failedSrc, setFailedSrc] = useState<string | null>(null);
+  return failedSrc === src ? <>{fallback}</> : <img src={src} alt={alt} onError={() => setFailedSrc(src)} className={`[image-rendering:pixelated] ${className ?? ''}`} />;
 }
 
 function ProductView({ id, label }: { id: string; label: string }) {
@@ -72,6 +85,7 @@ function Icon({ item, faded }: { item: string; faded?: boolean }) {
  */
 export function NorwayProcurement({ state: s, dispatch, onReturnToMap, onDone }: Props) {
   const [open, setOpen] = useState<string | null>(null);
+  const [mapFailed, setMapFailed] = useState(false);
   const act = (a: TradeAction) => { sound.playSelect(); dispatch(a); };
 
   useEffect(() => {
@@ -95,28 +109,40 @@ export function NorwayProcurement({ state: s, dispatch, onReturnToMap, onDone }:
   const cash = cashLeft(M, s);
   const lastOrder = s.orders.at(-1);
   const inbox = s.orders.filter(o => o.paid === null);
+  const made = s.phase === 'sell' || s.phase === 'done';
 
   return (
-    <section className="flex h-full overflow-hidden bg-[#0c1821] text-slate-100" aria-label="Norway supplier map">
+    <section className="flex h-full flex-col overflow-hidden bg-[#0c1821] text-slate-100 lg:flex-row" aria-label="Norway supplier map">
       {/* Supplier map */}
-      <div className="relative min-w-0 flex-1">
-        <svg viewBox="0 0 1000 768" preserveAspectRatio="xMidYMid meet" className="h-full w-full" role="img" aria-label="Map of the smelter's suppliers and its customer">
-          <MapPlaceholder />
-          <image href={ASSETS.supply.norwayMap} x="0" y="0" width="1376" height="768" preserveAspectRatio="none" style={{ imageRendering: 'pixelated' }} />
+      <div className="relative min-h-[45svh] min-w-0 flex-1 lg:min-h-0">
+        <svg viewBox="0 0 1376 768" preserveAspectRatio="xMidYMid meet" className="h-full w-full" role="group" aria-label="Map of the smelter's suppliers, material origins and customer">
+          {mapFailed ? <MapPlaceholder /> : <image href={ASSETS.supply.norwayMap} onError={() => setMapFailed(true)} x="0" y="0" width="1376" height="768" preserveAspectRatio="xMidYMid meet" style={{ imageRendering: 'pixelated' }} />}
           {Object.entries(PINS).filter(([id]) => id !== 'smelter').map(([id, p]) => (
-            <line key={id} x1={p.x} y1={p.y} x2={PINS.smelter.x} y2={PINS.smelter.y} stroke={open === id ? '#fcd34d' : '#7c5a3a'} strokeWidth={open === id ? 6 : 4} strokeDasharray="10 8" />
+            <path key={id} d={ROUTES[id]} fill="none" stroke={open === id ? '#fcd34d' : '#7c5a3a'} strokeWidth={open === id ? 6 : 3} strokeDasharray="10 8" />
           ))}
+          {Object.entries(SOURCES).map(([id, source]) => <g key={id}>
+            {source.sellers.map(seller => <path key={seller} d={`M${source.x},${source.y} L${PINS[seller].x},${PINS[seller].y}`} fill="none" stroke={open === seller || open === id ? '#7dd3fc' : '#577b88'} strokeWidth="4" strokeDasharray="7 8" />)}
+            <g transform={`translate(${source.x},${source.y})`} role="button" tabIndex={0} aria-label={`Material origin: ${source.label}`} className="cursor-pointer"
+              onClick={() => setOpen(id)} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen(id); } }}>
+              <path d="M0,-16 L16,0 L0,16 L-16,0 Z" fill="#7dd3fc" stroke="#172b38" strokeWidth="3" />
+              <rect x="-112" y="22" width="224" height="27" rx="4" fill="#0c1821" opacity="0.9" />
+              <text y="41" textAnchor="middle" fontSize="16" fill="#bae6fd">{source.label}</text>
+            </g>
+          </g>)}
           {lastOrder && lastOrder.paid === null && !lastOrder.checked && (
             <g key={lastOrder.id}>
-              <rect x="-18" y="-10" width="36" height="20" rx="3" fill="#f59e0b" stroke="#1a0b02" strokeWidth="3" />
-              <image href={ASSETS.supply.truck} x="-32" y="-16" width="64" height="32" style={{ imageRendering: 'pixelated' }} />
-              <animateMotion dur="1.6s" fill="freeze" path={`M${PINS[lastOrder.supplierId].x},${PINS[lastOrder.supplierId].y} L${PINS.smelter.x},${PINS.smelter.y + 40}`} />
+              {lastOrder.item === 'power' ? <path d="M4,-20 L-12,4 H0 L-4,20 L14,-5 H2 Z" fill="#fde68a" /> : <>
+                <rect x="-18" y="-10" width="36" height="20" rx="3" fill="#f59e0b" stroke="#1a0b02" strokeWidth="3" />
+                <image href={ASSETS.supply.truck} x="-32" y="-16" width="64" height="32" style={{ imageRendering: 'pixelated' }} />
+              </>}
+              <animateMotion dur="1.6s" fill="freeze" path={ROUTES[lastOrder.supplierId]} />
             </g>
           )}
           {Object.entries(PINS).map(([id, p]) => {
             const size = id === 'smelter' ? 96 : 64;
             return (
-              <g key={id} transform={`translate(${p.x},${p.y})`} onClick={() => { sound.playClick(); setOpen(id); }} className="cursor-pointer" role="button" aria-label={p.label}>
+              <g key={id} transform={`translate(${p.x},${p.y})`} onClick={() => { sound.playClick(); setOpen(id); }} className="cursor-pointer" role="button" tabIndex={0} aria-label={p.label}
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen(id); } }}>
                 <circle r={size / 2} fill={open === id ? '#fcd34d' : id === 'smelter' ? '#f97316' : id === 'customer' ? '#60a5fa' : '#e7e5e4'} stroke="#1a0b02" strokeWidth="4" />
                 <image href={ASSETS.supply.pin(PIN_ART[id])} x={-size / 2} y={-size / 2} width={size} height={size} style={{ imageRendering: 'pixelated' }} />
                 <rect x={-p.label.length * 5.2 - 8} y={size / 2 + 6} width={p.label.length * 10.4 + 16} height="28" rx="4" fill="#0c1821" opacity="0.85" />
@@ -136,29 +162,35 @@ export function NorwayProcurement({ state: s, dispatch, onReturnToMap, onDone }:
             <button onClick={() => setOpen(null)} className="float-right rounded border border-white/20 px-2 text-sm" aria-label="Close">✕</button>
             {open === 'smelter' ? <SmelterPanel s={s} act={act} />
               : open === 'customer' ? <CustomerPanel s={s} act={act} onDone={onDone} />
-              : <SupplierPanel sup={M.suppliers.find(x => x.id === open)!} s={s} act={act} />}
+              : open in SOURCES ? <div className="space-y-3"><h2 className="font-bold">{SOURCES[open as keyof typeof SOURCES].label}</h2><p className="text-sm">{SOURCES[open as keyof typeof SOURCES].detail}</p>
+                {SOURCES[open as keyof typeof SOURCES].sellers.map(id => <button className={`${btn} mr-2`} key={id} onClick={() => setOpen(id)}>Visit {PINS[id].label}</button>)}</div>
+              : <SupplierPanel key={open} sup={M.suppliers.find(x => x.id === open)!} s={s} act={act} />}
           </div>
         )}
       </div>
 
       {/* Store panel */}
-      <aside className="flex w-[340px] shrink-0 flex-col gap-3 overflow-y-auto border-l-4 border-[#1a0b02] bg-[#0f1e27] p-3">
+      <aside className="flex max-h-[50svh] w-full shrink-0 flex-col gap-3 overflow-y-auto border-t-4 border-[#1a0b02] bg-[#0f1e27] p-3 lg:max-h-none lg:w-[340px] lg:border-l-4 lg:border-t-0">
         <p className={`rounded-lg border px-3 py-2 text-center font-mono text-lg font-bold ${cash < 0 ? 'border-red-400 text-red-300' : 'border-white/20'}`}>Cash {$(cash)}</p>
+        {s.phase === 'buy' && <button className="rounded-lg border border-sky-400/30 bg-sky-400/5 p-3 text-left text-xs" onClick={() => setOpen('customer')}>
+          Germany's opening offer: <b>{$(M.buyer.offer)}</b> for the finished batch. Compare input costs with what you can earn. View customer →
+        </button>}
         <section className="rounded-xl border border-white/10 p-3">
           <h2 className="mb-2 text-sm font-bold text-amber-300">Your store</h2>
           {M.needs.map(n => {
-            const have = accepted(s, n.id);
+            const have = stockOnHand(M, s, n.id);
             const fines = s.orders.filter(o => o.item === n.id && o.checked).reduce((t, o) => t + o.terms.lot * o.lots - usableOf(o), 0);
             return (
               <div key={n.id} className="mb-2">
-                <p className="text-xs">{n.name} <span className="text-slate-400">{Math.min(have, n.need)}/{n.need} {n.unit}{have > n.need ? ` · ${have - n.need} spare` : ''}</span></p>
+                <p className="text-xs">{n.name} <span className="text-slate-400">{made ? `${have} ${n.unit} left${s.sale.sparesSold && n.resale > 0 ? ' · spares sold' : ''}` : `${Math.min(have, n.need)}/${n.need} ${n.unit}${have > n.need ? ` · ${have - n.need} spare` : ''}`}</span></p>
                 <div className="flex flex-wrap">
-                  {Array.from({ length: n.need }, (_, i) => <Icon key={i} item={n.id} faded={i >= have} />)}
+                  {Array.from({ length: made ? Math.min(have, 12) : n.need }, (_, i) => <Icon key={i} item={n.id} faded={!made && i >= have} />)}
                   {fines > 0 && <span className="ml-1 inline-flex items-center text-[10px] text-amber-400"><Art src={ASSETS.supply.icon('fines')} alt="" className="h-6 w-6" fallback={<span>░</span>} />×{fines} fines</span>}
                 </div>
               </div>
             );
           })}
+          {made && <div className="mt-2 border-t border-white/15 pt-2 text-sm">{siliconInStore(s) && <Icon item="silicon" />} {siliconInStore(s) ? '1 batch of silicon metal · ready to sell' : 'Silicon batch sold to Germany'}<p className="mt-1 text-xs text-slate-400">The batch used the required inputs. Only unused stock and excluded fines remain.</p></div>}
         </section>
         {inbox.length > 0 && (
           <section className="space-y-2 rounded-xl border border-amber-300/40 p-3 text-xs">
@@ -193,6 +225,8 @@ export function NorwayProcurement({ state: s, dispatch, onReturnToMap, onDone }:
 
 function SupplierPanel({ sup, s, act }: { sup: Supplier; s: TradeState; act: (a: TradeAction) => void }) {
   const [lots, setLots] = useState(1);
+  const [previousTerms, setPreviousTerms] = useState<Terms | null>(null);
+  const [reply, setReply] = useState('');
   const t = s.terms[sup.id];
   const n = needOf(M, sup.item);
   const asked = s.asked[sup.id] ?? [];
@@ -210,9 +244,20 @@ function SupplierPanel({ sup, s, act }: { sup: Supplier; s: TradeState; act: (a:
       <p className="font-mono">{t.lot} {n.unit} × {$(t.unitPrice)}{t.fee ? ` + ${$(t.fee)} fee` : ''} = <b>{$(orderCost(t, 1))}</b></p>
       <p className="text-xs">Usable: {sampled ? `${Math.floor(t.lot * t.usable)} of ${t.lot}` : '? (ask for a sample)'}</p>
       <div className="flex flex-wrap gap-1.5">
-        <button className={btn} disabled={sampled} onClick={() => act({ type: 'sample', supplierId: sup.id })}>🔍 Sample</button>
-        {sup.levers.map(l => <button key={l.id} className={btn} disabled={asked.includes(l.id) || tired} onClick={() => act({ type: 'ask', supplierId: sup.id, leverId: l.id })}>💬 {l.label}</button>)}
+        <button className={btn} disabled={sampled || s.phase !== 'buy'} onClick={() => act({ type: 'sample', supplierId: sup.id })}>🔍 Sample</button>
+        {sup.levers.map(l => <button key={l.id} className={btn} disabled={asked.includes(l.id) || tired || s.phase !== 'buy'} onClick={() => {
+          setPreviousTerms({ ...t }); setReply(l.reply); act({ type: 'ask', supplierId: sup.id, leverId: l.id });
+        }}>💬 {l.label}</button>)}
       </div>
+      {previousTerms && <div className="rounded-lg border border-amber-300/40 bg-amber-300/5 p-3 text-xs" aria-live="polite">
+        <p className="mb-2 font-medium text-amber-200">“{reply}”</p>
+        <table className="w-full text-left"><thead><tr><th>Per lot / order</th><th>Before</th><th>Now</th></tr></thead><tbody>
+          <tr><td>Lot size</td><td>{previousTerms.lot} {n.unit}</td><td>{t.lot} {n.unit}</td></tr>
+          <tr><td>Unit price</td><td>{$(previousTerms.unitPrice)}</td><td>{$(t.unitPrice)}</td></tr>
+          <tr><td>Order fee</td><td>{$(previousTerms.fee)}</td><td>{$(t.fee)}</td></tr>
+          <tr className="border-t border-white/20 font-bold"><td>One-lot total</td><td>{$(orderCost(previousTerms, 1))}</td><td>{$(orderCost(t, 1))}</td></tr>
+        </tbody></table>
+      </div>}
       <div className="flex items-center gap-1.5">
         <button className={btn} disabled={lots <= 1} onClick={() => setLots(lots - 1)}>−</button>
         <span className="w-14 text-center text-xs">{lots} lot{lots > 1 ? 's' : ''}</span>
@@ -221,6 +266,7 @@ function SupplierPanel({ sup, s, act }: { sup: Supplier; s: TradeState; act: (a:
           {pending ? 'Order at the gate' : `Order ${$(orderCost(t, lots))}`}
         </button>
       </div>
+      <p className="text-xs text-slate-300">This order: {t.lot * lots} {n.unit}, {sampled ? `${Math.floor(t.lot * t.usable) * lots} usable` : 'usable amount untested'}, {$(orderCost(t, lots))} total.</p>
     </div>
   );
 }
@@ -234,7 +280,7 @@ function SmelterPanel({ s, act }: { s: TradeState; act: (a: TradeAction) => void
         : short.length ? <p className="text-sm">Still missing: {short.map(n => `${missing(M, s, n.id)} ${n.unit} of ${n.name.toLowerCase()}`).join(', ')}.</p>
         : s.orders.some(o => o.paid === null) ? <p className="text-sm">Everything is in. Settle the invoices at the gate first.</p>
         : <p className="text-sm">Store full, invoices paid. Fire it up!</p>}
-      <button className={primary} disabled={!readyToMake(M, s)} onClick={() => act({ type: 'make' })}>Start the furnace</button>
+      <button className={primary} disabled={s.phase !== 'buy' || !readyToMake(M, s)} onClick={() => act({ type: 'make' })}>Start the furnace</button>
     </div>
   );
 }
@@ -248,7 +294,10 @@ function CustomerPanel({ s, act, onDone }: { s: TradeState; act: (a: TradeAction
         <Art src={ASSETS.supply.rep('buyer')} alt="" className="h-14 w-12 object-contain" fallback={<span className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-700 font-bold">G</span>} />
         <p className="font-bold">{M.buyer.name}</p>
       </div>
-      {s.phase === 'buy' && <p className="text-sm">"Bring us silicon metal and we'll make you an offer." (Make it first.)</p>}
+      {s.phase === 'buy' && <div className="rounded-lg border border-sky-300/30 bg-sky-300/5 p-3 text-sm">
+        <p>“Our opening offer is <b>{$(M.buyer.offer)}</b> for the finished silicon batch.”</p>
+        <p className="mt-2 text-slate-300">Inputs paid so far: <b>{$(paidTotal(s))}</b>. Aim to cover all your costs from the sale; unused stock may also be sold back. Negotiate the final sale once the silicon is made.</p>
+      </div>}
       {s.phase === 'sell' && <>
         <p className="text-2xl font-bold">offers {$(s.sale.offer)}</p>
         <div className="flex flex-wrap gap-1.5">

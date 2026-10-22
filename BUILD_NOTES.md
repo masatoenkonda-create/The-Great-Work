@@ -449,3 +449,9 @@ Placeholders: fictional suppliers, teaching prices; plain cards, no art; loop st
 
 Tests: `npm run lint` passes; `bun test src` 38 pass. Browser: not run (user tests).
 Placeholders: everything visual on this screen.
+
+## Norway supplied map and review improvements - Codex, 22 October 2026
+
+- Integrated the user's original coastal JPEG at public/assets/supply/norway_map.jpg, byte-for-byte unchanged. Full-image SVG coordinate system, terrain-based pins/routes, upstream source markers, keyboard access and stacked narrow layout.
+- Store now reflects consumed inputs, unsold silicon and sold spares; purchasing evidence and revenue arithmetic are preserved. Reset supplier quantities on company change, show Germany's opening offer before buying, and show before/after negotiation terms. Reset sample knowledge after material-preparation changes and retry changed image assets after a missing-file fallback. Full manufacturing and selling retained.
+- Tests: TypeScript exit 0; 41 pass, 0 fail across 9 files; build built in 707ms, existing bundle-size warning; whitespace check clean. Asset hashes match. No browser/playtest or external source research; map origins remain fictional illustration. Pin alignment and feel left to the user. See layers/HANDOFF.md. Uncommitted for Claude.

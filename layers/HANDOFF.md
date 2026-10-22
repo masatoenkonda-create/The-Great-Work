@@ -48,3 +48,11 @@ Superseded and removed (history in git): `norwayProcurement.ts` (Claude's first 
 - One fixed scenario: once learned, the best plan is known. No repeat buying or supplier relationships yet.
 - Selling: one counter-offer only. Map pin positions are guesses until `norway_map.jpg` arrives.
 - Not browser-tested by agents (the user tests).
+
+## Map asset and review fixes - Codex, 22 October 2026
+
+User approved the review recommendations and supplied the coastal map. Copied it unchanged to public/assets/supply/norway_map.jpg (2752 x 1536); SHA-256 comparison confirms the installed asset is byte-for-byte identical. The SVG now uses the matching 1376 x 768 coordinate system, displays the full image and anchors pins to the pictured clearings/harbour/river. Routes are illustrative; source pins distinguish Plateau quarry from Nordic's depot and an overseas connection from the local coal sellers. No real mine location or international shipping lane is claimed. Small layouts stack the store below the map, and pins support keyboard activation.
+
+Implemented the review recommendations: store quantities now subtract inputs used in manufacturing, show the silicon batch until sold, and remove resold material spares without changing purchase/test evidence or double-crediting revenue. Non-resellable unused electricity and excluded fines remain separately represented. Supplier panels reset lot count on switching companies. Germany's opening offer can be inspected before buying; negotiation shows the last offer versus current lot size, unit price, fee and total. Changing material preparation clears stale sample knowledge. Asset fallbacks retry when the requested image changes. The completed furnace cannot be restarted through its panel. Full mining/breaking workshop and selling mechanics retained.
+
+Checks: npm.cmd run lint exit 0; bun test src: 41 pass, 0 fail across 9 files; npm.cmd run build: built in 707ms (existing bundle-size warning); git diff --check clean. Three new economic tests cover inventory/sale lifecycle, non-resellable surplus and renewed samples. No browser/playtest; user checks pin placement and feel. No new external research; fictional suppliers/quantities/terms remain teaching assumptions. Reload persistence remains deferred. Changes left uncommitted for Claude.

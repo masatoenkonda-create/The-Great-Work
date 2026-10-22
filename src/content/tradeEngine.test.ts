@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { createTrade, tradeReducer, TradeAction, TradeState, readyToMake, profit, accepted, lessons } from './tradeEngine';
+import { createTrade, tradeReducer, TradeAction, TradeState, readyToMake, profit, accepted, lessons, stockOnHand, siliconInStore, cashLeft } from './tradeEngine';
 import { NORWAY_MARKET as M } from './norwayMarket';
 
 const play = (actions: TradeAction[], s: TradeState = createTrade(M, '')) => actions.reduce((st, a) => tradeReducer(M, st, a), s);
@@ -16,6 +16,48 @@ const sell = (s: TradeState, haggle: boolean) =>
   play([{ type: 'make' }, { type: 'made' }, ...(haggle ? [{ type: 'askBuyer', leverId: 'more' } as TradeAction] : []), { type: 'sellSpares' }, { type: 'accept' }], s);
 
 describe('loop 2 trade engine (Norway)', () => {
+  it('consumes inputs and removes sold goods without rewriting receipt evidence or crediting sales twice', () => {
+    let s = buy(createTrade(M), 'fjord', 2);
+    s = buy(s, 'harbour', 1, true); s = buy(s, 'sawmill'); s = buy(s, 'hydro');
+    assert.equal(stockOnHand(M, s, 'quartz'), 12);
+    s = play([{ type: 'make' }, { type: 'made' }], s);
+    assert.equal(stockOnHand(M, s, 'quartz'), 2);
+    assert.equal(stockOnHand(M, s, 'carbon'), 1);
+    assert.equal(stockOnHand(M, s, 'chips'), 0);
+    assert.equal(stockOnHand(M, s, 'power'), 0);
+    assert.equal(siliconInStore(s), true);
+    const received = accepted(s, 'quartz');
+    s = tradeReducer(M, s, { type: 'sellSpares' });
+    assert.equal(stockOnHand(M, s, 'quartz'), 0);
+    assert.equal(stockOnHand(M, s, 'carbon'), 0);
+    assert.equal(accepted(s, 'quartz'), received);
+    const cash = cashLeft(M, s);
+    s = tradeReducer(M, s, { type: 'sellSpares' });
+    assert.equal(cashLeft(M, s), cash);
+    s = tradeReducer(M, s, { type: 'accept' });
+    assert.equal(siliconInStore(s), false);
+    const soldCash = cashLeft(M, s);
+    s = tradeReducer(M, s, { type: 'accept' });
+    assert.equal(cashLeft(M, s), soldCash);
+  });
+
+  it('keeps non-resellable extra electricity after selling material spares', () => {
+    let s = buy(createTrade(M), 'nordic'); s = buy(s, 'harbour', 1, true);
+    s = buy(s, 'sawmill'); s = buy(s, 'hydro', 2);
+    s = play([{ type: 'make' }, { type: 'made' }, { type: 'sellSpares' }], s);
+    assert.equal(stockOnHand(M, s, 'power'), 1);
+    assert.equal(stockOnHand(M, s, 'quartz'), 0);
+  });
+
+  it('requires fresh sample knowledge after changing preparation, while price-only negotiation keeps it', () => {
+    let s = play([{ type: 'sample', supplierId: 'fjord' }, { type: 'ask', supplierId: 'fjord', leverId: 'screen' }]);
+    assert.ok(!s.sampled.includes('fjord'));
+    s = tradeReducer(M, s, { type: 'sample', supplierId: 'fjord' });
+    assert.ok(s.sampled.includes('fjord'));
+    s = play([{ type: 'sample', supplierId: 'harbour' }, { type: 'ask', supplierId: 'harbour', leverId: 'cheaper' }], s);
+    assert.ok(s.sampled.includes('harbour'));
+  });
+
   it('careful play breaks even or better', () => {
     let s = play([{ type: 'ask', supplierId: 'nordic', leverId: 'smaller' }, { type: 'ask', supplierId: 'harbour', leverId: 'cheaper' }, { type: 'ask', supplierId: 'sawmill', leverId: 'cheaper' }]);
     s = buy(s, 'nordic'); s = buy(s, 'harbour', 1, true); s = buy(s, 'sawmill'); s = buy(s, 'hydro');
