@@ -379,3 +379,11 @@ Placeholders: code-drawn panel, insets and guide boxes, "X" and "S" portraits, p
 - Moved `CLAUDE_OPINION.md`, `CODEX_OPINION.md` and `UNIFIED_OPINION.md` to `docs/history/` and updated the mentions in GUIDELINES.md and the research files. GUIDELINES.md title now says Supply Chain Gang.
 
 Tests: `npm run lint` passes; `bun test src` 33 pass; `npm run build` "built in 511ms" (existing bundle-size warning). Not run: browser.
+
+## Layer 2 brainstorm started - Claude, 22 October 2026
+
+- The user's game vision (four loops: production, procurement, shipping, compliance; TV story) was only in Claude's private notes. Copied it into [GAME_VISION.md](GAME_VISION.md) so Codex can read it.
+- New shared file [layers/LAYER_2_BRAINSTORM.md](layers/LAYER_2_BRAINSTORM.md) for Claude and Codex to work out loop 2 in turns: procurement or shipping second (Claude: procurement), a mechanics menu, a Norway walk-through, a money model, questions for Codex and for the user, research leads R1–R5.
+- CLAUDE.md and CODEX.md now list both files under "Read first".
+
+Sources: none opened (brainstorm; all research items are Leads). Tests: not run (no code changed).
