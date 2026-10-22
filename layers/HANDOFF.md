@@ -118,3 +118,7 @@ Art: new snowy autumn `norway_map.jpg` (same 2752 × 1536 size, slightly differe
 | L20 | **Modest, simple visuals.** The supplier map must not look like a cheap mobile game: no colour-coded discs, no pulsing badges or looping animation, no bright borders. Buildings (or a small neutral marker) with one quiet label; status in plain words in the label ("quartz · needed", "· at the gate", "· done", "quoted $610"). Thin faint roads; only the selected one is highlighted. The delivery marker still travels once along its road (slower, plain). | User, 22 Oct |
 
 Replaced L15's coloured pins, badges, legend and pulsing; kept the "Next:" line in a plain style. Map art: the user's **winter** map (`Winter_coastal_pixel_art_map…123250.jpg`) replaces the autumn one (same size and layout; pins unchanged).
+
+## Workflow file, 22 October 2026 (Claude)
+
+The user asked for the session's workflow as an instruction file for building every other loop 2 stop: [PROCUREMENT_WORKFLOW.md](../PROCUREMENT_WORKFLOW.md). Codex will add its own section. Art cut-out script saved as `tools/cut_art.py`.

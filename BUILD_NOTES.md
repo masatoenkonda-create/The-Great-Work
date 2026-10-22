@@ -488,3 +488,9 @@ Tests: `npm run lint` passes; `bun test src` 42 pass. Browser: not run. Pin posi
 - User: the map looked like a cheap mobile game. Removed coloured discs, pulsing badges, legend and bright borders; plain building pins with one neutral label and status in words; faint roads; plain "Next:" line. Installed the winter map. Decision L20 in layers/HANDOFF.md.
 
 Tests: `npm run lint` passes; `bun test src` 42 pass. Browser: not run (user tests).
+
+## Procurement workflow file - Claude, 22 October 2026
+
+- Added PROCUREMENT_WORKFLOW.md (what a loop 2 stop is, the 10-step workflow, the plan for the other stops, rules learned in Norway, art pipeline, testing) and `tools/cut_art.py` (the cut-out script used for all loop 2 art). Linked from CLAUDE.md, CODEX.md and layers/HANDOFF.md. Codex's section left open.
+
+Tests: not run (documentation and a standalone script; no game code changed).
