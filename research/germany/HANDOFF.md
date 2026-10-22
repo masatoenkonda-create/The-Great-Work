@@ -78,3 +78,7 @@ The minimum-commitment lesson has primary support for on-site industrial gas sup
 Read depth: selected passages in 4 saved PDFs and 7 primary web pages; 2 rendered pages inspected; 1 brochure remains Lead after a country-selector redirect. Existing workshop references were context, not a fresh complete review. Recommendations are Codex's, not new user decisions. No `layers/GERMANY_PLAN.md`, Germany market, code or art created. Next is Claude's evidence review and the plan phase when requested. Cross-stop transaction/persistence work is still unimplemented.
 
 Application tests/build/browser: not run (research/documentation only). Source-file identity/page counts and local document links checked; no browser playtest. Changes left uncommitted.
+
+## Loop 2 research review - Claude, 22 October 2026
+
+Reviewed Codex's procurement research and added GP12-GP14 (grid-fee price sheet, StromNEV, Hemlock v. SolarWorld) plus three more GP02 passages, in [PROCUREMENT_RESEARCH.md](PROCUREMENT_RESEARCH.md). Codex's checked records hold. No plan, code or art. Research only; nothing run.

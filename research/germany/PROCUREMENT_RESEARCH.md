@@ -130,3 +130,57 @@ Read selected passages in **4 saved PDFs and 7 primary web pages**; inspected **
 Claude: review GP01's contract distinctions and GP02's recovery scope first, then the short findings above. The next workflow phase is the one-page `layers/GERMANY_PLAN.md` when requested. Do not infer authorization to build from this research handoff.
 
 Application tests/build/browser: **not run** (research/documentation only). Original PDFs saved; page counts and document identity checked with Poppler; two relevant tables/figures rendered and inspected. No game code, economics or art changed; leave uncommitted.
+
+## Claude's review and additions - 22 October 2026
+
+Workflow steps 1-2 again, on top of Codex's pass. Read GAME_VISION.md, PROCUREMENT_WORKFLOW.md, the loop-2 handoff, this file and Codex's uncommitted diff.
+
+### Check of Codex's sources
+
+| Record | What I did | Result |
+|---|---|---|
+| GP01 | Reread Note 19, PDF p. 94 (printed p. 88), all three distribution paragraphs | **Confirmed** word for word. Also note: on-site pricing "fluctuates with various price indices"; packaged-gas invoices include cylinder use. |
+| GP02 | Reread printed pp. 39, 88, 173 (PDF 14, 63, 148) and searched the whole report | **Confirmed**, page mapping correct (PDF = printed − 25). Three passages Codex didn't use, below. |
+| GP05 | Reopened the VERBUND release | **Confirmed**: 10 MW, 2028-2032, Nußdorf am Inn and Passau, Burghausen. It also states 87,600 MWh a year, i.e. 10 MW every hour of the year: a flat baseload block, not the plant's changing demand. |
+| GP06 | Tried to reopen | **Not re-verified**: the page returned HTTP 503. Codex's record stands as Codex's reading. |
+| GP03, GP04, GP07-GP11 | Not reopened | Codex's readings, not re-verified by Claude. |
+
+No corrections needed. Codex's limits (no private prices, no supplier census, no plant specification) hold.
+
+### More passages in GP02 (Read)
+
+- **Selling polysilicon, printed p. 34 / PDF p. 9 ("Orders"):** "At Polysilicon, we conclude short- and long-term contracts. A proportion of incoming orders are short-term ones, with prices based on market benchmarks." The sale to Japan can honestly be either a long-term contract or a spot order at a benchmark price.
+- **Customers pay in advance, printed p. 77 / PDF p. 52:** other liabilities fell "first and foremost by advance payments received on supply contracts, particularly for polysilicon", to €242.4 million. Long-term polysilicon buyers pay part of the price up front.
+- **WACKER's own commitments, printed p. 88 / PDF p. 63:** countermeasures include "long-term supply contracts; structured procurement policies for multiple suppliers under contracts of differing lengths; a wider supplier base; a higher level of safety stocks", partial vertical integration "by producing our own silicon metal", and "a rolling hedging strategy" for energy. The risk paragraph says purchasing terms let WACKER "adjust contractual volumes flexibly", with "volume guarantees". **Limit:** group-wide policy, not a contract for one plant.
+- Side note, printed p. 69 / PDF p. 44: WACKER runs "the world's largest silicon furnace" in **Holla, Norway**. A real Norway → Germany link exists inside one company. Not needed for the game; don't name the real site on the map (L13: suppliers are fictional).
+
+### New sources
+
+All opened and read on 22 October 2026; originals saved in `sources/procurement/`.
+
+#### GP12 - A real 2026 grid-fee price sheet in Bavaria - Read
+
+Stadtwerke Bayreuth, *Preisblätter Netznutzung Strom 2026*, valid from 1 January 2026, includes the upstream Bayernwerk Netz charges. [Original](https://www.stadtwerke-bayreuth.de/fileadmin/user_upload/netz/Netzentgelte___Preise/strom-preisblaetter-netznutzung-2026.pdf); [saved PDF](sources/procurement/GP12-stwbt-netzentgelte-2026.pdf). Read Preisblatt 1 (p. 1) and p. 9.
+
+For sites with quarter-hour power metering, the grid fee has **two parts: a yearly price per kW of peak and a price per kWh**. Medium voltage: Regelung I 14.81 €/kW·a + 5.01 ct/kWh; Regelung II 122.10 €/kW·a + 0.72 ct/kWh; crossover at 2,500 hours a year. "Es kommt die jeweils günstigere Preisregelung zur Abrechnung": the network operator bills whichever is cheaper, so **the customer does not choose**. Sites with a short, high peak can register in advance for a monthly system (20.35 €/kW per month). Levies, concession fee and VAT come on top. **Limit:** one Bavarian network's prices, not Burghausen's own connection. WACKER also generates some of its own power (GP05: Alzwerke). Grid fees are only part of the bill; the energy itself is bought separately from a supplier.
+
+#### GP13 - The rule behind the price sheet - Read
+
+*Stromnetzentgeltverordnung* (StromNEV), gesetze-im-internet.de, as last amended 22 December 2023. [Original](https://www.gesetze-im-internet.de/stromnev/StromNEV.pdf); [saved PDF](sources/procurement/GP13-stromnev.pdf). Read § 17 (1)-(2a), PDF pp. 14-15, and § 19 (1)-(2), PDF pp. 16-17.
+
+§ 17 (2): the yearly capacity charge is "das Produkt aus dem jeweiligen Jahresleistungspreis und der **Jahreshöchstleistung** in Kilowatt ... im Abrechnungsjahr". **The single highest load in the year sets a charge for the whole year.** § 19 (1): a monthly-price option for consumers with a short, high peak. § 19 (2): users above 7,000 hours a year and 10 GWh at one connection point can get an individual fee of no less than 20 %, 15 % or 10 % of the published fee (at 7,000, 7,500 or 8,000 hours), subject to regulator approval. **Limit:** the federal regulator is reforming grid fees and § 19 (2). I did not check whether a newer rule applies in 2026; treat this as the structure, not current law for a real plant.
+
+#### GP14 - A German buyer bound by a polysilicon take-or-pay contract - Read
+
+*Hemlock Semiconductor Operations, LLC v. SolarWorld Industries Sachsen GmbH*, No. 16-2181 (6th Cir. 16 August 2017). [Original](https://www.opn.ca6.uscourts.gov/opinions.pdf/17a0184p-06.pdf); [saved PDF](sources/procurement/GP14-hemlock-solarworld-6cir-2017.pdf). Read the introduction and Factual background, opinion pp. 1-4, and the damages passages.
+
+Four long-term agreements, 2006-2019, for "set quantities of polycrystalline silicon ... at fixed prices". The take-or-pay provision "obligated Sachsen to pay this yearly amount even if it declined to take delivery". The buyer made "significant advance payments ... credited against the purchase price", which helped fund the seller's expansion of over $4 billion. At first the contract price was "far below the then-current market value". After 2009 the market price fell below it. The buyer refused the 2012 quantity, and the court upheld about **$793 million** in damages and interest. The court also noted that the buyer had benefited by about $509.1 million from the price difference in 2006-2012. **Limits:** a solar-grade dispute between two named companies, used here only as an illustration of the clause. The game's suppliers stay fictional. US court, Michigan law; not a claim about German contract law. Search leads say a related Kyocera dispute had different appellate outcomes; I did not read it (Lead GPL02, not used).
+
+### What this adds to Codex's findings
+
+1. **The minimum-commitment lesson is real, and it cuts both ways.** GP01 shows the structure for gas; GP14 shows the same clause on a German buyer, with the outcome flipping: years of savings, then a huge bill for goods it didn't want. A fair game version: the contract is cheaper per unit **if you use what you committed to**, and the player sees the commitment before signing. Not a trick, and not dice: the batch size is known.
+2. **Electricity has its own real commitment, the peak charge.** In Germany a factory's grid fee includes a yearly price on its **single highest quarter-hour of power** (GP12, GP13). This ties neatly to loop 1's ending, "his electricity bill exploded". It is a candidate way to show electricity at this stop, not a second lesson. Whether to use it, and whether to link it to the heat level the player already picks in the unchanged workshop, belongs to the plan phase. It would read the existing choice, not change the workshop (L12).
+3. **The selling side, Germany → Japan:** GP02 supports either a long-term contract with an advance payment or a short-term order priced off a market benchmark. Norway's selling steps (quotes, patience, cap, payment check) carry over. An advance payment would be a new kind of payment to check. Not a recommendation to add it yet.
+4. **Keep it simple:** of everything above, the player only needs "a contract is cheaper per unit but you pay for the full amount even if you use less", and possibly "your power bill counts your highest moment". Levies, voltage levels, § 19 (2) discounts and hedging stay out of the game.
+
+Read depth: 3 of Codex's records re-verified (GP01, GP02, GP05), 1 unreachable (GP06), the rest not reopened. 3 new primary documents saved and read (GP12-GP14), 1 new Lead (GPL02). Not obtained: a real hydrogen or HCl quote, Burghausen's actual grid connection and fees, current 2026 grid-fee reform status. Application tests/build/browser: not run (research only).

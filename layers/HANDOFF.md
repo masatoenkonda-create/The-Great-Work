@@ -146,3 +146,7 @@ Installed: `truck` (one frame of two, 160 × 80), `pin_sawmill`, `pin_power`, `p
 User authorized Germany's research phase for Claude's later review. See [Germany procurement research](../research/germany/PROCUREMENT_RESEARCH.md) and the appended [country handoff](../research/germany/HANDOFF.md). Steps 1-2 only: input/workshop reconciliation, supply channels, contract terms, source limits and implications. No Germany plan, market, UI, art or chain connection built.
 
 Selected passages read in 4 saved primary PDFs and 7 primary web pages; 2 PDF pages rendered and visually inspected; 1 brochure remains Lead. The approved contract/minimum-commitment lesson is supported most directly by on-site industrial gas evidence, not by assuming every electricity contract has a billing minimum. These are researched findings and agent recommendations, not additional user decisions. Application tests/build/browser: not run; documentation/source checks only. Changes uncommitted.
+
+## Germany research review - Claude, 22 October 2026
+
+Reviewed and extended Codex's Germany research: see "Claude's review and additions" in [PROCUREMENT_RESEARCH.md](../research/germany/PROCUREMENT_RESEARCH.md). GP01, GP02, GP05 confirmed; new GP12-GP14. Supports keeping Germany's lesson (contract vs pay-as-you-go); adds the electricity peak charge as a candidate for showing power. No new user decisions; next is the one-page `layers/GERMANY_PLAN.md` when the user asks.

@@ -534,3 +534,11 @@ Tests: `npm run lint` passes. Browser: not run.
 - Appended country and layer handoffs; linked from Germany's source README. No plan, game code, market tuning or art changed. Next: Claude reviews the evidence; the one-page Germany plan is a later phase when requested.
 
 Checks: Poppler document identity/page counts and local research links; git diff --check. Application tests/build/browser: not run (research/documentation only). Recommendations are not user decisions; all existing logs preserved. Changes left uncommitted.
+
+## Germany loop 2: research review and additions - Claude, 22 October 2026
+
+- Reviewed Codex's Germany procurement research. Re-verified GP01 (Linde gas contract terms), GP02 (WACKER report, pages and quotes) and GP05 (VERBUND power deal) against the originals: confirmed, no corrections. GP06 unreachable (HTTP 503); the other records not reopened.
+- Added GP02 passages (polysilicon sold on short and long-term contracts; customers' advance payments; WACKER's long-term contracts and volume guarantees) and three new saved, read primary sources: GP12 (2026 Bavarian grid-fee price sheet), GP13 (StromNEV § 17, § 19) and GP14 (Hemlock v. SolarWorld, a German polysilicon buyer's take-or-pay contract). One new Lead (GPL02, Kyocera case, not read).
+- Findings: the minimum-commitment lesson is real and cuts both ways (cheap if you use it, a bill if you don't); German electricity bills charge for the year's single highest peak, a candidate way to show power at this stop; the sale to Japan can be long-term with advance payment or short-term at a benchmark price. Recommendations only; no plan, code or art.
+
+Checks: page numbers and quotes checked with Poppler. Application tests/build/browser: not run (research only).
