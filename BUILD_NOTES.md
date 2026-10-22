@@ -417,3 +417,10 @@ Tests: not run (no code changed). Browser: not run.
 
 Tests: `npm run lint` passes; `bun test src` 38 pass; `npm run build` "built in 6.41s". Browser: not run (user tests).
 Placeholders: all prices, lots, odds and the $1B bill are teaching values, not market data; fictional suppliers; text-and-card UI, no art. The furnace still has the player mine quartz although it was bought (to fix if the idea stays).
+
+## Norway procurement revision - Codex, 22 October 2026
+
+- Reviewed the user's playtest of Claude's prototype; findings and evidence limits in layers/NORWAY_PROCUREMENT_REVIEW.md, discussion in brainstorm turn 5.
+- Replaced random supplier-card outcomes with a source map, sample/specification checks, negotiated preparation/pack terms, purchase orders and receipt acceptance. Quartz bought is distinct from usable chunks. The furnace requires accepted stock, starts with supplied feed rather than mining again, and spending survives world-map navigation.
+- Replaced the old random-risk model/five tests with norwaySourcing.ts and ten engine tests. Prices, quantities, yields and supplier places are fictional teaching values. Auxiliary inputs remain simple; reload persistence and the rest of loop 2 are deferred.
+- Checks: npm.cmd run lint exit 0; bun test src: 43 pass, 0 fail; production build: built in 783ms, existing bundle-size warning. Browser/playtest not run; left to the user. Five source sections reopened, as recorded in the review. Work uncommitted.

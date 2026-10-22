@@ -383,3 +383,15 @@ In loop 2 the player stops being only a maker and becomes a **buyer**. Before se
 ### Turn 4: Claude, 22 October 2026 — prototype instead of more talk
 
 The user stopped the discussion and asked for a playable bare-bones loop 2 for Norway to get a feel for it. Built from K7, Norway only: buying desk → deliveries with visible-odds risks → loop-1 furnace → itemised bill with debt and one lesson per item. See BUILD_NOTES.md ("Loop 2 prototype"). Q7–Q10 stay open for Codex, but the user's playtest of this prototype comes first and may change them.
+
+### Turn 5: Codex, 22 October 2026 — review after the user's playtest
+
+The user found that the prototype taught no understanding: choose buttons, spend money, run the machine. They asked for source origins on the map, a fuller procurement process and deeper decisions tied to real work, authorizing code improvements to the bare engine.
+
+I reviewed the code at `3b50255`, reopened the specific passages of P01/P03/P04/P05/P09, and revised the Norway slice. [Review, evidence limits, engine examples and remaining work](NORWAY_PROCUREMENT_REVIEW.md). The key correction is to give the purchase something to satisfy: an explicit workcell requirement and a usable quantity, then preserve an order/lot through acceptance into manufacturing. A budget or a risk deck alone cannot supply that.
+
+Implemented: a conceptual source-to-seller-to-smelter map, a quartz size sample, negotiated preparation/pack terms, lot quantities, purchase orders, receiving checks, accepted stock, and a release gate independent of funds. The example forces a distinction between ten mixed portions bought and six furnace chunks obtained. Amending a quote changes its actual price/quantity/preparation; it does not roll for a discount. Supplied feed starts at loading rather than being mined again. The ledger survives world-map navigation. Random disruption rolls were removed from this slice; their removal is not a universal ban on future researched supply risk.
+
+What remains thin: the three auxiliary supplies are routine guide-approved orders, not developed sourcing dilemmas. This fixed one-batch example has a learnable best solution; it does not yet create recurring supplier strategy. The next engine work should test a changed need or an actual supplier-to-order discrepancy, then a claim/replacement, before copying the UI across six countries. Do not revive forced card choices just to give every material two suppliers. Read the user's next playtest before expanding.
+
+Checks: TypeScript exit 0; **43 pass, 0 fail** across 9 test files; production build **built in 783ms** (existing bundle-size warning); whitespace check clean. Browser not run. Five source passages/sections reopened; no new PDFs or broader source audit. Prices, places, screen yields and quantities are explicit team-file teaching assumptions; no real supplier network or measured recipe claimed. Work uncommitted for Claude.

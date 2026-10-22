@@ -20,6 +20,7 @@ interface Props {
   /** Furnace glow 0..1 set by the control panel while the furnace runs; derived from the phase otherwise. */
   heat?: number;
   electrodesRaised?: boolean;
+  suppliedFeed?: boolean;
 }
 
 const ANCHORS: Record<SmelterTarget, [number, number, number]> = {
@@ -57,7 +58,7 @@ export function NorwaySmelterScene(props: Props) {
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.setClearColor(0x000000, 0);
-    renderer.domElement.setAttribute('aria-label', 'Quartz outcrop, electric furnace cutaway, casting mould and shipping bag');
+    renderer.domElement.setAttribute('aria-label', props.suppliedFeed ? 'Accepted feed bins, electric furnace cutaway, casting mould and shipping bag' : 'Quartz outcrop, electric furnace cutaway, casting mould and shipping bag');
     renderer.domElement.setAttribute('role', 'img');
     container.appendChild(renderer.domElement);
 
@@ -149,7 +150,7 @@ export function NorwaySmelterScene(props: Props) {
     tag(pickaxe, 'outcrop');
 
     // 2. Breaking pad with hammer.
-    tag(box(1.8, 0.24, 1.6, darkSteel, -5, 0.12, 0), 'bigRock');
+    const breakingPad = tag(box(1.8, 0.24, 1.6, darkSteel, -5, 0.12, 0), 'bigRock');
     const makeHammer = () => {
       const hammer = new THREE.Group();
       scene.add(hammer);
@@ -371,7 +372,11 @@ export function NorwaySmelterScene(props: Props) {
     let frame = 0;
 
     const animate = () => {
-      const { phase, progress: p, target, heat: panelHeat, electrodesRaised } = current.current;
+      const { phase, progress: p, target, heat: panelHeat, electrodesRaised, suppliedFeed } = current.current;
+      outcrop.visible = !suppliedFeed;
+      pickaxe.visible = !suppliedFeed;
+      rockHammer.visible = !suppliedFeed;
+      breakingPad.visible = !suppliedFeed;
       const t = clock.getElapsedTime();
       const now = order(phase);
       const after = (other: SmelterPhase) => now > order(other);

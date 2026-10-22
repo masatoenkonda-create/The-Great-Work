@@ -14,6 +14,8 @@ import { WorkshopLayout, useActKey } from './workshop/WorkshopLayout';
 interface Props {
   onReturnToMap: () => void;
   onComplete: (isPlaceholder: boolean, updates: { siliconMetalBatchKg: number }) => void;
+  /** Accepted quartz lot IDs. Supplied feed skips mining/breaking; loop 1 keeps its original sequence. */
+  suppliedFeed?: string;
 }
 
 const order = (phase: SmelterPhase) => SMELTER_PHASES.indexOf(phase);
@@ -69,14 +71,14 @@ const SOUND: Partial<Record<SmelterPhase, () => void>> = {
 
 
 /** Norway work screen: 3D workcell, fixed control panel, and Sigurd's chat below it. The caller owns the arrival dialogue. */
-export function NorwayManufacturing({ onReturnToMap, onComplete }: Props) {
-  const [phase, setPhase] = useState<SmelterPhase>('mine');
+export function NorwayManufacturing({ onReturnToMap, onComplete, suppliedFeed }: Props) {
+  const [phase, setPhase] = useState<SmelterPhase>(suppliedFeed ? 'loadQuartz' : 'mine');
   const [progress, setProgress] = useState(0);
   const [mainOn, setMainOn] = useState(false);
   const [power, setPower] = useState(1);
   const [electrodes, setElectrodes] = useState<ElectrodePosition>('raised');
   const [temperature, setTemperature] = useState(ROOM_TEMPERATURE);
-  const [chat, setChat] = useState<GuideLine>({ text: SIGURD_STEP.mine!, warning: false });
+  const [chat, setChat] = useState<GuideLine>({ text: suppliedFeed ? 'Your accepted quartz is in the feed bin. Load those chunks into the furnace.' : SIGURD_STEP.mine!, warning: false });
   const completed = useRef(false);
   const completeRef = useRef(onComplete);
   completeRef.current = onComplete;
@@ -93,8 +95,8 @@ export function NorwayManufacturing({ onReturnToMap, onComplete }: Props) {
   useEffect(() => {
     if (spoken.current.phase === phase) return;
     spoken.current.phase = phase;
-    say(SIGURD_STEP[phase] ?? '');
-  }, [phase, say]);
+    say(suppliedFeed && phase === 'loadQuartz' ? 'Your accepted quartz is in the feed bin. Load those chunks into the furnace.' : SIGURD_STEP[phase] ?? '');
+  }, [phase, say, suppliedFeed]);
   useEffect(() => {
     if (spoken.current.zone === zone || (phase !== 'power' && phase !== 'smelting')) return;
     spoken.current.zone = zone;
@@ -248,12 +250,13 @@ export function NorwayManufacturing({ onReturnToMap, onComplete }: Props) {
   return (
     <WorkshopLayout
       ariaLabel="Norway silicon workshop" kicker="Norway · Silicon workshop" title="From quartz to silicon" onReturnToMap={onReturnToMap}
-      scene={<NorwaySmelterScene
+      scene={<><NorwaySmelterScene
+        suppliedFeed={Boolean(suppliedFeed)}
         phase={phase} progress={progress} target={waiting?.target ?? null} onAct={act}
         heat={mainOn ? Math.min(1.3, Math.max(0, (temperature - 600) / 1300)) : 0}
         electrodesRaised={electrodes === 'raised' && order(phase) <= order('smelting')}
-      />}
-      panel={<CockpitPanel layout={NORWAY_PANEL} label="Furnace control panel" asset="norway-control-panel" lamp={lamp} gauge={gauge} led={led} pressed={pressed} onPress={press} />}
+      />{suppliedFeed && <p className="pointer-events-none absolute left-3 top-3 max-w-[85%] rounded bg-slate-950/80 p-2 text-xs text-emerald-200">Accepted quartz lots: {suppliedFeed}</p>}</>}
+      panel={<CockpitPanel layout={suppliedFeed ? { ...NORWAY_PANEL, controls: NORWAY_PANEL.controls.filter(c => c.id !== 'pickaxe') } : NORWAY_PANEL} label="Furnace control panel" asset="norway-control-panel" lamp={lamp} gauge={gauge} led={led} pressed={pressed} onPress={press} />}
       guide={<GuideBox name="Sigurd" portrait={ASSETS.norwayGuide.image} line={chat} asset="norway-chat-box" />}
     />
   );

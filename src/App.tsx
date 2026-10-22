@@ -6,6 +6,7 @@ import { WorldMap } from './components/WorldMap';
 import { Workspace3D } from './components/Workspace3D';
 import { LoopReplay } from './components/LoopReplay';
 import { NorwayProcurement } from './components/NorwayProcurement';
+import { createProcurementState, procurementReducer, ProcurementAction } from './content/norwaySourcing';
 import { sound } from './services/audio';
 import { useFullscreen } from './services/fullscreen';
 
@@ -15,6 +16,9 @@ export default function App() {
   const [view, setView] = useState<'title' | 'map' | 'workspace' | 'replay'>(
     () => (new URLSearchParams(window.location.search).get('loop') === '2' ? 'replay' : 'title'));
   const [loop, setLoop] = useState<1 | 2>(1);
+  // Keep orders/accepted stock while visiting the world map. Still session-only, isolated from campaign saves.
+  const [procurement, setProcurement] = useState(createProcurementState);
+  const dispatchProcurement = (action: ProcurementAction) => setProcurement(s => procurementReducer(s, action));
   const [activeStopId, setActiveStopId] = useState<StopId>(cargo.currentStopId);
   const [isMuted, setIsMuted] = useState<boolean>(sound.getMuted());
   // Shown once when an old save had to be sent back to an earlier stop.
@@ -78,6 +82,7 @@ export default function App() {
 
   const handleNewGame = () => {
     setLoop(1);
+    setProcurement(createProcurementState());
     const freshState = clearCargoState();
     setCargo(freshState);
     setActiveStopId(1);
@@ -91,6 +96,7 @@ export default function App() {
 
   const handleResetRun = () => {
     setLoop(1);
+    setProcurement(createProcurementState());
     const freshState = clearCargoState();
     setCargo(freshState);
     setActiveStopId(1);
@@ -134,7 +140,7 @@ export default function App() {
       )}
 
       {view === 'replay' && (
-        <LoopReplay onStart={() => { setLoop(2); setActiveStopId(1); setView('map'); }} />
+        <LoopReplay onStart={() => { setProcurement(createProcurementState()); setLoop(2); setActiveStopId(1); setView('map'); }} />
       )}
 
       {view === 'map' && loop === 2 && (
@@ -158,6 +164,8 @@ export default function App() {
 
       {view === 'workspace' && loop === 2 && (
         <NorwayProcurement
+          state={procurement}
+          dispatch={dispatchProcurement}
           onReturnToMap={() => setView('map')}
           onDone={() => { setNotice('Norway done for loop 2. Germany’s buying desk isn’t built yet.'); setView('map'); }}
         />
