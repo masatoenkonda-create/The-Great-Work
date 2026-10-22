@@ -1,0 +1,1008 @@
+                                 Comments of the
+                     Semiconductor Industry Association (SIA)
+                                      On the
+                             Department of Commerce
+                    “Notice of Request for Public Comments on
+                    Risks in the Semiconductor Supply Chain”
+
+                         86 Fed. Reg. 53031 (Sept. 24, 2021)
+                     [Docket No. 210915–0189] RIN 0694–XC084
+
+                            Submitted November 8, 2021
+
+The Semiconductor Industry Association (SIA), represents global leaders in
+semiconductor manufacturing, design, and research, accounting for 98% of U.S. firms
+by revenue and nearly two-thirds of non-U.S. semiconductor firms. We appreciate the
+opportunity to provide input on the Department’s efforts to formulate solutions to the
+supply chain challenges that face our nation.
+Supply chain disruptions in the Covid-19 era have created a perfect storm of
+unprecedented challenges with rippling effects on the global economy. In 2020, the
+world experienced a once-in-a century pandemic that throttled supply and created
+unanticipated swings in demand. Some downstream sectors reduced production and
+chip purchases while others saw soaring demand for semiconductors to maintain critical
+functions during lockdowns around the world. Underlying this dynamic, massive
+dislocations in global logistics and transportation networks coupled with shortages of
+raw materials, key components, and intermediary products exposed extensive
+vulnerabilities in highly interdependent and globalized value chains already weakened
+by geopolitical friction and lean production strategies pre-dating Covid-19. Among the
+supply chain disruptions occurring worldwide, the global semiconductor shortage has
+played a particularly consequential role.
+In response, the semiconductor industry has pushed production capacity to its limits to
+increase output to historically unprecedented levels in 2021. Throughout the pandemic,
+the industry has powered the nation’s critical infrastructure, defense industrial base,
+manufacturing industries, healthcare sector, workforce, and digital solutions amid a
+growing number of new and old challenges. At the same time, supply chain challenges
+and dramatic market volatility have placed tremendous strain on the industry’s capacity
+to meet expanding global needs during accelerating digitalization of the post-COVID19
+era. The industry today operates in a difficult environment with competing and growing
+demand from multiple critical sectors of the economy. While chipmakers are working
+around the clock to ramp up production by every possible means in the short-term - and
+producing semiconductors well-above pre-pandemic levels - supply chain challenges do
+persist.
+
+
+
+                                           1
+Understanding these challenges requires a holistic approach with consideration for each
+step of this highly complex and globalized supply chain. Depending on the type of end
+user, semiconductor devices travel through an intricate chain of distributors, component
+suppliers, assembly suppliers, distributors, and other steps. Circumscribing our attention
+and problem-solving efforts to just the fabrication step of the supply chain misses the
+deeper underlying challenge of an economy-wide shortage.
+The global chip shortage simply cannot be resolved with top-down government-directed
+efforts to allocate limited supply in the immediate-term. Misallocation is not at the heart
+of the issue. Rather, it lies in precipitous and fundamental changes to market demand in
+the wake of an extraordinary event in the history of our industry, nation, and global
+economy. Demand for chips is increasing across the board and capacity will have to
+expand everywhere, including in the U.S. to meet the needs of the present and the
+future. The chip shortage requires a long-term, comprehensive solution aimed at
+strengthening the entire global semiconductor ecosystem and securing continued U.S.
+leadership in technological innovation and capacity in close partnership and
+coordination with our allies.
+As an industry association, we are unable to provide answers to many of the specific
+questions in the Request for Information that pertain to company-specific information;
+however, as part of our ongoing partnership with and role as a resource to the
+Department, our submission provides industry-wide information on the semiconductor
+market and supply chain and draws attention to the need for this holistic approach to
+strengthen the U.S. semiconductor industry and make our nation’s supply chains more
+resilient.
+
+
+
+
+                                             2
+  I.   Preliminary Comments on the RFI
+Before providing information responsive to Commerce’s questions, we would like to
+briefly provide some comments on the purpose and scope of this RFI. The
+semiconductor industry seeks to work in close partnership with the U.S. Government to
+help the country and world navigate the global chip shortage. However, the extent of
+government intrusion into sensitive business matters or market decisions could result in
+adverse consequences for the industry and the entire economy.
+First, Commerce is seeking confidential information such as customer identities that
+semiconductor companies are often contractually obligated to safeguard. Other
+questions seek business sensitive information (e.g., production levels) that are
+proprietary in nature. The disclosure of this information could be extremely damaging to
+the companies responding to the RFI.
+In addition, it is difficult to discern the specific goals of the Department of Commerce in
+this exercise. While we appreciate Commerce’s interest in addressing the supply chain
+disruptions facing the global economy, including the semiconductor industry, we do not
+see how the information collected under the RFI will materially advance Commerce’s
+understanding of the enormously complex global semiconductor supply chain or
+advance solutions to addressing the current supply-demand imbalance. Companies
+throughout the supply chain are working diligently to address the disruptions facing their
+businesses, and these efforts by the private sector are best suited to address the near-
+term imbalance in supply and demand. Increased data sharing and transparency are
+valuable principles, but it remains unclear how Commerce intends to use the
+information collected under this RFI. We would be extremely concerned over potential
+governmental actions to allocate supply or otherwise intervene in the operation of the
+market.
+In this submission, we wish to provide fuller context on the environment in which we
+have been operating and how the semiconductor industry has responded to the
+extraordinary demands on the industry over the past year.
+
+
+
+
+                                             3
+    II.   SIA Responses to Questions “For semiconductor product design, front and
+          back-end manufacturers and microelectronics assemblers, and their
+          suppliers and distributors”
+
+
+a. Identify your company’s role in the semiconductor product supply chain.
+The semiconductor supply chain is a complex, globally integrated mix of companies and
+regions needed to deliver increasingly innovative devices at lower costs. SIA prepared a
+report earlier this year detailing the semiconductor supply chain: “Strengthening the
+Global Supply Chain in an Uncertain Era.”1 This report highlights some of the key
+strengths of the U.S. in the global supply chain as well as some of the vulnerabilities.
+
+The U.S. leads in the most R&D-intensive activities – electronic design automation
+(EDA), core intellectual property (IP), chip design, and advanced manufacturing
+equipment – owing to its world-class universities, vast pool of engineering talent and
+market-driven innovation ecosystem. Allied economies in East Asia are at the forefront
+in wafer fabrication, the result of massive capital investments over decades, ongoing
+government incentives, and access to robust infrastructure and skilled workforce. China
+is a leader in assembly, packaging and testing, which is a relatively less skill- and
+capital-intensive activity, and it is investing aggressively to expand throughout the value
+chain. All countries are interdependent in the integrated global semiconductor supply
+chain, relying on free trade to move materials, equipment, IP, and products around the
+world to the optimal location for each activity. This global supply chain structure based
+on geographic specialization has delivered enormous value for the industry and
+increased innovation and reduced costs for customers, but it also creates vulnerabilities
+that each region needs to assess.
+
+Among these risks, manufacturing emerges as one major focal point in global
+semiconductor supply chain resilience. About 75% of semiconductor manufacturing
+capacity, 2 as well as many suppliers of key materials – such as silicon wafers,
+photoresist, and other specialty chemicals – are concentrated in East Asia, a region
+exposed to high seismic activity and geopolitical tension. Currently, the entirety of the
+world’s most advanced semiconductor manufacturing capacity is currently located in
+South Korea (8%) and Taiwan (92%),3 although leading firms from both countries are in
+the process of bringing such capacity to the United States.4 To address the risk of major
+global supply disruptions, the industry requires market-driven, government-funded
+incentive programs to achieve a more diversified geographical footprint, including the
+expansion of manufacturing capacity in the US, production sites, and sources of supply
+for critical materials. This would enable the U.S. to maintain a minimum viable
+manufacturing capacity in the leading nodes to meet domestic demand for the
+1
+  SIAxBCG Report on “Strengthening the Global Semiconductor Value Chain” (2021), available at
+https://www.semiconductors.org/strengthening-the-global-semiconductor-supply-chain-in-an-uncertain-
+era/
+2
+  SIAxBCG Report on “Strengthening the Global Semiconductor Supply Chain in an Uncertain Era” (2021)
+3
+  Ibid
+4
+  https://www.reuters.com/technology/tsmc-says-construction-has-started-arizona-chip-factory-2021-06-
+01/.
+
+
+                                                 4
+advanced logic chips used in national security systems, aerospace, and critical
+infrastructure.
+At a high level, the industry supply chain consists of several steps supported by a
+specialized ecosystem of materials, equipment and software design tools and core IP
+suppliers:
+    •    Pre-competitive research to identify fundamental materials and chemical
+         processes to innovate design architectures and manufacturing technology
+    •    Design of nanometer-scale integrated circuits which perform the critical tasks
+         that make electronic devices work
+    •    Water fabrication involving highly specialized semiconductor manufacturing
+         facilities, or “fabs,” that print nanometer-scale integrated circuits from chip design
+         into silicon wafers
+    •    Assembly, Packaging, and Testing to convert silicon wafers produced by fabs
+         into finished chips to be assembled into electronic devices
+    •    Materials for semiconductor manufacturing from specialized suppliers
+         Electronic Design Automation (EDA) software and services to support
+         semiconductor design, including outsourced design of specialized application
+         specific integrated circuits (ASICs) at the design stage
+    •    Metrology and inspection equipment critical for the management of the
+         semiconductor manufacturing process
+The chart below details the seven differentiated activities in the semiconductor value
+chain and the percentage of industry R&D, capital expenditure, and value added that
+each accounted for in 2019.
+
+
+
+
+Source: SIAxBCG Report on “Strengthening the Global Semiconductor Supply Chain in an Uncertain Era” (2021)
+
+
+
+                                                             5
+b. Indicate the technology nodes (in nanometers), semiconductor material types,
+and device types with which this organization is capable of operating (design
+and/or manufacture).
+Industry Data on Technology Nodes
+Advances in manufacturing process technology are generally described by referring to
+“nodes.” The term “node” refers to the size in nanometers of the transistor gates in the
+electronic circuits. Over time it has lost its original meaning and has become an
+umbrella term to designate both smaller features and different circuit architectures and
+manufacturing technologies. Generally, the smaller the node size, the more powerful the
+chip, as more transistors can be placed on an area of the same size. This is the
+principle behind “Moore’s Law”, a key observation and projection in the semiconductor
+industry, which states that the number of transistors on a logic chip doubles every 18 to
+24 months. Moore’s Law has underpinned the relentless pace of simultaneous
+improvement in performance and cost for processors since 1965. Today’s advanced
+processors found in smartphones, computers, gaming consoles and data center servers
+are manufactured on 5 to 10-nanometer nodes. Commercial chip manufacturing using
+3-nanometer process technology is expected to begin around late 2022.
+While logic and memory chips used for digital applications greatly benefit from the
+scaling in transistor size associated with smaller nodes, other types of semiconductors –
+particularly those in the DAO (discrete, analog, and other) group described above – do
+not achieve the same degree of performance and cost benefits by migrating to ever
+smaller nodes, or simply use different types of circuits or architectures that would not
+work at more miniaturized scales. As a result, wafer manufacturing takes place across a
+wide range of nodes from the current “leading node” at 5 nanometers used for
+advanced logic to the legacy nodes above 180 nanometers used for discrete,
+optoelectronics, sensors, and analog semiconductors. What constitutes a “leading-
+edge” node varies for different types of semiconductors. For analog, for example, 45 nm
+would be considered “advanced” or “leading-edge.” While only 2% of global capacity is
+currently on nodes below 10 nanometers, demand for these types of advanced
+semiconductors is expected to increase rapidly in coming years.
+
+
+
+
+Source: SIAxBCG Report on “Strengthening the Global Semiconductor Supply Chain in an Uncertain Era” (2021)
+
+
+
+                                                             6
+Industry Data on Material Types
+Firms involved in semiconductor manufacturing also rely on specialized suppliers of
+materials. Fabrication of semiconductors typically requires as many as 300 different
+inputs, including raw wafers, commodity chemicals, specialty chemicals, sputtering
+targets and bulk gases. Many of them also require advanced technology to produce. For
+example, the polysilicon employed to make the silicon ingot, which is subsequently
+sliced into wafers, is required to have a purity level that is 1,000 times higher than the
+level required for solar energy panels. Semiconductor-grade polysilicon is provided
+primarily by just four companies, with a combined global market share above 90%. Ultra
+Pure Hydrogen Fluoride (UPHF) is another key material used extensively throughout
+the semiconductor manufacturing process for wet etch and cleaning of semiconductor
+wafers. Only one manufacturer of UPHF has a facility in the U.S. Similarly, sputtering
+targets are provided by 4 primary suppliers constituting 90% of the market, most of
+which is outside the US. Only one manufacturer produces targets for advanced
+semiconductors in the US. Lastly, a large portion of the world’s electronic polymers
+used in photolithography, masking, and spin on dielectric applications in the chip
+manufacturing process are supplied by companies based outside of the U.S. Only three
+companies make up U.S. based supply.
+The chart shows the breakdown of the global sale of semiconductor manufacturing
+materials in 2019 across the key families used in front-end and back-end
+manufacturing.
+
+
+
+
+Source: SIAxBCG Report on “Strengthening the Global Semiconductor Supply Chain in an Uncertain Era” (2021)
+
+
+
+
+                                                             7
+Industry Data on Device Types
+Semiconductor manufacturing uses more than 50 different types of sophisticated wafer
+processing and testing equipment provided by specialist vendors for each step in the
+fabrication process. Most of this equipment, such as lithography and metrology tools,
+incorporates hundreds of technology subsystems such as modules, lasers,
+mechatronics, control chips, and optics. The highly specialized suppliers involved in
+semiconductor design and fabrication are often based in different countries.
+
+
+
+
+Source: SIAxBCG Report on “Strengthening the Global Semiconductor Supply Chain in an Uncertain Era” (2021)
+
+Lithography tools represent one of the largest capital expenditures for fabrication
+players and determine how advanced of a chip a fab can produce. Advanced
+lithography equipment, specifically those that harness Extreme Ultra-Violet (EUV)
+technology are required to manufacture chips at 7 nanometers and below. A single EUV
+machine can cost $150 million. Metrology and inspection equipment are also critical for
+the management of the semiconductor manufacturing process. Because the process
+involves hundreds of steps over one to two months, any defects that occur early in the
+process will waste all work undertaken in the subsequent time-consuming steps. Strict
+metrology and inspection processes using specialized equipment are therefore
+established at critical points of the semiconductor manufacturing process to ensure that
+a certain yield can be confirmed and maintained.
+Modern fabs also use advanced automation and process control systems for direct
+equipment control, automated material transportation and real-time lot dispatching, with
+many of the newest facilities almost entirely automated. Semiconductor manufacturing
+equipment also incorporates many subsystems and components with specific
+
+
+                                                             8
+functionality, such as optical or vacuum subsystems, gas and fluid management,
+thermal management or wafer handling. These subsystems are provided by hundreds
+of specialized suppliers. Developing and fabricating such advanced, high-precision
+manufacturing equipment requires large investments in R&D. Semiconductor
+manufacturing equipment companies typically invest 10% to 15% of their revenues in
+R&D. Overall semiconductor equipment manufacturers suppliers accounted for 9% of
+the R&D and 11% of the value added of the industry in 2019.
+
+
+c. For any integrated circuits you produce--whether fabricated at your own
+facilities or elsewhere--identify the primary integrated circuit type, product type,
+relevant technology nodes (in nanometers), and estimates of annual sales for the
+years 2019, 2020, and 2021 based on anticipated end use.
+Industry Information on Product Categories
+Semiconductors are highly specialized components that provide essential functionality
+for electronic devices to process, store and transmit data. Most of today’s
+semiconductors are integrated circuits, or “chips.” A chip is a set of miniaturized
+electronic circuits composed of active discrete devices (transistors, diodes), passive
+devices (capacitors, resistors) and the interconnections between them, layered on a thin
+wafer of semiconductor material, typically of silicon. Industry taxonomy usually
+describes more than 30 types of product categories that can be broadly classified into (i)
+logic; (ii) discrete, analog, and other (DAO); and (iii) memory. Logic, which accounts for
+42% of industry revenue, are integrated circuits functioning on binary codes that serve
+as the fundamental building blocks in computing. This category includes
+microprocessors, general purpose logic productions, microcontrollers (MCUs), and
+connectivity products that allow devices to connect to networks. DAO accounts for 32%
+of industry revenue and encompass semiconductors that transmit, receive, and
+transform information dealing with continuous parameters such as temperature and
+voltage. Lastly, memory, which accounts for 26% of industry revenue, are
+semiconductors used for storing information to perform computation.5 Computers
+process information stored in their memory, which consists of various data storage or
+memory devices. Two of the most common semiconductor memories in use today are
+Dynamic Random-Access Memory (DRAM), which is used for temporary storage, and
+NAND memory, used for permanent storage.6
+The chart below decomposes global semiconductor sales to major consumers by
+product category.
+
+
+
+
+5
+    World Semiconductor Trade Statistics, December 2020 Bluebook
+6
+    SIAxBCG Report on “Strengthening the Global Semiconductor Supply Chain in an Uncertain Era” (2021)
+
+
+
+
+                                                   9
+Source: SIAxBCG Report on “Strengthening the Global Semiconductor Supply Chain in an Uncertain Era” (2021)
+
+In recent years, the largest segments of the worldwide semiconductor industry have
+been memory, logic, analog, and MPU. In 2020, these products accounted for $343
+billion, or 78%, of semiconductor industry sales.
+
+
+
+
+Global semiconductor sales have grown steadily across all product categories over the
+past 20 years.
+
+
+
+
+                                                            10
+Technology Nodes
+Today’s wafer manufacturing takes place across a wide range of nodes from the current
+“leading edge” at 5 nanometers used for advanced logic to the legacy nodes above 180
+nanometers used for discrete, optoelectronics, sensors, and analog semiconductors.
+The U.S. currently produces 28% of the global capacity in advanced nodes (10
+nanometers or below), but currently lacks capacity to produce at the leading edge (5 nm
+and below).7
+
+
+d. For the semiconductor products that your organization sells, identify those
+with the largest order backlog. Then for the total and for each product, identify
+the product’s attributes, sales in the past month, and location of fabrication and
+package/assembly.
+      i. List each product’s top three current customers and the estimated
+percentage of that product’s sales accounted for by each customer.
+       Semiconductors are used in all types of electronic devices across multiple
+applications spanning the major sectors of the economy. The information and
+communications technology (ICT) industry is currently the largest consumer of
+semiconductors, which are used to power laptops, cellular devices, data-centers and
+broadband networks, as well as varied software applications, AI technologies, and other
+emerging technologies. In the future, the expanding content of semiconductors in
+automotive applications, such as advanced driver-assistance systems (ADAS) and
+sensors, is expected to drive substantial growth in the automotive end market. The
+compound annual growth rate of sales to the automotive market has been 7% over the
+past 10 years, from $25.6 billion in sales in 2011 to $50 billion in 2020.8
+
+
+
+
+7
+  SIAxBCG Report on “Government Incentives and US Competitiveness in Semiconductor Manufacturing”
+(2020), available at https://www.semiconductors.org/wp-content/uploads/2020/09/Government-Incentives-
+and-US-Competitiveness-in-Semiconductor-Manufacturing-Sep-2020.pdf
+8
+  World Semiconductor Trade Statistics, 2011 and 2020 End Use Survey
+
+
+                                                 11
+e. For each phase of the production process, identify whether your organization
+carries out the step internally or externally. For your organization’s top
+semiconductor products, estimate each product’s (a) 2019 lead time and (b)
+current lead time (in days), both overall and for each phase of the production
+process. Provide an explanation of any current delays or bottlenecks.
+Wafer Fabrication Lead Time
+The fabrication process is intricate and requires highly specialized inputs and equipment
+to achieve the needed precision at miniature scale. There are 400 to 1,400 steps in the
+overall manufacturing process semiconductor wafers, depending on the product. The
+average time to fabricate finished semiconductor wafers, known as the cycle time, is
+about 12 weeks, but it can take up to 14 to 20 weeks to complete for advanced
+processes.9 Chip manufacturing utilizes hundreds of different inputs, including raw
+wafers, commodity chemicals, specialty chemicals as well as many types of processing
+and testing equipment and tools, across several stages. These steps are often repeated
+many hundreds of times, depending on the complexity of the desired set of electronic
+circuits.
+Production by Foundries v. Integrated Device Manufacturers (IDMs)
+Technological complexity and need for scale have led to emergence of business models
+focused on a specific part of the value chain.
+
+
+
+
+Source: SIAxBCG Report on “Strengthening the Global Semiconductor Supply Chain in an Uncertain Era” (2021)
+
+
+9
+    SIAxBCG Report on “Strengthening the Global Semiconductor Supply Chain in an Uncertain Era” (2021)
+
+
+                                                            12
+Integrated Device Manufacturers (IDMs) are vertically integrated across multiple parts of
+the value chain, performing design; fabrication; and assembly, packaging and test
+activities in-house. In practice, many IDMs have hybrid “fab-lite” models where they
+outsource some of their production and assembly. In the early decades of the industry,
+the IDM model was predominant, but the rapidly increasing size of the investments in
+both R&D and capital expenditure created the need for both scale and specialization,
+which led to the emergence of the fabless-foundry model. Currently the IDM model is
+more common for firms focused on memory and DAO products, which are largely
+general-purpose components and more scalable. IDMs accounted for approximately
+70% of global semiconductor sales in 2019.10
+
+As the industry moves to small technology nodes, development costs continue to rise.
+With escalating costs at cutting edge nodes, fewer and fewer IDMs have continued to
+develop process technology at leading nodes, relying instead on foundries for leading
+edge fabrication.
+
+Foundries address the fabrication needs of design and other fabless firms and IDMs
+alike, as most IDMs do not have sufficient installed manufacturing capacity in-house to
+cover all their needs. This business model enables foundries to diversify the risk
+associated with the large upfront capital expenditure required to build modern fabs
+across a larger customer footprint of design firms and IDMs. Most foundries are focused
+purely on manufacturing for third parties, which in turn, allows design firms and IDMs to
+focus on investing in cutting-edge research and development. Leaving memory aside,
+foundries have added 60% of the incremental capacity in the industry for DAO and logic
+products during the past five years. Currently foundries account for 35% of the total
+industry manufacturing capacity, or 50% if memory is excluded. Their share rises to
+78% in advanced (14 nanometers or below) and trailing nodes (20 to 60 nanometers)
+using the more advanced 12”/300mm wafer size. Furthermore, the only two companies
+that can currently manufacture at the leading 5 nanometer node are foundries.11
+
+
+
+
+10
+   SIAxBCG Report on “Strengthening the Global Semiconductor Supply Chain in an Uncertain Era”
+(2021)
+11
+   SIAxBCG Report on “Strengthening the Global Semiconductor Supply Chain in an Uncertain Era”
+(2021)
+
+
+                                                13
+f. For your organization’s top semiconductor products, list each product’s typical
+and current inventory (in days), for finished product, in-progress product, and
+inbound product. Provide an explanation for any changes in inventory practices.
+SIA does not have data on the levels of inventory held by individual companies or the
+industry as a whole. We are, however, able to provide data on industry output in
+response to the pandemic.
+In response to increased demand, chipmakers increased output to historically
+unprecedented levels in 2021. Global semiconductor sales reached $47.2 billion in the
+month of August 2021, which represents an increase of 29.7% over $36.4 billion in
+August 2020 and a year-to-year increase across all regional markets and major product
+categories. Domestic sales by U.S.-headquartered semiconductor companies grew
+27.6% from December 2020 to August 2021. Sales to overseas markets increased by
+16.7% during the same period.
+
+
+
+
+From April to June 2021, the industry sold more units, including units for automotive
+application-specific ICs, than in any other three-month period on record. June 2021 unit
+sales were the highest ever at almost 100 billion units sold. Monthly unit sales from
+January to April set new records each month.
+
+
+
+
+                                           14
+Semiconductor companies sell a significant portion of products through distributors,
+who resell to original equipment manufacturers (OEMs) and to electronic manufacturing
+service providers and other companies in a range of industries. Distributors often
+provide the most effective way for manufacturers to reach the “long tail” in many
+countries—the tens of thousands of small customers whose orders would be more
+expensive to serve with a full-time, in-house sales force. Many semiconductor
+manufacturers also have distributors manage mature customers and product lines that
+do not require internal sales or technical support, since they provide a low-cost solution
+for maintaining the business.12 Use of the distribution channel varies by company.
+According to semiconductor companies’ 2020 annual reports, sales generated
+through distributors range from 25% to 85% of total revenues. On average,
+distributors handle 50% of the semiconductor industry’s revenues.13
+
+
+
+
+12
+  https://www.mckinsey.com/~/media/mckinsey/industries/semiconductors/our%20insights/creating%20m
+utually%20beneficial%20partnerships%20with%20distributors/creating_mutually_beneficial_partnerships.
+pdf.
+13
+   Company annual reports
+
+
+                                                 15
+g. What are the primary disruptions or bottlenecks that have affected your ability
+to provide products to customers in the last year?
+Supply chain disruption in the COVID-19 era has been an economy-wide
+phenomenon. Ninety-four percent of Fortune 1000 companies reported supply chain
+disruptions from COVID-19 and 75% of companies have had negative or strongly
+negative impacts on their businesses, according to Accenture.14 From manufacturing to
+consumer products, no sector has escaped the effects of lockdowns on facilities and
+workforce around the world. Massive dislocations in global logistics and transportation
+networks have contributed to port congestion, to delayed production and delivery, and
+to rising consumer prices. Manufacturing shortages in raw materials, intermediate
+goods, and key components produced rippling downstream effects on numerous end
+markets. Supply and demand shocks exposed vulnerabilities in global supply chains
+already strained by geopolitical friction and lean production strategies pre-dating
+COVID-19. In an economy as interconnected as ours, disruptions to the global value
+chain have created a perfect storm, and the semiconductor supply chain has not been
+immune to these dynamics.
+     •   COVID-19 Outbreaks
+Border controls, mobility restrictions, and closures of factories and ports to contain
+COVID-19 have left no part of the global economy untouched. In September, one
+leading automotive company cut its annual production target by 300,000 vehicles as
+rising COVID-19 infections slowed output at factories in Vietnam and Malaysia.15
+Outbreaks at the Chinese ports of Yantian in Shenzhen and Ningbo-Zhoushan, among
+the world’s five largest ports, led to multi-week partial closures that affected trading
+volumes halfway around the world in the Port of Los Angeles. Vietnam, second only to
+China as the largest supplier of apparel and footwear to the United States, forced
+factories to shut down or operate at severely reduced capacity to manage outbreaks of
+the Delta variant beginning in July, forcing major American retailers to grapple with
+unanticipated delays and shortages in addition to skyrocketing shipping costs. As of
+October, one apparel company reported its Vietnamese factories at “100 percent
+lockdown” and delays of four to eight weeks. A large manufacturer, which produced
+51% of its footwear in Vietnam in 2020, anticipated 10 weeks of lost production time in
+Vietnam between July and October.16 Malaysia, a major hub for packaging, assembly
+and testing of devices for smartphones, car engines, and medical equipment,
+experienced multiple factory closures and staffing shortages due to an outbreak of
+COVID-19 cases.17 An estimated 7% of global semiconductor supply passes through
+Malaysia, and the U.S. imports more chips directly from Malaysia than from any other
+country.18
+
+14
+   https://www.accenture.com/us-en/insights/consulting/coronavirus-supply-chain-disruption.
+15
+   https://www.reuters.com/business/autos-transportation/toyota-cuts-annual-auto-production-target-
+shortage-chips-parts-2021-09-10/.
+16
+   https://www.nytimes.com/2021/09/29/business/supply-chain-vietnam.html.
+17
+   https://www.wsj.com/articles/covid-19-surge-in-malaysia-threatens-to-prolong-global-chip-shortage-
+11630234802.
+18
+   Ibid.
+
+
+                                                   16
+     •   Factory and Port Closures from Weather Events
+Multiple factory and port closures have been attributable to unanticipated weather
+events globally. In February, cold weather and surging demand for electricity caused
+power and ultimately water outages across Texas, forcing closures across factories and
+stores. Chipmakers, including auto chip makers (NXP Semiconductor, Infineon
+Technologies AG, and Samsung) were among those forced to shut down production
+plants in Austin.19 In March, a fire broke out at Renesas Electronics’ flagship factory in
+Naka, Japan, damaging 17 plating machines and shutting down production lines that
+mass-produce 300-mm semiconductor wafers for three months. The company holds
+nearly 20% of the global market share for microcontrollers used in cars and other
+machines.20
+
+
+h. What is your organization’s book-to-bill ratio for the past three years? Explain
+any changes.
+SIA does not have data on the book-to-bill ratio of individual companies or the industry
+as a whole.
+
+
+i. If the demand for your products exceeds your capacity, what is the primary
+method by which your organization allocates the available supply?
+
+SIA cannot address the manner in which individual companies allocate available
+supplies when demand exceeds supply. We can, however, provide additional context on
+drivers of demand and future demand growth for the industry.
+
+Demand for semiconductors is rapidly increasing and is expected to continue to
+increase. Throughout the pandemic, the semiconductor industry has played a critical
+role in the pandemic response and subsequent efforts towards economic recovery and
+resiliency. Semiconductors provide user input, display, wireless connectivity,
+processing, storage, power management, and other essential functions. This includes
+healthcare and medical devices, telecommunications, energy, finance, transportation,
+agriculture, manufacturing, aerospace and defense. Semiconductors also underpin the
+IT systems that make remote work possible and provide access to essential services
+across every domain, including medicine, finance, education, government, and food
+distribution. The industry has been key to developing solutions to numerous problems in
+the economic and public health sphere, including life-saving medical devices,
+ventilators, public testing and tracing, vaccine development, and communication
+networks and capabilities needed to battle the global pandemic.
+
+
+19
+   https://www.bloomberg.com/news/articles/2021-02-17/texas-power-failure-shuts-chip-factories-
+squeezes-tight-supply.
+20
+   https://asia.nikkei.com/Business/Tech/Semiconductors/Renesas-expects-bigger-damage-from-fire-at-
+its-chip-factory.
+
+
+                                                 17
+In 2020, global chip sales increased by 6.8 percent from $412.3 billion in 2019 to $440.4
+billion, largely driven by demand growth spurred by the Covid-19 pandemic. The World
+Semiconductor Trade Statistics (WSTS) Semiconductor Market Forecast released in
+June 2021 projected worldwide semiconductor industry sales will increase to $527
+billion in 2021, an upward revision from its Fall 2020 forecast for 2021. WSTS forecasts
+global sales will grow to $573 billion in 2022. For context, worldwide semiconductor
+sales increased from $204.4 billion to $440.4 billion at a compound annual growth rate
+of 3.91% per year from 2000 to 2020.
+
+
+
+
+In 2001, the per unit cost was $0.98 and declined to $0.68 in 2020. This reflects a
+CAGR of -1.81% over this period. Increased output and not inflationary pressure is
+responsible.
+
+
+
+
+Over the next decade, further innovation in semiconductor technology will enable the
+proliferation of a host of transformative technologies, including 5G, artificial intelligence
+(AI), autonomous electric vehicles, and the internet of things (IoT). The relationship
+between semiconductors and the markets they serve is symbiotic, as innovations in
+semiconductors help to spur market demand and open new markets. For example,
+
+
+                                              18
+successive generations of cellular technology have been made possible by advances in
+semiconductors, leading to the recent introduction of 5G. Demand drivers in the short-
+term experienced some unexpected shifts, brought on by societal changes from the
+COVID-19 pandemic, but these shifts have resulted in a sustained increase in demand
+as society leans ever increasingly on semiconductor-enabled technologies. Long-term
+growth drivers for semiconductor demand are firmly in place, and the industry is a key
+growth sector in the global economy for the foreseeable future. The industry, however,
+must first navigate broader supply chain disruptions in the short term and take steps to
+have more resilient supply chains in the long term.
+
+
+
+j. Does your organization have available capacity? If yes, what is preventing the
+filling of that capacity?
+The U.S. share of global semiconductor manufacturing has experienced a steady
+decline from 37% in 1990 to 12% in 2020, despite a 7% annual growth rate in U.S.
+manufacturing capacity over the last 30 years.21 Fab economics explain this decline:
+government incentives and labor costs. The rise in U.S. installed capacity has been
+outpaced by that of several Asian countries, whose governments have ambitiously
+invested in domestic manufacturing through favorable grants, tax incentives, and other
+government incentives.
+The result of these investments has led to approximately 75% of the world’s
+semiconductor manufacturing capacity being concentrated in East Asia, but there are
+important distinctions. For example, U.S. allies and partners currently account for the
+majority of leading-edge production, with Taiwan accounting for 47% of the global
+capacity in leading and advanced nodes, 10 nanometer and below, used for advanced
+logic devices and South Korea producing over 40% of the global capacity of memory,
+which accounts for an estimated 30% of total semiconductor demand.22
+China has grown significantly as an important producer of mature semiconductor
+technologies but continues to lag at the leading edge. However, the Chinese
+government continues to prioritize the semiconductor industry as a driver of economic
+growth and technological leadership and is expected to add about 40% of new global
+capacity through 2030.23 Conversely, current data on planned fab constructions
+indicates that only 6% of new capacity currently in development will be located in the
+U.S. without incentives such as those in the CHIPS for America Act and an expanded
+FABS Act.24
+
+
+
+
+21
+   SIAxBCG Report on “Government Incentives and US Competitiveness in Semiconductor
+Manufacturing” (2020)
+22
+   Ibid
+23
+   Ibid
+24
+   Ibid
+
+
+                                               19
+Source: SIAxBCG Report on “Government Incentives and US Competitiveness in Semiconductor Manufacturing” (2020)
+
+
+
+
+                                                           20
+k. Is your organization considering increasing its capacity? If yes, in what ways,
+over what timeframe, and what impediments exist to such an increase? What
+factors does your organization consider when evaluating whether to increase
+capacity?
+
+The semiconductor industry is investing heavily into capacity-building to meet future
+demand and enhance supply chain resiliency. The industry’s total annual levels of
+investment in capital and R&D are high in comparison to most other industries. R&D
+and capital expenditures by U.S. semiconductor firms, including fabless companies,
+totaled $74.2 billion in 2020. From 2000 to 2020, the compound annual growth rate of
+R&D and capital expenditures was approximately 5.6%25.
+In 2020, total U.S. semiconductor industry investment in R&D alone totaled $44 billion.26
+The industry annually directs roughly one-fifth of its revenues back into R&D. It was
+second only to the U.S. pharmaceuticals & biotechnology industry in terms of the rate of
+R&D spending as a percent of sales, based on the 2021 data published by NYU Stern
+School of Business. U.S. semiconductor industry R&D spending as a percent of sales is
+unsurpassed by any other country’s semiconductor industry.
+For increasing production two and more years out, capital spending rates serve as good
+indicators of industry progress, and there is a clear trend toward increased and
+sustained levels from 2021. Capital spending (capex) by the global semiconductor
+industry in 2021 is forecasted to reach its highest level on record at $148 billion and to
+grow by 30 percent compared to 2020 levels.27 Annual industry capex forecasted over
+the next five years also indicates a significant jump from previous annual levels,
+averaging $156 billion from 2021-2025 compared to $97 billion from 2016-2020. This
+represents an increase in capex growth of 61%.28
+
+
+
+
+25
+   2021 SIA Factbook
+26
+   Ibid.
+27
+   IC Insights, The McClean Report 2021
+28
+   Ibid
+
+
+                                            21
+In 2021, the global semiconductor industry is on target to bring more than two dozens of
+new fabs online globally, with another 15 IC fabs under construction.29
+The table below shows top semiconductor firms’ new or expanding fab construction
+projects from 2021.
+ Company                      Fab Location   Product        Technology Year of Initial
+                                             Type           Node       Production
+ Bosch                        EU             DAO            28-90nm    2021
+ GlobalFoundries              Singapore      Logic/DAO                 2023
+ Intel                        US, EU         Logic          <=10nm     2023/2024
+ Kioxia                       Japan          Memory         Memory     2022
+ Micron                       US             Memory         Memory     2021
+ Nanya                        Taiwan         Memory         Memory     2024
+ Nexperia                     China          DAO            >=110      2022
+ Powerchip                    Taiwan         DAO            28-90nm    2023
+ Rohm                         Japan          DAO            >=110      2021
+ Samsung                      Korea, China   Memory/Logic   <=10nm     2021/2023
+ SMIC                         China          Logic/DAO      28-65nm    2021-2025
+ Silan                        China          DAO            28-90nm    2022
+ SK Hynix                     Korea          Memory         Memory     2021/2025
+ STMicroelectronics           EU             DAO            28-90nm    2021
+ TSMC                         US, Taiwan,    Logic          2-28nm     2021-2025
+                              Japan
+ Texas Instruments            US             DAO            28-90nm      2022
+ Winbond                      Taiwan         Memory         Memory       2022
+ Wolfspeed                    US             DAO            >=110nm      2022
+Source: IC Insights Fab Database, SIA
+
+
+The industry has overcome a confluence of disruptive events to keep semiconductor
+supply chains operational and expanded capacity to meet critical needs. This included
+efforts by SIA and counterparts to designate semiconductor and supply chain
+operations as “essential infrastructure” and /or “essential business” around the world to
+ensure continued operations in the face of government lockdowns and other restrictions
+on the movement of people.
+
+
+
+
+29
+     IC Insights IC Fab Database
+
+
+                                              22
+l. Has your organization changed its material and/or equipment purchasing levels
+or practices in the past three years?
+Since the first quarter of 2019, quarterly fab capacity utilization has run well above the
+“full” rate of 80% and has reached over 95% in recent periods30. Utilization rate is the
+time systems are utilized relative to the time that they are available for production. “Full”
+utilization in semiconductor fabs is generally 80% utilization of capacity to allow for
+preventive maintenance, repairs, upgrades, and qualification procedures to maintain
+output and quality. High utilization rates increase equipment productivity but raise the
+risk of costly failures down the road. This includes advanced nodes fabs, which
+fabricate cutting-edge chips for computing, server, and graphic processing applications,
+and mature nodes fabs, which produce semiconductors for automotive and consumer
+electronics.31 Such levels of utilization have been critical to the semiconductor industry’s
+effort to mitigate the short-term impacts of the chip shortage but prove unsustainable in
+the long-term.
+
+
+
+
+By every measure, increased utilization has resulted in significant capacity expansion to
+meet the global spike in chip demand:
+     •   Ramped Up Wafer Starts: Since 1Q2020, global IC fabs have added 545,000
+         wafer starts per month capacities.32 It is estimated that the new capacities built
+         up for manufacturing discrete, optoelectronics, and sensors – semiconductor
+         devices that contain a single component but are increasingly critical to auto
+         electronics - have doubled those at IC fabs during the same period.
+     •   Record Chip Sales: More semiconductor units were sold in 2Q2021 than in any
+         other quarter in history. Four of the six months during the first half of 2021 have
+         set new records for monthly semiconductor units sold. June 2021 unit sales were
+         the highest ever at almost 100 billion. Over 1 trillion semiconductors will be sold
+         in 2021, which will be the highest on record.33
+
+
+30
+   VLSI Research, Capacity Utilization Rates by Segment September 2021 Update
+31
+   Ibid
+32
+   IC Insights Fab Database
+33
+   World Semiconductor Trade Statistics, June 2021 Bluebook
+
+
+                                                23
+      •   Record Auto Chip Sales: From September 2020 to August 2021, the monthly
+          total of automotive application-specific semiconductors sold has surpassed the
+          previous record total set in September 2018.34
+
+
+
+
+34
+     World Semiconductor Trade Statistics, July 2021 Bluebook
+
+
+                                                    24
+m. What single change (and to which portion of the supply chain) would most
+significantly increase your ability to supply semiconductor products in the next
+six months?
+The global semiconductor industry is working aggressively to meet demand, but there is
+no short-term solution that can immediately ease the current shortages. Overcoming the
+global chip shortage requires market foresight aimed at building long-term capacity and
+supply chain resiliency. There are several actions that can boost semiconductor
+production. These involve substantial government incentive programs and a
+transformation in supply chain management strategies by end markets and consumers.
+     1. Funding the CHIPS Act and Enacting a Strengthened FABS Act to
+        Incentivize Expanded Capacity in the U.S.
+At the heart of the problem, demand for semiconductors outstrips supply across all
+sectors of the economy. A solution to the chip shortage requires policy aimed at
+fundamentally strengthening the entire industry. The most constructive action that the
+government can pursue to this end is: (i) funding the CHIPS for America Act, which
+provides incentives for domestic chip production and research investments; and (ii)
+enacting a strengthened version of the FABS Act, which provides an investment tax
+credit for both semiconductor manufacturing and design. SIA and Oxford Economics
+have published a report in May detailing the impact of the CHIPS Act on U.S. workforce
+and GDP.35
+
+In 2020, we estimated the size of the workforce at 277,000. Semiconductor integrated
+device manufacturers (IDMs), pure-play foundries, and other establishments involved in
+semiconductor manufacturing directly employed nearly 185,000 U.S. workers. In
+addition, we estimated the employment by fabless semiconductor design firms accounts
+for an additional 92,000 workers in the U.S.
+
+A $52 billion federal incentive program under the CHIPS Act will have an enduring
+impact on the nation’s semiconductor industrial infrastructure and broader economy and
+workforce, including an additional $24.6 billion in GDP and creation of an average of
+185,000 temporary jobs annually from 2021 to 2026. Over this six-year build-out period,
+the cumulative annual impact of such an incentive program on GDP and jobs would be
+$147.7 billion and 1.1 million, respectively. An investment of this magnitude would
+enable the construction of 19 advanced fabs in the U.S. over the next ten years,
+doubling the expected number of fabs to be built and increasing capacity located in the
+U.S. by 57%. These benefits would be magnified by the FABS Act, which would create
+a 25% investment tax credit for investments in semiconductor manufacturing, both for
+manufacturing equipment and the construction of fabs. An enhanced FABS Act would
+expand these incentives to design.
+
+
+35
+  SIAxOxford Economics Report on “Chipping In: The Positive Impact of the Semicondcutor Industry on
+the American Workforce and How Federal Industry Incentives Will Increase Domestic Jobs” (2021),
+available at https://www.semiconductors.org/wp-content/uploads/2021/05/SIA-Impact_May2021-FINAL-
+May-19-2021_2.pdf.
+
+
+                                                 25
+The enactment of legislation is critical to addressing the chip shortage long-term and
+advancing U.S. technology leadership to future economic growth, national security, and
+supply chain resiliency. Given the size and scope of the CHIPS Act provisions, we
+strongly encourage the Commerce Department to begin standing up programs that will
+administer and manage the grants program, R&D efforts, and other related actions that
+will be required once the CHIPS Act funding is approved. Establishing these programs
+as soon as possible will shorten the lead time between ground-breaking and launch of
+commercial operations – and ultimately, shorten the time it takes to increase chip
+production in the United States, advance the cutting edge of semiconductor R&D,
+improve the resilience and security of supply chains, and meet growing consumer
+demand.
+      2. Trade Policy to Expand Global Markets
+There are many other steps government can take beyond manufacturing incentives and
+investment tax credits to make stronger supply chains. That includes advancing trade
+policies that expand global markets and open them to be more attractive to our goods.
+The majority of semiconductor demand is driven by products ultimately purchased by
+consumers, including laptops and communication devices such as smartphones. Eighty
+percent of the chips industry’s consumers are overseas. Increasingly, consumer
+demand is driven in emerging markets including those in Asia, Latin America, Eastern
+Europe, and Africa. In 2001, the Asia Pacific market surpassed all other regional
+markets in sales of semiconductors to electronic equipment makers, as equipment
+production shifted to the region. It has since multiplied in size from $39.8 billion to over
+$271 billion in 2020. By a large margin, the largest country market in the Asia Pacific
+region is China, which accounted for 56 percent of the Asia Pacific market and 34
+percent of the total global market in 2020.36
+
+
+
+
+36
+     2021 SIA Factbook
+
+
+                                             26
+   3. Demand Incentives for Leading Edge Technologies
+The government has an influential role to play in stimulating demand in leading edge
+technologies, with ramifications for the nation’s broader technology ecosystem, and SIA
+applauds the Commerce Department for looking at possible options in this area.
+Leading edge demand incentives for next-generation capabilities, such as new
+broadband, 5G services, and Greentech, can free up capacity in the legacy nodes
+underpinning auto production and other forms of manufacturing while creating broad
+economic value. For example, major forms of broadband, notably WiFi, cable, fiber, and
+DSL, are at a technology crossroads, with more and more broadband products
+containing leading edge semiconductors. Through its own purchases, grants and
+coordination with other governments, the U.S. government can accelerate the migration
+of broadband solutions to newer process nodes and represents one solution to the
+legacy chip shortage with the additional benefit of future-proofing the nation’s
+broadband infrastructure with more energy efficient technologies.
+
+   4. Long-Term Non-Cancellable, Non-Returnable (NCNR) Contracts
+The cancellation of orders at the start of the pandemic was a major contributor to the
+current chip shortage in the auto sector. In the first half of 2020, some in the auto
+industry cancelled existing orders due to plant closures and forecasts of low customer
+demand, leading to an unprecedented reduction in the delivery of chips to the
+automotive sector. The decrease in monthly year-over-year (YoY) sales growth for
+application-specific chips used in the automotive market was sudden and precipitous in
+March and April of 2020. Equally dramatic was auto industry’s reversal when auto
+plants resumed production and strong sales emerged during the second half of 2020.
+The abrupt and unprecedented increase in demand by the auto industry collided with
+production capacity already diverted to end markets that had boosted their orders at the
+beginning of the pandemic. Because it can take up to 6 months to produce a
+semiconductor, long-term contracts will help provide stability into the production process
+and help avoid future supply disruptions.
+Despite these constraints, the semiconductor industry has met surging demand with
+historic levels of sales and shipment to the auto sector. Monthly YoY sales growth in
+automotive integrated circuits (ICs) experienced rapid recovery during Q3 and Q4 into
+positive territory. The chart below illustrates a V-shaped downturn and recovery in auto
+chip sales.
+
+
+
+
+                                            27
+The momentum in sales to the automotive market has continued throughout 2021,
+soaring by 78% in Q2 of 2021. Automotive IC unit shipments have also grown at a
+similar and even faster pace in the first six months of 2021, indicating that the sales
+recovery and the following spike is not a result of a price increase.
+Automotive sales reflect overall market dynamics. Year-over-year monthly chip sales
+(on a three-month-moving average basis) growth to all major consumers sectors has
+rapidly increased since the second half of 2020. The automotive sector has seen the
+largest growth from negative 27% to 66% between June 2020 and June 2021.
+
+
+
+
+                                             28
+   5. Modify Just-In-Time Inventory Practices
+Relatedly, the adoption of just-in-time (JIT) inventory practices that prioritize cost
+minimization and increased efficiency proved ineffective in the face of the unanticipated
+supply chain disruptions generated by the pandemic. Industries that have adopted such
+practices should consider a reevaluation of their approach to inventory and supply chain
+management, building in a greater bias toward “just-in-case” approaches that build in
+greater resiliency.
+   6. WSTS: Leveraging Existing Industry Data
+To improve transparency about the semiconductor supply chain, end users should
+leverage existing resources on industry data. The World Semiconductor Trade Statistics
+(WSTS) is the semiconductor industry’s standard for semiconductor market data. The
+WSTS data provides monthly semiconductor sales by value, volume, and average
+selling price. It allows customers to track monthly trends in semiconductor sales for
+hundreds of semiconductor sub-products for all major end markets into all major country
+markets. The semiconductor industry has been running this sales tracking function
+since 1976, so it has gained significant experience and established a strong track
+record on tracking industry performance. The data is primary source data provided
+monthly by semiconductor companies themselves and aggregated so no individual
+company data is disclosed. SIA can provide more detail on the value of the WSTS data,
+the specific sales and market data collected through the WSTS program, and how the
+data collection program works.
+
+
+
+
+                                           29
+

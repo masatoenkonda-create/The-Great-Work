@@ -86,3 +86,43 @@ These are **Lead** questions, not supporting evidence for a build:
 16 selected primary/professional-source records have named passages read. Two original PDFs retained; two pages rendered and visually inspected. Poppler printed font-substitution warnings; inspected pages were legible. AIM's document has a 2024 copyright and 2025 PDF creation metadata; the filename records the copyright year, not a verified publication date.
 
 AIM and TI downloads first failed in the restricted shell; both succeeded after approved network access. The web tool could not open TI's PDF, so its cited sections were read from the downloaded original. Indium's application-note PDF and a CoorsTek PDF could not be opened with the web tool; they are not supporting records. The accessible Indium five-ball-rule article was also read, but the proposed China interaction below relies on the retained AIM paper. No full prior-country source audit, supplier quotation, gameplay calibration, application tests or browser testing performed.
+
+## Claude additions, 22 October 2026
+
+Date read for all: 22 October 2026. "Read" means the passages named.
+
+### P17 — Kraljic (1983), "Purchasing Must Become Supply Management", HBR — **Lead**
+
+Original not opened: the university-hosted copy refused connections and HBR is paywalled. Kraljic's wording below comes only through the direct quotations in P25.
+
+### P18 / P19 — SCOR model (Supply Chain Council / ASCM) — **Lead**
+
+Both PDFs failed to download (FIU returned XML, ASCM returned HTML/empty). The Plan / Source / Make / Deliver / Return / Enable process list is known only from search snippets. Do not cite as read.
+
+### P20 — SIA, comments on the Commerce Department's semiconductor supply chain RFI, November 2021 — **Read**
+
+[Original](https://www.semiconductors.org/wp-content/uploads/2021/11/SIA-Response-to-Commerce-RFI-on-Semiconductor-Supply-Chain-Risks.pdf), [saved PDF](P20-sia-rfi-response-2021.pdf), 29 pages. Read PDF p. 12 (wafer fabrication cycle time about 12 weeks, 14–20 for advanced processes; hundreds of inputs), p. 27 (section 4: auto-industry order cancellations in 2020 contributed to the shortage; "it can take up to 6 months to produce a semiconductor"; recommends long-term non-cancellable, non-returnable contracts), p. 29 (section 5: just-in-time inventory "proved ineffective"; recommends a bias toward "just-in-case"). **Limit:** an industry association's advocacy document, not neutral research; no company inventory data (it says so on PDF p. 14).
+
+### P21 — Microchip customer letter on capacity and supply, 4 February 2021 — **Lead**
+
+Direct download blocked. The programme's terms are taken from P23 instead.
+
+### P22 — US Commerce Department, results of the semiconductor RFI, January 2022 — **Lead**
+
+Page blocked (403 / browser check). The widely quoted "median inventory from 40 days in 2019 to under 5 days in 2021" figure is search-snippet only; do not use it as a fact.
+
+### P23 — Microchip Technology, Form 10-K for fiscal 2021 (year to 31 March 2021) — **Read**
+
+[Original](https://www.sec.gov/Archives/edgar/data/827054/000082705421000106/mchp-20210331.htm), [text extract](P23-microchip-10k-fy2021.txt). Read the Business section passage on the Preferred Supply Program ("prioritized capacity beginning 6 months after their order of 12 months of continuous, non-cancellable and non-reschedulable backlog"), the distribution passage (no long-term commitments except under the programme), and the risk-factor passages on supplies ("a limited number of suppliers capable of meeting our standards"; "longer lead times for some assembly raw materials") and subcontractor capacity allocation. **Limit:** one supplier's programme in one shortage period; not universal industry terms.
+
+### P24 — BCG × SIA, "Strengthening the Global Semiconductor Supply Chain in an Uncertain Era", April 2021 — **Read**
+
+[Original](https://www.semiconductors.org/wp-content/uploads/2021/05/BCG-x-SIA-Strengthening-the-Global-Semiconductor-Value-Chain-April-2021_1.pdf), [saved PDF](P24-bcg-sia-value-chain-2021.pdf), 53 pages. Read PDF p. 39 (Exhibit 19: more than 50 points where one region has ~65%+ share; materials examples photoresist, silicon wafers, packaging substrates, specialty gases), p. 40 (single points of failure; sidebar of historical disruptions: 1993 Sumitomo Chemical plant explosion hit 60% of epoxy resin supply; 1999 Taiwan earthquake; 2011 Japan earthquake affected 25% of silicon wafer production; 2020–21 package-substrate plant fires; 2021 Renesas fab fire), p. 41 (C4F6 etch gas: "once a manufacturing plant is calibrated to use C4F6, it cannot be substituted"; Japan over 90% of the photoresist *processing equipment* market, which is equipment, not the resist itself), p. 45 (Exhibit 21: fully self-sufficient regional supply chains estimated at $900–1,225 billion upfront and a 35–65% rise in chip prices). Poppler printed font-weight warnings; text extracted normally. **Limit:** industry-commissioned analysis with modelled estimates; regional, not company or item level.
+
+### P25 — Dubois & Pedersen, "Why partners do not fit into purchasing portfolio models", IMP Conference, Oslo, 2001 — **Read**
+
+[Original](https://impgroup.org/wp-content/uploads/wpallimport/files/papers/170.pdf), [saved PDF](P25-imp-portfolio-170.pdf), 14 pages. Read p. 2 (purchased materials often 50–80% of cost of goods sold, quoting Cammish and Keough 1991) and pp. 4–5 (Kraljic's two dimensions quoted from Kraljic 1983 p. 110; Figure 1 four quadrants: non-critical, leverage, bottleneck, strategic; Kraljic p. 114 quoted on dependence: look for alternative suppliers or materials when weak, spread volume and buy spot when strong). **Limit:** secondary account written to *critique* portfolio models (partnerships don't fit them); Kraljic's own article not opened (P17).
+
+### P26 — Harris (1913), "How Many Parts to Make at Once", reprinted in Operations Research 38(6), 1990 — **Skimmed**
+
+[Record](https://ideas.repec.org/a/inm/oropre/v38y1990i6p947-950.html). Only the abstract was read: interest on capital tied up sets a maximum on the quantity made at once; set-up cost sets the minimum (the origin of the economic order quantity). Full text not opened.

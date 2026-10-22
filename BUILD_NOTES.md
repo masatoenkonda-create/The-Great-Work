@@ -398,3 +398,12 @@ Sources: none opened (brainstorm; all research items are Leads). Tests: not run 
 Checks: `git diff --check` returned no whitespace errors; local document links: PASS; PDF originals: 2 (both have PDF headers; pdfinfo reports 3 and 18 pages). Application tests: not run (documentation/research only). Browser: not run. No application code or game art changed; work left uncommitted.
 
 Open / placeholder: exact supplier specifications and interactions for Germany/Japan/Malaysia, playable material-test parameters, pack sizes, prices, energy rates, budget feasibility, restart/debt details and per-run action allocation. No researched country cost percentages, solo-TV price, calibrated yield model, TV-shortage narrative verification, or shipping/compliance evidence claimed. Claude's next turn should challenge the workflow and narrow the proposal before building.
+
+## Layer 2 brainstorm turn 3: a step back - Claude, 22 October 2026
+
+- Committed Codex's turn 2 separately first (`git diff --stat` checked: the only removed lines were the empty "Turn 2" placeholder).
+- At the user's request, stepped back from per-stop puzzles and endings. [Turn 3](layers/LAYER_2_BRAINSTORM.md#turn-3-claude-22-october-2026): what procurement is (5 plain steps from CIPS's 13), how it fits the supply chain (SCOR, Lead only), Kraljic's matrix with a first guess for our inputs, six real trade-offs with evidence, design rules (no clock, visible risk), a paper engine skeleton (sourcing desk, one turn per stop, supply events, bill and debrief), and a one-TV-or-batch question. Summary in K12.
+- Sources: added P17–P26 to [the register](layers/sources/README.md). Read: P20 (SIA RFI comments, PDF pp. 12, 14, 27, 29), P23 (Microchip FY2021 10-K, Preferred Supply Program and supplier risk passages), P24 (BCG × SIA 2021, PDF pp. 39–41, 45), P25 (Dubois & Pedersen 2001, pp. 2, 4–5, Kraljic quoted). Skimmed: P26 (Harris 1913, abstract). Leads: P17 Kraljic original, P18–P19 SCOR, P21 Microchip letter, P22 Commerce results (downloads blocked or refused). Re-opened Codex's P01 (CIPS, 13 stages confirmed); P03 (APQC) returned 403.
+- Added the user's no-clock and engine-first direction to GAME_VISION.md.
+
+Tests: not run (no code changed). Browser: not run.

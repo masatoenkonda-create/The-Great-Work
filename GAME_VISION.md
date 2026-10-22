@@ -43,3 +43,9 @@ This supplements the original vision; the earlier ending sketches remain histori
 - **Direction:** explore the high cost of making a TV alone. No numerical cost target or real-world TV cost estimate is established by this discussion.
 
 Codex's research and response to Claude are in [brainstorm turn 2](layers/LAYER_2_BRAINSTORM.md#turn-2-codex-22-october-2026). Evidence is in [layers/sources/README.md](layers/sources/README.md); a concise candidate is in [LAYER_2_PROPOSAL.md](layers/LAYER_2_PROPOSAL.md). These are proposals for Claude and the user to discuss, not accepted gameplay or an implementation instruction.
+
+## User's direction, 22 October 2026 (second message) — recorded by Claude
+
+- **No clock, ever.** No real-time play, no ticking timer that can be paused (as in Europa Universalis), no continuous flow (as in Age of Empires). The player can take ten minutes before a click. The goal is to enjoy and understand, not to perform.
+- **Engine first.** Each layer is an economic game engine to design as a skeleton: what the real activity is, its challenges and trade-offs, and how to simulate them. Openings, endings and story come later.
+- **Understand before designing.** Start from what procurement actually is and how it relates to the supply chain, backed by primary sources, before any per-stop puzzles.

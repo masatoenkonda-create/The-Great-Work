@@ -1,0 +1,566 @@
+                                Competitive paper submitted to the
+                                  17th Annual IMP Conference
+                               9-11 September 2001, Oslo, Norway
+
+
+
+      Why partners do not fit into purchasing portfolio models
+                                                   by
+
+
+                            Anna Dubois1 and Ann-Charlott Pedersen2
+
+
+
+
+1
+ Chalmers University of Technology, Department of Industrial Marketing, S-412 96 Göteborg, Sweden.
+Phone: +46 31 772 11 96, e-mail: andu@mot.chalmers.se.
+
+2
+ Norwegian University of Science and Technology, Department of Industrial Economics and Technology
+Management, N-7491 Trondheim, Norway. Phone: +47 73 59 35 03, e-mail: pedersen@iot.ntnu.no.
+                                          Abstract
+
+Purchasing portfolio models have received great attention during the last two decades. The
+simplicity of application and the focus on power-dependence balancing has been appreciated
+by practitioners and academics alike. In this paper we argue that the starting point in 'given'
+products in addition to a dyadic perspective on purchasing management may be counteractive
+when purchasing efficiency is concerned. First, the object of exchange is not 'given' when
+firms interact, but may be subject to continuous development. Second, the dyadic perspective
+may obscure potentials for enhancing productivity and innovativity since both parties have
+other relationships that impacts on the collaboration between them.
+
+
+                                        Introduction
+
+In recent decades, purchasing costs have risen. Currently, purchasing costs constitute the
+majority of the total cost of goods sold in both the private and public sectors (Gadde and
+Håkansson, 1998). In many firms, the value of purchased materials, components, and systems
+accounts for 50-80 percent of the total cost of goods sold (Cammish and Keough, 1991, p. 23;
+van Weele, 2000, p. 17-18). Thus, the purchasing function has a substantial impact on the
+total cost of a firm and thereby on the potential profit. This change has been accompanied by
+increasing attention to purchasing, as a field of strategic interest, both from managers and
+researchers.
+
+Suppliers have also become increasingly important as they account for a large part of the
+value creation related to the buying firm's products and services (as an effect of increasing
+specialisation). Thus, managing the firm's supplier base is becoming an essential strategic
+purchasing issue, and consequently the need for differentiated approaches to purchasing
+behaviour increases. The variety in purchasing needs, and thus the need to purchase in
+different ways, is increasing which confront firms with new challenges.
+
+In 1983 Harvard Business Review published an article by Peter Kraljic entitled Purchasing
+must become supply management. In essence, the article focused on purchasing as an
+important managerial area with a huge impact on profit. The article soon received a great deal
+of attention both among managers and academics, and is currently both applied in practise
+and used as reference by researchers in industrial purchasing. The reasons for this attention
+may be several. The article recognised purchasing as an important management issue, and
+thereby an area which was regarded as in need of useful models. Furthermore, the usefulness
+of the purchasing portfolio model presented by Kraljic (1983) was proven in that it clearly
+distinguished between different purchasing situations and gave logical recommendations as to
+how to act. In the later years, a number of academics, referring to Kraljic's article, have
+further developed his model of differentiated purchasing behaviour in relation to: (1) single
+materials or components, or (2) supply or purchasing situations (see e.g. van Stekelenborg
+and Kornelius, 1994; Olsen and Ellram, 1997). Following these elaborations of Kraljic's
+model, another line of development can be observed. This second wave focuses on classifying
+the content of buyer-supplier relationships as opposed to the initial focus set by Kraljic (see
+e.g. Bensaou, 1999; Gelderman and van Weele, 2000).
+
+In parallel to these developments, the interest in, and empirical studies of, relationships
+between buyers and suppliers in industrial markets has grown enormously during the years
+since Kraljic's article was published. These studies show that industrial markets can be
+characterised by the existence of long-term business relationships, and that these relationships
+are both complex and varying with regard to content and dynamic aspects. With this as a
+starting point, several concepts and frameworks have been developed which have contributed
+significantly to our understanding of: (1) the interactive nature of customer-supplier
+relationships, seen from a purchasing view (see e.g. Lamming, 1993; Lamming, 1996; Gadde
+and Håkansson, 1998; Araujo et al., 1999; Gadde and Snehota, 2000), and (2) different
+characteristics of business relationships and networks (see e.g. Håkansson, 1982; Ring and
+van de Ven, 1992; Kanter, 1994; Håkansson and Snehota, 1995; Möller and Wilson, 1995).
+Furthermore, we can observe a development from studies of dyadic buyer-supplier
+relationships to studies focusing on single business relationships in the context of the other
+relationships the firms are involved in (Blankenburg and Johanson, 1992; Anderson et al.,
+1994; Holmen and Pedersen, 2000). In addition to the characterisation of individual
+relationships, empirical studies show that single relationships also are affected by
+developments in other relationships. Thus, any business relationship exists both in itself and
+is at the same time embedded in a network context, and thus connected to other relationships.
+
+The aim of this paper is to scrutinise the purchasing portfolio models in terms of their basic
+assumptions and implications. By contrasting these models with the industrial network
+approach some issues concerned with the principles of analysing purchasing situations are
+highlighted. Thus, the paper focuses on how relationships between buyers and suppliers are
+dealt with in these two different settings and discusses the implications of the different
+assumptions about the context in which purchasing takes place.
+
+The next section presents an overview of the different purchasing portfolio models, on the
+basis of the model developed by Kraljic (1983). The classification dimensions used in the
+models are analysed and the portfolio approach in terms of suggested steps is discussed
+together with its implications. Furthermore, we introduce the industrial network approach and
+discuss the consequences of this approach in terms of interdependencies between
+relationships and products as 'network entities'. The paper ends with some conclusions on
+differences between the purchasing portfolio approach and the industrial network approach.
+
+
+                                Purchasing portfolio models
+
+The portfolio model concept was originally developed by Markowitz (1952), who used it as
+an instrument for managing equity investments. His point of departure was that rational
+investors will (or should) select portfolios which maximise the individual investor's utilities
+by maximising the expected return for a given level of risk or minimising the risk for a given
+level of expected return. These ideas have travelled far, as they are now applied for
+classifying different materials in purchasing or different buyer-supplier relationships. This is
+also pointed out by Turnbull (1990, p. 8) claiming "Although the portfolio concept put forth
+by Markowitz (1952) was an instrument for the management of equity investments, the
+concept has been recognised to have viable applicability in other fields."
+
+As mentioned in the introduction, Kraljic (1983) was the first to bring portfolio models into
+the purchasing area: "The Kraljic portfolio approach is generally considered as an important
+breakthrough in the development of theory in the field of purchasing and supply
+management." (Gelderman and van Weele 2000, p. 291). Kraljic's model is based on two
+dimensions for classifying a firm's purchased materials or components (see figure 1):
+(1) "the strategic importance of purchasing in terms of the value added by product line, the
+    percentage of raw materials in total costs and their impact on profitability"
+(2) "the complexity of the supply market gauged by supply scarcity, pace of technology
+    and/or materials substitution, entry barriers, logistics cost or complexity, and monopoly
+    or oligopoly conditions" (Kraljic, 1983, p. 110).
+
+
+              High
+                          Leverage items:            Strategic items:
+                          Materials                  Supply
+                          management                 management
+     Importance
+     of purchasing
+                          Non-critical items:        Bottleneck items:
+                          Purchasing                 Sourcing
+                          management                 management
+              Low
+
+                       Low               Complexity of                   High
+                                         supply market
+
+                      Figure 1. The Kraljic purchasing portfolio model
+                           (Modified from Kraljic, 1983, p. 111).
+
+
+Thus, Kraljic's model uses one internal and one external dimension, and the model aims at
+matching external resources provided by suppliers with the internal needs of the buying firm.
+The issue at hand is thus to optimise the way in which suppliers are managed, or in the words
+of Nellore and Söderquist (2000, p. 264): "... the objective of the portfolio models - to
+optimize the use of capabilities of different suppliers - must be kept in mind." The
+optimisation is based on the trade-off between the costs of obtaining the products on the one
+hand and the value achieved from obtaining them on the other. Turnbull (1990, p.7) also
+emphasises optimisation based on the limited resources of the buying firm: "... the portfolio
+concept is a useful management tool for enforcing a discipline in the allocation of the
+company's limited resources to an optimal combination of business operations which will
+maximise long-term returns at the given levels of risk."
+
+A brief review of some of the latest purchasing portfolio models, see table 1, shows that two
+additional models using one internal and one external dimension have been developed by van
+Stekelenborg and Kornelius (1994) and Olsen and Ellram (1997). Stekelenborg and Kornelius
+(1994, p. 49) use "the need for internal market demand control and the need for external
+supply market control" to discern between four types of supply situations, whereas Olsen and
+Ellram (1997, p. 105) use "difficulty of managing the purchasing situation and strategic
+importance of the purchase" as their external and internal classification dimension
+respectively.
+In the models of Bensaou (1999) and Gelderman and van Weele (2000), the classification
+dimensions are somewhat different. These two models use the power-dependence between
+the buyer and the supplier to differentiate between different types of relationships (or
+exchanges), and thereby bring into focus that the fundamental assumption for their models is
+the power-dependence argument. In our view, this is also the basis for the other suggested
+purchasing portfolio models, although this is not explicitly stated or discussed. Gelderman
+and van Weele (2000, p. 293) comment on this: "In the […] Kraljic matrix it is not clear in
+what way the balance of power enters the model".
+
+Irrespective of whether or not dependency is explicitly dealt with in the purchasing portfolio
+models, they share a common view on the power-dependence argument. This is at the core of
+the models. Normative advice are given to avoid becoming dependent on individual suppliers
+e.g. through using at least two competing suppliers for strategic components (Nellore and
+Söderquist, 2000). Furthermore, Kraljic (1983, p.114) recommends exploitation of the
+suppliers' dependence whenever possible: "To reduce the long-term risk of dependence on a
+single source, […] the company should also search for alternative suppliers or materials or
+even consider backward integration to permit in-house production. On the other hand, if the
+company is stronger than the suppliers, it can spread volume over several suppliers, exploit
+price advantages, increase spot purchases, and reduce inventory levels." Following the
+power-dependence argument, most of the reviewed articles (see table 1 on the last page of the
+paper) also introduce an action plan to manage the suppliers, given the different categories in
+the purchasing portfolio models. Kraljic (1983) and Bensaou (1999) suggest (strategic)
+'partnership' when the supplier and buyer are mutually dependent, Olsen and Ellram (1997)
+discuss 'strengthened relationships', and Gelderman and van Weele (2000) introduce the
+concept of 'balanced relationship' in similar situations.
+
+In our view the purchasing portfolio models, with Kraljic's model, as the point of departure
+are popular and widespread partly because they are fairly easy to use, and partly because they
+give practical guidelines for how to manage different purchasing situations, suppliers and/or
+supplier relationships. This is also highlighted by Gelderman and van Weele (2001, p. 414):
+"Kraljic's purchasing portfolio seems to be an effective tool for discussing, visualizing and
+illustrating the possibilities of differentiated purchasing and supplier strategies".
+Furthermore, these models seem to handle the power-dependence problem in many
+purchasing situations by focusing on how to exploit the firm's purchasing power vis-à-vis
+suppliers and to reduce the risks to an acceptable minimum. However, this way of viewing
+purchasing situations and how to manage supplier relationships is based on a particular set of
+assumptions about how industrial markets operate. In the following sections we shall look
+into another way of describing and analysing purchasing and supplier relationships, namely
+the industrial network approach.
+
+
+
+
+                               Interaction and 'networking'
+
+The industrial network approach has inter-firm relationships as focal units of analysis rather
+than firms (Håkansson, 1982; Axelsson and Easton 1992). Furthermore, the approach
+emphasises connections between relationships and consequently their embeddedness in
+networks of relationships (Blankenburg and Johansson, 1992; Holmen and Pedersen, 2000).
+Relationships have a certain content based on the links between the firms' activities, the ties
+between their resources and the bonds between them as actors. Also, the relationships have
+certain functions in relation to the individual firms involved, to the relationships per se and to
+connected third parties (Håkansson and Snehota, 1995).
+
+The understanding and modelling of buyer-supplier relationships based on the industrial
+network approach is very different from what appears to be underlying purchasing portfolio
+approaches. Relationships are not regarded as isolated dyads and thus their impact is always
+related to other, connected, relationships. This also implies that the time dimension is of
+importance since industrial purchases are often recurrent and thus individual purchasing
+situations cannot be dealt with as isolated from previous or future ones. Moreover,
+relationships are considered both as means and ends owing to their interactive nature. That is,
+relationships are considered organising 'living' units that may evolve over time thus changing
+their contents and functions.
+
+In this section we first deal with the reasons for, and consequences of, connections between
+relationships. Herein, we suggest that the products subject to exchange may be seen as
+'network entities' rather than as isolated items. Thereafter, we discuss the differences between
+the industrial network approach and approaches underlying purchasing portfolio models.
+
+
+                                    Connected relationships
+
+Relationships enable interacting firms to economise on their networks. This implies the
+possibility of creating and capturing connections among relationships in different ways: "... if
+we are to understand the interactive nature of customer-supplier relationships in business
+markets and their dynamics, the scope of analysis needs to be broadened. Each relationship
+is dependent with a number of other relationships, together forming a network." (Gadde and
+Snehota, 2000, p. 315). Below we will examine some of the most important connections
+when purchasing is concerned.
+
+First, connections between the focal buyer-supplier relationship and the supplier's other
+customer relationships are the source of economies of scale in various activities, e.g.
+production, administration and logistics. Hence, adjustments made to capture or develop
+similarities among particular activities directed to its various customers lay the foundation to
+the supplier's ability to be a cost efficient and high performing supplier to each and one of its
+customers (Richardson 1972, Dubois 1998). Following from this argument all suppliers have
+unique features owing to their respective sets of customer relationships which will be
+reflected in their respective performance, i.e. their performance will be relative to any of its
+customers as a function of the supplier's other customer relationships. The potential
+productivity gains resulting from connections among the supplier's customer relationships are
+thus apparent. Less, apparent, but of great importance, is the abilities of suppliers to
+contribute to increasing the values of the exchange also stemming from how the supplier is
+connecting its customer relationships. The external capabilities, or resources, possible to
+access through developing supplier relationships is thus always directly or indirectly a
+function of the supplier's other relationships. This is the reason why we suggest relationships
+as units of analysis for network analysis rather than products as units of analysis for dyadic
+analysis when development of supplier relationships is concerned.
+Secondly, connections between the focal buyer-supplier relationship and the customer's other
+supplier relationships are important for other reasons. Here, the need for adjustments is
+concerned with making the various products subject to exchange fit into the user context.
+This may be related to the production system of the customer and/or the 'end product' or any
+other technical system in which the products are used. Hence, the various technical
+dimensions of particular products e.g. physical shape, strength, weight, or technical
+performance make it connected to various other products with which resource interfaces need
+be developed (Wedin 2001). Following this way of viewing an individual product (as
+embedded in a user context) the relationship with the supplier producing it is depending on
+what is going on in other supplier relationships. There are different ways to deal with the
+interdependence between relationships resulting from the interdependence among the
+products they supply. These connections call for recognition of each product as embedded in
+wider structures. We may thus choose to analyse products as 'network entities' rather than as
+isolated objects subject to exchange in isolated buyer-supplier relationships.
+
+If we focus on a product currently subject to exchange between two parties, this product can
+be seen as the result of an 'activity structure' as well as an input into another (see figure 2).
+Recognising this context, the product is part of a complex where it is subject to
+interdependence in several dimensions (Dubois, 1998):
+(1) any product is the result of numerous activities carried out by different firms,
+(2) the activities engage resources that are also activated in the production of other products
+(and this joint resource utilisation is the basis for economies of scale),
+(3) products are connected to one another since they are parts of different technical contexts
+(e.g. components in a technical system of some kind).
+
+
+
+
+                                                                                        firm
+                                                                                        product
+                                                                                        activity
+                        Figure 2. A product within an activity structure
+In addition to these two categories of connected relationships there may be a number of other
+relationships with which the focal buyer-supplier relationship is connected (Dubois et al.,
+2001). Owing to increasing specialisation and the subsequent need for integration the
+supplier's supplier relationships, and the customer's customer relationships may also be of
+importance. Connections between a focal relationship and the customer's customer
+relationships can be created and captured to develop values and/or reduce costs through
+adaptations. Similarly, connections between the focal relationship and the supplier's supplier
+relationships entail a further extension of the external resources that can be accessed and
+influenced by the customer.
+
+
+                      Consequences of an industrial network approach
+
+All purchasing portfolio models have a specified product as the point of departure, i.e. the
+product is produced by the supplier and the buyer can assess and compare it with other
+potential suppliers' products. This may seem unproblematic since most companies can easily
+account for their purchases in terms of what products they buy. However, using 'given'
+products in the analysis of purchasing is indeed problematic since the costs and values
+associated with developing, producing and using the products are not included in the analysis.
+Nellore and Söderquist (2000) discuss the importance of the specification process in addition
+to previously considered portfolio dimensions: "... it is not enough to simply state the
+characteristics of the suppliers in terms of attractiveness and relationship in order to deliver
+a certain component; one must designate the characteristics of the supplier with regard to the
+specification generator, the relationship required and the type of specification required for a
+given component in the portfolio dimension" (Nellore and Söderquist, 2000, p. 264, emphasis
+added). Thus, the need to specify the 'given' product, being the object of a purchasing need,
+entails a number of issues that are not considered in portfolio models. Rather, they seem to
+imply that the customer is in charge of the specification.
+
+Furthermore, the concept of interdependence between relationships is seldom discussed in the
+purchasing portfolio models. If this kind of interdependence is brought up at all it has to do
+with the costs of dealing with different supplier relationships. For example, Olsen and Ellram
+(1997, p.101) stress that: "The literature on buyer-supplier relationships tends to focus on a
+single relationship or a single type of relationship, ignoring or downplaying the important
+task of allocating scarce resources between relationships." Hence, interdependence between
+supplier relationships only concerns resource allocation to optimise the resources spent on
+managing the relationships. Furthermore, the interdependence between the buying firm and
+the individual suppliers is most often concerned with specialised investments. Thus, other
+kinds of interdependence between supplier relationships or to other parties in the network
+context of the buying and the supplying firm, in which the relationship is a part, are not
+considered.
+
+In this section we have tried to attract attention to the importance of recognising interaction
+and networking aspects of purchasing. By limiting the analysis to concern only 'given'
+products in a purely dyadic context, purchasing portfolio models may obscure great potentials
+for increasing productivity and innovativity. Our point is that these potentials can only be
+identified through increasing awareness of the firm's network and can only be captured
+through successful co-operation with its various counterparts. We argue that purchasing
+portfolio models by simplifying the nature and context of purchasing do not capture vital
+aspects of buyer-supplier relationships. First, because they are based on a distinction between
+two dimensions: one internal and one external. Second, because of the strong reliance on
+power-dependence balancing.
+
+As pointed out by other critics, there is a great risk that the dimensions used in portfolio
+analysis are not accurate proxies for the many variables they are supposed to measure
+(Nellore and Söderquist, 2000, p. 246). Furthermore, we argue that neither the variables nor
+the dimensions are independent of one another. When firms co-operate closely external
+factors cannot easily be separated from internal ones. This, in turn, makes evaluation of the
+counterpart alone impossible or at least irrelevant. That is, dealing with external and internal
+factors as independent of one another directs the attention away from the fact that they are
+interdependent in many respects, and that these dimensions may be those of greatest
+importance.
+
+The relative power-dependence between the parties is in purchasing portfolio models
+assumed to be decisive of how the gains are distributed between the parties. Hence, the
+strategic advice following from purchasing portfolio models are in essence recommendations
+to either (1) exploit power (if the customer is in power), or (2) avoid risks associated with the
+supplier exercising power. Here we have stressed the importance of considering
+interdependence as resulting from counterpart specific adjustments that reduce the total costs
+of exchange. Furthermore, these adjustments always have to be developed with consideration
+of other, connected, relationships.
+
+
+                                         Conclusions
+
+The importance of the purchase (or rather exchange) and the complexity of the supply market
+are the two basic dimensions in portfolio models regardless of exactly how they are labelled
+and conceptualised. The importance of the exchange may facilitate interaction since it can be
+assumed to increase the willingness to make counterpart specific adjustments. Furthermore,
+the importance itself can be assumed to be the reason for engaging in interaction with the
+counterpart to start with. However, through interaction the parties are able to identify and
+develop further potentials that may result in increasing importance of the relationship.
+Håkansson and Snehota (1995, p. 385) argue: "While business relationships generally start
+out from a first idea about 'exchange' the interaction process over time gives both parties the
+opportunity to 'bring into it' further elements."
+
+When a relationship has been established, the complexity of the supply market can be said to
+be either extremely high (since the number of alternative suppliers decreases with every
+counterpart specific adjustment), or it can be said to cease to exist since the parties do not
+handle their exchange on 'the market' but instead in a relationship. This also redirects the
+focus from individual transactions to specific relationships. The existence of interdependence
+between buyer and supplier owing to adjustments of various kinds (e.g. technical, logistic,
+administrative) implies that it becomes costly to change counterpart. Several authors have
+dealt with this as relationship investments with an economic nature and impact where the
+gains are of a long-term nature (Johansson and Mattsson, 1985; Håkansson and Snehota,
+1995). This view on interdependency, as a consequence of adjustments, is very different from
+what purchasing portfolio models reflect. A customer and supplier making mutual counterpart
+specific adjustments cannot avoid interdependence and thus both possibilities and problems
+take on other aspects of importance.
+
+Hence, a focus on interaction and networking entails a different view on (inter)dependence
+compared with purchasing portfolio models. While the latter are based on power-dependence
+balancing issues (with the implicit assumption that any power advantage will be exploited
+and thus be costly for the counterpart) the industrial networks approach rather focuses on
+interdependence as an inevitable consequence of adjustments. These adjustments, in turn, are
+the basis for productivity and innovativity for the individual firms, for the relationships, and
+for the network as a whole.
+
+The problem of analysing purchasing of 'given' products in a dyadic context is, we argue, a
+theoretical problem as much as it is a managerial one. There are surely many purchasing
+managers that (at least to some extent) deal with purchasing in accordance with what is
+prescribed by portfolio models. This may imply one of two things, or both. It may reflect the
+role of purchasing in many firms where technical, logistics or other departments take care of
+the most part of the interaction of importance thus leaving purchasing to negotiate less
+important contracts and conditions for 'given' products. Hence, it may be a result of
+purchasing being isolated from, or rather ignored by, other parts of the company. Or, it may
+be that purchasing is side-stepped because they prefer to deal with purchasing as isolated
+phenomena. Again, situations and actions are seldom easily separated. Regardless of the
+reasons for it, we argue that firms dealing with purchasing as being a matter of 'given'
+products supplied by independent suppliers may, if recognising the (more complex) network
+structures they are working in, be able to identify and capture network potentials and thus
+increase the contribution of the purchasing function.
+
+When comparing the purchasing portfolio models and the 'interaction and networking' ways
+of dealing with purchasing we can clearly see that they imply two very different approaches.
+Purchasing portfolio models have been much appreciated owing to simplicity of application
+and focus on dyadic power-dependency situations being perceived as problematic by many
+firms. Although admitting to a more than mild affection for the industrial network approach,
+we argue that it enables us to perform more challenging and complex analyses focusing on
+inter-firm interaction, interdependence within and between relationships. Consequently,
+viewing products as variable network entities instead of as 'given' may lead us much further.
+
+
+                                          References
+
+Anderson, J.C., Håkansson, H. and Johanson, J., 1994. Dyadic Business Relationships Within
+a Business Network Context. Journal of Marketing, 58, 1-15.
+
+Araujo, L., Dubois, A. and Gadde, L.-E., 1999. Managing Interfaces with Suppliers.
+Industrial Marketing Management, 28, 497-506.
+
+Axelsson, B. and Easton, G. (Eds.), 1992. Industrial Networks - A New View of Reality.
+Routledge, London.
+
+Bensaou, B.M., 1999. Portfolios of Buyer-Supplier Relationships. Sloan Management
+Review, Summer, 35-44.
+Blankenburg, D. and Johanson, J., 1992. Managing Network Connections in International
+Business. Scandinavian International Business Review, 1(1), 5-19.
+
+Cammish, R. and Keough, M., 1991. A strategic role for purchasing. The McKinsey
+Quarterly, 3, 22-39.
+
+Dubois, A., 1998. Organising Industrial Activities Across Firm Boundaries. Routledge,
+London.
+
+Dubois, A. and Håkansson, H., 1997. Relationships as Activity Links. In: Ebers, M. (Ed.), The
+Formation of Inter-Organizational Networks. Oxford University Press, Oxford, pp. 43-65.
+
+Dubois, A., Håkansson, H. and Hjelmgren, D., 2001. Technical development in networks -
+The importance of third parties. Forthcoming in Sinergie.
+
+Gadde, L.-E. and Håkansson, H., 1998. Professionellt Inköp. Studentlitteratur, Lund.
+
+Gadde, L.-E. and Snehota, I., 2000. Making the Most of Supplier Relationships. Industrial
+Marketing Management 29, 305-316.
+
+Gelderman, K and Weele, A.J. van, 2000. New Perspectives on Kraljic's Purchasing Portfolio
+Approach. Proceedings from the 9th International Annual IPSERA Conference, London,
+Canada, 291-298.
+
+Gelderman, K and Weele, A.J. van, 2001. Advancements in the Use of a Purchasing Portfolio
+Approach: A case study. Proceedings from the 10th International Annual IPSERA
+Conference, Jönköping, Sweden, 403-415.
+
+Håkansson, H., (ed.), 1982. International Marketing and Purchasing of Industrial Goods. An
+Interaction Approach. John Wiley & Sons, Chichester.
+
+Håkansson, H. and Snehota, I., 1995. Developing Business Relationships in Industrial
+Networks. Routledge, London.
+
+Holmen, E. and Pedersen, A.-C., 2000. Avoiding Triadic Reductionism: Serial Tetrads - a
+Useful Concept for Studying Connected Relationships? In: Ford, D., Naudé, P., Ritter, T.,
+Turnbull, P.W. and Leek, S. (Eds.), Interaction, Relationships and Networks, Proceedings
+form the 16th IMP Conference, Bath.
+
+Johansson, J. and Mattsson, L.-G., 1985. Marketing and Market Investments in Industrial
+Networks. International Journal of Research in Marketing 2(3), 185-195.
+
+Kanter, R.M., 1994. Collaborative advantage: the art of alliances. Harvard Business Review,
+July-August, 96-108.
+
+Kraljic, P., 1983. Purchasing must Become Supply Management. Harvard Business Review,
+September-October, 109-117.
+Lamming, R., 1993. Beyond partnership: Strategies for Innovation and Lean Supply, Prentice
+Hall, Hemel Hempstead.
+
+Lamming, R., 1996. Squaring lean supply with supply chain management. International
+Journal of Operations & Production Management, Vol. 16, No. 2, 183-196.
+
+Markowitz, H., 1952. Portfolio Selection. Journal of Finance, Vol. 7, March, 77-91.
+
+Möller, K. and Wilson, D. (Eds.), 1995. Business Marketing: An Interaction and Network
+Perspective, Kluwer Academic Publishers, Boston.
+
+Nellore, R. and Söderquist, K., 2000. Portfolio approaches to procurement - analysing the
+Missing Link to Specifications. Long Range Planning, 33, 245-267.
+
+Olsen, R.F. and Ellram, L.M., 1997. A portfolio approach to supplier relationships. Industrial
+Marketing Management 26(2), 101-113.
+
+Richardsen, G.B., 1972. The Organisation of Industry. The Economic Journal, September,
+883-896.
+
+Ring, P.S. and Ven, A.H., van de, 1992. Structuring co-operative relationships between
+organizations. Strategic Management Journal, 13, 483-498.
+
+Stekelenborg, R.H.A. van and Kornelius, L., 1994. A diversified approach towards
+purchasing and supply. IFIP Transactions. B, Applications in technology, 45-55
+
+Turnbull, P.W., 1990. A Review of Portfolio Planning Models for Industrial Marketing and
+Purchasing Management. European Journal of Marketing 24(3), 7-22.
+
+Wedin, T., 2001. Networks and Demand. The use of electricity in an industrial process. PhD
+dissertation. Department of Business Studies, Uppsala University.
+Portfolio models3               Classification dimensions              Categories                         Action plans                                Phases in developing a
+                                                                                                                                                      supply strategy
+Kraljic (1983)                  -    Importance of purchasing4             Materials/components           -   Exploit                                 1. Classification
+                                -    Complexity of supply market       -   Non-critical items5            -   Balance                                 2. Market analysis
+                                                                       -   Leverage items                 -   Diversify                               3. Strategic positioning
+                                                                       -   Bottleneck items                                                           4. Action plans
+                                                                       -   Strategic items
+van Stekelenborg and            -    Control need of the internal            Supply situations            -   Purchasing as effort manager            1.   Classify supply situation
+Kornelius (1994)                     market demand                     -   Plain supply situation         -   Purchasing as demand manger             2.   Determine purchasing
+                                -    Control need of the external      -   Internally problematic         -   Purchasing as supply manager                 activities
+                                     supply market                         supply situation               -   Purchasing as integrative manager
+                                                                       -   Externally problematic
+                                                                           supply situation
+                                                                       -   Complicated supply
+                                                                           situation
+Olsen and Ellram (1997)         -    Difficulty of managing the                  Purchases                -   Strengthen the relationship             1.   Analysis of the
+                                     purchase situation                -   Non-critical                   -   Improve the supplier                         company's purchases
+                                -    Strategic importance of the       -   Bottleneck                          attractiveness/the performance of      2.   Analyse the supplier
+                                     purchase                          -   Leverage                            the relationship                            relationships
+                                                                       -   Strategic                      -   Reduce the resources allocated to       3.   Develop action plans
+                                                                                                               the relationship
+
+
+Bensaou (1999)                  -    Buyer's specific investments              Relationships                                                          1.   Classify relationships
+                                -    Supplier's specific               -   Market exchange                                                            2.   Identify contextual
+                                     investments                       -   Captive buyer                                                                   profiles
+                                                                       -   Captive supplier                                                           3.   Design management
+                                                                       -   Strategic partnership                                                           profiles
+Gelderman and van Weele         -    Supplier's dependence                   Supply strategies
+(2000)                          -    Buyer's dependence                -   Efficient processing
+                                                                       -   Exploit power
+                                                                       -   Volume insurance
+                                                                       -   Balanced relationship
+Table 1. A literature review of purchasing portfolio models
+
+
+
+3
+  The review is organised with Kraljic (1983) as the point of departure.
+4
+  'Importance of purchasing' is represented at the vertical axis and 'Complexity of supply market' is represented at the horizontal axis. This is similar for all the classification
+dimensions in this column.
+5
+  The four categories result from the combination of high-low on the two classification dimensions: non-critical items (low importance of purchasing and low complexity of
+supply market), leverage items (high importance of purchasing and low complexity of supply market), bottleneck items (low importance of purchasing and high complexity of
+supply market) and strategic items (high importance of purchasing and high complexity of supply market). This is similar for all the categories in this column.
+
