@@ -134,3 +134,9 @@ User: buildings looked "copy-pasted, dropped crudely"; UI boxes didn't blend. Bu
 ## Badge-style places, 22 October 2026 (Claude)
 
 User: elements need a clean circle around them and the text felt disconnected. Each place is now one badge: a neutral translucent round plate (thin light rim, gold rim when selected) holding the building or product, with its name/status tab attached directly underneath in the same style. Material origins use a small version. Neutral only: no colour coding, no motion (L20 still applies). Harbour Coal moved slightly down to clear Bulk Importer.
+
+## Last Norway art batch, 22 October 2026 (Claude)
+
+Installed: `truck` (one frame of two, 160 × 80), `pin_sawmill`, `pin_power`, `pin_customer` (chemical plant with a German flag, used **only** for the Germany customer), and all seven portraits `rep_fjord`, `rep_nordic`, `rep_harbour`, `rep_bulk`, `rep_sawmill`, `rep_hydro`, `rep_buyer` (128 × 144, cropped at the waist: the grey gradient background could not be separated from dark trousers; the first of each duplicate pair used). Alloy Foundry and Silicone Works no longer borrow the German-flag factory; they show the silicon-bag marker.
+
+**Checked against LOOP2_NORWAY_ASSETS.md (26 items): 25 installed. Missing: `pin_harbour`** (Harbour Coal still shows its coal-sack marker). Not in the original list but would help: buildings for Alloy Foundry and Silicone Works.

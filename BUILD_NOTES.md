@@ -519,3 +519,9 @@ Tests: `npm run lint` passes; `bun test src` 42 pass. Placement checked on an of
 - Each map place is a round plate with its building/product and an attached label tab; material origins likewise. Harbour Coal moved to avoid overlap. Checked on an offline mock render.
 
 Tests: `npm run lint` passes; `bun test src` 42 pass. Browser: not run.
+
+## Loop 2 Norway: last art batch - Claude, 22 October 2026
+
+- Installed truck, three building pins and seven portraits; the German-flag customer building is used for Germany only. 25 of 26 listed assets now installed (missing `pin_harbour`). Cut-outs checked by eye on dark previews.
+
+Tests: `npm run lint` passes. Browser: not run.

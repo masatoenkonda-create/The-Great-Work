@@ -48,7 +48,7 @@ const ROUTES: Record<string, string> = {
   alloy: 'M690,390 L600,520 L450,640 L330,690',
   silicones: 'M690,390 L830,390 L920,385 L1020,470 L1100,545',
 };
-const PIN_ART: Record<string, string> = { smelter: 'smelter', fjord: 'quarry', nordic: 'trader', hydro: 'power', bulk: 'bulk', harbour: 'harbour', sawmill: 'sawmill', customer: 'customer', alloy: 'customer', silicones: 'customer' };
+const PIN_ART: Record<string, string> = { smelter: 'smelter', fjord: 'quarry', nordic: 'trader', hydro: 'power', bulk: 'bulk', harbour: 'harbour', sawmill: 'sawmill', customer: 'customer', alloy: 'alloy', silicones: 'silicones' };
 const CUSTOMERS = ['customer', 'alloy', 'silicones'];
 
 /** True once the image has loaded; SVG <image> shows a broken icon otherwise, so it is only drawn when present. */
