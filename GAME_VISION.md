@@ -31,3 +31,15 @@ Each loop's failure at home gives the reason for the next layer. Build layer by 
 
 - Loop 1 (production): all seven stops have a playable workshop; the USA stop has a minimum TV ending. The "electricity bill" failure at home is **not built yet**.
 - Loop 2: brainstorm started 22 October 2026 in [layers/LAYER_2_BRAINSTORM.md](layers/LAYER_2_BRAINSTORM.md).
+
+## User's new direction, 22 October 2026 — recorded by Codex
+
+This supplements the original vision; the earlier ending sketches remain historical context. The immediate task is workflow and layer design, not writing the opening or endings and not coding.
+
+- **Decision:** running out of money does not stop the journey. Continue to a bad ending at home, then restart. The restart boundary and the fictional way further purchases remain possible still need a design proposal; do not present unlimited real supplier credit as a fact.
+- **Idea to explore:** sourcing/material branches leave the seven-stop road and rejoin it. These are additions to the workflow, not approval for new main countries or unrelated errands.
+- **Idea to explore:** four runs progressively expose workshop complexity, materials and dependencies. The first run should be simpler; the later runs should offer new actions, beyond a wallet added to the existing game. Preserve real material transformations even when a guide handles unseen work.
+- **Direction:** teach what sourcing and buying actually involve through the four workshop questions. Research real challenges before choosing mechanics; price selection alone is insufficient.
+- **Direction:** explore the high cost of making a TV alone. No numerical cost target or real-world TV cost estimate is established by this discussion.
+
+Codex's research and response to Claude are in [brainstorm turn 2](layers/LAYER_2_BRAINSTORM.md#turn-2-codex-22-october-2026). Evidence is in [layers/sources/README.md](layers/sources/README.md); a concise candidate is in [LAYER_2_PROPOSAL.md](layers/LAYER_2_PROPOSAL.md). These are proposals for Claude and the user to discuss, not accepted gameplay or an implementation instruction.

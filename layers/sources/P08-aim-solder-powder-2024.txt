@@ -1,0 +1,128 @@
+                SOLDER PASTE POWDER: WHEN TO
+                          DOWNSIZE
+                                        BY TIMOTHY O’NEILL AND GAYLE TOWELL
+
+                                          ORIGINALLY PUBLISHED IN CIRCUITS ASSEMBLY
+
+  As components shrink in size, the demand for finer               including printability,          reflow      behavior,       and
+  solder pastes increases. But the selection of solder             reliability.
+  paste is not just about matching component size, it’s
+  also about optimizing printing and reflow processes                 Type    <0.5% larger     <10%      At least 80%   <10% smaller
+                                                                                  than       between      between           than
+  to prevent defects and ensure reliability.                         Type 3      60 µm       45-60 µm     25-45 µm         25 µm
+                                                                     Type 4      50 µm       38-50 µm     20-38 µm         20 µm
+                                                                     Type 5      40 µm       25-40 µm     15-25 µm         15 µm
+  This article explores the significance of solder paste             Type 6      25 µm       15-25 µm      5-15 µm          5 µm
+  powder size, particularly focusing on when and why                 Type 7      15 µm       11-15 µm      2-11 µm          2 µm
+  manufacturers should consider downsizing from                    Table 1. Particle distribution limits per IPC J-STD-005A.
+  standard types to finer alternatives.
+                                                                   How to Decide When to Downsize Your
+  The Impact of Process Variations in Solder                       Solder Paste
+  Powder Production                                                When considering whether to downsize your solder
+  The exact method for creating solder powder, and                 paste, you must take into consideration the size and
+  ultimately solder paste, can vary significantly from             spacing    of    components,     the     production
+  one manufacturer to another. These differences in                environment and settings, and the potential
+  production methods can lead to very different                    challenges that can come with smaller powders.
+  outcomes when printing with a particular paste size.
+                                                                   In general, the smaller the paste, the more
+  In other words, you can end up with entirely                     challenging the process. Because of this, the
+  different results when using a Type 5 paste from one             ultimate success of your process becomes
+  manufacturer compared to that from another.                      increasingly dependent on all the variations in solder
+  Moreover, the inherent variation within a given                  paste production methods described above.
+  solder powder production process will have a
+  greater influence on the paste’s performance the                 The 5-Ball Rule and Its Implications
+  smaller the particle size gets.                                  A common heuristic used to determine what
+                                                                   powder size to use is the so-called “5-ball rule.” The
+  Particle size classification is standardized by the IPC;         "5-ball rule" suggests that the smallest stencil
+  however, it still allows for significant variation. The          aperture should be at least five times the diameter
+  IPC specifies that only 80% of particles for a given             of the solder paste's largest particles (See Table 2).
+  type must fall within the nominal range (See Table
+  1). This leaves room for differences in particle size            For instance, with Type 4 solder paste, where
+  distribution among manufacturers, which can                      particles range up to 38µm, the smallest printable
+  significantly affect solder paste performance,                   aperture would be around 190µm/.004”. However,
+
+© 2024 All rights reserved. The information found in this document shall not be reproduced without the approval of AIM Solder.
+
+                                                                                                                         Page 1 of 3
+  as we move to finer powders like Type 6, with                        •    In general, the smaller the powder, the
+  particles as small as 5-15µm, the practical                               smaller the process window, which means
+  applicability of the 5-ball rule becomes uncertain.                       settings such as squeegee pressure and
+  This is because the extremely small particle sizes and                    speed must be very carefully dialed in.
+  tighter spaces have not been thoroughly tested, thus
+  the rule may not hold true or require adaptation for             Why You Should Go with the Largest Feasible Powder
+  these advanced types.                                            Size
+                                                                   Because of the significant trade-offs that come when
+          Type              Lower limit of stencil aperture        downsizing, if your application is near the threshold
+                                diameter per 5-ball rule           suggested by the 5-ball rule, it may be prudent to
+         Type 3                          225 µm
+                                                                   stick with the larger size. In fact, at AIM we have had
+         Type 4                          190 µm
+         Type 5                          125 µm                    several situations where our Type 4 paste
+         Type 6                           75 µm                    outperformed Type 5 paste in situations that were
+         Type 7                           55 µm                    borderline when it came to the downsizing decision.
+  Table 2. The lower limit for stencil aperture diameters based
+  on the 5-ball rule.                                              As an example, suppose you must print boards in
+                                                                   which the smallest components will be 01005s. IPC
+  Challenges of Downsizing Solder Paste Powder                     recommended stencil apertures for these
+  Downsizing to a smaller powder comes with                        components are 175 by 250µm, which may be
+  tradeoffs, especially at the smallest powder sizes.              outside of what Type 4 paste should be able to print
+  Namely, the following:                                           (≥190µm).
+
+      •   Smaller powders are more difficult to                    However, with a little ingenuity, it’s also possible to
+          produce, and hence come with a higher price              use a rounded square aperture design of side length
+          point.                                                   190µm or slightly larger for these components. This
+      •   Smaller powders have a greater surface area              aperture shape maximizes volume in tight spaces
+          to mass ratio, and hence more potential for              while improving transfer efficiency.
+          oxidation. This shortens shelf life and makes
+          them more sensitive to process parameters,               In this scenario, transfer efficiency can be further
+          with requirements for nitrogen reflow for                maximized by using a nano-coated 4 mil or even 3
+          Type 6 and smaller.                                      mil stencil. Hence, if 01005s are your smallest
+      •   Manufacturing methods differ from one                    components, Type 4 paste can work and with few
+          supplier to the next, so there can be                    unintended side effects.
+          substantial variation in the quality of a
+          particular powder size in terms of sphericity            A Note on Half-Size Solder Pastes
+          of particles and particle size distribution.             Some manufacturers sell pastes labeled as Type 4.5
+          These variations can lead to unanticipated               or Type 5.5, leaving process engineers to wonder if
+          issues and defects.                                      it might be a good idea to switch to a half size if their
+      •   Stencil design adaptations might be needed               components are right on the edge, such as was the
+          for finer powders to avoid issues like stencil           case described above.
+          clogging or insufficient paste release. This
+          involves considering stencil thickness,                  However, there are no IPC specifications defining
+          aperture size, and wall smoothness.                      what these half types are. While you might expect a
+
+
+© 2024 All rights reserved. The information found in this document shall not be reproduced without the approval of AIM Solder.
+
+                                                                                                                      Page 2 of 3
+  paste labeled Type 4.5 to have a particle size range
+  between that of Type 4 and Type 5, the reality is that
+  it could be larger, smaller, or simply more broad -
+  such as you would get if you mixed Type 4 and Type
+  5 powder together.
+
+  If you are considering a half size paste, be sure to get
+  a clear indication from the manufacturer as to the
+  particle size distribution before proceeding.
+
+  Conclusion and Recommendations
+  Selecting the appropriate solder paste type is crucial
+  for achieving optimal assembly outcomes. The 5-ball
+  rule offers a foundational guideline for this choice,
+  but it's essential to consider the broader context of
+  your manufacturing processes and component
+  requirements.
+
+  Before downsizing solder paste, assess the potential
+  benefits against the associated challenges, such as
+  increased oxidation or reflow issues. Optimization of
+  existing processes with the current paste type may
+  alleviate the need for downsizing, maintaining
+  production efficiency and product quality.
+
+
+
+
+© 2024 All rights reserved. The information found in this document shall not be reproduced without the approval of AIM Solder.
+
+                                                                                                                      Page 3 of 3
+

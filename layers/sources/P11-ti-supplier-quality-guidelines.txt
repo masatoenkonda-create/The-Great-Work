@@ -1,0 +1,730 @@
+                                     Texas Instruments
+                            Supplier General Quality Guidelines
+
+Texas Instruments (TI) is dedicated to designing, manufacturing and marketing integrated circuits,
+systems, and high-quality products that serve our customers’ needs. SUPPLIERs should work closely with
+TI representatives to understand the specific quality requirements unique to their goods and services
+and to establish the appropriate processes & systems that support TI’s quality needs. In addition, the
+SUPPLIER will identify Customer Quality Representatives who will be responsible for coordinating efforts
+and communicating with TI purchasing, manufacturing and quality teams regarding new product
+qualification, Process Change Notices (PCN's), timely resolution of issues and complaints, routine quality
+data requirements, product containment, and corrective action & quality improvement programs.
+
+TI’s commitment to customer satisfaction is communicated through our Quality Policy;
+
+        TI QUALITY POLICY
+
+        Quality is foundational to achieving our business objectives. We are committed to satisfying
+        applicable requirements and providing quality products to customers around the world by:
+
+            •   Encouraging and expecting the creative involvement of every TIer
+            •   Listening to our customers
+            •   Continuously improving and innovating our products, processes and services
+
+        With a thorough understanding of TI’s requirements suppliers should challenge themselves to:
+
+            •   Continuous improvement
+            •   Alignment between their company’s plans and activities and TI’s priorities and objectives
+            •   Monitor their own performance against TI expectations and requirements
+            •   Compete for the TI Annual Supplier Excellence Award, which recognizes the very best
+                performing suppliers of TI
+            •   Earn more business from TI
+
+        This document is intended to provide SUPPLIERs with TI’s expectations for excellence in quality
+        and service. The ultimate goal is total customer satisfaction beginning with conformance to this
+        document.
+
+
+
+
+                     Fern Yoon                                               Carl Cotter
+         Vice President of Worldwide SC Quality                     Vice President of Procurement
+
+1
+Contents
+CHAPTER A .............................................................................................................................................................. 4
+    SCOPE.................................................................................................................................................................. 4
+CHAPTER B – MANAGEMENT .................................................................................................................................. 4
+    1.     QUALITY MANAGEMENT SYSTEM (QMS).................................................................................................... 4
+    2.     MANAGEMENT RESPONSIBILITY ................................................................................................................. 4
+    3.     AUDITS ........................................................................................................................................................ 4
+    4.     ORDER FULFILLMENT AND SUPPLIER MANAGEMENT ................................................................................ 5
+CHAPTER C – PRODUCTION QUALITY ..................................................................................................................... 6
+    5.     PRODUCT/MATERIAL/PROCESS DEVELOPMENT........................................................................................ 6
+    6.     RISK-BASED THINKING ................................................................................................................................ 6
+    7.     QUALIFICATION/RELIABILITY ....................................................................................................................... 6
+    8.     PRODUCT QUALITY ...................................................................................................................................... 7
+    9.     PROCESS MONITORING ............................................................................................................................... 7
+    10. MEASUREMENT SYSTEM ANALYSIS (MSA)................................................................................................... 7
+    11. PRODUCTION PART APPROVAL PROCESS (PPAP) ........................................................................................ 8
+    12. ELECTROSTATIC DISCHARGE (ESD)............................................................................................................... 8
+    13. SOFTWARE QUALITY ASSURANCE ................................................................................................................ 8
+CHAPTER D – QUALITY SYSTEMS ............................................................................................................................ 8
+    14. CONTINUAL IMPROVEMENT........................................................................................................................ 8
+    15. NONCONFORMING PRODUCTS/MATERIALS ................................................................................................ 8
+    16. SUPPLIER QUALITY ISSUES........................................................................................................................... 9
+    17. SUPPLIER CORRECTIVE AND PREVENTIVE ACTION PROCESS ......................................................................... 9
+    18. CHANGE MANAGEMENT ............................................................................................................................ 10
+    19. PRODUCT WITHDRAWAL/DISCONTINUANCE............................................................................................. 10
+    20. BUSINESS CONTINUITY PROGRAM ............................................................................................................. 11
+CHAPTER E – LOGISTICS / RECORD RETENTION .................................................................................................... 11
+    21. IDENTIFICATION AND TRACEABILITY.......................................................................................................... 11
+    22. PACKING .................................................................................................................................................... 12
+    23. SHELF LIFE................................................................................................................................................... 12
+    24. ARCHIVING PERIOD .................................................................................................................................... 12
+CHAPTER F – REGULATORY ................................................................................................................................... 12
+    25. RESTRICTED CHEMICALS AND MATERIALS (RCM) ...................................................................................... 12
+    26. CONFLICT MINERALS .................................................................................................................................. 12
+
+2
+    27. ENVIRONMENTAL SAFETY AND HEALTH (ESH)......................................................................................... 13
+    28. RESPONSIBLE BUSINESS ALLIANCE ............................................................................................................ 13
+APPENDIX A – CYCLE TIME EXPECTATIONS .......................................................................................................... 14
+APPENDIX B – TI Supplier Quality: Requirements ................................................................................................. 15
+ABBREVIATIONS .................................................................................................................................................... 16
+RECORD OF CHANGES........................................................................................................................................... 18
+
+
+
+
+3
+CHAPTER A
+SCOPE
+     TI’s quality goal is to ensure that its goods and services meet customer expectations and it is the
+     responsibility of each SUPPLIER to fully support TI in achieving this objective. These Supplier General
+     Quality Guidelines (SGQG) describe the provisions of quality assurance with respect to materials,
+     products, equipment, services, software, manufacturing processes, tests, controls, handling, storage
+     and transport measures as well as the management processes used and/or applied by SUPPLIERs to TI,
+     in order to ensure compliance of TI components to the published and/or specifically agreed
+     specifications of our customers.
+
+     SUPPLIERs are expected to fully comply with these guidelines. However, notwithstanding anything to
+     the contrary, TI’s standard Terms and Conditions of Purchase shall prevail over any contradictory
+     provisions herein.
+
+
+CHAPTER B – MANAGEMENT
+1.   QUALITY MANAGEMENT SYSTEM (QMS)
+     SUPPLIERs shall have an effective quality system to ensure that outgoing goods or services meet TI’s
+     requirements as defined in the applicable Terms and Conditions of Purchase, Master Service Agreement,
+     Purchase Order and/or this document. SUPPLIERs shall meet applicable International and National
+     Standards such as International Standardization Organization (ISO) 9001, or International Automotive
+     Task Force (IATF) 16949, or equivalent, as appropriate. SUPPLIERs shall be certified by IAF MLA
+     members (see IATF 16949:2016, 8.4.2.3 for ISO 9001 certification guidelines). The quality system shall
+     be supported by documented information that define specific activities needed to implement the
+     quality management system and the quality policy. This documentation describes the interaction
+     between the processes of the SUPPLIERs quality management system.
+
+2.   MANAGEMENT RESPONSIBILITY
+     SUPPLIER top management shall ensure implementation and continual improvement of respective
+     quality systems as a critical factor for outgoing quality. Top management, or other management as
+     appropriate, shall regularly review the effectiveness and efficiency of the quality system, and make
+     the necessary adjustments to meet planned objectives and TI’s requirements.
+
+3.   AUDITS
+     Periodic SUPPLIER audits are performed to ensure compliance to stated QMS requirements, TI
+     Customer Specific Requirements (CSR), and Product Requirements as defined in applicable Material
+     Specifications. Additionally, SUPPLIER audits are intended to be a verification of how effectively the
+     SUPPLIERs QMS has been implemented and to identify opportunities for continual improvement.
+     SUPPLIER audits will be performed by TI according to business needs, quality performance and the
+     criticality of the processes performed. Results of these audits shall be documented and
+     communicated to the SUPPLIER. Corrective actions shall be executed in a timely manner and
+     evaluated by both TI and the SUPPLIER for effectiveness. Review of audit results shall be part of the
+     SUPPLIER’s management review process.
+
+     Occasionally, customers may ask to verify goods at one of TI’s SUPPLIER’s sites. TI manages these
+     requests on a case-by-case basis and coordinates with the SUPPLIER, as appropriate. Audits will be
+
+4
+     conducted during normal operating hours. Requests for audits will be forwarded to the SUPPLIER at
+     least 30 days before the requested audit date: audit schedules and agendas shall be jointly agreed
+     upon by TI and the SUPPLIER. In the event of a critical quality issue, a request may be made to waive
+     this time period.
+
+4.   ORDER FULFILLMENT AND SUPPLIER MANAGEMENT
+     The SUPPLIER order fulfillment process shall be documented and structured to meet the following
+     requirements:
+
+         •   ensure that the SUPPLIER understands TI’s purchase order and specification requirements
+         •   ensure that delivered goods and services conform to purchase requirements
+         •   communicate to the SUPPLIER’s supply chain the appropriate product, quality, and delivery
+             requirements
+         •   ensure that delivered materials and services meet government, safety, and environmental
+             regulations
+         •   ensure that finished goods (direct and indirect) and packing materials meet the provisions of
+             regulatory and TI requirements
+         •   ensure that product containing embedded software is implemented and maintained using a
+             software quality assurance process
+
+     The SUPPLIER’s purchasing personnel shall work with the established sub-SUPPLIER management
+     organizations, as applicable, to ensure that the respective SUPPLIER management process in place is
+     structured to cover the following:
+
+         •   identify and select sub-SUPPLIERs with the capability to meet business needs
+         •   establish criteria for selection, evaluation, qualification, and certification of sub-SUPPLIERs
+         •   perform sub-SUPPLIER quality management system development
+         •   ensure continuity of supply
+         •   manage change
+         •   ensure that critical materials and services are purchased only from approved sources
+         •   monitor and provide performance feedback to sub-SUPPLIERs
+         •   monitor product quality and delivery performance
+
+     The SUPPLIER shall conduct a quality system assessment of direct material sub-SUPPLIERs or, in lieu of
+     an assessment, may accept third party registration to ISO 9001 or a plan for a third-party registration.
+     The SUPPLIER is expected to verify the quality of incoming materials and services by inspection of
+     incoming material, review of sub- SUPPLIER provided data, verification at the SUPPLIER’s premises, or
+     receipt of successful third-party assessment. The level of control applied is dependent on the
+     criticality of the purchased material to the product realization process and the historical performance
+     of the sub-SUPPLIER. When sub-SUPPLIERs have demonstrated their ability to provide the level of
+     quality required, inspection and/or data review may be reduced or eliminated. Records shall be
+     maintained of the evaluation and qualification of sub-SUPPLIERs. TI reserves the right to inspect
+     records/evidence of a SUPPLIER’s quality management systems at their facility. This may be included
+     in the scope of a process assessment or a site audit.
+
+
+
+
+5
+CHAPTER C – PRODUCTION QUALITY
+5.   PRODUCT/MATERIAL/PROCESS DEVELOPMENT
+     All new product/material/process development at TI follows a structured new product development
+     process such as Product Quality Planning, Advanced Product Quality Planning (APQP), and/or Product
+     Realization as applicable.
+
+     TI expects its SUPPLIERs to use a similar approach, incorporating risk-based thinking and a phase
+     review system as part of their development process. Included in this is a formal project review and
+     approval by responsible management. The process should be designed to manage organizational
+     interfaces, project risks, and communication between groups involved in the development process
+     (Project management). As part of the setup process for materials, a control plan shall be defined and
+     maintained that includes, at a minimum, critical process controls, sampling criteria, and response
+     criteria to out of control and/or out of specification product or process conditions.
+
+6.   RISK-BASED THINKING
+     TI uses risk-based thinking as part of new product/material/process development and in developing
+     manufacturing controls. For IATF 16949 certified manufacturing processes Failure Mode and Effects
+     Analysis (FMEA) is an absolute requirement and shall be used as the primary risk management. In
+     addition, TI expects ISO 9001 certified manufacturing processes to use the FMEA process as part of
+     the PPAP process defined in paragraph 11.
+
+     TI also uses Supplier Assessment Survey (SAS) and Supplier Assessment Hierarchy Survey (SAHS) to
+     help determine the factors that could cause a SUPPLIER’s quality management system to deviate from
+     planned results, and to help identify potential risks and opportunities inherent to the quality
+     management system processes and procedures.
+
+     Other risk management considerations including but not limited to functional safety and safety critical
+     applications may be utilized and will depend upon specific TI requirements. Applicable manufacturing
+     risk management summaries, such as FMEAs, Control Plans, SPC, SAS and other related
+     documentation shall be made available to TI upon request.
+
+7.   QUALIFICATION/RELIABILITY
+     TI qualification testing is a risk mitigation process that is engineered to assure device longevity in
+     customer applications. SUPPLIERs are required to define what, if any, manufacturability and/or
+     reliability testing is necessary to qualify new materials, sites, and changes to baseline.
+     Manufacturability of the device is evaluated to verify a robust assembly flow and to assure continuity
+     of supply to TI.
+
+     When SUPPLIER-run qualification testing is complete, test results shall be made available to TI in the
+     form of a reliability report that documents the pass/fail status of the product/material/process. The
+     SUPPLIER shall provide a process qualification package (SICF) that includes the following as defined by
+     the respective TI personnel:
+
+         •   Production Part Approval Process (PPAP), as necessary
+         •   Specifications used
+         •   Test or inspection plans
+         •   Reliability test plans, analysis, audit plans, etc.
+
+
+6
+         •   Data that substantiates the decision to release the product/material/process from
+             development to manufacturing
+         •   Example of Certificate of Analysis (CoA)/Certificate of Conformance (CoC), as applicable
+
+8.   PRODUCT QUALITY
+     TI uses an Acceptance Quality Limit (AQL) of 0.04%, Level II for the majority of its outgoing product
+     inspections. The most commonly used standards ANSI/ASQ Z1.4 -2003 (R2013) or ISO 2859-1:1999
+     (Sampling procedures for inspection by attributes -- Part 1: Sampling schemes indexed by acceptance
+     quality limit (AQL) for lot-by-lot inspection) are available for purchase from ANSI/ASQ or ISO,
+     respectively. TI expects its SUPPLIERS to apply similar controls through Automated Visual Inspection
+     (AVI) , preferred where applicable, or by operator inspection. For operator (manual) inspections,
+     employees shall be aware of their impact on product quality.
+
+9.   PROCESS MONITORING
+     TI uses process measurement and monitoring for manufacturing process control and to minimize
+     process and product variation with a goal to achieve zero defects. Important characteristics are
+     identified, data is analyzed and statistical process control (SPC) is used in all phases of manufacturing
+     with an emphasis on defect prevention versus detection. TI expects its SUPPLIERs to apply similar
+     approaches wherever possible, using process capability measurements as a key component of process
+     monitoring and control with a goal to achieve values of Cp > 2.00 and Cpk > 1.67. Key characteristics
+     with a Cpk < 1.33 must have an identified action plan to improve the process capability and an
+     identified containment plan to screen out product not meeting specifications if cost and/or
+     technology prevent improvement. Measurement systems used for process monitoring shall be
+     controlled using established qualification, verification and calibration procedures. Manufacturing
+     operators and specialists shall be trained to use and employ statistical control processes and
+     procedures as an additional component of process monitoring and control. It is Texas Instruments’
+     expectation that SUPPLIERs are managing processes to control limits with an appropriate response
+     spec to prevent aberrant material from shipping to TI. Product which is running outside typical
+     control limits presents a risk which much be understood and managed by the SUPPLIER.
+
+     A test of outgoing products/materials shall be included as part of process and product monitoring
+     typically reported in the form of a CoA or CoC. This monitoring may include inline parametric,
+     functional, and visual verification utilizing statistical and product outlier control methods. Samples
+     (such as “golden” samples) may also be used as references for the manufacturing process and final
+     product. As appropriate, material SUPPLIERs are expected to apply statistical outlier controls to help
+     drive continual improvement of processes that are high risk or that have a low CpK. Standards such as
+     JESD50C.01 “SPECIAL REQUIREMENTS FOR MAVERICK PRODUCT ELIMINATION AND OUTLIER
+     MANAGEMENT” should be used to set up these controls.
+
+10. MEASUREMENT SYSTEM ANALYSIS (MSA)
+     Accurate and precise measurement systems shall be used to ensure that goods and materials are
+     compliant to TI specification requirements. Measurement system Gauge Repeatability and
+     Reproducibility (GRR) verification is an essential step to ensure measurement system performance
+     meets expectations. All manufacturing sites certified in IATF 16949 shall have implemented a more
+     comprehensive approach for measurement system analysis that includes bias, linearity, stability and
+     %GRR measurements.
+
+
+
+7
+11. PRODUCTION PART APPROVAL PROCESS (PPAP)
+     TI supplies products to automotive customers who require PPAP submission per the Automotive
+     Industry Action Group (AIAG) standard. The purpose of PPAP is to minimize product conformance risks
+     by determining if all customer engineering design and specification requirements are properly
+     understood by the SUPPLIER, and that the manufacturing process has the capability to deliver product
+     that consistently meets these requirements during an actual production run.
+
+     SUPPLIER will be notified which products and materials require a PPAP or Part Submission Warrant
+     (PSW).
+
+12. ELECTROSTATIC DISCHARGE (ESD)
+     All SUPPLIERs that handle, test, or ship ESD sensitive devices, or assemblies containing such devices,
+     shall implement electrostatic discharge prevention methods or procedures. SUPPLIER shall adhere to
+     an industry standard ESD control program, JEDEC JESD625 where applicable.
+
+13. SOFTWARE QUALITY ASSURANCE
+     All SUPPLIERs responsible for the development of software products or related services will document
+     their activity requirements which include: the integrity of the development process, continuous
+     compliance to TI requirements, base-lining software products and maintaining their revision status,
+     and quality control activities.
+
+
+CHAPTER D – QUALITY SYSTEMS
+14. CONTINUAL IMPROVEMENT
+     Conducting periodic reviews of the effectiveness of the entire quality management system and
+     changes that could affect the quality management system is an essential activity. These reviews should
+     include monitoring trends in operational, business and quality performance of the processes that could
+     impact TI.
+
+     Metrics should be defined for key performance areas and used to monitor ongoing progress to the
+     following:
+
+         •   Quality Objectives
+         •   Critical Issues
+         •   Improvement Activities
+         •   Identification and Prioritization Opportunities for Quality
+         •   Productivity Improvements
+         •   Cost of Poor Quality
+
+     Organizational resources should be analyzed against quality objectives for suitability. Data and
+     information from all sources of product and process problems, including analysis of field failures and
+     other customer feedback as applicable, should also be reviewed to identify areas where action may
+     need to be taken to reduce or eliminate nonconforming product and to prevent potential problems
+     from occurring.
+
+15. NONCONFORMING PRODUCTS/MATERIALS
+     If it becomes necessary to deliver product to TI which is not compliant with mutually agreed upon
+     specifications, the SUPPLIER shall provide, in advance, a waiver request which documents this event
+
+8
+     and requires TI approval prior to delivery. Whenever a SUPPLIER requests a waiver to a TI
+     specification for a specific time period or defined quantity, this request must be documented via the
+     PSW SharePoint site https://wpl.ext.ti.com/PPAP/psw.aspx using the Supplier Exception/Waiver
+     Form in Appendix F or an equivalent document. Further details can be found in TI’s Procurement
+     Supplier Production Part Approval Process (PPAP) Submission Process.
+     In the event that a SUPPLIER discovers that defective goods were delivered to TI, the SUPPLIER shall
+     inform TI in a reasonable time of this issue, in writing, and shall take reasonable measures in order to
+     avoid and/or minimize damages.
+
+16. SUPPLIER QUALITY ISSUES
+     When non-conformances occur at a SUPPLIER in the process, product, quality management system, or
+     when customer complaints or returns are received from TI, SUPPLIER personnel shall implement
+     immediate and appropriate correction and corrective action according to the TI’s requirements
+     outlined below.
+
+     SUPPLIER shall follow an 8D process flow including the use of a 3x5 Why Analysis. Examples of the 8D
+     process flow and a 3x5 Why Analysis is available at wpl.ext.ti.com. SUPPLIER response shall be
+     completed within defined cycle times. For information on current cycle time expectations, please see
+     Appendix A.
+
+17. SUPPLIER CORRECTIVE AND PREVENTIVE ACTION PROCESS
+     Corrective Action - Action(s) taken to respond to the effect of a detected nonconformity and to
+     eliminate the recurrence of the nonconformity through identifying and addressing the root cause of the
+     nonconformity.
+
+     Preventive Action - A proactive approach to identify the most likely cause of a potential nonconformity
+     to prevent it from initially occurring, or to initiate an improvement to the quality system.
+
+     SUPPLIER Corrective Action shall include:
+
+         •   Reviewing and documenting the problem
+         •   Where product is involved, preventing any additional defective product from being produced,
+             and preventing any defective product from being shipped to TI
+         •   Prompt notification when nonconforming product has been shipped to TI
+         •   Investigating the root cause of the problem and recording the results of the investigation
+         •   Utilizing problem solving and error proofing methods, as applicable, to determine appropriate
+             corrective actions based on the root cause analysis
+         •   Documenting and implementing the appropriate corrective actions
+         •   Verifying that the corrective action is effective in eliminating the problem and preventing its
+             recurrence
+         •   Applying the corrective action to similar processes and products as appropriate
+
+     Additionally, data and information from quality management sources including product and process
+     problems should be periodically analyzed to identify areas where action may be needed to prevent
+     potential problems from occurring. According to documented procedures, appropriate actions shall be
+     taken to initiate preventive actions and to ensure they are effective.
+
+     SUPPLIER Preventive Action shall include:
+
+         •   Determining potential nonconformities and their causes
+
+9
+         •   Evaluating if action is required to prevent the occurrence of potential nonconformities
+         •   Documenting and implementing the appropriate preventive actions
+         •   Documenting the results of the preventive action, and
+         •   Reviewing the effectiveness of the preventive action
+
+18. CHANGE MANAGEMENT
+     In the event that a SUPPLIER needs to implement a change to a product, equipment or material
+     delivered to TI, approval or permission has to be granted from the respective TI representative prior to
+     implementation. A change management system shall be used to plan, qualify, and implement the
+     change. Risk assessment shall be performed to determine potential impact to TI.
+
+     A formal documented change process shall be used to ensure that the appropriate validations are
+     completed, and modifications documented, prior to implementing the change. When SUPPLIER has
+     been notified by TI, all SUPPLIER changes shall be communicated to TI in a timely manner using the SUPPLIER
+     Initiated Change Form (SICF). The following definition of a change shall be used unless an expanded definition
+     has been previously communicated by TI to the SUPPLIER.
+
+         •   The definition of a significant change are those product or process changes that are verified to
+             affect form, fit , function or adversely affect the quality or reliability of the product based upon
+             evaluations, qualifications, modeling, or analysis.
+         •   The definition of a non-significant change are those product or process changes that are
+             verified not to affect form, fit , function or adversely affect the quality or reliability of the
+             product based upon evaluations, qualifications, modeling, or analysis.
+
+     Examples of changes that always require notification to TI include the following:
+
+         •   Location
+         •   SUPPLIER's SUPPLIER/Second Sourcing
+         •   SUPPLIER’s Bill of Materials
+         •   SUPPLIER’s Process Flow
+         •   SUPPLIER’s Process Method
+         •   SUPPLIER’s Tool/Equipment
+         •   Changes that could affect SUPPLIER Lead Time/Delivery Time
+         •   SUPPLIER's Packing Materials/Process/Labels
+         •   Change in SUPPLIER process parameter that affects final material behavior such as moduli,
+             interfacial adhesion, etc.
+
+     The SUPPLIER shall provide a process qualification package that includes the following as defined by
+     the respective TI personnel:
+
+         •   Production Part Approval Process (PPAP) as necessary,
+         •   Specifications used,
+         •   All test or inspection plans,
+         •   Reliability plans (if applicable), analysis, audit plans, qualification data, modeling, etc.
+
+19. PRODUCT WITHDRAWAL/DISCONTINUANCE
+     When a SUPPLIER plans to withdraw/discontinue a product being purchased by TI, including plant
+     closure and/or product transfer to another production facility, notification shall be handled in
+     accordance with JESD48, latest issue. SUPPLIER shall provide at least 12 months lead time for the last
+
+10
+     order and an additional 6 months to take final delivery of obsolete items. In the event that it is
+     deemed impossible to meet these lead times, SUPPLIER shall be willing to manufacture buffer stock(s)
+     in support of forecasted demands and make every effort possible to reduce potential supply disruption
+     to TI.
+
+20. BUSINESS CONTINUITY PROGRAM
+     SUPPLIER shall have a Business Continuity Program that;
+
+         •   Identifies and evaluates internal and external risks to all manufacturing processes and
+             infrastructure equipment essential to maintain production output and to ensure that TI
+             requirements are met;
+         •   Defines contingency plans according to risk and impact to TI;
+         •   Requires contingency plans for continuity of supply in the event of any of the following: key
+             equipment failures; interruption from externally provided products, processes, and services;
+             recurring natural disasters; fire; utility interruptions; labor shortages; or infrastructure
+             disruptions;
+         •   Includes a notification process to TI for the extent and duration of any situation impacting TI
+             operations;
+         •   Periodically tests the contingency plans for effectiveness;
+         •   Requires contingency plan reviews be conducted (at a minimum annually) using a
+             multidisciplinary team including top management;
+         •   Documents the contingency plans and retains documented information describing any
+             revision(s), including the person(s) who authorized the change(s).
+
+     The contingency plans shall include provisions to validate that the manufactured product continues to
+     meet TI specifications after the re-start of production following an emergency in which production was
+     stopped and if the regular shutdown processes were not followed.
+
+
+CHAPTER E – LOGISTICS / RECORD RETENTION
+21. IDENTIFICATION AND TRACEABILITY
+     SUPPLIER product shall be identified from raw materials through all stages of production and delivery
+     to TI and the identification and traceability requirements are extended to externally provided products.
+
+     The SUPPLIER’S’s tracking procedure shall include:
+
+         •   assignment of a unique identifier to each lot or batch of material
+         •   recording the completion of each process step and the inspection and test status recording of
+             pass/fail quantities
+         •   identification of key process information as defined in work instructions
+         •   recording of key process parametric data as defined in work instructions
+         •   traceability to key raw materials and the production process as needed
+         •   segregation and identification of nonconforming and/or suspect material
+
+     The identification shall be recorded and information retained by the SUPPLIER for a minimum of 15
+     years.
+
+
+
+11
+22. PACKING
+     The packing design for products/components shipped to TI will be the SUPPLIER’s responsibility and
+     shall conform to Industry standards, unless otherwise communicated by TI. The packing material shall
+     protect against damage during shipping, stacking and handling. If there are major changes affecting
+     packing design, the SUPPLIER shall notify TI in advance for approval prior to implementation.
+
+23. SHELF LIFE
+     The SUPPLIER shall maintain a First-Expired, First-Out (FEFO) procedure or First-In, First-Out (FIFO)
+     procedure. If the product(s) items supplied are subject to age and/or temperature control, the
+     SUPPLIER must maintain a FEFO/FIFO procedure. Shelf life will be based upon demonstrated
+     performance and/or SUPPLIER recommendation as applicable.
+
+24. ARCHIVING PERIOD
+     SUPPLIER shall have a comprehensive record retention strategy that meets industry standard practices
+     or meets TI’s requirements.
+
+
+CHAPTER F – REGULATORY
+25. RESTRICTED CHEMICALS AND MATERIALS (RCM)
+     SUPPLIERs shall comply with both TI’s RCM policy, as outlined in TI 6453792 “TI Customer Material
+     Specification Controlled Chemicals & Materials” and TI 6494169 “Restricted Chemicals and Materials
+     List.” This document can be accessed online at the Procurement external website. Click on the
+     “Controlled Chemicals” link. It applies to all SUPPLIERs who provide a chemical or material that
+     becomes part of TI’s final product, or packing materials used to ship TI products. SUPPLIERs must
+     provide updates to their certificates of compliance to the latest TI RCM list, per TI document 6453792
+     including yearly third party test reports for the Restriction of Hazardous Substances (RoHS). TI also
+     requires testing for CI and Br for non-metal material sets to check for content of any BFR, CFRs or
+     PVCs. All other restricted chemicals are verified through material declarations and/or compliance
+     statements from SUPPLIERs.
+
+26. CONFLICT MINERALS
+     SUPPLIER shall comply with TI’s policy on conflict minerals (tungsten, tantalum, tin, and gold), as
+     outlined in the TI Conflict Minerals Policy Statement, which can be accessed online at the
+     Procurement external website. Click on the “Supply Chain Responsibility/Corporate Citizenship/Supply
+     Chain Management/Conflict Minerals” link. A “Conflict Minerals Due Diligence Guideline” is also
+     provided at this same website. TI requires that SUPPLIERs whose products contain tantalum, tin,
+     tungsten and gold submit this information to TI using the standardized Responsible Minerals Initiative
+     (RMI) Conflict Minerals Reporting Template (CMRT) that traces the metals back through the supply
+     chain. TI also supports industry initiatives such as the Conflict Free Smelter (CFS) program to validate
+     responsible and sustainable source
+     s. If TI becomes aware of a SUPPLIER whose supply chain includes metals from a conflict source, TI
+     will take the appropriate actions to remedy the situation in a timely manner, including reassessment
+     of SUPPLIER relationships. TI expects our SUPPLIERs to take similar measures with their SUPPLIERs to
+     ensure alignment throughout the supply chain.
+
+
+
+
+12
+27. ENVIRONMENTAL SAFETY AND HEALTH (ESH)
+     SUPPLIERs shall have an ESH policy that is endorsed by their top management.
+
+     SUPPLIERs should comply with TI’s ESH requirements, which can be accessed online at the
+     Procurement external website Click on the “Supply Chain Responsibility” and then the “TI ESH
+     Requirements” link. “Contract Requirements” have the language used in TI’s general Terms &
+     Conditions. “Supplier ESH Training” and “Supplier ESH Handbook” are specific for SUPPLIERs
+     working at TI sites. The “TI ESH Standards” include a variety of documents for TI’s overall ESH
+     requirements and are provided as references.
+
+28. RESPONSIBLE BUSINESS ALLIANCE
+     TI is a member of the Responsible Business Alliance (RBA) and has declared its support for the RBA
+     Code of Conduct (Code) http://www.responsiblebusiness.org/code-of-conduct/. The Code
+     establishes a set of social, environmental, and ethical industry standards to ensure that working
+     conditions in the electronics industry supply chain are safe, that workers are treated with respect
+     and dignity, and that business operations are environmentally responsible and conducted ethically.
+     TI is actively working to implement the Code to its supply chain.
+
+     These same values provide the firm foundation for our success in SUPPLIER relationships. We expect
+     SUPPLIERs to adhere to our ethical values so that responsible and fair business practices will
+     permeate the supply chain. SUPPLIERs shall comply with TI’s policies on environmental and social
+     responsibility, which can be accessed online at the Procurement external website. Click on
+     “SUPPLIER Environmental and Social Responsibility Policy,” and “SUPPLIER Code of Conduct”.
+
+
+
+
+13
+APPENDIX A – CYCLE TIME EXPECTATIONS
+     In the event of a SUPPLIER-related issue where a TI representative has requested an 8D report to TI,
+     the following cycle time goals are guidelines:
+
+              SUPPLIER Responsiveness                  Critical       Standard Issues
+                  SUPPLIER 3D (w/ containment)         <24 hours      <2 days
+                      Root Cause Identified (4D)       <2 days        <5 days
+                          Final 8D (w/ 3x5 Why)        <5 days        <14 days
+
+
+     Critical Issues are those resulting in a TI factory line-down Situation or any event which impacts TI’s
+     customer. Cycle time requirements are defined in Calendar Days.
+
+
+
+
+14
+APPENDIX B – TI Supplier Quality: Requirements
+     The poster below is a general summary of TI’s Supplier Quality Requirements.
+
+     An effective quality management system is the first requirement in any strong quality program at our
+     suppliers.
+
+     TI views the 5 Key Elements as the basic building blocks to supplier quality. These elements are
+     regularly verified during supplier audits and technical assessments.
+
+
+
+
+     Suppliers should feel free to use this poster in your communications of TI’s expectations.
+
+
+
+
+15
+ABBREVIATIONS
+     AEC:    Automotive Electronics Council
+
+     AIAG:   Automotive International Action Group
+
+     APQP: Advanced Product Quality Planning
+
+     CoA:    Certificate of Acceptance
+
+     CoC:    Certificate of Conformance
+
+     CODE: EICC Code of Conduct
+
+     CSR:    Customer Specific Requirement
+
+     ECHA: European Chemicals Agency
+
+     ESD:    Electro-Static Discharge
+
+     ESH:    Environmental, Safety & Health
+
+     EU:     European Union
+
+     FMEA: Failure Mode and Effect Analysis
+
+     GRR:    Gage Repeatability and Reproducibility
+
+     IAF:    International Accreditation Forum
+
+     IATF:   International Automotive Task Force
+
+     ISO: International Standardization Organization
+
+     JEDEC: Joint Electron Devices Engineering Council
+
+     MSA: Measurement System Analysis
+
+     NDA:    Non-Disclosure Agreement
+
+     OHSAS: Occupational Health and Safety Assessment Series
+
+     OOC:    Out of control
+
+     PCN:    Product Change Notification
+
+     PPAP: Production Part Approval Process
+
+     PSW:    Part Submission Warrant
+
+     RBA:    Responsible Business Alliance
+
+     QMS:    Quality Management System
+
+     RCM:    Restricted Chemicals and Materials
+
+     RoHS: Restriction of Hazardous Substances
+16
+     SAS:    Supplier Assessment Survey
+
+     SBL:    Standard Statistical Bin Outlier
+
+     SGQG: Supplier General Quality Guidelines
+
+     SICF:   SUPPLIER Initiated Change Form
+
+     SPC:    Statistical Process Control
+
+     SVHC: Substances of Very High Concern
+
+     SYL:    Statistical Yield Outlier
+
+     REACH: Registration, Evaluation, Authorization and Restriction of Chemicals
+
+     WPL:    World-wide Purchasing & Logistics
+
+     WW:     World Wide
+
+
+
+
+17
+RECORD OF CHANGES
+     Date: 07/11/2013
+     Reason for change: Initial Release
+     Paragraph modified: Initial Release
+
+     Date: 08/01/2013
+     Reason for change: Expanded Product Development, Process Monitoring & Change Management and
+     Conflict Minerals descriptions.
+
+     Date: 01/23/2014
+     Reason for change: Update references to TI Controlled Chemicals and Materials List.
+
+     Date: 02/11/2015
+     Reason for change: Update Change Management and Product Withdrawal/Discontinuance sections.
+
+     Date: 02/04/2016
+     Reason for change: Added section on Product Quality; modified Risk-based Thinking and minor
+     editorial updates.
+
+     Date: 01/10/2017
+     Reason for change: Update to include specific requirements as outlined in IATF 16949.
+
+     Date: 08/13/2019        Phil Hecker     WPL Supplier Quality Director
+     Reason for change: Update links to PPAP, SPC, MSA, JESD48
+     Update references to IATF 16949
+     Change signature from Robert Furtaw to Hubie Payne new VP of WW SC Quality
+     Correct ISO language in WPL external site – wpl.ext.ti.com
+     Update general formatting, index, and verbiage
+     Update information for TI’s ESH Requirements in Section 27
+     Update Section 28 – Electronic Industry Citizen Coalition is now Responsible Business Alliance
+     Add Appendix B TI Supplier Quality: Requirements for general reference
+
+     Date: 02/20/2020 Willy Nisperos
+     Reason for change: Updates to Parag 26, Conflict Minerals by Terri Wright Updated Acronyms CoA, R
+     MI, corrected link to Jedec
+
+     Date: 02/17/2021 Willy Nisperos
+     Reason for change: Update paragraph 25 to be align with ESH Edge Spec 6453792
+
+     Date: 03/24/2025 Ed Huston
+     Reason for change: Changes to Appendix A from S. Southwick / H. Miyazaki
+
+
+
+
+18
+

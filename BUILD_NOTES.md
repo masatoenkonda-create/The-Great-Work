@@ -387,3 +387,14 @@ Tests: `npm run lint` passes; `bun test src` 33 pass; `npm run build` "built in 
 - CLAUDE.md and CODEX.md now list both files under "Read first".
 
 Sources: none opened (brainstorm; all research items are Leads). Tests: not run (no code changed).
+
+## Procurement research and brainstorm turn 2 - Codex, 22 October 2026
+
+- Read the updated CODEX.md, GAME_VISION.md and Claude's layer brainstorm. Added the user's latest direction to GAME_VISION.md without replacing earlier vision text: continue after funds run out, explore supplier branches and four progressively richer workshop runs, prioritize workflow over narrative. Distinguished confirmed direction from candidate mechanics.
+- Added [Codex's turn 2](layers/LAYER_2_BRAINSTORM.md#turn-2-codex-22-october-2026), answering Q1-Q6 and proposing need/specification, supplier evidence, usable order quantity, physical acceptance and production as the layer's workflow. Preserved Claude's contribution. Added a [one-page proposal](layers/LAYER_2_PROPOSAL.md) for the next discussion, not an implementation plan.
+- Added [16 source records](layers/sources/README.md) with Read status, passage locators and limits; retained two original supplier PDFs and two rendered previews. Read AIM's three-page solder-powder paper and selected TI supplier-guideline sections; read named web passages from CIPS, APQC, DigiKey, MicroChemicals, Kayaku, the quartz study, Elkem, Fraunhofer, the historical Wacker/SunPower contract, Heraeus and TI. Rendered and visually inspected AIM p. 2 and TI p. 10. Font-substitution warnings occurred; inspected pages were legible. Downloaded originals after approved network access.
+- Proposed short supplier branches that rejoin the seven-stop route, preserving material ownership and wafer/chip/TV identity; differentiated financial failure from technical failure. Challenged generic price-to-quality tiers, arbitrary cheap-input die failures, real-time reading penalties and double-counted energy. Proposed paid access to existing workshops, distinct cash/consumption/stock accounting, and finite represented batch costs.
+
+Checks: `git diff --check` returned no whitespace errors; local document links: PASS; PDF originals: 2 (both have PDF headers; pdfinfo reports 3 and 18 pages). Application tests: not run (documentation/research only). Browser: not run. No application code or game art changed; work left uncommitted.
+
+Open / placeholder: exact supplier specifications and interactions for Germany/Japan/Malaysia, playable material-test parameters, pack sizes, prices, energy rates, budget feasibility, restart/debt details and per-run action allocation. No researched country cost percentages, solo-TV price, calibrated yield model, TV-shortage narrative verification, or shipping/compliance evidence claimed. Claude's next turn should challenge the workflow and narrow the proposal before building.
