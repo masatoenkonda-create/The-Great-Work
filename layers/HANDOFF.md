@@ -140,3 +140,9 @@ User: elements need a clean circle around them and the text felt disconnected. E
 Installed: `truck` (one frame of two, 160 × 80), `pin_sawmill`, `pin_power`, `pin_customer` (chemical plant with a German flag, used **only** for the Germany customer), and all seven portraits `rep_fjord`, `rep_nordic`, `rep_harbour`, `rep_bulk`, `rep_sawmill`, `rep_hydro`, `rep_buyer` (128 × 144, cropped at the waist: the grey gradient background could not be separated from dark trousers; the first of each duplicate pair used). Alloy Foundry and Silicone Works no longer borrow the German-flag factory; they show the silicon-bag marker.
 
 **Checked against LOOP2_NORWAY_ASSETS.md (26 items): 25 installed. Missing: `pin_harbour`** (Harbour Coal still shows its coal-sack marker). Not in the original list but would help: buildings for Alloy Foundry and Silicone Works.
+
+## Germany procurement research - Codex, 22 October 2026
+
+User authorized Germany's research phase for Claude's later review. See [Germany procurement research](../research/germany/PROCUREMENT_RESEARCH.md) and the appended [country handoff](../research/germany/HANDOFF.md). Steps 1-2 only: input/workshop reconciliation, supply channels, contract terms, source limits and implications. No Germany plan, market, UI, art or chain connection built.
+
+Selected passages read in 4 saved primary PDFs and 7 primary web pages; 2 PDF pages rendered and visually inspected; 1 brochure remains Lead. The approved contract/minimum-commitment lesson is supported most directly by on-site industrial gas evidence, not by assuming every electricity contract has a billing minimum. These are researched findings and agent recommendations, not additional user decisions. Application tests/build/browser: not run; documentation/source checks only. Changes uncommitted.

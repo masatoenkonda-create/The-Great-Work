@@ -68,3 +68,13 @@ Files added: two original PDFs under sources/ and two visually inspected rendere
 ## Update 21 October 2026 (Claude; built)
 
 Research closed and the plan built. See "Claude's build decisions" at the end of [WORKSHOP_PLAN.md](WORKSHOP_PLAN.md). Code: `src/components/GermanyManufacturing.tsx`, `src/components/GermanyReactorScene.tsx`, `src/content/germanyControls.ts` (+ test), `src/content/germanyPanel.ts`, shared `src/components/workshop/`. Next: the user plays it; then fix, art spec, notes.
+
+## Loop 2 procurement research - Codex, 22 October 2026
+
+User requested the research phase for Germany, for Claude to read later. This is separate from the completed loop-1 workshop above. Read [PROCUREMENT_RESEARCH.md](PROCUREMENT_RESEARCH.md): input/workshop reconciliation, buying activity, supplier evidence, contract lesson, source register and remaining limits. Four original PDFs saved in `sources/procurement/`; two inspected renders in `previews/procurement/`.
+
+The minimum-commitment lesson has primary support for on-site industrial gas supply; do not generalize it to every gas/electricity contract. HCl procurement must distinguish fresh supply from recycled site flow, and anhydrous gas from aqueous acid. Real German sales channels and a Burghausen power contract are documented; no private prices, local supplier census or plant-specific gas specification was obtained.
+
+Read depth: selected passages in 4 saved PDFs and 7 primary web pages; 2 rendered pages inspected; 1 brochure remains Lead after a country-selector redirect. Existing workshop references were context, not a fresh complete review. Recommendations are Codex's, not new user decisions. No `layers/GERMANY_PLAN.md`, Germany market, code or art created. Next is Claude's evidence review and the plan phase when requested. Cross-stop transaction/persistence work is still unimplemented.
+
+Application tests/build/browser: not run (research/documentation only). Source-file identity/page counts and local document links checked; no browser playtest. Changes left uncommitted.

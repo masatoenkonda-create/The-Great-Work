@@ -124,3 +124,7 @@ Saved [WACKER's original 17 July 2025 release](sources/G02-wacker-etching-line-2
 ### Recheck of G05 — control effects, not a purity formula
 
 The [US9446957B2 description](https://patents.google.com/patent/US9446957B2/en), especially its discussion of deposition parameters and limits, confirms rod current/temperature, gas composition and flow as distinct variables. Excess silicon-containing precursor concentration can cause deposition within the gas; excessive rod temperature can disrupt rod morphology or cause melting in particular conditions. This supports qualitative cues, not a universal “high flow = bad” rule or a chemical-purity penalty for rough rods. No recipe thresholds adopted. G03's original PDF timed out through the web tool and was not independently downloaded in this pass.
+
+## Loop 2 procurement research - 22 October 2026
+
+See [PROCUREMENT_RESEARCH.md](PROCUREMENT_RESEARCH.md) for the separate GP01-GP11 source register and Germany purchasing findings. Selected passages read in four saved PDFs and seven primary web pages, with two rendered PDF pages inspected; GPL01 remains Lead. Research phase only: the existing workshop is unchanged. This addition does not recertify all older workshop records above.

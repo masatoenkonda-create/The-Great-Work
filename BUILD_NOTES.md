@@ -525,3 +525,12 @@ Tests: `npm run lint` passes; `bun test src` 42 pass. Browser: not run.
 - Installed truck, three building pins and seven portraits; the German-flag customer building is used for Germany only. 25 of 26 listed assets now installed (missing `pin_harbour`). Cut-outs checked by eye on dark previews.
 
 Tests: `npm run lint` passes. Browser: not run.
+
+## Germany loop 2: procurement research - Codex, 22 October 2026
+
+- At the user's request, ran procurement workflow steps 1-2 for Germany. Reread the game vision/workflow and reconciled Norway's carried silicon, Germany's HCl/H2/electricity needs, unchanged workshop and Japan output. Added [research/germany/PROCUREMENT_RESEARCH.md](research/germany/PROCUREMENT_RESEARCH.md), with GP01-GP11 records, contract distinctions, supplier/origin limits and a bounded handoff for Claude.
+- Read selected passages in 4 saved primary PDFs and 7 primary web pages. Rendered and inspected the HCl package/specification table and WACKER's process illustration. One Nippon Sanso brochure is Lead because its URL redirected to a country selector. Four originals and two previews saved under Germany's research folders. Earlier workshop records were context, not independently re-reviewed in full.
+- Evidence supports the contract/minimum-commitment lesson for on-site industrial gas, with different terms for merchant/cylinder supplies. Real German HCl/H2 sales channels and an actual future Burghausen electricity PPA documented. Purchasing fresh HCl must be distinguished from recycled plant flow. No private quotations, exact local supplier count, plant qualification specifications or sourced game prices claimed.
+- Appended country and layer handoffs; linked from Germany's source README. No plan, game code, market tuning or art changed. Next: Claude reviews the evidence; the one-page Germany plan is a later phase when requested.
+
+Checks: Poppler document identity/page counts and local research links; git diff --check. Application tests/build/browser: not run (research/documentation only). Recommendations are not user decisions; all existing logs preserved. Changes left uncommitted.
