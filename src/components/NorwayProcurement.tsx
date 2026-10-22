@@ -3,6 +3,7 @@ import { ASSETS } from '../content/assets';
 import { sound } from '../services/audio';
 import { NorwayManufacturing } from './NorwayManufacturing';
 import { GuideBox } from './workshop/GuideBox';
+import { NorwaySupplyMap, SupplyObjects } from './NorwaySupplyMap';
 import { NORWAY_MARKET as M } from '../content/norwayMarket';
 import {
   TradeState, TradeAction, Order, Supplier, accepted, onOrder, needOf, orderCost, usableOf,
@@ -20,10 +21,24 @@ const $ = (n: number) => `${n < 0 ? '−' : ''}$${Math.abs(n).toLocaleString('en
 const btn = 'rounded-lg border border-white/20 px-2.5 py-1.5 text-xs hover:border-amber-300 disabled:cursor-not-allowed disabled:opacity-30';
 const primary = 'rounded-xl bg-amber-300 px-4 py-3 font-bold text-slate-950 disabled:cursor-not-allowed disabled:opacity-40';
 const STEPS = [['buy', 'Buy'], ['make', 'Make'], ['sell', 'Sell'], ['done', 'Result']] as const;
+const PURPOSE: Record<string, string> = {
+  quartz: 'Quartz supplies the silicon. The furnace needs 10 usable chunks; fines do not count toward that charge.',
+  carbon: 'Carbon helps remove the oxygen bound to silicon in quartz. We need 4 bags of prepared feed.',
+  chips: 'Wood chips help keep the charge open for gas flow. We need 3 bags, not sawdust.',
+  power: 'The electrodes need electricity to heat the charge. Buy supply for one furnace batch.',
+};
 
 /** Loop 2, Norway: buy the inputs (quote, negotiate, order, check, pay), run the furnace, sell to Germany. */
 export function NorwayProcurement({ state: s, dispatch, onReturnToMap, onDone }: Props) {
+  const [selectedItem, setSelectedItem] = useState('quartz');
+  const [selectedSupplier, setSelectedSupplier] = useState<string | null>(null);
   const act = (a: TradeAction) => { sound.playSelect(); dispatch(a); };
+  const visit = (id: string) => {
+    const supplier = M.suppliers.find(x => x.id === id);
+    if (!supplier) return;
+    setSelectedItem(supplier.item); setSelectedSupplier(id); sound.playSelect();
+  };
+  const selectInput = (id: string) => { setSelectedItem(id); setSelectedSupplier(null); };
 
   useEffect(() => {
     const key = (e: KeyboardEvent) => { if (e.key === 'Escape' && s.phase !== 'make') { e.preventDefault(); onReturnToMap(); } };
@@ -32,8 +47,8 @@ export function NorwayProcurement({ state: s, dispatch, onReturnToMap, onDone }:
   }, [onReturnToMap, s.phase]);
 
   if (s.phase === 'make') {
-    const lots = s.orders.filter(o => o.item === 'quartz').map(o => o.id).join(', ');
-    return <NorwayManufacturing suppliedFeed={lots} onReturnToMap={onReturnToMap} onComplete={() => dispatch({ type: 'made' })} />;
+    // User-requested full production sequence, including the playful mining/breaking actions.
+    return <NorwayManufacturing onReturnToMap={onReturnToMap} onComplete={() => dispatch({ type: 'made' })} />;
   }
 
   const cash = cashLeft(M, s);
@@ -56,7 +71,24 @@ export function NorwayProcurement({ state: s, dispatch, onReturnToMap, onDone }:
 
       <div className="grid min-h-0 flex-1 gap-3 overflow-y-auto lg:grid-cols-[minmax(0,1fr)_340px] lg:overflow-hidden">
         <div className="min-h-0 space-y-3 lg:overflow-y-auto lg:pr-1">
-          {s.phase === 'buy' && M.needs.map(n => {
+          {s.phase === 'buy' && <>
+            <p className="rounded-xl border border-amber-300/30 bg-amber-300/5 p-3 text-sm">
+              <b>Buy → make → sell.</b> Secure the four inputs, then sell your silicon to Germany. What you spend now must be earned back later.
+            </p>
+            <nav className="grid grid-cols-2 gap-2 sm:grid-cols-4" aria-label="Choose one furnace input">
+              {M.needs.map(n => {
+                const complete = accepted(s, n.id) >= n.need && s.orders.filter(o => o.item === n.id).every(o => o.paid !== null);
+                const unpaid = s.orders.filter(o => o.item === n.id && o.paid === null).length;
+                return <button key={n.id} onClick={() => selectInput(n.id)} aria-pressed={selectedItem === n.id}
+                  className={`rounded-lg border-2 p-3 text-left ${selectedItem === n.id ? 'border-amber-300 bg-amber-300/10' : 'border-white/10 bg-white/5'}`}>
+                  <span className="block text-sm font-bold">{n.name}</span>
+                  <span className={`text-xs ${complete ? 'text-emerald-300' : 'text-slate-300'}`}>{complete ? '✓ Ready and paid' : `${accepted(s, n.id)} / ${n.need} checked${unpaid ? ` · ${unpaid} to settle` : ''}`}</span>
+                </button>;
+              })}
+            </nav>
+            <NorwaySupplyMap item={selectedItem} selected={selectedSupplier} onSelect={visit} orders={s.orders} />
+          </>}
+          {s.phase === 'buy' && M.needs.filter(n => n.id === selectedItem).map(n => {
             const have = accepted(s, n.id);
             return (
               <article key={n.id} className="rounded-xl border border-white/10 bg-white/5 p-3">
@@ -66,9 +98,17 @@ export function NorwayProcurement({ state: s, dispatch, onReturnToMap, onDone }:
                     {have >= n.need ? '✓ ' : ''}{have}/{n.need} in{onOrder(s, n.id) ? ` · ${onOrder(s, n.id)} at the gate` : ''}
                   </span>
                 </h2>
-                <div className="grid gap-2 md:grid-cols-2">
-                  {M.suppliers.filter(x => x.item === n.id).map(sup => <SupplierCard key={sup.id} sup={sup} s={s} act={act} />)}
+                <p className="mb-3 text-sm text-sky-200">{PURPOSE[n.id]}</p>
+                <div className="mb-3 flex flex-wrap gap-2" aria-label="Choose a supplier">
+                  {M.suppliers.filter(x => x.item === n.id).map(sup => <button key={sup.id} className={`${btn} ${selectedSupplier === sup.id ? 'border-amber-300 bg-amber-300/10' : ''}`} aria-pressed={selectedSupplier === sup.id} onClick={() => visit(sup.id)}>{sup.name}{s.orders.some(o => o.supplierId === sup.id && o.paid === null) ? ' · receipt / invoice waiting' : ''}</button>)}
                 </div>
+                {selectedSupplier ? M.suppliers.filter(x => x.id === selectedSupplier).map(sup => <SupplierCard key={sup.id} sup={sup} s={s} act={act} />)
+                  : <p className="rounded-lg border border-dashed border-white/20 p-4 text-sm text-slate-300">Choose a company on the map or above to see its offer. You can visit both before ordering.</p>}
+                {have >= n.need && s.orders.filter(o => o.item === n.id).every(o => o.paid !== null) && M.needs.some(x => accepted(s, x.id) < x.need || s.orders.some(o => o.item === x.id && o.paid === null)) &&
+                  <button className={`${btn} mt-3 border-emerald-400 text-emerald-200`} onClick={() => {
+                    const next = M.needs.find(x => accepted(s, x.id) < x.need || s.orders.some(o => o.item === x.id && o.paid === null));
+                    if (next) selectInput(next.id);
+                  }}>This input is ready → choose the next input</button>}
               </article>
             );
           })}
@@ -116,7 +156,7 @@ export function NorwayProcurement({ state: s, dispatch, onReturnToMap, onDone }:
           {s.phase === 'buy' && <button className={primary} disabled={!readyToMake(M, s)} onClick={() => act({ type: 'make' })}>{readyToMake(M, s) ? 'To the furnace →' : 'Get everything in and paid first'}</button>}
           {s.phase === 'sell' && <button className={primary} onClick={() => act({ type: 'accept' })}>Sell for {$(s.sale.offer)}</button>}
           {s.phase === 'done' && <>
-            <button className={primary} onClick={() => act({ type: 'retry' })}>Try Norway again</button>
+            <button className={primary} onClick={() => { act({ type: 'retry' }); selectInput('quartz'); }}>Try Norway again</button>
             <button className="rounded-xl border border-white/20 px-4 py-3 text-sm" onClick={onDone}>Back to the map</button>
           </>}
         </aside>
@@ -134,24 +174,35 @@ function SupplierCard({ sup, s, act }: { sup: Supplier; s: TradeState; act: (a: 
   const sampled = s.sampled.includes(sup.id);
   const orders = s.orders.filter(o => o.supplierId === sup.id);
   const open = orders.some(o => o.paid === null);
+  const name = needOf(M, sup.item).name;
   return (
     <div className="rounded-lg border border-white/10 bg-[#0c1821] p-3">
-      <p className="font-semibold">{sup.name}</p>
+      <div className="mb-2 flex items-center gap-3"><span aria-hidden="true" className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-teal-400/50 bg-teal-900 font-bold text-teal-100">{sup.name.split(' ').map(w => w[0]).slice(0, 2).join('')}</span>
+        <div><p className="font-semibold">{sup.name}</p><p className="text-xs text-slate-400">{name} supplier</p></div></div>
       <p className="text-xs text-slate-400">{sup.origin}</p>
+      <p className="mt-3 text-xs font-bold text-amber-200">1. Understand the offer</p>
       <p className="mt-2 font-mono text-sm">{t.lot} {unit} × {$(t.unitPrice)}{t.fee ? ` + ${$(t.fee)} fee` : ''} = <b>{$(orderCost(t, 1))}</b></p>
       <p className="text-xs text-slate-300">Usable: {sampled ? `${Math.floor(t.lot * t.usable)} of ${t.lot}` : '?'}</p>
-      <div className="mt-2 flex flex-wrap gap-1.5">
-        <button className={btn} disabled={sampled} onClick={() => act({ type: 'sample', supplierId: sup.id })}>🔍 Sample</button>
+      <div className="mt-2"><SupplyObjects item={sup.item} bought={t.lot} usable={sampled ? Math.floor(t.lot * t.usable) : undefined} /></div>
+      <button className={`${btn} mt-2`} disabled={sampled} onClick={() => act({ type: 'sample', supplierId: sup.id })}>{sampled ? 'Sample checked' : sup.item === 'power' ? 'Check the supply offered' : 'Check a sample before buying'}</button>
+      <details className="mt-3 rounded-lg border border-white/10 p-2">
+        <summary className="cursor-pointer text-sm font-semibold text-amber-200">2. Discuss the terms (optional)</summary>
+        <p className="my-2 text-xs text-slate-300">Ask for a change. A lower unit price may require a bigger purchase. This company will consider {sup.patience} request{sup.patience > 1 ? 's' : ''}.</p>
+        <div className="flex flex-wrap gap-1.5">
         {sup.levers.map(l => (
-          <button key={l.id} className={btn} disabled={asked.includes(l.id) || tired} onClick={() => act({ type: 'ask', supplierId: sup.id, leverId: l.id })}>💬 {l.label}</button>
+          <button key={l.id} className={btn} disabled={asked.includes(l.id) || tired} onClick={() => act({ type: 'ask', supplierId: sup.id, leverId: l.id })}>{l.label}</button>
         ))}
-      </div>
+        </div>
+      </details>
+      <p className="mt-3 text-xs font-bold text-amber-200">3. Choose how much to order</p>
+      <p className="mt-1 text-xs text-slate-300">Buying {lots * t.lot} {unit}{sampled ? ` gives ${Math.floor(t.lot * t.usable) * lots} usable` : '; usable quantity is untested'}. Your furnace still needs {Math.max(0, needOf(M, sup.item).need - accepted(s, sup.item))}.</p>
       <div className="mt-2 flex items-center gap-1.5">
         <button className={btn} disabled={lots <= 1} onClick={() => setLots(lots - 1)}>−</button>
         <span className="w-14 text-center text-xs">{lots} lot{lots > 1 ? 's' : ''}</span>
         <button className={btn} disabled={lots >= 3} onClick={() => setLots(lots + 1)}>+</button>
         <button className={`${btn} ml-auto bg-white/10 font-bold`} disabled={open} onClick={() => act({ type: 'order', supplierId: sup.id, lots })}>Order {$(orderCost(t, lots))}</button>
       </div>
+      {orders.length > 0 && <p className="mt-3 text-xs font-bold text-amber-200">4. Receive, compare the invoice, then pay</p>}
       {orders.map(o => <OrderRow key={o.id} o={o} unit={unit} act={act} />)}
     </div>
   );
@@ -162,8 +213,8 @@ function OrderRow({ o, unit, act }: { o: Order; unit: string; act: (a: TradeActi
   return (
     <div className="mt-2 rounded border border-white/10 p-2 text-xs">
       <p className="font-mono">{o.id} · {bought} {unit} · order says {$(o.expected)}</p>
-      {!o.checked && <button className={`${btn} mt-1`} onClick={() => act({ type: 'check', orderId: o.id })}>🚚 Check the delivery</button>}
-      {o.checked && <p className="mt-1">Delivered {bought}, usable <b>{usableOf(o)}</b></p>}
+      {!o.checked && <button className={`${btn} mt-1`} onClick={() => act({ type: 'check', orderId: o.id })}>Unload & check the delivery</button>}
+      {o.checked && <><SupplyObjects item={o.item} bought={bought} usable={usableOf(o)} /><p className="mt-1">Delivered {bought}, usable <b>{usableOf(o)}</b></p></>}
       {o.checked && o.paid === null && (
         <div className="mt-1 flex flex-wrap items-center gap-1.5">
           <span>Invoice: <b className="font-mono">{$(o.invoice)}</b></span>
@@ -171,6 +222,7 @@ function OrderRow({ o, unit, act }: { o: Order; unit: string; act: (a: TradeActi
           <button className={btn} onClick={() => act({ type: 'dispute', orderId: o.id })}>Dispute</button>
         </div>
       )}
+      {o.checked && o.paid === null && <p className="mt-1 text-slate-300">Compare this invoice with the order amount above. Dispute it if they differ.</p>}
       {o.paid !== null && <p className="mt-1 text-emerald-300">✓ Paid {$(o.paid)}</p>}
     </div>
   );

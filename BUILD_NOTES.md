@@ -434,3 +434,9 @@ Placeholders: all prices, lots, odds and the $1B bill are teaching values, not m
 
 Tests: `npm run lint` passes; `bun test src` 38 pass (5 new engine tests). Browser: not run (user tests).
 Placeholders: fictional suppliers, teaching prices; plain cards, no art; loop state not saved on reload.
+
+## Norway buying visuals and full manufacturing - Codex, 22 October 2026
+
+- Reviewed Claude's buy/make/sell prototype and the user's feedback. Kept the selling/spares/profit engine. Restored the clickable supply map and source/seller distinction; added representative materials and a short delivery illustration. Buying now focuses on one input and one supplier, with numbered steps and optional negotiation controls. Outstanding invoices remain signposted when changing suppliers.
+- Restored all manufacturing actions, including mining and rock breaking, at the user's explicit request. Review and next visual suggestions: layers/NORWAY_BUYING_UI_REVIEW.md.
+- Checks: TypeScript passes; 38 pass, 0 fail; build built in 618ms (existing bundle warning). Browser/playtest not run; user tests. No new external research; fictional locations, initials badges and simple objects remain prototype presentation. Uncommitted for Claude.

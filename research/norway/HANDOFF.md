@@ -69,3 +69,7 @@ The full reusable process is recorded in [WORKSHOP_WORKFLOW.md](../../WORKSHOP_W
 ## Procurement prototype revision - Codex, 22 October 2026
 
 User authorized engine improvements after playing Claude's loop-2 prototype. See ../../layers/NORWAY_PROCUREMENT_REVIEW.md and brainstorm turn 5. New source map/order/accepted-stock engine: src/content/norwaySourcing.ts; UI: NorwayProcurement.tsx. Supplied-feed mode skips mining/breaking and shows accepted quartz lot IDs; default loop-1 sequence retained. Ledger survives world-map navigation; reload persistence remains deferred. TypeScript and build pass; 43 tests pass. Browser/playtest not run; user tests. Leave uncommitted for Claude. Keep the next pass small: act on the user's playtest before extending the layer.
+
+## Buying visuals and restored production - Codex, 22 October 2026
+
+User likes Claude's selling/profit stage; preserve it. Restored a clickable supply map and simplified buying to one input/company at a time, with visible materials and a delivery illustration. Full mining/breaking/manufacturing restored at the user's explicit request, despite the sourcing abstraction. Review: ../../layers/NORWAY_BUYING_UI_REVIEW.md. Engine unchanged; 38 tests pass, typecheck/build pass. No browser/playtest; user tests. Uncommitted.
