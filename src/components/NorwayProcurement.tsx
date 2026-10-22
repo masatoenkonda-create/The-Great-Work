@@ -27,7 +27,7 @@ const PINS: Record<string, { x: number; y: number; label: string }> = {
   nordic: { x: 395, y: 350, label: 'Nordic Minerals' },
   hydro: { x: 735, y: 225, label: 'River Power' },
   bulk: { x: 995, y: 340, label: 'Bulk Importer' },
-  harbour: { x: 975, y: 445, label: 'Harbour Coal' },
+  harbour: { x: 990, y: 472, label: 'Harbour Coal' },
   sawmill: { x: 870, y: 645, label: 'Valley Sawmill' },
   customer: { x: 625, y: 705, label: 'To Germany · customer' },
   alloy: { x: 330, y: 690, label: 'Alloy Foundry' },
@@ -42,7 +42,7 @@ const ROUTES: Record<string, string> = {
   nordic: 'M395,350 L560,370 L690,390',
   hydro: 'M735,225 L715,300 L690,390',
   bulk: 'M995,340 L920,385 L830,390 L690,390',
-  harbour: 'M975,445 L920,385 L830,390 L690,390',
+  harbour: 'M990,472 L920,385 L830,390 L690,390',
   sawmill: 'M870,645 L800,560 L755,490 L720,430 L690,390',
   customer: 'M690,390 L680,490 L640,580 L625,705',
   alloy: 'M690,390 L600,520 L450,640 L330,690',
@@ -80,7 +80,6 @@ function nextStep(s: TradeState) {
 function Pin({ id, p, s, open, onOpen }: { id: string; p: { x: number; y: number; label: string }; s: TradeState; open: boolean; onOpen: () => void }) {
   const sup = M.suppliers.find(x => x.id === id);
   const customer = CUSTOMERS.includes(id);
-  const size = id === 'smelter' ? 92 : 68;
   const art = ASSETS.supply.pin(PIN_ART[id]);
   const hasArt = useLoaded(art);
   const iconSrc = sup ? ASSETS.supply.icon(ICON[sup.item].art) : customer ? ASSETS.supply.icon('silicon') : '';
@@ -90,18 +89,20 @@ function Pin({ id, p, s, open, onOpen }: { id: string; p: { x: number; y: number
   if (sup && s.phase === 'buy') sub += s.orders.some(o => o.supplierId === id && o.paid === null) ? ' · at the gate' : missing(M, s, sup.item) > 0 ? ' · needed' : ' · done';
   if (id === 'smelter' && s.phase === 'buy' && readyToMake(M, s)) sub += ' · ready';
   if (customer && id !== 'customer' && s.sale.quotes.includes(id)) sub += ` · quoted $${M.buyer.competitors.find(c => c.id === id)!.quote}`;
-  const label = { stroke: '#0f172a', strokeWidth: 4, paintOrder: 'stroke' as const, strokeLinejoin: 'round' as const };
   const art2 = hasArt ? art : hasIcon ? iconSrc : '';
-  const h = hasArt ? size : size * 0.55; // a product marker is smaller than a building
+  const r = id === 'smelter' ? 46 : 36;
+  const img = hasArt ? r * 1.7 : r * 1.15; // a product marker sits smaller inside its plate
+  const w = Math.max(p.label.length * 8.2, sub.length * 6.6) + 22;
+  const edge = open ? '#fde68a' : '#e2e8f0';
   return (
     <g transform={`translate(${p.x},${p.y})`} onClick={onOpen} className="cursor-pointer" role="button" tabIndex={0} aria-label={`${p.label}, ${sub}`}
       onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpen(); } }}>
-      <ellipse cx="0" cy="2" rx={h * 0.42} ry={h * 0.13} fill="#0f172a" opacity={open ? 0.45 : 0.28} />
-      {art2 ? <image href={art2} x={-h / 2} y={-h * 0.88} width={h} height={h} style={{ imageRendering: 'pixelated' }} />
-        : <circle cy={-8} r="7" fill="#e2e8f0" stroke="#334155" strokeWidth="2" />}
-      {open && <ellipse cx="0" cy="2" rx={h * 0.5} ry={h * 0.17} fill="none" stroke="#f8fafc" strokeWidth="2" opacity="0.9" />}
-      <text y={22} textAnchor="middle" fill={open ? '#fef3c7' : '#f8fafc'} fontSize="15" fontWeight="600" letterSpacing="0.3" {...label}>{p.label}</text>
-      <text y={37} textAnchor="middle" fill="#cbd5e1" fontSize="11.5" fontStyle="italic" {...label} strokeWidth={3}>{sub}</text>
+      <circle r={r} fill="#0f172a" fillOpacity="0.62" stroke={edge} strokeWidth={open ? 3 : 2} />
+      {art2 ? <image href={art2} x={-img / 2} y={-img / 2} width={img} height={img} style={{ imageRendering: 'pixelated' }} />
+        : <circle r="7" fill="#e2e8f0" />}
+      <rect x={-w / 2} y={r - 4} width={w} height="36" rx="7" fill="#0f172a" fillOpacity="0.8" stroke={edge} strokeWidth={open ? 3 : 2} />
+      <text y={r + 12} textAnchor="middle" fill="#f8fafc" fontSize="14" fontWeight="600">{p.label}</text>
+      <text y={r + 26} textAnchor="middle" fill="#cbd5e1" fontSize="11" fontStyle="italic">{sub}</text>
     </g>
   );
 }
@@ -185,8 +186,10 @@ export function NorwayProcurement({ state: s, dispatch, onReturnToMap, onDone }:
             {source.sellers.map(seller => <path key={seller} d={`M${source.x},${source.y} L${PINS[seller].x},${PINS[seller].y}`} fill="none" stroke={open === seller || open === id ? '#f8fafc' : '#475569'} strokeWidth="2" strokeDasharray="3 6" opacity={open === seller || open === id ? 0.9 : 0.4} />)}
             <g transform={`translate(${source.x},${source.y})`} role="button" tabIndex={0} aria-label={`Material origin: ${source.label}`} className="cursor-pointer"
               onClick={() => setOpen(id)} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen(id); } }}>
-              <circle r="4" fill="#f8fafc" stroke="#334155" strokeWidth="1.5" />
-              <text y="20" textAnchor="middle" fontSize="12" fontStyle="italic" fill="#e2e8f0" stroke="#0f172a" strokeWidth="3" paintOrder="stroke" strokeLinejoin="round">{source.label}</text>
+              <circle r="9" fill="#0f172a" fillOpacity="0.62" stroke="#e2e8f0" strokeWidth="2" />
+              <circle r="3" fill="#e2e8f0" />
+              <rect x={-(source.label.length * 3.6 + 10)} y="7" width={source.label.length * 7.2 + 20} height="22" rx="6" fill="#0f172a" fillOpacity="0.8" stroke="#e2e8f0" strokeWidth="1.5" />
+              <text y="22" textAnchor="middle" fontSize="12" fontStyle="italic" fill="#e2e8f0">{source.label}</text>
             </g>
           </g>)}
           {lastOrder && lastOrder.paid === null && !lastOrder.checked && (

@@ -513,3 +513,9 @@ Tests: `npm run lint` passes. Browser: not run.
 - Buildings anchored on their point with ground shadows; product markers for places without building art; outlined map lettering instead of label boxes; one translucent box style for the map buttons, panels and store. Silicone Works moved onto land.
 
 Tests: `npm run lint` passes; `bun test src` 42 pass. Placement checked on an offline mock render of the map, not in the browser.
+
+## Loop 2 Norway: badge-style map places - Claude, 22 October 2026
+
+- Each map place is a round plate with its building/product and an attached label tab; material origins likewise. Harbour Coal moved to avoid overlap. Checked on an offline mock render.
+
+Tests: `npm run lint` passes; `bun test src` 42 pass. Browser: not run.

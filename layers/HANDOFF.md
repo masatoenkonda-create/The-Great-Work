@@ -130,3 +130,7 @@ PROCUREMENT_WORKFLOW.md now contains one integrated Claude/Codex workflow: sessi
 ## Neater map, 22 October 2026 (Claude)
 
 User: buildings looked "copy-pasted, dropped crudely"; UI boxes didn't blend. Buildings now stand on their point with a soft ground shadow (no disc); places without building art show their product standing on the ground (same scale rule for all); labels are map lettering (light text, dark outline, no boxes; status line in small italics); material origins match. All boxes share one quiet translucent slate style (no thick black borders or hard shadows). Silicone Works moved from the sea onto the coast. Extends L20.
+
+## Badge-style places, 22 October 2026 (Claude)
+
+User: elements need a clean circle around them and the text felt disconnected. Each place is now one badge: a neutral translucent round plate (thin light rim, gold rim when selected) holding the building or product, with its name/status tab attached directly underneath in the same style. Material origins use a small version. Neutral only: no colour coding, no motion (L20 still applies). Harbour Coal moved slightly down to clear Bulk Importer.
