@@ -24,8 +24,8 @@ const primary = 'w-full rounded-xl bg-amber-300 px-4 py-3 font-bold text-slate-9
 const PINS: Record<string, { x: number; y: number; label: string }> = {
   smelter: { x: 690, y: 390, label: 'Your smelter' },
   fjord: { x: 220, y: 250, label: 'Fjord Quarry' },
-  nordic: { x: 460, y: 405, label: 'Nordic Minerals' },
-  hydro: { x: 710, y: 175, label: 'River Power' },
+  nordic: { x: 395, y: 350, label: 'Nordic Minerals' },
+  hydro: { x: 735, y: 225, label: 'River Power' },
   bulk: { x: 995, y: 340, label: 'Bulk Importer' },
   harbour: { x: 975, y: 445, label: 'Harbour Coal' },
   sawmill: { x: 870, y: 645, label: 'Valley Sawmill' },
@@ -39,8 +39,8 @@ const SOURCES = {
 };
 const ROUTES: Record<string, string> = {
   fjord: 'M220,250 L350,325 L500,365 L690,390',
-  nordic: 'M460,405 L570,370 L690,390',
-  hydro: 'M710,175 L720,280 L690,390',
+  nordic: 'M395,350 L560,370 L690,390',
+  hydro: 'M735,225 L715,300 L690,390',
   bulk: 'M995,340 L920,385 L830,390 L690,390',
   harbour: 'M975,445 L920,385 L830,390 L690,390',
   sawmill: 'M870,645 L800,560 L755,490 L720,430 L690,390',
@@ -406,6 +406,10 @@ function CustomerPanel({ s, act, onDone }: { s: TradeState; act: (a: TradeAction
           {s.sale.sparesSold && <tr><td className="py-1 font-sans">Spares sold</td><td className="text-right">{$(sparesValue(M, s))}</td></tr>}
           <tr className="border-t border-white/30 text-lg font-bold"><td className="py-2 font-sans">{p >= 0 ? 'Profit' : 'Your bill'}</td><td className={`text-right ${p >= 0 ? 'text-emerald-300' : 'text-red-300'}`}>{$(p)}</td></tr>
         </tbody></table>
+        <p className="rounded-lg border border-sky-300/40 bg-sky-300/5 p-3 text-sm">
+          <b>The chain:</b> Greta’s plant paid {$(s.sale.received ?? 0)} for your silicon. In Germany, that is the starting cost of their main input.
+          Every stop adds its costs, and the TV’s price at home is the sum of the whole chain.
+        </p>
         <ul className="space-y-1 text-sm">{lessons(M, s).map(l => <li key={l}>• {l}</li>)}</ul>
         <button className={primary} onClick={() => act({ type: 'retry' })}>Try Norway again</button>
         <button className="w-full rounded-xl border border-white/20 px-4 py-2 text-sm" onClick={onDone}>Back to the world map</button>

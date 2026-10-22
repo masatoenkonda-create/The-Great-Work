@@ -88,3 +88,25 @@ Art installed (cut from the user's Gemini JPGs, transparent PNG): products `wood
 Installed `pin_smelter` (192 × 192), `pin_quarry`, `pin_trader` (128 × 128), cut from the user's Gemini JPGs (flat dark background removed). They replace the coloured-disc icons automatically; no code change. The harbour image came out as a blurry world map, so it was **not** installed: `pin_harbour` still needs a redo (and `pin_bulk`, `pin_sawmill`, `pin_power`, `pin_customer`, truck, portraits remain placeholders).
 
 **Open design question (user, 22 Oct), not decided, no code yet:** procurement must happen at every stop from Norway to China. If Norway sells its silicon to Germany, what does the player do on arriving in Germany? To discuss before any loop 2 work on Germany.
+
+## Chain model chosen; Norway only for now, 22 October 2026 (Claude)
+
+| ID | Decision | Who |
+|---|---|---|
+| L17 | **Option A, the chain**: the player runs each stop's factory in turn. What a stop sells becomes the next stop's main input, already in its store at the agreed price. China sells the TV to the man at home: **that price is the loop's bill**. Option B (own the material, pay processing fees) and C (trader in the middle) were rejected. | User, 22 Oct |
+| L18 | Scoring: each stop shows its own result, and the **TV price at home is the loop's score**. | Claude's recommendation; the user didn't object; **to confirm** |
+| L19 | **Build Norway only now.** Do not start other stops' loop 2 desks until the user asks. | User, 22 Oct |
+
+Norway change for L17: the result panel now says what Germany paid and that it becomes Germany's starting cost. No engine change.
+
+**Plan for later stops (draft, every row needs primary-source research before building):** one new real procurement lesson per stop on top of Norway's basics.
+
+| Stop | Main input (carried) | Buys | New lesson | Sells to |
+|---|---|---|---|---|
+| Germany | Norway's silicon | hydrogen chloride, hydrogen, electricity | Contract vs pay-as-you-go (minimum commitment) | Japan |
+| Japan | polysilicon | quartz crucible, seed crystal, saw wire | Approved suppliers (pay to test a new one) | Taiwan |
+| Taiwan | wafers | photoresist, photomask set | Shelf life; made-to-order item with no second source | Malaysia |
+| Malaysia | tested wafer | substrates, gold wire, mold resin | Prices tied to a market (gold) | China |
+| China | packaged chip | main board, display module, power board, solder paste | The big-ticket item from few makers; partial delivery in a shortage (deterministic) | the man (USA) |
+
+Art: new snowy autumn `norway_map.jpg` (same 2752 × 1536 size, slightly different layout; Nordic Minerals and River Power pins moved onto clearings); `pin_bulk` (cargo ship) installed. Still placeholders: `pin_harbour`, `pin_sawmill`, `pin_power`, `pin_customer`, truck, portraits.

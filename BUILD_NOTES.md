@@ -475,3 +475,10 @@ Tests: `npm run lint` passes; `bun test src` 41 pass. Browser: not run. Cut-outs
 - Selling: competing quotes from two other customers, quote matching, buyer patience and cap, then a short payment to check against the invoice. Map: colour-coded pins with product icons, status badges, legend, "Next:" bar; no more broken-image icons. Bigger store icons. Second art batch installed. Decisions L14–L16 in layers/HANDOFF.md.
 
 Tests: `npm run lint` passes; `bun test src` 42 pass. Browser: not run (user tests). Cut-outs checked by eye on dark preview sheets.
+
+## Loop 2: chain model recorded, new map, cargo-ship pin - Claude, 22 October 2026
+
+- User chose option A (chain); Norway only for now (L17–L19 in layers/HANDOFF.md, with the draft per-stop plan). Norway's result panel explains that Germany's payment becomes Germany's starting cost.
+- Installed the user's snowy autumn map and the cargo-ship pin; moved two pins onto clearings.
+
+Tests: `npm run lint` passes; `bun test src` 42 pass. Browser: not run. Pin positions checked against the map image by overlay, not in the game.
