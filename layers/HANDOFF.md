@@ -126,3 +126,7 @@ The user asked for the session's workflow as an instruction file for building ev
 ## Workflow review contribution - Codex, 22 October 2026
 
 PROCUREMENT_WORKFLOW.md now contains one integrated Claude/Codex workflow: session history, practical country steps, visuals/art pipeline, economic invariants and a future chain-connection checklist. Candidate country lessons remain leads; no new mechanic per country is compulsory. Cross-country transfer/save contracts are explicitly not built. L18 scoring still needs confirmation. Codex's commit rule corrected to leave changes uncommitted unless requested. Local links/whitespace pass; no application tests, browser testing, external research or game-code changes. Follow this file for each requested country, without repeating Norway's rejected prototype detours.
+
+## Neater map, 22 October 2026 (Claude)
+
+User: buildings looked "copy-pasted, dropped crudely"; UI boxes didn't blend. Buildings now stand on their point with a soft ground shadow (no disc); places without building art show their product standing on the ground (same scale rule for all); labels are map lettering (light text, dark outline, no boxes; status line in small italics); material origins match. All boxes share one quiet translucent slate style (no thick black borders or hard shadows). Silicone Works moved from the sea onto the coast. Extends L20.

@@ -507,3 +507,9 @@ Checks: workflow local links PASS; no unfilled Codex placeholder; git diff --che
 - Norway result text now names the **agreed** price as Germany's starting cost (Codex's point: a short payment is settled separately, not a price change).
 
 Tests: `npm run lint` passes. Browser: not run.
+
+## Loop 2 Norway: neater pins and blended UI - Claude, 22 October 2026
+
+- Buildings anchored on their point with ground shadows; product markers for places without building art; outlined map lettering instead of label boxes; one translucent box style for the map buttons, panels and store. Silicone Works moved onto land.
+
+Tests: `npm run lint` passes; `bun test src` 42 pass. Placement checked on an offline mock render of the map, not in the browser.

@@ -31,7 +31,7 @@ const PINS: Record<string, { x: number; y: number; label: string }> = {
   sawmill: { x: 870, y: 645, label: 'Valley Sawmill' },
   customer: { x: 625, y: 705, label: 'To Germany · customer' },
   alloy: { x: 330, y: 690, label: 'Alloy Foundry' },
-  silicones: { x: 1180, y: 600, label: 'Silicone Works' },
+  silicones: { x: 1100, y: 545, label: 'Silicone Works' },
 };
 const SOURCES = {
   'source-plateau': { x: 235, y: 565, label: 'Plateau quarry', sellers: ['nordic'], detail: 'Nordic Minerals buys screened quartz here and stocks it at its depot. The depot is the seller; this quarry is the original source.' },
@@ -46,7 +46,7 @@ const ROUTES: Record<string, string> = {
   sawmill: 'M870,645 L800,560 L755,490 L720,430 L690,390',
   customer: 'M690,390 L680,490 L640,580 L625,705',
   alloy: 'M690,390 L600,520 L450,640 L330,690',
-  silicones: 'M690,390 L830,390 L920,385 L1060,500 L1180,600',
+  silicones: 'M690,390 L830,390 L920,385 L1020,470 L1100,545',
 };
 const PIN_ART: Record<string, string> = { smelter: 'smelter', fjord: 'quarry', nordic: 'trader', hydro: 'power', bulk: 'bulk', harbour: 'harbour', sawmill: 'sawmill', customer: 'customer', alloy: 'customer', silicones: 'customer' };
 const CUSTOMERS = ['customer', 'alloy', 'silicones'];
@@ -90,20 +90,18 @@ function Pin({ id, p, s, open, onOpen }: { id: string; p: { x: number; y: number
   if (sup && s.phase === 'buy') sub += s.orders.some(o => o.supplierId === id && o.paid === null) ? ' · at the gate' : missing(M, s, sup.item) > 0 ? ' · needed' : ' · done';
   if (id === 'smelter' && s.phase === 'buy' && readyToMake(M, s)) sub += ' · ready';
   if (customer && id !== 'customer' && s.sale.quotes.includes(id)) sub += ` · quoted $${M.buyer.competitors.find(c => c.id === id)!.quote}`;
-  const w = Math.max(p.label.length * 8.6, sub.length * 7.2) + 20;
+  const label = { stroke: '#0f172a', strokeWidth: 4, paintOrder: 'stroke' as const, strokeLinejoin: 'round' as const };
+  const art2 = hasArt ? art : hasIcon ? iconSrc : '';
+  const h = hasArt ? size : size * 0.55; // a product marker is smaller than a building
   return (
     <g transform={`translate(${p.x},${p.y})`} onClick={onOpen} className="cursor-pointer" role="button" tabIndex={0} aria-label={`${p.label}, ${sub}`}
       onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpen(); } }}>
-      {open && <circle r={size / 2 + 4} fill="none" stroke="#f8fafc" strokeWidth="3" opacity="0.9" />}
-      {hasArt ? <image href={art} x={-size / 2} y={-size / 2} width={size} height={size} style={{ imageRendering: 'pixelated' }} />
-        : <>
-          <circle r={size / 2 - 10} fill="#e7e5e4" stroke="#334155" strokeWidth="2" opacity="0.92" />
-          {hasIcon ? <image href={iconSrc} x={-size * 0.26} y={-size * 0.26} width={size * 0.52} height={size * 0.52} />
-            : <circle r="6" fill="#64748b" />}
-        </>}
-      <rect x={-w / 2} y={size / 2 + 2} width={w} height="38" rx="4" fill="#0f172a" opacity={open ? 0.92 : 0.72} />
-      <text y={size / 2 + 19} textAnchor="middle" fill="#f1f5f9" fontSize="15" fontWeight="600">{p.label}</text>
-      <text y={size / 2 + 34} textAnchor="middle" fill="#cbd5e1" fontSize="12">{sub}</text>
+      <ellipse cx="0" cy="2" rx={h * 0.42} ry={h * 0.13} fill="#0f172a" opacity={open ? 0.45 : 0.28} />
+      {art2 ? <image href={art2} x={-h / 2} y={-h * 0.88} width={h} height={h} style={{ imageRendering: 'pixelated' }} />
+        : <circle cy={-8} r="7" fill="#e2e8f0" stroke="#334155" strokeWidth="2" />}
+      {open && <ellipse cx="0" cy="2" rx={h * 0.5} ry={h * 0.17} fill="none" stroke="#f8fafc" strokeWidth="2" opacity="0.9" />}
+      <text y={22} textAnchor="middle" fill={open ? '#fef3c7' : '#f8fafc'} fontSize="15" fontWeight="600" letterSpacing="0.3" {...label}>{p.label}</text>
+      <text y={37} textAnchor="middle" fill="#cbd5e1" fontSize="11.5" fontStyle="italic" {...label} strokeWidth={3}>{sub}</text>
     </g>
   );
 }
@@ -175,7 +173,7 @@ export function NorwayProcurement({ state: s, dispatch, onReturnToMap, onDone }:
   const made = s.phase !== 'buy';
 
   return (
-    <section className="flex h-full flex-col overflow-hidden bg-[#0c1821] text-slate-100 lg:flex-row" aria-label="Norway supplier map">
+    <section className="flex h-full flex-col overflow-hidden bg-slate-900 text-slate-100 lg:flex-row" aria-label="Norway supplier map">
       {/* Supplier map */}
       <div className="relative min-h-[45svh] min-w-0 flex-1 lg:min-h-0">
         <svg viewBox="0 0 1376 768" preserveAspectRatio="xMidYMid meet" className="h-full w-full" role="group" aria-label="Map of the smelter's suppliers, material origins and customer">
@@ -187,8 +185,8 @@ export function NorwayProcurement({ state: s, dispatch, onReturnToMap, onDone }:
             {source.sellers.map(seller => <path key={seller} d={`M${source.x},${source.y} L${PINS[seller].x},${PINS[seller].y}`} fill="none" stroke={open === seller || open === id ? '#f8fafc' : '#475569'} strokeWidth="2" strokeDasharray="3 6" opacity={open === seller || open === id ? 0.9 : 0.4} />)}
             <g transform={`translate(${source.x},${source.y})`} role="button" tabIndex={0} aria-label={`Material origin: ${source.label}`} className="cursor-pointer"
               onClick={() => setOpen(id)} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen(id); } }}>
-              <circle r="6" fill="#f8fafc" stroke="#334155" strokeWidth="2" />
-              <text y="24" textAnchor="middle" fontSize="13" fill="#0f172a" stroke="#f8fafc" strokeWidth="3" paintOrder="stroke">{source.label}</text>
+              <circle r="4" fill="#f8fafc" stroke="#334155" strokeWidth="1.5" />
+              <text y="20" textAnchor="middle" fontSize="12" fontStyle="italic" fill="#e2e8f0" stroke="#0f172a" strokeWidth="3" paintOrder="stroke" strokeLinejoin="round">{source.label}</text>
             </g>
           </g>)}
           {lastOrder && lastOrder.paid === null && !lastOrder.checked && (
@@ -204,12 +202,12 @@ export function NorwayProcurement({ state: s, dispatch, onReturnToMap, onDone }:
         </svg>
 
         <div className="absolute left-3 top-3 flex gap-2">
-          <button onClick={onReturnToMap} className="rounded-lg border border-white/30 bg-[#0c1821]/90 px-3 py-2 text-xs">← World map</button>
-          <p className="rounded-lg border border-white/20 bg-[#0c1821]/85 px-3 py-2 text-sm text-slate-200">Next: {nextStep(s)}</p>
+          <button onClick={onReturnToMap} className="rounded-md border border-white/15 bg-slate-900/70 px-3 py-1.5 text-xs text-slate-200 backdrop-blur-sm hover:bg-slate-900/85">← World map</button>
+          <p className="rounded-md border border-white/15 bg-slate-900/70 px-3 py-1.5 text-sm text-slate-100 backdrop-blur-sm"><span className="text-slate-400">Next ·</span> {nextStep(s)}</p>
         </div>
 
         {open && (
-          <div className="absolute inset-x-3 bottom-3 top-14 mx-auto max-w-md overflow-y-auto rounded-2xl border-4 border-[#1a0b02] bg-[#13232d] p-4 shadow-[6px_6px_0_#1a0b02] sm:inset-x-auto sm:left-6">
+          <div className="absolute inset-x-3 bottom-3 top-14 mx-auto max-w-md overflow-y-auto rounded-xl border border-white/15 bg-slate-900/85 p-4 shadow-2xl backdrop-blur-md sm:inset-x-auto sm:left-6">
             <button onClick={() => setOpen(null)} className="float-right rounded border border-white/20 px-2 text-sm" aria-label="Close">✕</button>
             {open === 'smelter' ? <SmelterPanel s={s} act={act} />
               : open === 'customer' ? <CustomerPanel s={s} act={act} onDone={onDone} />
@@ -222,7 +220,7 @@ export function NorwayProcurement({ state: s, dispatch, onReturnToMap, onDone }:
       </div>
 
       {/* Store panel */}
-      <aside className="flex max-h-[50svh] w-full shrink-0 flex-col gap-3 overflow-y-auto border-t-4 border-[#1a0b02] bg-[#0f1e27] p-3 lg:max-h-none lg:w-[340px] lg:border-l-4 lg:border-t-0">
+      <aside className="flex max-h-[50svh] w-full shrink-0 flex-col gap-3 overflow-y-auto border-t border-white/10 bg-slate-900 p-3 lg:max-h-none lg:w-[340px] lg:border-l lg:border-t-0">
         <p className={`rounded-lg border px-3 py-2 text-center font-mono text-lg font-bold ${cash < 0 ? 'border-red-400 text-red-300' : 'border-white/20'}`}>Cash {$(cash)}</p>
         {s.phase === 'buy' && <button className="rounded-lg border border-sky-400/30 bg-sky-400/5 p-3 text-left text-xs" onClick={() => setOpen('customer')}>
           Germany's opening offer: <b>{$(M.buyer.offer)}</b> for the finished batch. Compare input costs with what you can earn. View customer →
