@@ -4,12 +4,17 @@ import { loadSavedCargo, saveCargoState, clearCargoState, resetFrom, takeMigrati
 import { TitleScreen } from './components/TitleScreen';
 import { WorldMap } from './components/WorldMap';
 import { Workspace3D } from './components/Workspace3D';
+import { LoopReplay } from './components/LoopReplay';
+import { NorwayProcurement } from './components/NorwayProcurement';
 import { sound } from './services/audio';
 import { useFullscreen } from './services/fullscreen';
 
 export default function App() {
   const [cargo, setCargo] = useState<CargoState>(() => loadSavedCargo());
-  const [view, setView] = useState<'title' | 'map' | 'workspace'>('title');
+  // Loop 2 (procurement) is a Norway-only prototype; `?loop=2` opens its replay screen directly. Not saved yet.
+  const [view, setView] = useState<'title' | 'map' | 'workspace' | 'replay'>(
+    () => (new URLSearchParams(window.location.search).get('loop') === '2' ? 'replay' : 'title'));
+  const [loop, setLoop] = useState<1 | 2>(1);
   const [activeStopId, setActiveStopId] = useState<StopId>(cargo.currentStopId);
   const [isMuted, setIsMuted] = useState<boolean>(sound.getMuted());
   // Shown once when an old save had to be sent back to an earlier stop.
@@ -67,11 +72,12 @@ export default function App() {
     if (activeStopId < 7) {
       setActiveStopId((activeStopId + 1) as StopId);
     } else {
-      setView('map');
+      setView('replay');
     }
   };
 
   const handleNewGame = () => {
+    setLoop(1);
     const freshState = clearCargoState();
     setCargo(freshState);
     setActiveStopId(1);
@@ -84,6 +90,7 @@ export default function App() {
   };
 
   const handleResetRun = () => {
+    setLoop(1);
     const freshState = clearCargoState();
     setCargo(freshState);
     setActiveStopId(1);
@@ -91,6 +98,10 @@ export default function App() {
   };
 
   const handleSelectStop = (stopId: StopId) => {
+    if (loop === 2 && stopId !== 1) {
+      setNotice('Loop 2 prototype: only Norway has a buying desk so far.');
+      return;
+    }
     setActiveStopId(stopId);
     setView('workspace');
   };
@@ -122,9 +133,19 @@ export default function App() {
         </button>
       )}
 
+      {view === 'replay' && (
+        <LoopReplay onStart={() => { setLoop(2); setActiveStopId(1); setView('map'); }} />
+      )}
+
+      {view === 'map' && loop === 2 && (
+        <p className="font-pixel pointer-events-none fixed bottom-4 left-1/2 z-40 -translate-x-1/2 border-4 border-[#1a0b02] bg-[#fcd34d] px-3 py-2 text-[10px] text-[#1a0b02]">
+          LOOP 2 · PROCUREMENT · START IN NORWAY
+        </p>
+      )}
+
       {view === 'map' && (
         <WorldMap
-          cargo={cargo}
+          cargo={loop === 2 ? { ...cargo, completedStops: [1, 2, 3, 4, 5, 6, 7], currentStopId: 1 } : cargo}
           onSelectStop={handleSelectStop}
           onOpenTitle={() => setView('title')}
           onReset={handleResetRun}
@@ -135,7 +156,14 @@ export default function App() {
         />
       )}
 
-      {view === 'workspace' && (
+      {view === 'workspace' && loop === 2 && (
+        <NorwayProcurement
+          onReturnToMap={() => setView('map')}
+          onDone={() => { setNotice('Norway done for loop 2. Germany’s buying desk isn’t built yet.'); setView('map'); }}
+        />
+      )}
+
+      {view === 'workspace' && loop === 1 && (
         <Workspace3D
           key={currentStop.id}
           stop={currentStop}

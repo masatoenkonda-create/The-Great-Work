@@ -407,3 +407,13 @@ Open / placeholder: exact supplier specifications and interactions for Germany/J
 - Added the user's no-clock and engine-first direction to GAME_VISION.md.
 
 Tests: not run (no code changed). Browser: not run.
+
+## Loop 2 prototype: Norway buying desk - Claude, 22 October 2026
+
+- The user stopped the discussion ("we won't know until we try") and asked for a bare-bones, playable loop 2 for Norway only, to get a feel for procurement.
+- Finishing the USA stop now opens a **replay screen** (the TV worked, then a $1,000,000,000 bill) with "Replay: Loop 2". The map then shows all seven stops done, with a "Loop 2" badge; only Norway opens (others show a notice). `?loop=2` in the URL opens the replay screen directly, for testing.
+- Norway in loop 2 (`NorwayProcurement.tsx`, model in `src/content/norwayProcurement.ts` + test): **buying desk** (quartz, coal, wood chips, electricity; two suppliers each, showing lot size, total, leftover and a visible risk with its odds) → **deliveries** (each risk rolled once; a short delivery must be covered by another supplier's lot or an emergency broker) → the unchanged loop-1 furnace → **the bill** (bought / used / left over / paid, budget left or debt, one lesson line per item).
+- Loop state is not saved (reloading returns to loop 1). No arrival scene in loop 2.
+
+Tests: `npm run lint` passes; `bun test src` 38 pass; `npm run build` "built in 6.41s". Browser: not run (user tests).
+Placeholders: all prices, lots, odds and the $1B bill are teaching values, not market data; fictional suppliers; text-and-card UI, no art. The furnace still has the player mine quartz although it was bought (to fix if the idea stays).
