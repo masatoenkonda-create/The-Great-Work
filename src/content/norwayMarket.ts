@@ -8,6 +8,10 @@ import { Market } from './tradeEngine';
 export const NORWAY_MARKET: Market = {
   cash: 600,
   intro: 'Buy what the furnace needs, make silicon, sell it to Germany. Goal: spend no more than you earn.',
+  place: 'Norway',
+  makeLine: 'Everything is in and paid for. Load the furnace!',
+  madeLine: 'Silicon metal, bagged. Now find out what it is worth.',
+  checkHint: 'A sample',
   needs: [
     { id: 'quartz', name: 'Quartz', unit: 'chunks', need: 10, resale: 5 },
     { id: 'carbon', name: 'Carbon', unit: 'bags', need: 4, resale: 3 },

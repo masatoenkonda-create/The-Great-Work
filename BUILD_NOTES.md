@@ -558,3 +558,15 @@ Checks: local research links and git diff --check. Application tests/build/brows
 - Wrote "Research closed: what the plan can use", the joint summary for `layers/GERMANY_PLAN.md`.
 
 Checks: quotes and pages via Poppler. Application tests/build/browser: not run (research only).
+
+## Loop 2 Germany: plan and playable prototype - Claude, 22 October 2026
+
+User: "keep going with the process" (taken as go for workflow steps 3-7).
+- Plan: [layers/GERMANY_PLAN.md](layers/GERMANY_PLAN.md). New lesson: a contract with a minimum (hydrogen pipeline, power block) is cheaper only if you need what you commit to.
+- Engine (`tradeEngine.ts`): `Terms.minimum` (billed = max(delivered, minimum); the unused minimum is owed, never stock), `Supplier.spec` (spec-sheet check instead of a sample), `carriedCost` (the previous stop's agreed price, counted once), stop words (`place`, `makeLine`, `madeLine`, `checkHint`) moved from engine text into each market. Disputing a correct minimum is refused; lessons say whether each contract paid off.
+- `germanyMarket.ts` (+ 9 tests): careful +$68, both contracts −$12, pay-as-you-go +$34, careless −$209 (silicon $620 / $560).
+- UI: Norway's screen split into the shared `procurement/ProcurementDesk.tsx` plus a per-stop config; `NorwayProcurement.tsx` is now Norway's config (same pins, art, words, quartz sample strip and sieve). `GermanyProcurement.tsx`: code-drawn map, nine pins, two origins, unchanged `GermanyManufacturing` workshop.
+- App: in loop 2, Germany opens only after Norway's sale is agreed, with the silicon at that price; replaying Norway or restarting loop 2 clears Germany. Other stops still say "not built".
+- Art list and prompts: `layers/LOOP2_GERMANY_ASSETS.md`, `_ASSET_PROMPTS.md` (files go in `public/assets/supply/germany/`).
+
+Tests: `npm run lint` passes; `bun test src` 51 pass, 0 fail; `npm run build` passes (existing bundle-size warning). Browser: not run. Placeholders: all Germany art (map, products, icons, pins, portraits); Norway unchanged visually but its screen now runs on the shared desk, so it needs a quick replay too.

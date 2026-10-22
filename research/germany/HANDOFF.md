@@ -94,3 +94,7 @@ Read selected passages in 4 existing PDFs (GP02, GP12-GP14), GP05/GP15 web relea
 ## Loop 2 research closed - Claude, 22 October 2026
 
 Codex's corrections checked and accepted; GP16 added; peak charge deferred. Joint summary for the plan at the end of [PROCUREMENT_RESEARCH.md](PROCUREMENT_RESEARCH.md). Research only; nothing run.
+
+## Loop 2 built - Claude, 22 October 2026
+
+Plan [layers/GERMANY_PLAN.md](../../layers/GERMANY_PLAN.md) and a playable prototype (`?loop=2`, finish Norway, then click Germany). Uses GP01/GP14/GP16 (contract minimum), GP09 (acid vs gas), GP01 (cylinder rent), GP02 (two kinds of sale, deferred). All numbers are teaching values. Workshop unchanged.

@@ -6,20 +6,27 @@ import { WorldMap } from './components/WorldMap';
 import { Workspace3D } from './components/Workspace3D';
 import { LoopReplay } from './components/LoopReplay';
 import { NorwayProcurement } from './components/NorwayProcurement';
-import { createTrade, tradeReducer, TradeAction } from './content/tradeEngine';
+import { GermanyProcurement } from './components/GermanyProcurement';
+import { createTrade, tradeReducer, TradeAction, TradeState } from './content/tradeEngine';
 import { NORWAY_MARKET } from './content/norwayMarket';
+import { GERMANY_MARKET } from './content/germanyMarket';
 import { sound } from './services/audio';
 import { useFullscreen } from './services/fullscreen';
 
 export default function App() {
   const [cargo, setCargo] = useState<CargoState>(() => loadSavedCargo());
-  // Loop 2 (procurement) is a Norway-only prototype; `?loop=2` opens its replay screen directly. Not saved yet.
+  // Loop 2 (procurement) prototype: Norway, then Germany; `?loop=2` opens its replay screen directly. Not saved yet.
   const [view, setView] = useState<'title' | 'map' | 'workspace' | 'replay'>(
     () => (new URLSearchParams(window.location.search).get('loop') === '2' ? 'replay' : 'title'));
   const [loop, setLoop] = useState<1 | 2>(1);
   // Keep orders/accepted stock while visiting the world map. Still session-only, isolated from campaign saves.
   const [procurement, setProcurement] = useState(() => createTrade(NORWAY_MARKET));
   const dispatchProcurement = (action: TradeAction) => setProcurement(s => tradeReducer(NORWAY_MARKET, s, action));
+  // Germany's desk opens once Norway's sale is agreed; its silicon costs the price agreed there (chain model, L17).
+  const [germany, setGermany] = useState<TradeState | null>(null);
+  const dispatchGermany = (action: TradeAction) => setGermany(s => (s ? tradeReducer(GERMANY_MARKET, s, action) : s));
+  // Replaying Norway (or restarting loop 2) changes the silicon's price, so Germany starts again.
+  useEffect(() => { if (procurement.phase !== 'done') setGermany(null); }, [procurement.phase]);
   const [activeStopId, setActiveStopId] = useState<StopId>(cargo.currentStopId);
   const [isMuted, setIsMuted] = useState<boolean>(sound.getMuted());
   // Shown once when an old save had to be sent back to an earlier stop.
@@ -105,8 +112,12 @@ export default function App() {
   };
 
   const handleSelectStop = (stopId: StopId) => {
-    if (loop === 2 && stopId !== 1) {
-      setNotice('Loop 2 prototype: only Norway has a buying desk so far.');
+    if (loop === 2 && stopId === 2) {
+      const price = procurement.phase === 'done' ? procurement.sale.price : null;
+      if (price === null) { setNotice('Finish Norway first: Germany’s silicon is the batch you sell there.'); return; }
+      if (!germany) setGermany(createTrade(GERMANY_MARKET, GERMANY_MARKET.intro, price));
+    } else if (loop === 2 && stopId !== 1) {
+      setNotice('Loop 2 prototype: only Norway and Germany have buying desks so far.');
       return;
     }
     setActiveStopId(stopId);
@@ -163,12 +174,21 @@ export default function App() {
         />
       )}
 
-      {view === 'workspace' && loop === 2 && (
+      {view === 'workspace' && loop === 2 && activeStopId === 1 && (
         <NorwayProcurement
           state={procurement}
           dispatch={dispatchProcurement}
           onReturnToMap={() => setView('map')}
-          onDone={() => { setNotice('Norway done for loop 2. Germany’s buying desk isn’t built yet.'); setView('map'); }}
+          onDone={() => { setNotice('Norway done for loop 2. Your silicon is on its way: click Germany.'); setView('map'); }}
+        />
+      )}
+
+      {view === 'workspace' && loop === 2 && activeStopId === 2 && germany && (
+        <GermanyProcurement
+          state={germany}
+          dispatch={dispatchGermany}
+          onReturnToMap={() => setView('map')}
+          onDone={() => { setNotice('Germany done for loop 2. Japan’s buying desk isn’t built yet.'); setView('map'); }}
         />
       )}
 

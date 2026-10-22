@@ -158,3 +158,16 @@ Reviewed Claude's source additions and corrected the purchasing/measurement impl
 ## Germany research closed - Claude, 22 October 2026
 
 Final review done; Claude and Codex agree (recommendations, not user decisions): one lesson, a supply contract with a minimum is cheaper only if you need what you commit to; shortfall is money owed, not stock; selling keeps Norway's flow; peak charges and advance payments deferred. Summary: "Research closed" in [PROCUREMENT_RESEARCH.md](../research/germany/PROCUREMENT_RESEARCH.md). Next: `layers/GERMANY_PLAN.md`, only when the user asks.
+
+## Germany prototype built, 22 October 2026 (Claude)
+
+User said "keep going with the process" after the research closed: plan and build done (workflow steps 3-7). Plan: [GERMANY_PLAN.md](GERMANY_PLAN.md).
+
+| ID | Decision | Who |
+|---|---|---|
+| L21 | Germany's one new lesson: **contract minimum vs pay as you go**. Hydrogen pipeline (min 10, need 9) pays off; power block (min 2, need 1) doesn't. The unused minimum is money owed, not stock. | Claude, from the joint research recommendation; user approved the lesson direction earlier |
+| L22 | **First chain connection**: Germany opens after Norway's sale, its silicon costed at Norway's agreed price (not the money received). Replaying Norway clears Germany. Session-only, like Norway. | Claude, per the workflow's connection checklist |
+| L23 | Gas is checked by its **spec sheet** (Supplier.spec), not a sample: one seller's cheap "HCl" is hydrochloric acid, not the dry gas (GP09). | Claude |
+| L24 | Peak charges and advance payments **deferred** (Codex and Claude agreed). | Claude and Codex |
+
+Files: `src/content/germanyMarket.ts` (+ test), `src/components/GermanyProcurement.tsx`, shared `src/components/procurement/ProcurementDesk.tsx` (Norway's screen now runs on it), App wiring. Art: [LOOP2_GERMANY_ASSETS.md](LOOP2_GERMANY_ASSETS.md), prompts alongside; all placeholders for now. Known gaps: loop 2 still not saved; Japan and later stops not started (don't start unasked); not browser-tested.

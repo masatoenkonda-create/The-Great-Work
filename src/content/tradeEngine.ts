@@ -14,6 +14,8 @@ export interface Terms {
   fee: number;
   /** Share of each lot the workcell can actually use (fines, rejects). */
   usable: number;
+  /** Agreement minimum: you pay for at least this many units, even if fewer are delivered (GP01, GP14). */
+  minimum?: number;
 }
 
 export interface Lever {
@@ -35,6 +37,8 @@ export interface Supplier {
   patience: number;
   /** The first invoice bills this many units more than delivered (a real, common error). */
   invoiceExtraUnits?: number;
+  /** What the spec sheet says; replaces the sample message where goods are checked on paper (gases). */
+  spec?: string;
 }
 
 /** Another possible customer: visiting gives a quote the player can show the main buyer. */
@@ -54,7 +58,20 @@ export interface Buyer {
   shortReason: string;
 }
 
-export interface Market { needs: Need[]; suppliers: Supplier[]; buyer: Buyer; cash: number; /** The guide's first line. */ intro: string }
+export interface Market {
+  needs: Need[]; suppliers: Supplier[]; buyer: Buyer; cash: number;
+  /** The guide's first line. */
+  intro: string;
+  /** Stop name for the result line, e.g. "Norway". */
+  place: string;
+  /** Guide lines when the factory starts and when the product is made. */
+  makeLine: string;
+  madeLine: string;
+  /** What would have warned the player about unusable goods, e.g. "A sample". */
+  checkHint: string;
+  /** The previous stop's product, already in the store at the price agreed there (chain model, L17). */
+  carried?: { name: string; unit: string; from: string };
+}
 
 export interface Order {
   id: string;
@@ -74,6 +91,8 @@ export interface Order {
 
 export interface TradeState {
   phase: 'buy' | 'make' | 'sell' | 'payment' | 'done';
+  /** What this stop paid the previous stop for its main input (0 at the first stop). */
+  carriedCost: number;
   /** Current terms per supplier, after negotiation. */
   terms: Record<string, Terms>;
   asked: Record<string, string[]>;
@@ -105,9 +124,9 @@ export type TradeAction =
   | { type: 'takePayment' } | { type: 'chasePayment' }
   | { type: 'retry' };
 
-export function createTrade(m: Market, message = m.intro): TradeState {
+export function createTrade(m: Market, message = m.intro, carriedCost = 0): TradeState {
   return {
-    phase: 'buy',
+    phase: 'buy', carriedCost,
     terms: Object.fromEntries(m.suppliers.map(s => [s.id, { ...s.terms }])),
     asked: {}, sampled: [], orders: [],
     sale: { offer: m.buyer.offer, asked: [], sparesSold: false, price: null, quotes: [], received: null, chased: false },
@@ -117,7 +136,11 @@ export function createTrade(m: Market, message = m.intro): TradeState {
 
 const supplier = (m: Market, id: string) => m.suppliers.find(s => s.id === id);
 export const needOf = (m: Market, item: string) => m.needs.find(n => n.id === item)!;
-export const orderCost = (t: Terms, lots: number) => t.lot * t.unitPrice * lots + t.fee;
+/** Billed units: what is delivered, or the agreement's minimum if that is more. */
+export const billedUnits = (t: Terms, lots: number) => Math.max(t.lot * lots, t.minimum ?? 0);
+export const orderCost = (t: Terms, lots: number) => billedUnits(t, lots) * t.unitPrice + t.fee;
+/** Units paid for under a minimum but never delivered: money owed, not stock. */
+export const unusedMinimum = (o: Order) => billedUnits(o.terms, o.lots) - o.terms.lot * o.lots;
 export const usableOf = (o: Order) => Math.floor(o.terms.lot * o.terms.usable) * o.lots;
 /** Usable units that passed the delivery check. */
 export const accepted = (s: TradeState, item: string) => s.orders.filter(o => o.item === item && o.checked).reduce((n, o) => n + usableOf(o), 0);
@@ -132,28 +155,28 @@ export const siliconInStore = (s: TradeState) => s.phase === 'sell' && s.sale.pr
 export const onOrder = (s: TradeState, item: string) => s.orders.filter(o => o.item === item && !o.checked).reduce((n, o) => n + usableOf(o), 0);
 export const missing = (m: Market, s: TradeState, item: string) => Math.max(0, needOf(m, item).need - accepted(s, item));
 export const paidTotal = (s: TradeState) => s.orders.reduce((n, o) => n + (o.paid ?? 0), 0);
-export const cashLeft = (m: Market, s: TradeState) => m.cash - paidTotal(s) + (s.sale.received ?? 0) + (s.sale.sparesSold ? sparesValue(m, s) : 0);
+export const cashLeft = (m: Market, s: TradeState) => m.cash - s.carriedCost - paidTotal(s) + (s.sale.received ?? 0) + (s.sale.sparesSold ? sparesValue(m, s) : 0);
 export const readyToMake = (m: Market, s: TradeState) => s.orders.every(o => o.paid !== null) && m.needs.every(n => missing(m, s, n.id) === 0);
 /** Best competing quote the player has collected (0 if none). */
 export const bestQuote = (m: Market, s: TradeState) => Math.max(0, ...m.buyer.competitors.filter(c => s.sale.quotes.includes(c.id)).map(c => c.quote));
 export const spares = (m: Market, s: TradeState) => m.needs.map(n => ({ need: n, units: Math.max(0, accepted(s, n.id) - n.need) })).filter(x => x.units > 0);
 export const sparesValue = (m: Market, s: TradeState) => spares(m, s).reduce((v, x) => v + x.units * x.need.resale, 0);
-/** Revenue minus everything paid. Positive is profit; the loop's goal is at least zero. */
+/** Revenue minus everything paid, including the carried input. Positive is profit; the loop's goal is at least zero. */
 export const profit = (m: Market, s: TradeState) => cashLeft(m, s) - m.cash;
 
 export function tradeReducer(m: Market, s: TradeState, a: TradeAction): TradeState {
   const say = (message: string, next: Partial<TradeState> = {}) => ({ ...s, ...next, message });
-  if (a.type === 'retry') return s.phase === 'done' ? createTrade(m) : s;
+  if (a.type === 'retry') return s.phase === 'done' ? createTrade(m, m.intro, s.carriedCost) : s;
 
   if (s.phase === 'buy') {
-    if (a.type === 'make') return readyToMake(m, s) ? say('Everything is in and paid for. Load the furnace!', { phase: 'make' }) : say('Not yet: something is missing, unchecked or unpaid.');
+    if (a.type === 'make') return readyToMake(m, s) ? say(m.makeLine, { phase: 'make' }) : say('Not yet: something is missing, unchecked or unpaid.');
     if (a.type === 'sample' || a.type === 'ask' || a.type === 'order') {
       const sup = supplier(m, a.supplierId);
       if (!sup) return s;
       const t = s.terms[sup.id];
       if (a.type === 'sample') {
         const usable = Math.floor(t.lot * t.usable);
-        return say(`${sup.name} sample: ${usable} of every ${t.lot} ${needOf(m, sup.item).unit} are usable.`, { sampled: [...new Set([...s.sampled, sup.id])] });
+        return say(sup.spec ? `${sup.name}, spec sheet: ${sup.spec}` : `${sup.name} sample: ${usable} of every ${t.lot} ${needOf(m, sup.item).unit} are usable.`, { sampled: [...new Set([...s.sampled, sup.id])] });
       }
       if (a.type === 'ask') {
         const asked = s.asked[sup.id] ?? [];
@@ -193,6 +216,7 @@ export function tradeReducer(m: Market, s: TradeState, a: TradeAction): TradeSta
       return say(o.invoice > o.expected ? `Paid $${o.invoice}. That was $${o.invoice - o.expected} more than the order said.` : `Paid $${o.invoice} to ${name}.`, { orders: set({ paid: o.invoice }) });
     }
     if (a.type === 'dispute' && o.checked && o.paid === null) {
+      if (o.invoice === o.expected && unusedMinimum(o) > 0) return say(`${name}: "The minimum of ${billedUnits(o.terms, o.lots)} ${unit} is in the agreement you signed." (It is.)`);
       return o.invoice > o.expected
         ? say(`${name}: "You're right, we billed one ${unit.replace(/s$/, '')} too many. Corrected to $${o.expected}."`, { orders: set({ invoice: o.expected, corrected: true }) })
         : say(`${name}: "We checked: the invoice matches your order." (Fair enough.)`);
@@ -200,7 +224,7 @@ export function tradeReducer(m: Market, s: TradeState, a: TradeAction): TradeSta
     return s;
   }
 
-  if (s.phase === 'make' && a.type === 'made') return say('Silicon metal, bagged. Now find out what it is worth.', { phase: 'sell' });
+  if (s.phase === 'make' && a.type === 'made') return say(m.madeLine, { phase: 'sell' });
 
   if (s.phase === 'sell') {
     if (a.type === 'getQuote') {
@@ -232,7 +256,7 @@ export function tradeReducer(m: Market, s: TradeState, a: TradeAction): TradeSta
     const next: TradeState = { ...s, phase: 'done', sale: { ...s.sale, received: chase ? s.sale.price : s.sale.received, chased: chase } };
     const p = profit(m, next);
     const head = chase ? `${m.buyer.name}: "You're right, that deduction wasn't in our deal. Paid in full." ` : '';
-    return { ...next, message: head + (p >= 0 ? `You made $${p} on Norway.` : `Norway cost you $${-p} more than it earned.`) };
+    return { ...next, message: head + (p >= 0 ? `You made $${p} on ${m.place}.` : `${m.place} cost you $${-p} more than it earned.`) };
   }
   return s;
 }
@@ -244,7 +268,16 @@ export function lessons(m: Market, s: TradeState): string[] {
   if (overpaid.length) out.push(`You paid an invoice without comparing it with the order: $${overpaid.reduce((n, o) => n + o.paid! - o.expected, 0)} lost.`);
   else if (s.orders.some(o => o.corrected)) out.push('You caught a wrong invoice. Checking paperwork is real money.');
   const wasted = s.orders.reduce((n, o) => n + (o.terms.lot * o.lots - usableOf(o)) * o.terms.unitPrice, 0);
-  if (wasted) out.push(`$${wasted} went on material you couldn't use. A sample would have warned you.`);
+  if (wasted) out.push(`$${wasted} went on material you couldn't use. ${m.checkHint} would have warned you.`);
+  // A contract mostly used is a good deal; one mostly unused is money for nothing.
+  for (const o of s.orders.filter(x => x.terms.minimum && x.paid !== null)) {
+    const name = supplier(m, o.supplierId)!.name;
+    const owed = unusedMinimum(o) * o.terms.unitPrice;
+    const unused = unusedMinimum(o) / billedUnits(o.terms, o.lots);
+    out.push(unused > 0.25
+      ? `${name}: you paid $${owed} under the contract minimum for supply you never took. A low rate is only cheaper if you need what you commit to.`
+      : `${name}: you used ${owed ? 'almost ' : ''}all of the contract minimum, so the lower rate really was cheaper.`);
+  }
   const asks = Object.values(s.asked).flat().length;
   out.push(asks ? `You negotiated ${asks} time${asks > 1 ? 's' : ''}. Some suppliers moved, some didn't: a small buyer has little power.` : 'You never negotiated. Every first price was accepted.');
   if (s.sale.asked.length === 0) out.push('You took the buyer’s first offer.');
