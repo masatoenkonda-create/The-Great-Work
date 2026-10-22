@@ -54,7 +54,16 @@ export const NORWAY_MARKET: Market = {
   ],
   buyer: {
     name: 'Greta’s plant, Germany',
-    offer: 560,
-    levers: [{ id: 'more', label: 'Ask for a better price', reply: 'Your silicon is good. $600, and that is final.', add: 40 }],
+    offer: 560, cap: 620, patience: 2,
+    levers: [
+      { id: 'more', label: 'Ask for a better price', reply: 'Fine, {offer}. That is a stretch for us.', add: 20 },
+      { id: 'match', label: 'Show a competing quote', reply: 'They pay that much? We need your silicon. We match: {offer}.', match: true },
+    ],
+    // Silicon metal also goes into aluminium alloys and silicones (Lead: not yet in the source register).
+    competitors: [
+      { id: 'alloy', name: 'Alloy Foundry', use: 'Mixes silicon into aluminium for car parts.', quote: 540, reply: 'For a batch like that? $540.' },
+      { id: 'silicones', name: 'Silicone Works', use: 'Turns silicon into silicones: sealants, oils and rubber.', quote: 610, reply: 'We would pay $610 for it.' },
+    ],
+    shortPay: 25, shortReason: 'a “handling fee” that was never in the deal',
   },
 };

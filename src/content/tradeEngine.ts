@@ -37,7 +37,22 @@ export interface Supplier {
   invoiceExtraUnits?: number;
 }
 
-export interface Buyer { name: string; offer: number; levers: { id: string; label: string; reply: string; add: number }[] }
+/** Another possible customer: visiting gives a quote the player can show the main buyer. */
+export interface Competitor { id: string; name: string; use: string; quote: number; reply: string }
+
+export interface Buyer {
+  name: string;
+  offer: number;
+  /** Highest price the buyer will ever pay, and how many asks before the offer is final. */
+  cap: number;
+  patience: number;
+  /** `add` raises the offer; `match` meets the best competing quote the player has seen. */
+  levers: { id: string; label: string; reply: string; add?: number; match?: boolean }[];
+  competitors: Competitor[];
+  /** The buyer's payment arrives short by this much, an unagreed deduction (the invoice lesson, other side). */
+  shortPay: number;
+  shortReason: string;
+}
 
 export interface Market { needs: Need[]; suppliers: Supplier[]; buyer: Buyer; cash: number; /** The guide's first line. */ intro: string }
 
@@ -58,13 +73,20 @@ export interface Order {
 }
 
 export interface TradeState {
-  phase: 'buy' | 'make' | 'sell' | 'done';
+  phase: 'buy' | 'make' | 'sell' | 'payment' | 'done';
   /** Current terms per supplier, after negotiation. */
   terms: Record<string, Terms>;
   asked: Record<string, string[]>;
   sampled: string[];
   orders: Order[];
-  sale: { offer: number; asked: string[]; sparesSold: boolean; price: number | null };
+  sale: {
+    offer: number; asked: string[]; sparesSold: boolean; price: number | null;
+    /** Competitors who gave a quote. */
+    quotes: string[];
+    /** What actually arrived in the bank; null until the buyer pays. */
+    received: number | null;
+    chased: boolean;
+  };
   message: string;
 }
 
@@ -76,9 +98,11 @@ export type TradeAction =
   | { type: 'pay'; orderId: string }
   | { type: 'dispute'; orderId: string }
   | { type: 'make' } | { type: 'made' }
+  | { type: 'getQuote'; competitorId: string }
   | { type: 'askBuyer'; leverId: string }
   | { type: 'sellSpares' }
   | { type: 'accept' }
+  | { type: 'takePayment' } | { type: 'chasePayment' }
   | { type: 'retry' };
 
 export function createTrade(m: Market, message = m.intro): TradeState {
@@ -86,7 +110,7 @@ export function createTrade(m: Market, message = m.intro): TradeState {
     phase: 'buy',
     terms: Object.fromEntries(m.suppliers.map(s => [s.id, { ...s.terms }])),
     asked: {}, sampled: [], orders: [],
-    sale: { offer: m.buyer.offer, asked: [], sparesSold: false, price: null },
+    sale: { offer: m.buyer.offer, asked: [], sparesSold: false, price: null, quotes: [], received: null, chased: false },
     message,
   };
 }
@@ -108,8 +132,10 @@ export const siliconInStore = (s: TradeState) => s.phase === 'sell' && s.sale.pr
 export const onOrder = (s: TradeState, item: string) => s.orders.filter(o => o.item === item && !o.checked).reduce((n, o) => n + usableOf(o), 0);
 export const missing = (m: Market, s: TradeState, item: string) => Math.max(0, needOf(m, item).need - accepted(s, item));
 export const paidTotal = (s: TradeState) => s.orders.reduce((n, o) => n + (o.paid ?? 0), 0);
-export const cashLeft = (m: Market, s: TradeState) => m.cash - paidTotal(s) + (s.sale.price ?? 0) + (s.sale.sparesSold ? sparesValue(m, s) : 0);
+export const cashLeft = (m: Market, s: TradeState) => m.cash - paidTotal(s) + (s.sale.received ?? 0) + (s.sale.sparesSold ? sparesValue(m, s) : 0);
 export const readyToMake = (m: Market, s: TradeState) => s.orders.every(o => o.paid !== null) && m.needs.every(n => missing(m, s, n.id) === 0);
+/** Best competing quote the player has collected (0 if none). */
+export const bestQuote = (m: Market, s: TradeState) => Math.max(0, ...m.buyer.competitors.filter(c => s.sale.quotes.includes(c.id)).map(c => c.quote));
 export const spares = (m: Market, s: TradeState) => m.needs.map(n => ({ need: n, units: Math.max(0, accepted(s, n.id) - n.need) })).filter(x => x.units > 0);
 export const sparesValue = (m: Market, s: TradeState) => spares(m, s).reduce((v, x) => v + x.units * x.need.resale, 0);
 /** Revenue minus everything paid. Positive is profit; the loop's goal is at least zero. */
@@ -177,19 +203,36 @@ export function tradeReducer(m: Market, s: TradeState, a: TradeAction): TradeSta
   if (s.phase === 'make' && a.type === 'made') return say('Silicon metal, bagged. Now find out what it is worth.', { phase: 'sell' });
 
   if (s.phase === 'sell') {
+    if (a.type === 'getQuote') {
+      const c = m.buyer.competitors.find(x => x.id === a.competitorId);
+      if (!c) return s;
+      return say(`${c.name}: "${c.reply}"`, { sale: { ...s.sale, quotes: [...new Set([...s.sale.quotes, c.id])] } });
+    }
     if (a.type === 'askBuyer') {
       const lever = m.buyer.levers.find(l => l.id === a.leverId);
       if (!lever || s.sale.asked.includes(lever.id)) return s;
-      return say(`${m.buyer.name}: "${lever.reply}"`, { sale: { ...s.sale, offer: s.sale.offer + lever.add, asked: [...s.sale.asked, lever.id] } });
+      if (s.sale.asked.length >= m.buyer.patience) return say(`${m.buyer.name}: "That is our final offer."`);
+      const quote = bestQuote(m, s);
+      if (lever.match && quote <= s.sale.offer) return say(`${m.buyer.name}: "Other buyers? Show me a better quote, then we can talk."`);
+      const offer = Math.min(m.buyer.cap, lever.match ? quote : s.sale.offer + (lever.add ?? 0));
+      return say(`${m.buyer.name}: "${lever.reply.replace('{offer}', `$${offer}`)}"`, { sale: { ...s.sale, offer, asked: [...s.sale.asked, lever.id] } });
     }
     if (a.type === 'sellSpares' && !s.sale.sparesSold && sparesValue(m, s) > 0) {
       return say(`Spares sold back for $${sparesValue(m, s)}: less than you paid, better than nothing.`, { sale: { ...s.sale, sparesSold: true } });
     }
     if (a.type === 'accept') {
-      const next = { ...s, sale: { ...s.sale, price: s.sale.offer } };
-      const p = profit(m, next);
-      return { ...next, phase: 'done', message: p >= 0 ? `Sold! You made $${p} on Norway.` : `Sold, but Norway cost you $${-p} more than it earned.` };
+      const price = s.sale.offer;
+      return say(`Deal at $${price}. You sent your invoice, and ${m.buyer.name} has paid $${price - m.buyer.shortPay}. Check it.`,
+        { phase: 'payment', sale: { ...s.sale, price, received: price - m.buyer.shortPay } });
     }
+  }
+
+  if (s.phase === 'payment' && (a.type === 'takePayment' || a.type === 'chasePayment')) {
+    const chase = a.type === 'chasePayment';
+    const next: TradeState = { ...s, phase: 'done', sale: { ...s.sale, received: chase ? s.sale.price : s.sale.received, chased: chase } };
+    const p = profit(m, next);
+    const head = chase ? `${m.buyer.name}: "You're right, that deduction wasn't in our deal. Paid in full." ` : '';
+    return { ...next, message: head + (p >= 0 ? `You made $${p} on Norway.` : `Norway cost you $${-p} more than it earned.`) };
   }
   return s;
 }
@@ -205,6 +248,9 @@ export function lessons(m: Market, s: TradeState): string[] {
   const asks = Object.values(s.asked).flat().length;
   out.push(asks ? `You negotiated ${asks} time${asks > 1 ? 's' : ''}. Some suppliers moved, some didn't: a small buyer has little power.` : 'You never negotiated. Every first price was accepted.');
   if (s.sale.asked.length === 0) out.push('You took the buyer’s first offer.');
+  if (s.sale.quotes.length === 0) out.push('You never asked other customers what they would pay. A competing quote is the strongest card in a negotiation.');
+  if (s.sale.price !== null && !s.sale.chased) out.push(`You accepted a payment $${m.buyer.shortPay} short of your invoice (${m.buyer.shortReason}).`);
+  else if (s.sale.chased) out.push('You checked the payment against your invoice and got the missing money: same paperwork, other side.');
   if (spares(m, s).length && !s.sale.sparesSold) out.push('Your spare stock is still in the shed: money sitting still.');
   return out;
 }

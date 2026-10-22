@@ -468,3 +468,10 @@ Tests: `npm run lint` passes; `bun test src` 41 pass. Browser: not run. Cut-outs
 - Reviewed Claude's product-art commit; inspected crushed quartz and bulk coal. Kept the assets; lightened the coal preview backing for legibility.
 - Added the two supplied JPEG originals unchanged, routed their product paths through the asset manifest, and retained white backgrounds to keep this prototype pass small. Hashes match.
 - Added a visual quartz sample result and explicit shortage/spare outcome to the order preview. No engine/economics change. TypeScript passes; 41 pass, 0 fail; build passes with existing bundle warning; no browser/playtest or new external research. Details in layers/HANDOFF.md. Uncommitted.
+
+## Loop 2 Norway: selling with quotes and payment check, clearer map - Claude, 22 October 2026
+
+- Committed Codex's wood-chip/power/sample-preview pass separately (`e822674`).
+- Selling: competing quotes from two other customers, quote matching, buyer patience and cap, then a short payment to check against the invoice. Map: colour-coded pins with product icons, status badges, legend, "Next:" bar; no more broken-image icons. Bigger store icons. Second art batch installed. Decisions L14–L16 in layers/HANDOFF.md.
+
+Tests: `npm run lint` passes; `bun test src` 42 pass. Browser: not run (user tests). Cut-outs checked by eye on dark preview sheets.

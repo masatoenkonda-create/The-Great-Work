@@ -13,7 +13,9 @@ function buy(s: TradeState, supplierId: string, lots = 1, dispute = false) {
   return tradeReducer(M, st, { type: 'pay', orderId: id });
 }
 const sell = (s: TradeState, haggle: boolean) =>
-  play([{ type: 'make' }, { type: 'made' }, ...(haggle ? [{ type: 'askBuyer', leverId: 'more' } as TradeAction] : []), { type: 'sellSpares' }, { type: 'accept' }], s);
+  play([{ type: 'make' }, { type: 'made' }, ...(haggle ? [
+    { type: 'getQuote', competitorId: 'silicones' }, { type: 'askBuyer', leverId: 'match' }, { type: 'askBuyer', leverId: 'more' },
+  ] as TradeAction[] : []), { type: 'sellSpares' }, { type: 'accept' }, haggle ? { type: 'chasePayment' } : { type: 'takePayment' }], s);
 
 describe('loop 2 trade engine (Norway)', () => {
   it('consumes inputs and removes sold goods without rewriting receipt evidence or crediting sales twice', () => {
@@ -97,5 +99,22 @@ describe('loop 2 trade engine (Norway)', () => {
     const text = lessons(M, s).join(' ');
     assert.match(text, /invoice/); assert.match(text, /sample/); assert.match(text, /first offer/);
   });
-});
 
+  it('a competing quote lifts the sale, and a short payment can be chased', () => {
+    let s: TradeState = { ...createTrade(M), phase: 'sell' };
+    s = tradeReducer(M, s, { type: 'askBuyer', leverId: 'match' });
+    assert.equal(s.sale.offer, 560, 'no quote yet: nothing to match');
+    s = tradeReducer(M, s, { type: 'getQuote', competitorId: 'silicones' });
+    s = tradeReducer(M, s, { type: 'askBuyer', leverId: 'match' });
+    assert.equal(s.sale.offer, 610);
+    s = tradeReducer(M, s, { type: 'askBuyer', leverId: 'more' });
+    assert.equal(s.sale.offer, 620, 'capped');
+    s = tradeReducer(M, s, { type: 'accept' });
+    assert.equal(s.phase, 'payment');
+    assert.equal(s.sale.received, 595);
+    const chased = tradeReducer(M, s, { type: 'chasePayment' });
+    assert.equal(chased.sale.received, 620);
+    assert.equal(chased.phase, 'done');
+    assert.equal(tradeReducer(M, s, { type: 'takePayment' }).sale.received, 595);
+  });
+});

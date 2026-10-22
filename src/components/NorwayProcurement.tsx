@@ -6,7 +6,7 @@ import { GuideBox } from './workshop/GuideBox';
 import { NORWAY_MARKET as M } from '../content/norwayMarket';
 import {
   TradeState, TradeAction, Supplier, Terms, accepted, stockOnHand, siliconInStore, needOf, orderCost, usableOf, missing,
-  readyToMake, cashLeft, paidTotal, spares, sparesValue, profit, lessons,
+  readyToMake, cashLeft, paidTotal, spares, sparesValue, profit, lessons, bestQuote,
 } from '../content/tradeEngine';
 
 interface Props {
@@ -30,6 +30,8 @@ const PINS: Record<string, { x: number; y: number; label: string }> = {
   harbour: { x: 975, y: 445, label: 'Harbour Coal' },
   sawmill: { x: 870, y: 645, label: 'Valley Sawmill' },
   customer: { x: 625, y: 705, label: 'To Germany · customer' },
+  alloy: { x: 330, y: 690, label: 'Alloy Foundry' },
+  silicones: { x: 1180, y: 600, label: 'Silicone Works' },
 };
 const SOURCES = {
   'source-plateau': { x: 235, y: 565, label: 'Plateau quarry', sellers: ['nordic'], detail: 'Nordic Minerals buys screened quartz here and stocks it at its depot. The depot is the seller; this quarry is the original source.' },
@@ -43,10 +45,80 @@ const ROUTES: Record<string, string> = {
   harbour: 'M975,445 L920,385 L830,390 L690,390',
   sawmill: 'M870,645 L800,560 L755,490 L720,430 L690,390',
   customer: 'M690,390 L680,490 L640,580 L625,705',
+  alloy: 'M690,390 L600,520 L450,640 L330,690',
+  silicones: 'M690,390 L830,390 L920,385 L1060,500 L1180,600',
 };
-const PIN_ART: Record<string, string> = { smelter: 'smelter', fjord: 'quarry', nordic: 'trader', hydro: 'power', bulk: 'bulk', harbour: 'harbour', sawmill: 'sawmill', customer: 'customer' };
+const PIN_ART: Record<string, string> = { smelter: 'smelter', fjord: 'quarry', nordic: 'trader', hydro: 'power', bulk: 'bulk', harbour: 'harbour', sawmill: 'sawmill', customer: 'customer', alloy: 'customer', silicones: 'customer' };
+const CUSTOMERS = ['customer', 'alloy', 'silicones'];
+/** Pin colour = what the place sells (suppliers) or that it buys from you (customers). */
+const ITEM_COLOR: Record<string, string> = { quartz: '#e2e8f0', carbon: '#64748b', chips: '#d97706', power: '#facc15', customer: '#3b82f6', smelter: '#f97316' };
+const LEGEND = [['quartz', 'Quartz'], ['carbon', 'Carbon'], ['chips', 'Wood chips'], ['power', 'Electricity'], ['customer', 'Buys your silicon']] as const;
+
+/** True once the image has loaded; SVG <image> shows a broken icon otherwise, so it is only drawn when present. */
+function useLoaded(src: string) {
+  const [ok, setOk] = useState(false);
+  useEffect(() => {
+    let live = true; const img = new Image();
+    img.onload = () => live && setOk(true); img.onerror = () => live && setOk(false); img.src = src;
+    return () => { live = false; };
+  }, [src]);
+  return ok;
+}
+
+/** One line telling the player what to do next. */
+function nextStep(s: TradeState) {
+  if (s.phase === 'buy') {
+    const gate = s.orders.find(o => !o.checked);
+    if (gate) return 'A truck is at the gate: check the delivery (right panel).';
+    if (s.orders.some(o => o.paid === null)) return 'An invoice is waiting: compare it with your order, then pay or dispute.';
+    const need = M.needs.find(n => missing(M, s, n.id) > 0);
+    if (need) return `Buy ${missing(M, s, need.id)} more ${need.unit} of ${need.name.toLowerCase()}: click a pin marked !`;
+    return 'Everything is in: click your smelter.';
+  }
+  if (s.phase === 'sell') return s.sale.quotes.length ? 'Show Germany your best quote, then sell.' : 'Ask the other customers what they pay, then negotiate with Germany.';
+  if (s.phase === 'payment') return 'Germany has paid: compare the payment with your invoice.';
+  return 'Done. Check your result, or try Norway again.';
+}
+
+function Pin({ id, p, s, open, onOpen }: { id: string; p: { x: number; y: number; label: string }; s: TradeState; open: boolean; onOpen: () => void }) {
+  const sup = M.suppliers.find(x => x.id === id);
+  const role = sup ? sup.item : CUSTOMERS.includes(id) ? 'customer' : 'smelter';
+  const size = id === 'smelter' ? 104 : 80;
+  const art = ASSETS.supply.pin(PIN_ART[id]);
+  const hasArt = useLoaded(art);
+  const iconSrc = sup ? ASSETS.supply.icon(ICON[sup.item].art) : role === 'customer' ? ASSETS.supply.icon('silicon') : '';
+  const hasIcon = useLoaded(iconSrc);
+  const sub = sup ? `sells ${needOf(M, sup.item).name.toLowerCase()}` : role === 'customer' ? (id === 'customer' ? 'next stop on your route' : 'another buyer') : 'makes silicon';
+  // Badge: ! still needed, ✓ covered, truck at the gate, $ ready to sell, GO ready to smelt.
+  let badge: { text: string; color: string; pulse?: boolean } | null = null;
+  if (sup && s.phase === 'buy') {
+    if (s.orders.some(o => o.supplierId === id && o.paid === null)) badge = { text: '🚚', color: '#f59e0b' };
+    else if (missing(M, s, sup.item) > 0) badge = { text: '!', color: '#ef4444', pulse: true };
+    else badge = { text: '✓', color: '#22c55e' };
+  }
+  if (id === 'smelter' && s.phase === 'buy' && readyToMake(M, s)) badge = { text: 'GO', color: '#22c55e', pulse: true };
+  if (role === 'customer' && s.phase === 'sell' && (id === 'customer' || !s.sale.quotes.includes(id))) badge = { text: '$', color: '#3b82f6', pulse: true };
+  const w = Math.max(p.label.length, sub.length) * 10 + 24;
+  return (
+    <g transform={`translate(${p.x},${p.y})`} onClick={onOpen} className="cursor-pointer" role="button" tabIndex={0} aria-label={`${p.label}, ${sub}`}
+      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpen(); } }}>
+      <circle r={size / 2 + 6} fill="#0c1821" opacity="0.55" />
+      <circle r={size / 2} fill={ITEM_COLOR[role]} stroke={open ? '#fcd34d' : '#1a0b02'} strokeWidth={open ? 8 : 5} />
+      {hasArt ? <image href={art} x={-size / 2} y={-size / 2} width={size} height={size} style={{ imageRendering: 'pixelated' }} />
+        : hasIcon ? <image href={iconSrc} x={-size * 0.32} y={-size * 0.32} width={size * 0.64} height={size * 0.64} />
+        : <text y="14" textAnchor="middle" fontSize="40">{role === 'smelter' ? '🏭' : role === 'customer' ? '💰' : '?'}</text>}
+      {badge && <g transform={`translate(${size / 2 - 8},${-size / 2 + 8})`}>
+        <circle r="17" fill={badge.color} stroke="#1a0b02" strokeWidth="3">{badge.pulse && <animate attributeName="r" values="15;19;15" dur="1.2s" repeatCount="indefinite" />}</circle>
+        <text y="7" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#fff">{badge.text}</text>
+      </g>}
+      <rect x={-w / 2} y={size / 2 + 8} width={w} height="48" rx="6" fill="#0c1821" stroke={ITEM_COLOR[role]} strokeWidth="3" opacity="0.92" />
+      <text y={size / 2 + 30} textAnchor="middle" fill="#fef3c7" fontSize="19" fontFamily="monospace" fontWeight="bold">{p.label}</text>
+      <text y={size / 2 + 49} textAnchor="middle" fill={ITEM_COLOR[role]} fontSize="15" fontFamily="monospace">{sub}</text>
+    </g>
+  );
+}
 const ICON: Record<string, { art: string; emoji: string }> = {
-  quartz: { art: 'quartz', emoji: '🪨' }, carbon: { art: 'carbon', emoji: '⚫' }, chips: { art: 'woodchips', emoji: '🪵' }, power: { art: 'power', emoji: '⚡' },
+  silicon: { art: 'silicon', emoji: '🥈' }, quartz: { art: 'quartz', emoji: '🪨' }, carbon: { art: 'carbon', emoji: '⚫' }, chips: { art: 'woodchips', emoji: '🪵' }, power: { art: 'power', emoji: '⚡' },
 };
 
 /** What the player is looking at when talking to a supplier. */
@@ -73,8 +145,8 @@ function ProductView({ id, label }: { id: string; label: string }) {
 
 function Icon({ item, faded }: { item: string; faded?: boolean }) {
   const i = ICON[item] ?? { art: item, emoji: '▪' };
-  return <span className={`inline-flex h-6 w-6 items-center justify-center ${faded ? 'opacity-25 grayscale' : ''}`}>
-    <Art src={ASSETS.supply.icon(i.art)} alt="" className="h-6 w-6" fallback={<span className="text-sm">{i.emoji}</span>} />
+  return <span className={`inline-flex h-9 w-9 items-center justify-center ${faded ? 'opacity-20 grayscale' : ''}`}>
+    <Art src={ASSETS.supply.icon(i.art)} alt="" className="h-9 w-9" fallback={<span className="text-lg">{i.emoji}</span>} />
   </span>;
 }
 
@@ -86,6 +158,7 @@ function Icon({ item, faded }: { item: string; faded?: boolean }) {
 export function NorwayProcurement({ state: s, dispatch, onReturnToMap, onDone }: Props) {
   const [open, setOpen] = useState<string | null>(null);
   const [mapFailed, setMapFailed] = useState(false);
+  const truckArt = useLoaded(ASSETS.supply.truck);
   const act = (a: TradeAction) => { sound.playSelect(); dispatch(a); };
 
   useEffect(() => {
@@ -99,7 +172,7 @@ export function NorwayProcurement({ state: s, dispatch, onReturnToMap, onDone }:
   }, [onReturnToMap, s.phase, open]);
 
   // After the furnace, send the player towards the customer.
-  useEffect(() => { if (s.phase === 'sell' || s.phase === 'done') setOpen('customer'); }, [s.phase]);
+  useEffect(() => { if (s.phase === 'payment' || s.phase === 'done') setOpen('customer'); }, [s.phase]);
 
   if (s.phase === 'make') {
     // The workshop stays exactly as in loop 1 (user decision, 22 October 2026).
@@ -109,7 +182,7 @@ export function NorwayProcurement({ state: s, dispatch, onReturnToMap, onDone }:
   const cash = cashLeft(M, s);
   const lastOrder = s.orders.at(-1);
   const inbox = s.orders.filter(o => o.paid === null);
-  const made = s.phase === 'sell' || s.phase === 'done';
+  const made = s.phase !== 'buy';
 
   return (
     <section className="flex h-full flex-col overflow-hidden bg-[#0c1821] text-slate-100 lg:flex-row" aria-label="Norway supplier map">
@@ -132,36 +205,29 @@ export function NorwayProcurement({ state: s, dispatch, onReturnToMap, onDone }:
           {lastOrder && lastOrder.paid === null && !lastOrder.checked && (
             <g key={lastOrder.id}>
               {lastOrder.item === 'power' ? <path d="M4,-20 L-12,4 H0 L-4,20 L14,-5 H2 Z" fill="#fde68a" /> : <>
-                <rect x="-18" y="-10" width="36" height="20" rx="3" fill="#f59e0b" stroke="#1a0b02" strokeWidth="3" />
-                <image href={ASSETS.supply.truck} x="-32" y="-16" width="64" height="32" style={{ imageRendering: 'pixelated' }} />
+                {truckArt ? <image href={ASSETS.supply.truck} x="-40" y="-20" width="80" height="40" style={{ imageRendering: 'pixelated' }} />
+                  : <><rect x="-26" y="-14" width="52" height="28" rx="4" fill="#f59e0b" stroke="#1a0b02" strokeWidth="4" /><text y="8" textAnchor="middle" fontSize="20">🚚</text></>}
               </>}
               <animateMotion dur="1.6s" fill="freeze" path={ROUTES[lastOrder.supplierId]} />
             </g>
           )}
-          {Object.entries(PINS).map(([id, p]) => {
-            const size = id === 'smelter' ? 96 : 64;
-            return (
-              <g key={id} transform={`translate(${p.x},${p.y})`} onClick={() => { sound.playClick(); setOpen(id); }} className="cursor-pointer" role="button" tabIndex={0} aria-label={p.label}
-                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen(id); } }}>
-                <circle r={size / 2} fill={open === id ? '#fcd34d' : id === 'smelter' ? '#f97316' : id === 'customer' ? '#60a5fa' : '#e7e5e4'} stroke="#1a0b02" strokeWidth="4" />
-                <image href={ASSETS.supply.pin(PIN_ART[id])} x={-size / 2} y={-size / 2} width={size} height={size} style={{ imageRendering: 'pixelated' }} />
-                <rect x={-p.label.length * 5.2 - 8} y={size / 2 + 6} width={p.label.length * 10.4 + 16} height="28" rx="4" fill="#0c1821" opacity="0.85" />
-                <text y={size / 2 + 26} textAnchor="middle" fill="#fef3c7" fontSize="18" fontFamily="monospace" fontWeight="bold">{p.label}</text>
-              </g>
-            );
-          })}
+          {Object.entries(PINS).map(([id, p]) => <Pin key={id} id={id} p={p} s={s} open={open === id} onOpen={() => { sound.playClick(); setOpen(id); }} />)}
         </svg>
 
         <div className="absolute left-3 top-3 flex gap-2">
           <button onClick={onReturnToMap} className="rounded-lg border border-white/30 bg-[#0c1821]/90 px-3 py-2 text-xs">← World map</button>
-          <p className="rounded-lg bg-[#0c1821]/90 px-3 py-2 text-xs text-amber-300">Loop 2 · Norway · {s.phase === 'buy' ? 'buy what the furnace needs' : s.phase === 'sell' ? 'sell your silicon' : 'result'}</p>
+          <p className="rounded-lg border-2 border-amber-300 bg-[#0c1821]/95 px-3 py-2 text-sm font-semibold text-amber-200">▶ Next: {nextStep(s)}</p>
         </div>
+        <ul className="absolute bottom-3 right-3 hidden gap-3 rounded-lg bg-[#0c1821]/90 px-3 py-2 text-xs md:flex" aria-label="Map legend">
+          {LEGEND.map(([k, label]) => <li key={k} className="flex items-center gap-1.5"><span className="h-3.5 w-3.5 rounded-full border-2 border-black" style={{ background: ITEM_COLOR[k] }} />{label}</li>)}
+        </ul>
 
         {open && (
           <div className="absolute inset-x-3 bottom-3 top-14 mx-auto max-w-md overflow-y-auto rounded-2xl border-4 border-[#1a0b02] bg-[#13232d] p-4 shadow-[6px_6px_0_#1a0b02] sm:inset-x-auto sm:left-6">
             <button onClick={() => setOpen(null)} className="float-right rounded border border-white/20 px-2 text-sm" aria-label="Close">✕</button>
             {open === 'smelter' ? <SmelterPanel s={s} act={act} />
               : open === 'customer' ? <CustomerPanel s={s} act={act} onDone={onDone} />
+              : open === 'alloy' || open === 'silicones' ? <CompetitorPanel id={open} s={s} act={act} />
               : open in SOURCES ? <div className="space-y-3"><h2 className="font-bold">{SOURCES[open as keyof typeof SOURCES].label}</h2><p className="text-sm">{SOURCES[open as keyof typeof SOURCES].detail}</p>
                 {SOURCES[open as keyof typeof SOURCES].sellers.map(id => <button className={`${btn} mr-2`} key={id} onClick={() => setOpen(id)}>Visit {PINS[id].label}</button>)}</div>
               : <SupplierPanel key={open} sup={M.suppliers.find(x => x.id === open)!} s={s} act={act} />}
@@ -185,7 +251,7 @@ export function NorwayProcurement({ state: s, dispatch, onReturnToMap, onDone }:
                 <p className="text-xs">{n.name} <span className="text-slate-400">{made ? `${have} ${n.unit} left${s.sale.sparesSold && n.resale > 0 ? ' · spares sold' : ''}` : `${Math.min(have, n.need)}/${n.need} ${n.unit}${have > n.need ? ` · ${have - n.need} spare` : ''}`}</span></p>
                 <div className="flex flex-wrap">
                   {Array.from({ length: made ? Math.min(have, 12) : n.need }, (_, i) => <Icon key={i} item={n.id} faded={!made && i >= have} />)}
-                  {fines > 0 && <span className="ml-1 inline-flex items-center text-[10px] text-amber-400"><Art src={ASSETS.supply.icon('fines')} alt="" className="h-6 w-6" fallback={<span>░</span>} />×{fines} fines</span>}
+                  {fines > 0 && <span className="ml-1 inline-flex items-center text-[10px] text-amber-400"><Art src={ASSETS.supply.icon('fines')} alt="" className="h-8 w-8" fallback={<span>░</span>} />×{fines} fines</span>}
                 </div>
               </div>
             );
@@ -200,7 +266,7 @@ export function NorwayProcurement({ state: s, dispatch, onReturnToMap, onDone }:
               const bought = o.terms.lot * o.lots;
               return (
                 <div key={o.id} className="rounded border border-white/10 p-2">
-                  <p>{o.checked ? '📄' : '🚚'} <b>{o.id}</b> {sup.name}: {bought} {needOf(M, o.item).unit}</p>
+                  <p className="flex items-center gap-1">{o.checked ? <Art src={ASSETS.supply.icon('invoice')} alt="" className="h-7 w-7" fallback={<span>📄</span>} /> : '🚚'} <b>{o.id}</b> {sup.name}: {bought} {needOf(M, o.item).unit}</p>
                   {!o.checked
                     ? <button className={`${btn} mt-1`} onClick={() => act({ type: 'check', orderId: o.id })}>Check the delivery</button>
                     : <>
@@ -314,16 +380,29 @@ function CustomerPanel({ s, act, onDone }: { s: TradeState; act: (a: TradeAction
       </div>}
       {s.phase === 'sell' && <>
         <p className="text-2xl font-bold">offers {$(s.sale.offer)}</p>
+        <p className="text-xs text-slate-300">Your inputs cost {$(paidTotal(s))}. Asks left: {Math.max(0, M.buyer.patience - s.sale.asked.length)}.{bestQuote(M, s) ? ` Best other quote: ${$(bestQuote(M, s))}.` : ' Other customers on the map can give you a quote.'}</p>
         <div className="flex flex-wrap gap-1.5">
-          {M.buyer.levers.map(l => <button key={l.id} className={btn} disabled={s.sale.asked.includes(l.id)} onClick={() => act({ type: 'askBuyer', leverId: l.id })}>💬 {l.label}</button>)}
+          {M.buyer.levers.map(l => <button key={l.id} className={btn} disabled={s.sale.asked.includes(l.id) || s.sale.asked.length >= M.buyer.patience} onClick={() => act({ type: 'askBuyer', leverId: l.id })}>
+            💬 {l.label}{l.match && bestQuote(M, s) ? ` (${$(bestQuote(M, s))})` : ''}</button>)}
           {spares(M, s).length > 0 && <button className={btn} disabled={s.sale.sparesSold} onClick={() => act({ type: 'sellSpares' })}>{s.sale.sparesSold ? 'Spares sold' : `Sell spares for ${$(sparesValue(M, s))}`}</button>}
         </div>
         <button className={primary} onClick={() => act({ type: 'accept' })}>Sell for {$(s.sale.offer)}</button>
       </>}
+      {s.phase === 'payment' && <div className="space-y-2 rounded-lg border border-amber-300/50 bg-amber-300/5 p-3 text-sm">
+        <p className="flex items-center gap-2 font-bold"><Art src={ASSETS.supply.icon('invoice')} alt="" className="h-8 w-8" fallback={<span>📄</span>} />Payment received</p>
+        <table className="w-full font-mono"><tbody>
+          <tr><td className="font-sans">Your invoice</td><td className="text-right">{$(s.sale.price ?? 0)}</td></tr>
+          <tr><td className="font-sans">Money in your bank</td><td className="text-right">{$(s.sale.received ?? 0)}</td></tr>
+        </tbody></table>
+        <div className="flex gap-2">
+          <button className={btn} onClick={() => act({ type: 'takePayment' })}>Accept the payment</button>
+          <button className={btn} onClick={() => act({ type: 'chasePayment' })}>Chase the difference</button>
+        </div>
+      </div>}
       {s.phase === 'done' && <>
         <table className="w-full font-mono text-sm"><tbody>
           <tr><td className="py-1 font-sans">Spent on inputs</td><td className="text-right">{$(-paidTotal(s))}</td></tr>
-          <tr><td className="py-1 font-sans">Silicon sold</td><td className="text-right">{$(s.sale.price ?? 0)}</td></tr>
+          <tr><td className="py-1 font-sans">Silicon sold (paid)</td><td className="text-right">{$(s.sale.received ?? 0)}</td></tr>
           {s.sale.sparesSold && <tr><td className="py-1 font-sans">Spares sold</td><td className="text-right">{$(sparesValue(M, s))}</td></tr>}
           <tr className="border-t border-white/30 text-lg font-bold"><td className="py-2 font-sans">{p >= 0 ? 'Profit' : 'Your bill'}</td><td className={`text-right ${p >= 0 ? 'text-emerald-300' : 'text-red-300'}`}>{$(p)}</td></tr>
         </tbody></table>
@@ -348,5 +427,22 @@ function MapPlaceholder() {
       <ellipse cx="170" cy="560" rx="160" ry="110" fill="#c8c39a" />
       {[[700, 560], [740, 640], [830, 700], [680, 680], [880, 560], [760, 520]].map(([x, y]) => <circle key={`${x}${y}`} cx={x} cy={y} r="34" fill="#2f5d34" />)}
     </g>
+  );
+}
+
+/** Another buyer of silicon metal: gives a quote the player can use with Germany. */
+function CompetitorPanel({ id, s, act }: { id: string; s: TradeState; act: (a: TradeAction) => void }) {
+  const c = M.buyer.competitors.find(x => x.id === id)!;
+  const quoted = s.sale.quotes.includes(id);
+  return (
+    <div className="space-y-3">
+      <ProductView id="silicon" label="Silicon metal" />
+      <div><p className="font-bold">{c.name}</p><p className="text-xs text-slate-400">{c.use}</p></div>
+      {s.phase === 'buy' && <p className="text-sm">"Make your silicon first, then ask us for a quote."</p>}
+      {s.phase === 'sell' && (quoted
+        ? <p className="rounded-lg bg-sky-300/10 p-3 text-sm">Quote: <b>{$(c.quote)}</b>. Your chip's route goes through Germany, so use this quote as leverage with Greta's plant.</p>
+        : <button className={primary} onClick={() => act({ type: 'getQuote', competitorId: id })}>Ask for a quote</button>)}
+      {(s.phase === 'payment' || s.phase === 'done') && <p className="text-sm text-slate-400">You sold to Germany.</p>}
+    </div>
   );
 }

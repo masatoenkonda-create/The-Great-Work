@@ -68,3 +68,17 @@ Reviewed Claude's latest commit 483bd05: five product assets and documentation, 
 Installed the user's wood-chip sacks and electricity-pylon/switch-box JPEGs unchanged as product_woodchips.jpg and product_power.jpg; manifest selects those exact formats. Both hashes match the supplied originals. White backgrounds intentionally retained for this prototype, matching a white product-view backing. Other product files stay PNGs.
 
 Small UI changes: sampled quartz now shows chunks versus fines in a visual strip; the order preview states whether the selected quantity leaves a shortage or creates spare stock. Engine, prices, map, full manufacturing and selling untouched. Checks: TypeScript passes; 41 pass, 0 fail across 9 files; build passes (existing bundle warning); whitespace clean. No browser/playtest or external source research. User tests. Uncommitted for Claude.
+
+## Selling, map clarity and second art batch, 22 October 2026 (Claude)
+
+User playtest: "the level works"; selling is the weakest part; the map is hard to read (screenshot showed broken-image icons on pins, tiny store icons).
+
+| ID | Decision | Who |
+|---|---|---|
+| L14 | **Selling has its own procurement-style steps**: two other customers (Alloy Foundry, Silicone Works) give quotes; the player can show the best quote to Germany ("Show a competing quote" matches it), ask for more (buyer has patience 2 and a $620 cap); after the sale, Germany's **payment arrives $25 short** and the player compares it with their invoice (Accept or Chase). The chip still goes to Germany: other customers are leverage only. | Claude, from user feedback |
+| L15 | Map pins are **coloured by what they sell** (quartz, carbon, chips, power; blue = buys your silicon), show the product icon inside, a sub-label ("sells quartz"), and a **badge**: red ! still needed, ✓ covered, 🚚 at the gate, GO (smelter ready), $ (customer to visit). A legend and a **"Next:" bar** sit on the map. | Claude |
+| L16 | Store icons are bigger (36 px). Missing art never shows a broken image (SVG images only drawn after they load). | Claude |
+
+Engine: `Buyer` gained `cap`, `patience`, `competitors`, `shortPay`; new phase `payment`; actions `getQuote`, `takePayment`, `chasePayment`; `bestQuote()`. Careful play now ends about +$44 (was +$24); careless about −$140. Tests 42 pass.
+
+Art installed (cut from the user's Gemini JPGs, transparent PNG): products `woodchips`, `power`, `silicon` (512 × 384); icons `quartz` and `woodchips` (made from the product pictures), `carbon`, `power`, `silicon`, `fines`, `invoice` (64 × 64). Codex's `product_woodchips.jpg`/`product_power.jpg` replaced by the PNG cut-outs; `ASSETS.supply.product` back to `.png`. Still placeholders: pins, truck, portraits. Silicon-metal end uses (alloys, silicones) are a **Lead**, not yet in the source register.
