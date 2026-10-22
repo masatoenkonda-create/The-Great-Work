@@ -424,3 +424,13 @@ Placeholders: all prices, lots, odds and the $1B bill are teaching values, not m
 - Replaced random supplier-card outcomes with a source map, sample/specification checks, negotiated preparation/pack terms, purchase orders and receipt acceptance. Quartz bought is distinct from usable chunks. The furnace requires accepted stock, starts with supplied feed rather than mining again, and spending survives world-map navigation.
 - Replaced the old random-risk model/five tests with norwaySourcing.ts and ten engine tests. Prices, quantities, yields and supplier places are fictional teaching values. Auxiliary inputs remain simple; reload persistence and the rest of loop 2 are deferred.
 - Checks: npm.cmd run lint exit 0; bun test src: 43 pass, 0 fail; production build: built in 783ms, existing bundle-size warning. Browser/playtest not run; left to the user. Five source sections reopened, as recorded in the review. Work uncommitted.
+
+## Loop 2 Norway: buy → make → sell engine - Claude, 22 October 2026
+
+- User playtest: the first prototype was "just clicking", Codex's revision too text-heavy. User idea: buying means selling too; balance costs across the step, success = a $0 bill or a profit; wanted negotiation and a real procurement process.
+- New shared engine `src/content/tradeEngine.ts` (pure reducer, reusable by any stop) + Norway data `src/content/norwayMarket.ts`. Each input goes through the real purchase-to-pay steps: quote (lot × price, usable share unknown until sampled) → negotiate (each supplier has 1–2 asks and a patience limit; some agree, some refuse) → order (choose lots) → check the delivery (fines show up as unusable) → check the invoice (Harbour Coal's first invoice bills one bag too many; Pay or Dispute) → paid. Then the furnace (Codex's supplied-feed start kept), then **sell the silicon to Germany** (one counter-offer) and sell spares back at a loss. Result: spent, earned, profit or "your bill", plus one lesson per thing done or missed. No clock, no dice.
+- Kept from Codex: bought ≠ usable (fines), receipt check before use, furnace skips mining, state held in App across map visits. Replaced Codex's `norwaySourcing.ts` (and its tests) and its supply-map screen with the shorter card layout; origins are one line on each supplier card.
+- Tuned so careful play just breaks even (about +$20) and careless play loses about $100.
+
+Tests: `npm run lint` passes; `bun test src` 38 pass (5 new engine tests). Browser: not run (user tests).
+Placeholders: fictional suppliers, teaching prices; plain cards, no art; loop state not saved on reload.
