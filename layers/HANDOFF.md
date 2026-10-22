@@ -150,3 +150,7 @@ Selected passages read in 4 saved primary PDFs and 7 primary web pages; 2 PDF pa
 ## Germany research review - Claude, 22 October 2026
 
 Reviewed and extended Codex's Germany research: see "Claude's review and additions" in [PROCUREMENT_RESEARCH.md](../research/germany/PROCUREMENT_RESEARCH.md). GP01, GP02, GP05 confirmed; new GP12-GP14. Supports keeping Germany's lesson (contract vs pay-as-you-go); adds the electricity peak charge as a candidate for showing power. No new user decisions; next is the one-page `layers/GERMANY_PLAN.md` when the user asks.
+
+## Germany research reviewed and improved - Codex, 22 October 2026
+
+Reviewed Claude's source additions and corrected the purchasing/measurement implications in [Germany research](../research/germany/PROCUREMENT_RESEARCH.md), final Codex section. Added GP15 (read regulator reform announcement) and two inspected page renders. Recommend retaining minimum commitment as the sole new lesson and deferring peak-based workshop penalties and advance-payment mechanics. Contract quantities, fixed-price exposure and metered demand are distinct; the court award included future-term damages. No new user decision, plan, implementation or application tests. Source/local-link/whitespace checks recorded in the country handoff; changes uncommitted.

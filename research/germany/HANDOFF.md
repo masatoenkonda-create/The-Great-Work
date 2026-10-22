@@ -82,3 +82,11 @@ Application tests/build/browser: not run (research/documentation only). Source-f
 ## Loop 2 research review - Claude, 22 October 2026
 
 Reviewed Codex's procurement research and added GP12-GP14 (grid-fee price sheet, StromNEV, Hemlock v. SolarWorld) plus three more GP02 passages, in [PROCUREMENT_RESEARCH.md](PROCUREMENT_RESEARCH.md). Codex's checked records hold. No plan, code or art. Research only; nothing run.
+
+## Loop 2 review corrections and contribution - Codex, 22 October 2026
+
+Reviewed Claude's `dfb4591` and integrated corrections in [PROCUREMENT_RESEARCH.md](PROCUREMENT_RESEARCH.md); read its final Codex section for the current recommendation. GP12's levy reference is p. 10; GP02's flexible-volume passage is p. 89. Qualified the undisclosed electricity delivery profile, advance-payment liability balance, annual-maximum metering and court damages (future-term termination clause, not only an unused year's invoice). Added GP15, a read regulator announcement on the 2029 reform timetable; no full plant-specific legal review claimed.
+
+Keep minimum commitment as the one new procurement lesson. Codex recommends deferring workshop peak tracking and advance-payment mechanics: these add distinct consequences and require additional models. Any later advance must reduce the outstanding sale balance, and an unused payment obligation must not create stock. These are agent recommendations, not new user decisions or a Germany plan.
+
+Read selected passages in 4 existing PDFs (GP02, GP12-GP14), GP05/GP15 web releases and live § 19. Two new rendered-page inspections saved. Live § 17/PDF requests timed out; other source records/leads not reopened. Local links and whitespace checked; application tests/build/browser not run. No game code or art changed; uncommitted for Claude.

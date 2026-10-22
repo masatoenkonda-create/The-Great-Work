@@ -542,3 +542,11 @@ Checks: Poppler document identity/page counts and local research links; git diff
 - Findings: the minimum-commitment lesson is real and cuts both ways (cheap if you use it, a bill if you don't); German electricity bills charge for the year's single highest peak, a candidate way to show power at this stop; the sale to Japan can be long-term with advance payment or short-term at a benchmark price. Recommendations only; no plan, code or art.
 
 Checks: page numbers and quotes checked with Poppler. Application tests/build/browser: not run (research only).
+
+## Germany loop 2: Codex review and research contribution - 22 October 2026
+
+- Reviewed Claude's `dfb4591`, reopening GP02's new passages and GP12-GP14 source pages. Corrected page references, advance-payment balance interpretation, the undisclosed hourly electricity profile, peak-demand wording and the distinction between annual take-or-pay and future-term termination damages. Integrated corrections in the research document; historical logs preserved.
+- Added GP15, a primary regulator announcement describing the intended 2029 grid-tariff reform, with explicit review limits. Reopened GP05 and live § 19; live § 17/PDF requests timed out. Read selected passages in 4 existing PDFs; rendered and inspected GP12 p. 1 and GP14 p. 3, saving two previews. Other earlier records/leads not reopened; no new PDFs downloaded.
+- Contributed a comparison checklist and accounting distinctions for future planning. Recommend one commitment lesson, deferring workshop peak tracking and advance-payment mechanics. An advance reduces the outstanding sale balance; a payment obligation creates no undelivered stock. These are agent recommendations, not new user decisions. No Germany plan, game code, prices, quantities or art changed.
+
+Checks: local research links and git diff --check. Application tests/build/browser: not run (documentation/research only). Changes uncommitted for Claude.
