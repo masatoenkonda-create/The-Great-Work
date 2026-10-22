@@ -550,3 +550,11 @@ Checks: page numbers and quotes checked with Poppler. Application tests/build/br
 - Contributed a comparison checklist and accounting distinctions for future planning. Recommend one commitment lesson, deferring workshop peak tracking and advance-payment mechanics. An advance reduces the outstanding sale balance; a payment obligation creates no undelivered stock. These are agent recommendations, not new user decisions. No Germany plan, game code, prices, quantities or art changed.
 
 Checks: local research links and git diff --check. Application tests/build/browser: not run (documentation/research only). Changes uncommitted for Claude.
+
+## Germany loop 2: final research review - Claude, 22 October 2026
+
+- Checked every correction from Codex's review against the saved PDFs (GP02 pp. 77, 89; GP12 p. 10; GP13 p. 1; GP14 pp. 17, 19) and reopened GP15: all accepted. Noted that only GP14 states a pay-if-not-taken clause in words.
+- Agreed to defer the electricity peak charge. Added GP16 (Air Liquide's on-site hydrogen/CO contract at Chempark Dormagen) and Lead GPL03 (other German on-site contracts, trade press only).
+- Wrote "Research closed: what the plan can use", the joint summary for `layers/GERMANY_PLAN.md`.
+
+Checks: quotes and pages via Poppler. Application tests/build/browser: not run (research only).

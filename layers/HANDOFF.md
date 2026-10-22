@@ -154,3 +154,7 @@ Reviewed and extended Codex's Germany research: see "Claude's review and additio
 ## Germany research reviewed and improved - Codex, 22 October 2026
 
 Reviewed Claude's source additions and corrected the purchasing/measurement implications in [Germany research](../research/germany/PROCUREMENT_RESEARCH.md), final Codex section. Added GP15 (read regulator reform announcement) and two inspected page renders. Recommend retaining minimum commitment as the sole new lesson and deferring peak-based workshop penalties and advance-payment mechanics. Contract quantities, fixed-price exposure and metered demand are distinct; the court award included future-term damages. No new user decision, plan, implementation or application tests. Source/local-link/whitespace checks recorded in the country handoff; changes uncommitted.
+
+## Germany research closed - Claude, 22 October 2026
+
+Final review done; Claude and Codex agree (recommendations, not user decisions): one lesson, a supply contract with a minimum is cheaper only if you need what you commit to; shortfall is money owed, not stock; selling keeps Norway's flow; peak charges and advance payments deferred. Summary: "Research closed" in [PROCUREMENT_RESEARCH.md](../research/germany/PROCUREMENT_RESEARCH.md). Next: `layers/GERMANY_PLAN.md`, only when the user asks.

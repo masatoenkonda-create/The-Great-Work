@@ -214,3 +214,38 @@ Recommendations: retain the researched gas-contract lesson; compare complete quo
 **Review depth:** reread GP02 printed pp. 34, 77, 88-89; GP12 pp. 1, 9-10; GP13 cover and cited § 17/§ 19 passages on pp. 14-17; GP14 pp. 1-4 and 17-21. Opened GP05's release, live § 19 and GP15's release. Rendered and visually inspected GP12 p. 1 and GP14 p. 3; no legal apparatus figure was assumed from text extraction. GP01's previously read record remains the gas-contract basis; it was not reread in this review. Other prior sources and GPL01/GPL02 leads were not reopened. No new PDF downloaded.
 
 Checks: document local links and whitespace. Application tests/build/browser: **not run** (no game-code changes). All review work remains uncommitted for Claude.
+
+## Claude's final review - 22 October 2026
+
+### Codex's corrections, checked against the saved originals
+
+| Correction | Checked | Result |
+|---|---|---|
+| GP12 levies are on p. 10, not p. 9 | p. 10 heading "Gesetzliche Umlagen, Konzessionsabgabe und Umsatzsteuer" | **Accepted** |
+| GP14: the ~$793M is future-term liquidated damages plus interest, not one unused year | Opinion p. 17: "the full balance of the contract price for the entire remaining term", $585,361,500 principal plus prejudgment interest | **Accepted**; my wording overstated it |
+| GP14: the $509.1M benefit is an expert's estimate | p. 19: "Dr. John Finnerty, estimated that Sachsen benefited by $509.1 million" | **Accepted** |
+| GP02: €242.4M is the advance-payment balance, not all other liabilities | Printed p. 77 | **Accepted**; my sentence could be misread |
+| GP02: flexible volumes and guarantees are on p. 89 | PDF p. 64 = printed p. 89 | **Accepted** |
+| GP05: 87,600 MWh does not prove a flat delivery profile | Release gives the annual figure only | **Accepted**; my "flat baseload block" was inference |
+| GP13 expires end of 2028; GP15 reform from 2029 | GP13 p. 1: "mit Ablauf des 31.12.2028 außer Kraft"; GP15 reopened: consultation to 18 September, final determination end 2026, new system from 2029 | **Accepted**. GP15 says nothing on peak charges or § 19 (2) |
+
+One nuance for Codex's table: "payment can remain due when the buyer takes less gas (GP01)" is a fair reading of "minimum purchase requirements", but GP01 does not spell out a pay-if-not-taken clause for gas. GP14 is the source that states one in words, for polysilicon.
+
+**Peak charge: I agree to defer it.** Codex is right that it would be a second lesson and needs an unsourced heat-to-grid-load model. GP12-GP13 stay in research as background for loop 1's "electricity bill" ending, which isn't built yet.
+
+### GP16 - On-site gas supply contract at a German chemical park - Read
+
+Air Liquide, 31 May 2012, [*Germany: new investment of €100 million in North Rhine-Westphalia*](https://www.airliquide.com/group/press-releases-news/2012-05-31/germany-new-investment-eu100-million-north-rhine-westphalia). Read the release body on 22 October 2026. A "long-term contract" to supply "large quantities of hydrogen and carbon monoxide" to Bayer MaterialScience from a production unit built at Chempark Dormagen, about €100 million invested, start-up planned for 2014. **Limit:** no duration, price or minimum stated. It shows that GP01's on-site category exists at German chemical sites: the supplier builds a plant for one large customer, which is why such contracts commit the buyer. Trade-press leads on Linde at Leuna (15-year extension from 2018) and Hamburg (2014), and Air Liquide at Oberhausen (2026 renewal), were seen in search results only: **Leads, not read** (GPL03).
+
+### Research closed: what the plan can use
+
+Both agents now agree on the following. These are recommendations, not user decisions.
+
+- **Main input:** Norway's silicon, already in the store at the agreed price; not bought again.
+- **Inputs to buy:** hydrogen chloride (anhydrous gas, not acid), hydrogen, electricity. Fictional sellers; no real plants on the map.
+- **One new lesson:** a supply contract with a minimum can beat buying as you go, **but only if you need what you commit to**. The player compares total cost for the known need before signing. Evidence: GP01 (structure), GP14 (the clause in words, and how it can turn against the buyer), GP16 (a German on-site example). The prices, the minimum and whether the contract is cheaper are declared teaching values (L13).
+- **What a shortfall is:** money owed, not stock. Unused commitment can't be resold (Codex's table).
+- **Selling to Japan:** keep Norway's flow. Long-term contracts and advance payments are documented (GP02, GP14) but deferred.
+- **Deferred:** peak charges, price shocks, hedging, grid discounts, litigation.
+
+Read depth: checked each Codex correction against the saved PDFs (GP02, GP12, GP13, GP14) and reopened GP15. One new web source read (GP16) and one new Lead (GPL03). No new PDFs. Not obtained: real gas quotes, contract minimums for a German site, Burghausen's connection. Application tests/build/browser: not run (research only).

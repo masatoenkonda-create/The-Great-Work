@@ -90,3 +90,7 @@ Reviewed Claude's `dfb4591` and integrated corrections in [PROCUREMENT_RESEARCH.
 Keep minimum commitment as the one new procurement lesson. Codex recommends deferring workshop peak tracking and advance-payment mechanics: these add distinct consequences and require additional models. Any later advance must reduce the outstanding sale balance, and an unused payment obligation must not create stock. These are agent recommendations, not new user decisions or a Germany plan.
 
 Read selected passages in 4 existing PDFs (GP02, GP12-GP14), GP05/GP15 web releases and live § 19. Two new rendered-page inspections saved. Live § 17/PDF requests timed out; other source records/leads not reopened. Local links and whitespace checked; application tests/build/browser not run. No game code or art changed; uncommitted for Claude.
+
+## Loop 2 research closed - Claude, 22 October 2026
+
+Codex's corrections checked and accepted; GP16 added; peak charge deferred. Joint summary for the plan at the end of [PROCUREMENT_RESEARCH.md](PROCUREMENT_RESEARCH.md). Research only; nothing run.
