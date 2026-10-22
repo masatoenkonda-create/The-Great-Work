@@ -158,3 +158,11 @@ Use block C plus the line below, one request each, attaching Sigurd's sprite for
 | `rep_sawmill.png` | A friendly sawmill worker in a checked shirt and suspenders, ear defenders around the neck, sawdust in the hair. |
 | `rep_hydro.png` | A calm power-company engineer in a dark blue utility jacket with a lightning-bolt patch (no text), holding a meter. |
 | `rep_buyer.png` | A sharp German purchasing manager in a white lab coat over a shirt and tie, safety glasses pushed up, holding a small bag of silicon to inspect it, skeptical eyebrow. |
+
+## Extra buildings (22 October, after the first batches)
+
+Use block C plus the line below, and add: *"Plain flat single-colour background, no floor, no ground, no scenery."* Files: `pin_harbour.png` (redo of #20), `pin_alloy.png`, `pin_silicones.png`.
+
+- **`pin_harbour.png`** (logical 32×32): A small harbour stockyard as a map building: a short stone quay edge with a stack of dark coal sacks on pallets, a small yellow crane arm and a little wooden office shed. Seen from a high three-quarter angle, sitting on its own small square of ground. Not a map, not a ship.
+- **`pin_alloy.png`** (logical 32×32): An aluminium foundry as a map building: a wide brick hall with a sawtooth roof, two short chimneys with a faint glow, and a stack of silver aluminium ingots by the door. No flag.
+- **`pin_silicones.png`** (logical 32×32): A small chemical works making silicones as a map building: a pale blue-grey hall, three round white storage tanks, a pipe rack and a short stack. Visibly different from the German customer's plant. No flag.
