@@ -455,3 +455,10 @@ Placeholders: everything visual on this screen.
 - Integrated the user's original coastal JPEG at public/assets/supply/norway_map.jpg, byte-for-byte unchanged. Full-image SVG coordinate system, terrain-based pins/routes, upstream source markers, keyboard access and stacked narrow layout.
 - Store now reflects consumed inputs, unsold silicon and sold spares; purchasing evidence and revenue arithmetic are preserved. Reset supplier quantities on company change, show Germany's opening offer before buying, and show before/after negotiation terms. Reset sample knowledge after material-preparation changes and retry changed image assets after a missing-file fallback. Full manufacturing and selling retained.
 - Tests: TypeScript exit 0; 41 pass, 0 fail across 9 files; build built in 707ms, existing bundle-size warning; whitespace check clean. Asset hashes match. No browser/playtest or external source research; map origins remain fictional illustration. Pin alignment and feel left to the user. See layers/HANDOFF.md. Uncommitted for Claude.
+
+## First loop 2 art installed - Claude, 22 October 2026
+
+- Committed Codex's map/review pass separately (`ec674e0`; reviewed the engine diff: stock on hand after the furnace, fresh sample after a preparation change; 41 pass).
+- Installed five product views from the user's Gemini images (background removed, 512 × 384 transparent PNG); details in layers/HANDOFF.md. Added a "no floor" tip to the prompt file for the remaining assets.
+
+Tests: `npm run lint` passes; `bun test src` 41 pass. Browser: not run. Cut-outs checked by eye on a dark preview sheet.

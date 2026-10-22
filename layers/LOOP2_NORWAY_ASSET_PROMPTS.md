@@ -2,6 +2,8 @@
 
 Claude, 22 October 2026. One prompt per asset, for the files in [LOOP2_NORWAY_ASSETS.md](LOOP2_NORWAY_ASSETS.md). Each prompt = **one shared block (A, B or C) + the asset's own lines**. Paste both into the same request and attach the approved world map (and, for B and C, one finished asset from the same group) so the style stays consistent.
 
+**Tip from the first batch (22 Oct):** Gemini returns a JPG on white instead of a transparent PNG; that's fine, Claude cuts the white away. But twice it added a sci-fi **floor** under the object, which is hard to remove. Add this line to every block B/C request: *"Plain pure white background, no floor, no ground, no scenery."*
+
 Gemini rarely outputs exact sizes. That's fine: send the image as it comes and Claude scales it to size with nearest-neighbour (no blur) and trims transparent padding. Only the proportions matter.
 
 ---
