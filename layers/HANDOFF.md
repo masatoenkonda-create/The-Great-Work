@@ -171,3 +171,12 @@ User said "keep going with the process" after the research closed: plan and buil
 | L24 | Peak charges and advance payments **deferred** (Codex and Claude agreed). | Claude and Codex |
 
 Files: `src/content/germanyMarket.ts` (+ test), `src/components/GermanyProcurement.tsx`, shared `src/components/procurement/ProcurementDesk.tsx` (Norway's screen now runs on it), App wiring. Art: [LOOP2_GERMANY_ASSETS.md](LOOP2_GERMANY_ASSETS.md), prompts alongside; all placeholders for now. Known gaps: loop 2 still not saved; Japan and later stops not started (don't start unasked); not browser-tested.
+
+## Parked for the night, 22 October 2026 (Claude)
+
+All of today's Claude and Codex work is committed; the working tree is clean. **Resume here tomorrow:**
+
+1. The user plays loop 2: `?loop=2` → Norway (now on the shared desk; should play as before) → Germany. Fix what they report first.
+2. Open question for the user: does the contract minimum read clearly on the order and the invoice?
+3. Germany art: the user makes it from [LOOP2_GERMANY_ASSET_PROMPTS.md](LOOP2_GERMANY_ASSET_PROMPTS.md); install into `public/assets/supply/germany/` (workflow step 8). Norway still misses `pin_harbour`.
+4. Still open: L18 (TV price as the loop score), loop 2 not saved on reload. Japan is **not** started; wait for the user.
