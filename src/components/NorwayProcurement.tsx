@@ -393,7 +393,7 @@ function CustomerPanel({ s, act, onDone }: { s: TradeState; act: (a: TradeAction
           <tr className="border-t border-white/30 text-lg font-bold"><td className="py-2 font-sans">{p >= 0 ? 'Profit' : 'Your bill'}</td><td className={`text-right ${p >= 0 ? 'text-emerald-300' : 'text-red-300'}`}>{$(p)}</td></tr>
         </tbody></table>
         <p className="rounded-lg border border-sky-300/40 bg-sky-300/5 p-3 text-sm">
-          <b>The chain:</b> Greta’s plant paid {$(s.sale.received ?? 0)} for your silicon. In Germany, that is the starting cost of their main input.
+          <b>The chain:</b> Greta’s plant agreed to pay {$(s.sale.price ?? 0)} for your silicon. In Germany, that is the starting cost of their main input.
           Every stop adds its costs, and the TV’s price at home is the sum of the whole chain.
         </p>
         <ul className="space-y-1 text-sm">{lessons(M, s).map(l => <li key={l}>• {l}</li>)}</ul>

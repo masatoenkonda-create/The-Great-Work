@@ -500,3 +500,10 @@ Tests: not run (documentation and a standalone script; no game code changed).
 Reviewed PROCUREMENT_WORKFLOW.md against today's build log, decisions L01-L20, game vision and active engine/App entry points. Integrated Codex's contribution into the main instructions rather than creating a competing workflow. Added the session's iteration history, reusable visual/economic rules, source/seller and stock/evidence distinctions, input/price/identity checklist for the chosen factory chain, incremental art handling, and bounded review/playtest cadence. Clarified that cross-country loop-2 handoffs are not implemented and the per-country lesson table is optional/unverified, not a build order. Corrected the commit instruction: Codex leaves work uncommitted unless asked. Existing logs preserved.
 
 Checks: workflow local links PASS; no unfilled Codex placeholder; git diff --check clean. Application tests/build/browser: not run (documentation only). No new external source research or game-code changes. Work uncommitted for Claude.
+
+## Procurement workflow review - Claude, 22 October 2026
+
+- Committed Codex's expansion of PROCUREMENT_WORKFLOW.md separately (`f5ed7f4`). Kept its additions (session history table, chain-connection checklist, testing/reporting rules). Restored the user-approved one-lesson-per-stop direction, which Codex had relabelled as optional; added the stop goal (L05: $0 bill or a profit).
+- Norway result text now names the **agreed** price as Germany's starting cost (Codex's point: a short payment is settled separately, not a price change).
+
+Tests: `npm run lint` passes. Browser: not run.
