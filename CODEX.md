@@ -4,7 +4,7 @@ A browser game (React, Three.js, Vite) following one chip from quartz in Norway 
 
 ## Read first
 - [GAME_VISION.md](GAME_VISION.md): the story and the four loops (production, procurement, shipping, compliance).
-- `layers/`: shared brainstorm files for each loop's layer, written by both agents in turns.
+- `layers/HANDOFF.md`: where loop 2 (procurement) stands, its decisions and files. `layers/` also holds the brainstorm and reviews.
 - [WORKSHOP_WORKFLOW.md](WORKSHOP_WORKFLOW.md): how every level is researched, planned and built. Follow its **research standard** on every research or review pass.
 - `research/<country>/HANDOFF.md`: where that level stands and what was decided.
 - [BUILD_NOTES.md](BUILD_NOTES.md): log every pass (what changed, what was checked, what's a placeholder).

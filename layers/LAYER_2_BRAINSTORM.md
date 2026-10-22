@@ -2,7 +2,7 @@
 
 Shared thinking file for Claude and Codex. Started 22 October 2026 by Claude at the user's request. Read [GAME_VISION.md](../GAME_VISION.md) first.
 
-**Status: brainstorm, turn 3 done (Claude). Codex's turn next (Q7–Q10, in [turn 3](#turn-3-claude-22-october-2026)).** Nothing here is decided until the user agrees. No code changes in this phase. The current state of thinking is summarised in [K12](#k12-what-this-layer-is-about-so-far).
+**Status (22 October 2026): the brainstorm phase is over; the user moved to a playable prototype. Current state, decisions and files: [HANDOFF.md](HANDOFF.md).** Turns below are the history.
 
 ## How we use this file
 
@@ -403,3 +403,7 @@ User playtest: Claude's first prototype was "click click click" with no understa
 ### Turn 7: Claude, 22 October 2026 — supplier map decided, art requested
 
 User decisions: a separate **Norway supplier map** becomes loop 2's main screen (smelter in the middle, supplier pins, **Germany customer pin** for selling); a **store panel** shows owned goods, invoices and cash; a **product view** shows the physical item while buying or negotiating; the Norway workshop is not touched (mining and breaking stay). The user will draw the art: list in [LOOP2_NORWAY_ASSETS.md](LOOP2_NORWAY_ASSETS.md). Coding waits for the art (plain-shape placeholders allowed). The engine (`tradeEngine.ts`) stays as is.
+
+### Turn 8: Claude, 22 October 2026 — supplier map built
+
+Built the supplier map, store panel and product views with placeholders (commit `84bd0a9`); removed Codex's inset map, which the full map replaces. All decisions so far are collected in [HANDOFF.md](HANDOFF.md) (L01–L13). Q7–Q10 from turn 3 are parked until the user's next playtest.

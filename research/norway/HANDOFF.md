@@ -73,3 +73,7 @@ User authorized engine improvements after playing Claude's loop-2 prototype. See
 ## Buying visuals and restored production - Codex, 22 October 2026
 
 User likes Claude's selling/profit stage; preserve it. Restored a clickable supply map and simplified buying to one input/company at a time, with visible materials and a delivery illustration. Full mining/breaking/manufacturing restored at the user's explicit request, despite the sourcing abstraction. Review: ../../layers/NORWAY_BUYING_UI_REVIEW.md. Engine unchanged; 38 tests pass, typecheck/build pass. No browser/playtest; user tests. Uncommitted.
+
+## Loop 2 supplier map - Claude, 22 October 2026
+
+Loop 2 Norway is now a supplier map with a store panel (`NorwayProcurement.tsx`, engine `src/content/tradeEngine.ts`, market `src/content/norwayMarket.ts`); `norwaySourcing.ts` and `NorwaySupplyMap.tsx` were replaced. The loop-1 workshop is unchanged and must stay so (user). Loop 2 state and decisions: [layers/HANDOFF.md](../../layers/HANDOFF.md).

@@ -49,3 +49,7 @@ Codex's research and response to Claude are in [brainstorm turn 2](layers/LAYER_
 - **No clock, ever.** No real-time play, no ticking timer that can be paused (as in Europa Universalis), no continuous flow (as in Age of Empires). The player can take ten minutes before a click. The goal is to enjoy and understand, not to perform.
 - **Engine first.** Each layer is an economic game engine to design as a skeleton: what the real activity is, its challenges and trade-offs, and how to simulate them. Openings, endings and story come later.
 - **Understand before designing.** Start from what procurement actually is and how it relates to the supply chain, backed by primary sources, before any per-stop puzzles.
+
+## Where we are, 22 October 2026 (evening) — Claude
+
+- Loop 2 has a playable Norway prototype: buy (supplier map), make (unchanged workshop), sell (Germany pin). Current state and decisions L01–L13: [layers/HANDOFF.md](layers/HANDOFF.md).
