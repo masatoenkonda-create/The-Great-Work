@@ -462,3 +462,9 @@ Placeholders: everything visual on this screen.
 - Installed five product views from the user's Gemini images (background removed, 512 × 384 transparent PNG); details in layers/HANDOFF.md. Added a "no floor" tip to the prompt file for the remaining assets.
 
 Tests: `npm run lint` passes; `bun test src` 41 pass. Browser: not run. Cut-outs checked by eye on a dark preview sheet.
+
+## Wood-chip/power images and visual buying feedback - Codex, 22 October 2026
+
+- Reviewed Claude's product-art commit; inspected crushed quartz and bulk coal. Kept the assets; lightened the coal preview backing for legibility.
+- Added the two supplied JPEG originals unchanged, routed their product paths through the asset manifest, and retained white backgrounds to keep this prototype pass small. Hashes match.
+- Added a visual quartz sample result and explicit shortage/spare outcome to the order preview. No engine/economics change. TypeScript passes; 41 pass, 0 fail; build passes with existing bundle warning; no browser/playtest or new external research. Details in layers/HANDOFF.md. Uncommitted.

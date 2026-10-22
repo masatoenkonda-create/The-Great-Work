@@ -64,7 +64,7 @@ function Art({ src, alt, className, fallback }: { src: string; alt: string; clas
 function ProductView({ id, label }: { id: string; label: string }) {
   const emoji = id.startsWith('quartz') ? (id === 'quartz_sieve' ? '🪨⛏' : '🪨') : id.startsWith('coal') ? '⚫' : id === 'woodchips' ? '🪵' : id === 'power' ? '⚡' : '🥈';
   return (
-    <div className="flex aspect-[4/3] w-full items-center justify-center overflow-hidden rounded-lg border border-white/10 bg-black/30">
+    <div className={`flex aspect-[4/3] w-full items-center justify-center overflow-hidden rounded-lg border border-white/10 ${id === 'woodchips' || id === 'power' ? 'bg-white' : id === 'coal_bulk' ? 'bg-[#83929c]' : 'bg-black/30'}`}>
       <Art src={ASSETS.supply.product(id)} alt={label} className="h-full w-full object-contain"
         fallback={<div className="text-center"><p className="text-5xl">{emoji}</p><p className="mt-1 text-xs text-slate-400">{label} (placeholder)</p></div>} />
     </div>
@@ -233,6 +233,8 @@ function SupplierPanel({ sup, s, act }: { sup: Supplier; s: TradeState; act: (a:
   const tired = asked.length >= sup.patience;
   const sampled = s.sampled.includes(sup.id);
   const pending = s.orders.some(o => o.supplierId === sup.id && o.paid === null);
+  const usable = Math.floor(t.lot * t.usable) * lots;
+  const needed = missing(M, s, n.id);
   return (
     <div className="space-y-3">
       <ProductView id={productOf(sup, s)} label={n.name} />
@@ -243,6 +245,14 @@ function SupplierPanel({ sup, s, act }: { sup: Supplier; s: TradeState; act: (a:
       <p className="text-xs text-slate-300">You need {missing(M, s, n.id)} more {n.unit} of {n.name.toLowerCase()}.</p>
       <p className="font-mono">{t.lot} {n.unit} × {$(t.unitPrice)}{t.fee ? ` + ${$(t.fee)} fee` : ''} = <b>{$(orderCost(t, 1))}</b></p>
       <p className="text-xs">Usable: {sampled ? `${Math.floor(t.lot * t.usable)} of ${t.lot}` : '? (ask for a sample)'}</p>
+      {sampled && sup.item === 'quartz' && <div className="rounded-lg border border-sky-300/25 bg-sky-300/5 p-3" aria-label="Quartz sample result">
+        <div className="mb-2 flex flex-wrap items-end gap-1 border-b-4 border-slate-500 pb-1" aria-hidden="true">
+          {Array.from({ length: Math.min(t.lot, 25) }, (_, i) => <span key={i} className={i < Math.floor(Math.min(t.lot, 25) * t.usable)
+            ? 'h-4 w-4 rotate-12 rounded-sm bg-slate-200' : 'h-1.5 w-1.5 rounded-full bg-amber-500'} />)}
+        </div>
+        <p className="text-xs text-sky-100">{Math.floor(t.lot * t.usable)} usable chunks · {t.lot - Math.floor(t.lot * t.usable)} fines per lot.</p>
+        <p className="mt-1 text-xs text-slate-300">{t.usable < 1 ? 'The small pieces fall through the feed screen. They do not count toward the furnace charge.' : 'Screened chunks meet this charge’s size requirement.'}</p>
+      </div>}
       <div className="flex flex-wrap gap-1.5">
         <button className={btn} disabled={sampled || s.phase !== 'buy'} onClick={() => act({ type: 'sample', supplierId: sup.id })}>🔍 Sample</button>
         {sup.levers.map(l => <button key={l.id} className={btn} disabled={asked.includes(l.id) || tired || s.phase !== 'buy'} onClick={() => {
@@ -267,6 +277,10 @@ function SupplierPanel({ sup, s, act }: { sup: Supplier; s: TradeState; act: (a:
         </button>
       </div>
       <p className="text-xs text-slate-300">This order: {t.lot * lots} {n.unit}, {sampled ? `${Math.floor(t.lot * t.usable) * lots} usable` : 'usable amount untested'}, {$(orderCost(t, lots))} total.</p>
+      {sampled && <p className={`rounded-lg p-2 text-xs ${usable < needed ? 'bg-amber-300/10 text-amber-200' : 'bg-emerald-300/10 text-emerald-200'}`}>
+        {usable < needed ? `This order leaves you ${needed - usable} ${n.unit} short.` : needed === 0 ? `You already have enough. This adds ${usable} spare ${n.unit}.` : `This covers the remaining need${usable > needed ? ` and adds ${usable - needed} spare ${n.unit}` : ' exactly'}.`}
+        {' '}Only checked deliveries count in your store.
+      </p>}
     </div>
   );
 }

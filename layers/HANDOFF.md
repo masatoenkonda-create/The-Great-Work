@@ -60,3 +60,11 @@ Checks: npm.cmd run lint exit 0; bun test src: 41 pass, 0 fail across 9 files; n
 ## Art received, 22 October 2026 (Claude)
 
 First user art batch installed in `public/assets/supply/`: `product_quartz_crushed`, `product_quartz_screened`, `product_quartz_sieve`, `product_coal_bags`, `product_coal_bulk` (512 × 384 PNG, 2× the spec size, transparent). Gemini delivered white-background JPGs; Claude removed the background (flood fill from the edges). Crushed quartz and the coal heap came with a floor: the coal heap was cut along its outline; crushed quartz reused the screened image's shape (same composition) widened to keep the sand. Originals stay in the user's Downloads folder. Still placeholders: wood chips, power, silicon, all icons, pins, truck, portraits.
+
+## Wood/power art and buying clarity - Codex, 22 October 2026
+
+Reviewed Claude's latest commit 483bd05: five product assets and documentation, no engine changes. Inspected the crushed-quartz and bulk-coal PNGs; kept both. Coal is dark, so its product-view backing is now lighter for contrast. Some fine outline/floor remnants in the cut-outs can wait; no image reprocessing in this pass.
+
+Installed the user's wood-chip sacks and electricity-pylon/switch-box JPEGs unchanged as product_woodchips.jpg and product_power.jpg; manifest selects those exact formats. Both hashes match the supplied originals. White backgrounds intentionally retained for this prototype, matching a white product-view backing. Other product files stay PNGs.
+
+Small UI changes: sampled quartz now shows chunks versus fines in a visual strip; the order preview states whether the selected quantity leaves a shortage or creates spare stock. Engine, prices, map, full manufacturing and selling untouched. Checks: TypeScript passes; 41 pass, 0 fail across 9 files; build passes (existing bundle warning); whitespace clean. No browser/playtest or external source research. User tests. Uncommitted for Claude.

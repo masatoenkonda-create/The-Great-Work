@@ -33,7 +33,8 @@ export const ASSETS = {
   supply: {
     norwayMap: '/assets/supply/norway_map.jpg',
     truck: '/assets/supply/truck.png',
-    product: (id: string) => `/assets/supply/product_${id}.png`,
+    // Keep the latest supplied JPEG originals intact; earlier cut-outs remain PNGs.
+    product: (id: string) => `/assets/supply/product_${id}.${id === 'woodchips' || id === 'power' ? 'jpg' : 'png'}`,
     icon: (id: string) => `/assets/supply/icon_${id}.png`,
     pin: (id: string) => `/assets/supply/pin_${id}.png`,
     rep: (id: string) => `/assets/supply/rep_${id}.png`,

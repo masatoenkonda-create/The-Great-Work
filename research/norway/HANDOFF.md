@@ -81,3 +81,7 @@ Loop 2 Norway is now a supplier map with a store panel (`NorwayProcurement.tsx`,
 ## Supplied coastal map and review fixes - Codex, 22 October 2026
 
 User authorized the review recommendations and supplied the map. Added the original JPEG, full-image coordinates and upstream source pins; fixed stock lifecycle, supplier quantity reset, early customer offer and negotiation comparison. Full mining/breaking sequence and selling retained. Detailed handoff: ../../layers/HANDOFF.md (latest entry). TypeScript/build pass; 41 tests pass. No browser/playtest; user checks artwork alignment and interaction. No external research; illustrative origins and teaching terms. Uncommitted.
+
+## Two more product images - Codex, 22 October 2026
+
+Installed user's wood-chip and power JPEGs unchanged; added visible quartz sample composition and order-shortage/spare feedback. Lightened bulk-coal preview backing. Engine/full manufacturing/selling retained. TypeScript/build pass; 41 tests pass; user playtests. No source research. See ../../layers/HANDOFF.md, latest entry. Uncommitted.
