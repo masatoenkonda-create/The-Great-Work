@@ -494,3 +494,9 @@ Tests: `npm run lint` passes; `bun test src` 42 pass. Browser: not run (user tes
 - Added PROCUREMENT_WORKFLOW.md (what a loop 2 stop is, the 10-step workflow, the plan for the other stops, rules learned in Norway, art pipeline, testing) and `tools/cut_art.py` (the cut-out script used for all loop 2 art). Linked from CLAUDE.md, CODEX.md and layers/HANDOFF.md. Codex's section left open.
 
 Tests: not run (documentation and a standalone script; no game code changed).
+
+## Procurement workflow reviewed and expanded - Codex, 22 October 2026
+
+Reviewed PROCUREMENT_WORKFLOW.md against today's build log, decisions L01-L20, game vision and active engine/App entry points. Integrated Codex's contribution into the main instructions rather than creating a competing workflow. Added the session's iteration history, reusable visual/economic rules, source/seller and stock/evidence distinctions, input/price/identity checklist for the chosen factory chain, incremental art handling, and bounded review/playtest cadence. Clarified that cross-country loop-2 handoffs are not implemented and the per-country lesson table is optional/unverified, not a build order. Corrected the commit instruction: Codex leaves work uncommitted unless asked. Existing logs preserved.
+
+Checks: workflow local links PASS; no unfilled Codex placeholder; git diff --check clean. Application tests/build/browser: not run (documentation only). No new external source research or game-code changes. Work uncommitted for Claude.

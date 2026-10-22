@@ -122,3 +122,7 @@ Replaced L15's coloured pins, badges, legend and pulsing; kept the "Next:" line 
 ## Workflow file, 22 October 2026 (Claude)
 
 The user asked for the session's workflow as an instruction file for building every other loop 2 stop: [PROCUREMENT_WORKFLOW.md](../PROCUREMENT_WORKFLOW.md). Codex will add its own section. Art cut-out script saved as `tools/cut_art.py`.
+
+## Workflow review contribution - Codex, 22 October 2026
+
+PROCUREMENT_WORKFLOW.md now contains one integrated Claude/Codex workflow: session history, practical country steps, visuals/art pipeline, economic invariants and a future chain-connection checklist. Candidate country lessons remain leads; no new mechanic per country is compulsory. Cross-country transfer/save contracts are explicitly not built. L18 scoring still needs confirmation. Codex's commit rule corrected to leave changes uncommitted unless requested. Local links/whitespace pass; no application tests, browser testing, external research or game-code changes. Follow this file for each requested country, without repeating Norway's rejected prototype detours.
