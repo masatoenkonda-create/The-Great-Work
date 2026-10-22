@@ -82,3 +82,9 @@ User playtest: "the level works"; selling is the weakest part; the map is hard t
 Engine: `Buyer` gained `cap`, `patience`, `competitors`, `shortPay`; new phase `payment`; actions `getQuote`, `takePayment`, `chasePayment`; `bestQuote()`. Careful play now ends about +$44 (was +$24); careless about −$157 (no spares sold, short payment accepted). Tests 42 pass.
 
 Art installed (cut from the user's Gemini JPGs, transparent PNG): products `woodchips`, `power`, `silicon` (512 × 384); icons `quartz` and `woodchips` (made from the product pictures), `carbon`, `power`, `silicon`, `fines`, `invoice` (64 × 64). Codex's `product_woodchips.jpg`/`product_power.jpg` replaced by the PNG cut-outs; `ASSETS.supply.product` back to `.png`. Still placeholders: pins, truck, portraits. Silicon-metal end uses (alloys, silicones) are a **Lead**, not yet in the source register.
+
+## Pin art, 22 October 2026 (Claude)
+
+Installed `pin_smelter` (192 × 192), `pin_quarry`, `pin_trader` (128 × 128), cut from the user's Gemini JPGs (flat dark background removed). They replace the coloured-disc icons automatically; no code change. The harbour image came out as a blurry world map, so it was **not** installed: `pin_harbour` still needs a redo (and `pin_bulk`, `pin_sawmill`, `pin_power`, `pin_customer`, truck, portraits remain placeholders).
+
+**Open design question (user, 22 Oct), not decided, no code yet:** procurement must happen at every stop from Norway to China. If Norway sells its silicon to Germany, what does the player do on arriving in Germany? To discuss before any loop 2 work on Germany.
