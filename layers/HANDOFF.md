@@ -79,6 +79,6 @@ User playtest: "the level works"; selling is the weakest part; the map is hard t
 | L15 | Map pins are **coloured by what they sell** (quartz, carbon, chips, power; blue = buys your silicon), show the product icon inside, a sub-label ("sells quartz"), and a **badge**: red ! still needed, ✓ covered, 🚚 at the gate, GO (smelter ready), $ (customer to visit). A legend and a **"Next:" bar** sit on the map. | Claude |
 | L16 | Store icons are bigger (36 px). Missing art never shows a broken image (SVG images only drawn after they load). | Claude |
 
-Engine: `Buyer` gained `cap`, `patience`, `competitors`, `shortPay`; new phase `payment`; actions `getQuote`, `takePayment`, `chasePayment`; `bestQuote()`. Careful play now ends about +$44 (was +$24); careless about −$140. Tests 42 pass.
+Engine: `Buyer` gained `cap`, `patience`, `competitors`, `shortPay`; new phase `payment`; actions `getQuote`, `takePayment`, `chasePayment`; `bestQuote()`. Careful play now ends about +$44 (was +$24); careless about −$157 (no spares sold, short payment accepted). Tests 42 pass.
 
 Art installed (cut from the user's Gemini JPGs, transparent PNG): products `woodchips`, `power`, `silicon` (512 × 384); icons `quartz` and `woodchips` (made from the product pictures), `carbon`, `power`, `silicon`, `fines`, `invoice` (64 × 64). Codex's `product_woodchips.jpg`/`product_power.jpg` replaced by the PNG cut-outs; `ASSETS.supply.product` back to `.png`. Still placeholders: pins, truck, portraits. Silicon-metal end uses (alloys, silicones) are a **Lead**, not yet in the source register.
