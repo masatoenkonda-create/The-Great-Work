@@ -578,3 +578,12 @@ Resumed at workflow step 9 (hand over to play); no user playtest or Germany art 
 - One fix, to match the plan: a contract order's store line now reads "Taken 9 · minimum 10 · billed 10" (was "Usable 9 · contract minimum: 10 billed", which hid how much was taken). Non-contract orders unchanged.
 
 Tests: `npm run lint` passes; `bun test src` 51 pass, 0 fail. Browser: not run (user tests). Placeholders: all Germany art.
+
+## Developer panel for loop 2 - Claude, 22 October 2026
+
+User: having to finish Norway before Germany in loop 2 "is a bore"; asked for a dev panel that completes levels.
+- `src/components/DevPanel.tsx`: a small "dev" tab, bottom right, shown only on the dev server (`import.meta.env.DEV`, absent from builds). Jumps: start loop 2 (skip loop 1); finish Norway; finish Norway and open Germany; finish Norway and Germany.
+- `src/content/autoPlay.ts`: finished stops are the careful runs played through the real engine (same states a player would reach; Norway's agreed price carries into Germany). `autoPlay.test.ts` checks both reach "done" and Germany ends +$68.
+- Loop 1 stops have no auto-complete (their results feed later stops' cargo, e.g. Taiwan's wafer map); not added.
+
+Tests: `bun test src` 52 pass, 0 fail; `npm run build` passes. `npm run lint`: no errors in game code; it now fails only on the untracked `tools/codex-statusbar/` (appeared 18:28, not Claude's, left untouched and uncommitted). Browser: not run (user tests).

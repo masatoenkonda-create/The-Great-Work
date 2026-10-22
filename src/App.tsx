@@ -10,6 +10,8 @@ import { GermanyProcurement } from './components/GermanyProcurement';
 import { createTrade, tradeReducer, TradeAction, TradeState } from './content/tradeEngine';
 import { NORWAY_MARKET } from './content/norwayMarket';
 import { GERMANY_MARKET } from './content/germanyMarket';
+import { DevPanel, DevAction } from './components/DevPanel';
+import { autoPlay, GERMANY_CAREFUL, NORWAY_CAREFUL } from './content/autoPlay';
 import { sound } from './services/audio';
 import { useFullscreen } from './services/fullscreen';
 
@@ -129,6 +131,26 @@ export default function App() {
     setIsMuted(next);
   };
 
+  // Developer shortcuts (dev server only): finished stops are played carefully through the real engine.
+  const devActions: DevAction[] = (() => {
+    const norwayDone = () => autoPlay(NORWAY_MARKET, NORWAY_CAREFUL);
+    const toLoop2 = (norway: TradeState, germanyState: TradeState | null, stop: StopId, to: 'map' | 'workspace', note: string | null) => {
+      setLoop(2); setProcurement(norway); setGermany(germanyState); setActiveStopId(stop); setView(to); setNotice(note);
+    };
+    return [
+      { label: 'Loop 2: start (skip loop 1)', run: () => toLoop2(createTrade(NORWAY_MARKET), null, 1, 'map', null) },
+      { label: 'Loop 2: finish Norway', run: () => toLoop2(norwayDone(), null, 1, 'map', 'Dev: Norway finished (careful play). Click Germany.') },
+      { label: 'Loop 2: finish Norway, open Germany', run: () => {
+        const n = norwayDone();
+        toLoop2(n, createTrade(GERMANY_MARKET, GERMANY_MARKET.intro, n.sale.price!), 2, 'workspace', null);
+      } },
+      { label: 'Loop 2: finish Norway and Germany', run: () => {
+        const n = norwayDone();
+        toLoop2(n, autoPlay(GERMANY_MARKET, GERMANY_CAREFUL, n.sale.price!), 2, 'map', 'Dev: Norway and Germany finished (careful play).');
+      } },
+    ];
+  })();
+
   const currentStop = ROUTE_STOPS.find((s) => s.id === activeStopId) || ROUTE_STOPS[0];
 
   return (
@@ -201,6 +223,8 @@ export default function App() {
           onReturnToMap={() => setView('map')}
         />
       )}
+
+      {import.meta.env.DEV && <DevPanel actions={devActions} />}
     </div>
   );
 }
