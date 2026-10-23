@@ -612,3 +612,11 @@ Checks: documentation only, no code changed. `npm run lint` passes and `bun test
 - No changes to map art, positions, routes, market rules or economics. No new dependencies.
 
 Checked: `npm.cmd run lint` passes; `npm.cmd run build` passes (existing >500 kB bundle warning). Browser visual check/playtest not run; the repo workflow leaves browser testing to the user. Presentation-only change; no new tests. Remaining map/pin art placeholders unchanged. Uncommitted for Claude.
+
+## Loop 2: actors-too-passive proposal and map zoom fix - Claude, 23 October 2026
+
+- Committed Codex's turn 10 and map legibility pass separately (`32ccda5`).
+- Fixed Codex's zoom: the map picture was outside the zoom group, so pins drifted off their buildings when zoomed, and pins were scaled twice. Picture, roads and pins now zoom together (`cce59a9`). Converted 24 Windows-1252 punctuation bytes in Codex's notes to UTF-8 (text unchanged).
+- User playtest: actors too passive, not convincing to a sourcing expert. Added brainstorm turn 11 (K18-K22): demand first, RFQ replies with conditions, order confirmation check, milestone-triggered actor messages in one inbox. Pointer in `layers/HANDOFF.md`. Not built.
+
+Checks: `npm run lint` passes; `bun test src` 53 pass. Browser: not run (user tests the zoom).

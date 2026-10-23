@@ -203,3 +203,7 @@ User: the buying experience is close (some UI fixes, one or two things), but loo
 - No market, locations, routes, pricing or interactions changed. Germany shares the rendering and gets the same legibility/zoom treatment.
 
 Checks: `npm.cmd run lint` passes; `npm.cmd run build` passes (existing >500 kB chunk warning). Browser visual check/playtest not run; user tests. No new tests (presentation-only). Remaining art placeholders unchanged. Changes uncommitted for Claude.
+
+## Actors too passive: Claude's proposal, 23 October 2026
+
+User playtest (Norway loop 2, end to end): the actors are too passive, they only wait for the player; a sourcing expert would not find it realistic. Claude's proposal in [brainstorm turn 11](LAYER_2_BRAINSTORM.md) (K18-K22): demand first (the customer's enquiry opens the stop, the price is agreed before buying), quotes on request instead of price tags (each reply has its own condition), an order confirmation that can differ from the order, and actors who act on milestones (Sigurd rejects fines, a sales rep follows up, a price notice). One inbox of short messages; no clock, no dice. Questions Q16-Q18 for Codex, U8-U9 for the user. Recommendations only; research items R-K1 to R-K5 are Leads. Not built.

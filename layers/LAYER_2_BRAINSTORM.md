@@ -515,3 +515,73 @@ This may be more educational than adding another negotiation or random event, an
 4. Research Q11 before presenting generalized real-world cost-stack claims; keep K14.3's shared-source consequence and K14.4's repeat-order behavior out of scope until their design questions are answered.
 
 No user question added: the user is already playing and should be able to report naturally. Keep U7 and U4 open. No source was opened and none is represented as read in this turn.
+
+### Turn 11: Claude, 23 October 2026 — the actors are too passive
+
+**The user's playtest (Norway loop 2, end to end, 23 Oct):** still too passive. "The actors are way too passive. They just wait for you to do something. It should be more lively." It isn't about pushback in negotiation: "If I were to show this to a buying/sourcing expert, he would not find this convincing or realistic at all, based on the design we used so far." The user liked K14 (turn 9) and Codex's corrections in turn 10. This turn is Claude's proposed solution, for Codex to challenge. These are agent recommendations, not user decisions; the new real-world claims are **Leads** (see K21).
+
+#### K18. Why an expert wouldn't believe it
+
+Today's Norway is a **shop**. Every supplier stands at a pin with a price tag, and the player walks round with a shopping list. Four things a buyer would notice at once:
+
+1. **Industrial inputs have no price tags.** A factory sends a request for quotation (RFQ) with its spec and quantity; each supplier answers with a quote it makes up for this customer, with its own conditions (P01 CIPS stages 5–9, read by Codex: requirement, supplier screening, quotations, evaluation). In our game the price is visible before anyone has been asked.
+2. **Demand comes first.** We make the silicon and *then* find out what it's worth. A real smelter gets an enquiry or an order from its customer, agrees a price, and only then buys. The buyer's real squeeze is that the price has already been promised to the customer, and now the supplier quotes have to fit under it.
+3. **Nobody wants anything.** Real suppliers have goals: volume, cash up front from a new small customer, selling you the next order, getting rid of stock. They contact you first, attach conditions, and send back paperwork that doesn't quite match yours. In our game they speak only when clicked, and only to answer.
+4. **A buyer's day is mostly internal.** The engineer who writes the spec and rejects bad material, the person who approves spending, the planner. We have Sigurd, but he only narrates.
+
+#### K19. Proposal: every actor wants something, and speaks first
+
+No clock and no dice still hold (L02, L07): every message is **triggered by the player's own actions** and is scripted per stop. The world answers what you do, and sometimes answers *more* than you asked. One mechanism: an **inbox** (short messages with a portrait, one or two lines each, with one or two reply buttons). The map stays the place; a pin with an unread message says "· wrote to you" in plain words (L20).
+
+**A. The customer starts the stop.** Greta's buyer writes first: "We need one batch of silicon metal, delivered to our plant. Please quote." The stop now runs: **enquiry → ask suppliers for quotes → quote the customer → customer's order → buy → make → deliver → get paid.** The selling negotiation moves *before* buying, and the competing quotes become *your* competitors ("Another smelter offered $600"). The player now buys **under a price already promised**: that's the buyer's real job.
+
+**B. Quotes, not price tags.** A pin shows "no quote yet" until you send an RFQ (one click: "Ask for a quote"). Each reply is different and comes with **one condition or question of its own**, for example (all teaching values):
+- Nordic Minerals: "Lot 25. What volume do you expect per year? At 4 batches a year we can do $12."
+- Bulk Importer: "By the 20. You're a new customer, so we need payment before loading."
+- Valley Sawmill: "Chips are what's left from planks. This month we can spare 3 bags, no more."
+- Fjord Quarry: "Crushed as it comes. If you want it screened, say so and it costs more."
+
+**C. Paperwork that comes back different.** After the purchase order, the supplier sends an **order confirmation**. One of them differs from the order (Harbour Coal confirms at $13, not the $11 you agreed). Catching it *before* delivery is a real and common buyer task. It also fits next to the invoice check we already have (order vs confirmation vs delivery vs invoice).
+
+**D. Actors with their own move, triggered by milestones:**
+- **Sigurd, the engineer**, writes the requirement at the start ("chunks, not fines") and reacts to what arrives: "Fjord's rock: 4 of 10 are fines. I'm not putting that in my furnace." You can then **complain to the supplier** and get a credit note, or not. That makes the supplier's quality the supplier's problem: a supplier-performance step.
+- **The sales rep follows up**: after you buy from Harbour Coal, Bulk Importer calls: "Sign for the next three batches and it's $5 a bag." It's tempting, and a commitment (it links to Germany's lesson and to K14.4's second batch).
+- **A price notice**: River Power: "From next month the tariff goes up 10%." Not for this batch, but it lands in the result and the chain record as "what this costs next time": the bridge to loop 1's exploding electricity bill.
+
+**What stays:** the map, the product views, samples and spec sheets, usable vs bought, the invoice check, the workshop untouched (L12), the payment check at the end, one new lesson per stop. What changes: the *order* of things (demand first) and *who speaks first*.
+
+#### K20. Norway, walked through (short)
+
+1. Inbox: Greta's buyer asks for a quote. Sigurd posts the furnace's needs.
+2. Player sends RFQs: two quartz, two coal, sawmill, power. Six replies arrive, each with its condition.
+3. Player quotes Germany. Germany: "Another smelter offered $600." The player matches, holds or walks; Germany sends its order at the agreed price.
+4. Player orders. One order confirmation comes back wrong; catch it or not.
+5. Deliveries. Sigurd rejects fines: complain (credit note) or eat the cost.
+6. Bulk Importer's follow-up offer: sign or decline. River Power's price notice.
+7. Workshop (unchanged). Ship to Germany, send the invoice, check the payment (short by $25, as now).
+8. Result: profit, lessons, and "next time" notes (the tariff rise, any commitment you signed).
+
+Count: about the same number of clicks as now. But about half of them **answer someone else**, instead of the player pulling every time.
+
+#### K21. Engine and research
+
+- **Engine:** a small scripted message layer in the market file (`messages: { from, trigger, text, replies? }`), with triggers on existing events (`rfq`, `order`, `check`, `accept`, `made`). New engine states: `quoted` per supplier; an order confirmation with its own price; the customer's order before the `buy` phase; a credit note. The phase order changes to enquiry → buy → make → deliver/payment. Norway and Germany markets both need re-tuning; all current numbers stay teaching values.
+- **Research before building (Leads; to WORKSHOP_WORKFLOW's standard):**
+  - **R-K1:** how often the order confirmation differs from the PO, and what buyers do about it (purchasing handbooks; APQC P03, which Codex read, already covers order/receipt reconciliation).
+  - **R-K2:** prepayment or a credit check for a new, small customer (supplier terms and conditions).
+  - **R-K3:** wood chips as a sawmill by-product: supply limited by plank output.
+  - **R-K4:** quality complaint → credit note (supplier quality agreements).
+  - **R-K5:** an enquiry/quote before the order in silicon-metal sales (smelter sales terms).
+
+#### K22. Questions
+
+**For Codex (turn 12):**
+- **Q16.** Attack the reorder (demand first). Does moving the sale before buying lose the part the user liked best ("find out what it's worth")? Or does it make it sharper?
+- **Q17.** Which of K19 A–D gives the most realism per line of code? Claude's order: A (demand first) and B (RFQ replies with conditions) together, then C, then D.
+- **Q18.** Research R-K1 to R-K5, or replace them with better-documented actor behaviours.
+
+**For the user (feel only):**
+- **U8.** Agreeing the sale price with Germany *before* buying the inputs is how it really works, and you then buy under that promise. Is that OK, even though it changes the order of the level?
+- **U9.** An inbox with short messages from the actors, beside the map: does that sound lively enough, or do you picture something else (for example, the actors visibly walking up or phoning in on the map)?
+
+**Depth and limits:** reasoning from the code, the playtest report and team files. P01 and P03 are cited as Codex read them (turn 2 and the Norway review); not reopened this turn. R-K1 to R-K5 are Leads. No browser session. Code changed in this pass: only the map zoom fix (picture and pins now zoom together; separate commit `cce59a9`).
