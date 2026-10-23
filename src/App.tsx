@@ -8,7 +8,7 @@ import { LoopReplay } from './components/LoopReplay';
 import { NorwayProcurement } from './components/NorwayProcurement';
 import { NorwayProcurementIntro } from './components/NorwayProcurementIntro';
 import { GermanyProcurement } from './components/GermanyProcurement';
-import { createTrade, tradeReducer, TradeAction, TradeState } from './content/tradeEngine';
+import { createTrade, newRun, tradeReducer, TradeAction, TradeState } from './content/tradeEngine';
 import { NORWAY_MARKET } from './content/norwayMarket';
 import { GERMANY_MARKET } from './content/germanyMarket';
 import { DevPanel, DevAction } from './components/DevPanel';
@@ -25,7 +25,7 @@ export default function App() {
     () => (new URLSearchParams(window.location.search).get('loop') === '2' ? 'replay' : 'title'));
   const [loop, setLoop] = useState<1 | 2>(1);
   // Keep orders/accepted stock while visiting the world map. Still session-only, isolated from campaign saves.
-  const [procurement, setProcurement] = useState(() => createTrade(NORWAY_MARKET));
+  const [procurement, setProcurement] = useState(() => newRun(NORWAY_MARKET));
   const dispatchProcurement = (action: TradeAction) => setProcurement(s => tradeReducer(NORWAY_MARKET, s, action));
   // Germany's desk opens once Norway's sale is agreed; its silicon costs the price agreed there (chain model, L17).
   const [germany, setGermany] = useState<TradeState | null>(null);
@@ -95,7 +95,7 @@ export default function App() {
 
   const handleNewGame = () => {
     setLoop(1);
-    setProcurement(createTrade(NORWAY_MARKET));
+    setProcurement(newRun(NORWAY_MARKET));
     const freshState = clearCargoState();
     setCargo(freshState);
     setActiveStopId(1);
@@ -109,7 +109,7 @@ export default function App() {
 
   const handleResetRun = () => {
     setLoop(1);
-    setProcurement(createTrade(NORWAY_MARKET));
+    setProcurement(newRun(NORWAY_MARKET));
     const freshState = clearCargoState();
     setCargo(freshState);
     setActiveStopId(1);
@@ -166,7 +166,7 @@ export default function App() {
       setLoop(1); setCargo(completedCargo); setActiveStopId(completedCargo.currentStopId); setView('map'); setNotice(null);
     };
     return [
-      { label: 'Loop 2: start (skip loop 1)', run: () => toLoop2(createTrade(NORWAY_MARKET), null, 1, 'procurement-intro', null) },
+      { label: 'Loop 2: start (skip loop 1)', run: () => toLoop2(newRun(NORWAY_MARKET), null, 1, 'procurement-intro', null) },
       { label: 'Loop 2: finish Norway', run: () => toLoop2(norwayDone(), null, 1, 'map', 'Dev: Norway finished (careful play). Click Germany.') },
       { label: 'Loop 2: finish Norway, open Germany', run: () => {
         const n = norwayDone();
@@ -205,7 +205,7 @@ export default function App() {
       )}
 
       {view === 'replay' && (
-        <LoopReplay onStart={() => { setProcurement(createTrade(NORWAY_MARKET)); setLoop(2); setActiveStopId(1); setView('procurement-intro'); }} />
+        <LoopReplay onStart={() => { setProcurement(newRun(NORWAY_MARKET)); setLoop(2); setActiveStopId(1); setView('procurement-intro'); }} />
       )}
 
       {view === 'procurement-intro' && loop === 2 && (

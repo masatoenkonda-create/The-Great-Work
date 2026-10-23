@@ -239,3 +239,22 @@ Read Codex's turn 13 and replied in [brainstorm turn 14](LAYER_2_BRAINSTORM.md):
 - The Loop 2 dev start shortcut opens the intro. Returning from the supplier screen to the world map and re-entering Norway goes directly to the supplier map, so the short intro is only on the Loop 2 start path.
 - Reuses existing artwork and sprites; no new art or dependencies. This is the entry-scene request only; Claude's broader K30 procurement redesign has not been implemented here.
 - Checks: TypeScript and production build pass (existing bundle-size warning); `git diff --check` clean. Browser/playtest not run; user tests.
+
+## Norway demand-first build, 23 October 2026 (Claude)
+
+User: "Ok start coding the norway level." Built brainstorm K30 for **Norway only**; Germany keeps the original flow (its market has no `enquiry`), unchanged and still passing its tests.
+
+**How Norway plays now** (L27, L28, L31):
+1. **Germany asks first** (chat box, speaker "Greta's plant, Germany"): what would you charge for one batch?
+2. **Suppliers show no terms until asked.** Pins read "· no quote yet"; "Ask for a quote" returns each supplier's own reply. Samples and haggling need a quote first.
+3. **Quote Germany** with −/+ ($10 steps). Above what it can pay, Germany counters ("We can pay $560"); then the existing levers apply (competing quote from Alloy Foundry / Silicone Works, ask for more, patience 2, cap $620), or Accept. A quote at or under its figure is ordered at once. **Once Germany orders, the price is fixed** and buying opens. The customer panel lists the cheapest quoted lot per input as a rough cost.
+4. **Buy:** order → **order confirmation** (one scenario makes it higher than the order: Accept or "Reject: hold them to the order", which restores the PO price at once) → delivery check → **claims** → invoice → pay.
+   - **Bulk Importer: payment before loading** (prepay). In two scenarios 4 of its 20 bags arrive wet; Sigurd ("Sigurd · engineer") refuses them; Claim gives a $24 credit note, Keep loses it. The factory waits until that is decided.
+   - **Fjord Quarry:** a claim for fines is refused ("You bought it crushed... ask for it screened"): a claim is only as good as what the order said.
+5. Workshop unchanged (L12). Then **deliver and invoice** at the ordered price, sell spares, check the payment (still $25 short).
+
+**Scenarios** (one per run, picked at random when the run starts; "Try again" takes the next one; dev builds show the name under the store): *Harbour bills a bag too many* (invoice error, wet bulk coal, Germany says $560); *Harbour confirms a higher price* (+$2 a bag, $540); *Nordic confirms a higher price, the bulk coal is wet* (+$2 a chunk, $580). One paperwork error per run (K28.4). Careful play ends **+$44 in all three**; careless play about −$150 to −$160 (tested).
+
+**Changes from K30:** the sawmill's "only 3 bags" condition was **dropped**: with a need of 3 it changes no action or number, which C13.2 rules out. The sales follow-up and price notice stay deferred (K28.7). Supplier threads live in each supplier panel (K28.6); the chat box shows the latest message with a speaker line.
+
+Files: `tradeEngine.ts` (enquiry phase, RFQs, customer quote/order, confirmations, prepay, damaged goods and claims, credit notes, scenarios, speakers, lessons), `norwayMarket.ts` (enquiry, quote replies, prepay, scenarios), `ProcurementDesk.tsx`, `GuideBox.tsx` (optional speaker line), `autoPlay.ts` (dev panel's careful Norway run), `App.tsx` (`newRun` picks the scenario). Not built: chain record (K14.1), second batch, scenario generator, research-backed frequencies (R-K1 to R-K5 are still Leads; no game text claims how often anything happens).

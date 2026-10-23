@@ -1,6 +1,7 @@
 import React from 'react';
 
-export type GuideLine = { text: string; warning: boolean };
+/** `speaker` names someone other than the guide (e.g. "Harbour Coal · sales"); the guide's own lines leave it out. */
+export type GuideLine = { text: string; warning: boolean; speaker?: string | null };
 
 interface Props {
   name: string;
@@ -25,6 +26,7 @@ export function GuideBox({ name, portrait, line, asset }: Props) {
       </div>
       <div tabIndex={0} className="min-h-0 flex-1 overflow-y-auto p-3 focus-visible:outline-2 focus-visible:outline-amber-300">
         <div role="status" aria-live="polite" aria-atomic="true" className={`rounded-lg border-l-[3px] px-3 py-2.5 text-sm leading-relaxed ${line.warning ? 'border-amber-300 bg-[#463a25] text-amber-100' : 'border-[#83cabc] bg-[#203f49] text-[#edf5eb]'}`}>
+          {line.speaker && <p className="mb-1 font-mono text-[11px] font-bold uppercase tracking-wider text-amber-200">{line.speaker}</p>}
           <p>{line.text.split(/(\([^)]*\))/g).map((part, i) => part.startsWith('(') ? <span key={i} className="italic text-[#f0cc88]">{part}</span> : part)}</p>
         </div>
       </div>

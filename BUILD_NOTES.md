@@ -641,3 +641,11 @@ Checks: documentation only; no code changed. Browser: not run.
 - The Loop 2 dev shortcut now also opens this intro so it can be checked during development. Returning to the world map and selecting Norway still opens the procurement map directly.
 
 Checks: `npm.cmd run lint`, `npm.cmd run build`, and `git diff --check` pass (build retains the existing bundle-size warning). Browser visual/play test not run; user tests.
+
+## Loop 2 Norway: demand first, active actors, scenarios - Claude, 23 October 2026
+
+- Committed Codex's pending work separately first: loop 1 dev shortcuts (`bd4e4a1`) and the Norway loop 2 intro scene (`a929429`; its App wiring had gone into the previous commit).
+- Built brainstorm K30 for Norway (details and the one change from the spec in `layers/HANDOFF.md`): Germany's enquiry opens the stop; quotes on request; quote Germany, counter, leverage, binding order; order confirmations (accept/reject); Bulk Importer prepay; wet bags, claims and credit notes; Fjord's refused claim; three scenarios picked at run start; speaker line in the chat box; supplier paperwork threads.
+- Germany unchanged: the new behaviour switches on only for a market with an `enquiry`.
+
+Tests: `npm run lint` passes; `bun test src` 57 pass, 0 fail (Norway engine tests rewritten for the new flow: terms hidden before a quote, no buying before Germany's order, counter and leverage, blind-quote lesson, careful +$44 and careless < −$100 in every scenario, confirmation accept/reject, prepaid wet coal claim/keep, refused fines claim, invoice dispute, stock lifecycle, retry takes the next scenario; Germany and auto-play tests pass). `npm run build` passes (existing bundle-size warning). Browser: not run (user tests). Placeholders: no new art; actors speak through the existing chat box (L25).

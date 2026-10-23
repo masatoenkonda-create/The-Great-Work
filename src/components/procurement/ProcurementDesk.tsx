@@ -3,7 +3,7 @@ import { sound } from '../../services/audio';
 import { GuideBox } from '../workshop/GuideBox';
 import {
   Market, TradeState, TradeAction, Supplier, Terms, Order, accepted, stockOnHand, siliconInStore, needOf, orderCost, billedUnits, usableOf, missing,
-  readyToMake, cashLeft, paidTotal, spares, sparesValue, profit, lessons, bestQuote, unusedMinimum,
+  readyToMake, cashLeft, paidTotal, spares, sparesValue, profit, lessons, bestQuote, unusedMinimum, knowsTerms, demandFirst, isOpen, finesOf, scenarioOf,
 } from '../../content/tradeEngine';
 
 /**
@@ -72,14 +72,23 @@ function useLoaded(src: string) {
 /** One line telling the player what to do next. */
 function nextStep(c: DeskConfig, s: TradeState) {
   const M = c.market;
+  if (s.phase === 'enquiry') {
+    if (!s.quoted.length) return `${c.customerShort} wants a price. First ask the suppliers what your inputs cost: click a place marked “no quote yet”.`;
+    const unquoted = M.needs.find(n => !M.suppliers.some(x => x.item === n.id && s.quoted.includes(x.id)));
+    if (unquoted) return `Ask for a quote on ${unquoted.name.toLowerCase()} too, so you know all your costs.`;
+    return s.sale.countered ? `${c.customerShort} named what it can pay: push it with a competing quote, or accept.` : `You know your costs. Quote ${c.customerShort} a price: click ${c.customerShort}.`;
+  }
   if (s.phase === 'buy') {
+    if (s.orders.some(o => !o.confirmed)) return 'An order confirmation came back: compare it with your order (right panel).';
     const gate = s.orders.find(o => !o.checked);
     if (gate) return c.noTruck.includes(gate.supplierId) ? 'A delivery has come in: check it (right panel).' : 'A truck is at the gate: check the delivery (right panel).';
+    if (s.orders.some(o => o.damaged > 0 && o.claim === 'none')) return 'Damaged goods at the gate: claim them or keep them (right panel).';
     if (s.orders.some(o => o.paid === null)) return 'An invoice is waiting: compare it with your order, then pay or dispute.';
     const need = M.needs.find(n => missing(M, s, n.id) > 0);
     if (need) return `Buy ${missing(M, s, need.id)} more ${need.unit} of ${need.name.toLowerCase()}: click a place marked “needed”`;
     return `Everything is in: click ${c.factory.label.toLowerCase()}.`;
   }
+  if (s.phase === 'sell' && demandFirst(M)) return `Deliver the batch to ${c.customerShort}: click ${c.customerShort}.`;
   if (s.phase === 'sell') return s.sale.quotes.length ? `Show ${c.customerShort} your best quote, then sell.` : `Ask the other customers what they pay, then negotiate with ${c.customerShort}.`;
   if (s.phase === 'payment') return `${c.customerShort} has paid: compare the payment with your invoice.`;
   return `Done. Check your result, or try ${M.place} again.`;
@@ -117,7 +126,11 @@ function Pin({ c, id, p, s, open, onOpen }: { c: DeskConfig; id: string; p: Plac
   const hasIcon = useLoaded(iconSrc);
   // Second line: what the place is for, plus its status in plain words.
   let sub = sup ? needOf(M, sup.item).name.toLowerCase() : customer ? (id === 'customer' ? 'your customer' : 'other buyer') : c.factory.label.toLowerCase();
-  if (sup && s.phase === 'buy') sub += s.orders.some(o => o.supplierId === id && o.paid === null) ? ' · at the gate' : missing(M, s, sup.item) > 0 ? ' · needed' : ' · done';
+  if (sup && !knowsTerms(M, s, id)) sub += ' · no quote yet';
+  else if (sup && s.phase === 'enquiry') sub += ' · quoted';
+  else if (sup && s.phase === 'buy') sub += s.orders.some(o => o.supplierId === id && isOpen(o)) ? ' · at the gate' : missing(M, s, sup.item) > 0 ? ' · needed' : ' · done';
+  if (id === 'customer' && s.phase === 'enquiry') sub += ' · wants a price';
+  if (id === 'customer' && s.phase === 'buy' && s.sale.ordered !== null) sub += ` · ordered $${s.sale.ordered}`;
   if (sup?.terms.minimum) sub += ' · contract';
   if (id === 'factory' && s.phase === 'buy' && readyToMake(M, s)) sub += ' · ready';
   if (customer && id !== 'customer' && s.sale.quotes.includes(id)) sub += ` · quoted $${M.buyer.competitors.find(x => x.id === id)!.quote}`;
@@ -139,7 +152,7 @@ function Pin({ c, id, p, s, open, onOpen }: { c: DeskConfig; id: string; p: Plac
       <rect x={-w / 2} y={r - 3} width={w} height={labelH} rx={9} fill="#09111f" fillOpacity="0.97" stroke="#07101c" strokeWidth={7} />
       <rect x={-w / 2} y={r - 3} width={w} height={labelH} rx={9} fill="#101d2d" stroke={edge} strokeWidth={open ? 4 : 3} />
       <text y={r + 19} textAnchor="middle" fill="#ffffff" fontSize={labelSize} fontWeight="700" paintOrder="stroke" stroke="#07101c" strokeWidth={1.5}>{p.label}</text>
-      <text y={r + 41} textAnchor="middle" fill={sub.includes('needed') ? '#fde68a' : '#dbeafe'} fontSize={subSize} fontWeight="600">{sub}</text>
+      <text y={r + 41} textAnchor="middle" fill={/needed|no quote|wants/.test(sub) ? '#fde68a' : '#dbeafe'} fontSize={subSize} fontWeight="600">{sub}</text>
     </g>
   );
 }
@@ -172,8 +185,8 @@ export function ProcurementDesk({ config: c, state: s, dispatch, onReturnToMap, 
 
   const cash = cashLeft(M, s);
   const lastOrder = s.orders.at(-1);
-  const inbox = s.orders.filter(o => o.paid === null);
-  const made = s.phase !== 'buy';
+  const inbox = s.orders.filter(isOpen);
+  const made = s.phase !== 'buy' && s.phase !== 'enquiry';
   const source = open ? c.sources[open] : undefined;
 
   return (
@@ -196,7 +209,7 @@ export function ProcurementDesk({ config: c, state: s, dispatch, onReturnToMap, 
               <text y="22" textAnchor="middle" fontSize="12" fontStyle="italic" fill="#e2e8f0">{src.label}</text>
             </g>
           </g>)}
-          {lastOrder && lastOrder.paid === null && !lastOrder.checked && (
+          {lastOrder && lastOrder.confirmed && !lastOrder.checked && (
             <g key={lastOrder.id}>
               {c.noTruck.includes(lastOrder.supplierId) ? <circle r="7" fill="#e7e5e4" stroke="#334155" strokeWidth="2" /> : <>
                 {truckArt ? <image href={c.art.truck} x="-40" y="-20" width="80" height="40" style={{ imageRendering: 'pixelated' }} />
@@ -236,7 +249,13 @@ export function ProcurementDesk({ config: c, state: s, dispatch, onReturnToMap, 
       {/* Store panel */}
       <aside className="flex max-h-[50svh] w-full shrink-0 flex-col gap-3 overflow-y-auto border-t border-white/10 bg-slate-900 p-3 lg:max-h-none lg:w-[340px] lg:border-l lg:border-t-0">
         <p className={`rounded-lg border px-3 py-2 text-center font-mono text-lg font-bold ${cash < 0 ? 'border-red-400 text-red-300' : 'border-white/20'}`}>Cash {$(cash)}</p>
-        {s.phase === 'buy' && <button className="rounded-lg border border-sky-400/30 bg-sky-400/5 p-3 text-left text-xs" onClick={() => setOpen('customer')}>
+        {s.phase === 'enquiry' && <button className="rounded-lg border border-sky-400/30 bg-sky-400/5 p-3 text-left text-xs" onClick={() => setOpen('customer')}>
+          {c.customerShort} asks: what would you charge for one batch of {c.output.label.toLowerCase()}? Ask your suppliers first, then quote. Open {c.customerShort} →
+        </button>}
+        {s.phase === 'buy' && s.sale.ordered !== null && <p className="rounded-lg border border-sky-400/30 bg-sky-400/5 p-3 text-xs">
+          {c.customerShort}'s order: <b>1 batch at {$(s.sale.ordered)}</b>. Paid out so far: <b>{$(paidTotal(s) + s.carriedCost)}</b>. Everything you buy has to fit under that price.
+        </p>}
+        {s.phase === 'buy' && !demandFirst(M) && <button className="rounded-lg border border-sky-400/30 bg-sky-400/5 p-3 text-left text-xs" onClick={() => setOpen('customer')}>
           {c.customerShort}'s opening offer: <b>{$(M.buyer.offer)}</b> for the finished batch. Compare input costs with what you can earn. View customer →
         </button>}
         <section className="rounded-xl border border-white/10 p-3">
@@ -247,13 +266,15 @@ export function ProcurementDesk({ config: c, state: s, dispatch, onReturnToMap, 
           </div>}
           {M.needs.map(n => {
             const have = stockOnHand(M, s, n.id);
-            const fines = s.orders.filter(o => o.item === n.id && o.checked).reduce((t, o) => t + o.terms.lot * o.lots - usableOf(o), 0);
+            const fines = s.orders.filter(o => o.item === n.id && o.checked).reduce((t, o) => t + finesOf(o), 0);
+            const damaged = s.orders.filter(o => o.item === n.id && o.checked).reduce((t, o) => t + o.damaged, 0);
             return (
               <div key={n.id} className="mb-2">
                 <p className="text-xs">{n.name} <span className="text-slate-400">{made ? `${have} ${n.unit} left${s.sale.sparesSold && n.resale > 0 ? ' · spares sold' : ''}` : `${Math.min(have, n.need)}/${n.need} ${n.unit}${have > n.need ? ` · ${have - n.need} spare` : ''}`}</span></p>
                 <div className="flex flex-wrap">
                   {Array.from({ length: made ? Math.min(have, 12) : Math.min(n.need, 12) }, (_, i) => <Icon key={i} c={c} item={n.id} faded={!made && i >= have} />)}
                   {fines > 0 && <span className="ml-1 inline-flex items-center text-[10px] text-amber-400"><Art src={c.art.icon('fines')} alt="" className="h-8 w-8" fallback={<span>░</span>} />×{fines} {c.wasteLabel}</span>}
+                  {damaged > 0 && <span className="ml-1 inline-flex items-center text-[10px] text-amber-400">×{damaged} damaged</span>}
                 </div>
               </div>
             );
@@ -270,23 +291,41 @@ export function ProcurementDesk({ config: c, state: s, dispatch, onReturnToMap, 
               return (
                 <div key={o.id} className="rounded border border-white/10 p-2">
                   <p className="flex items-center gap-1">{o.checked ? <Art src={c.art.icon('invoice')} alt="" className="h-7 w-7" fallback={<span>📄</span>} /> : c.noTruck.includes(o.supplierId) ? '🔌' : '🚚'} <b>{o.id}</b> {sup.name}: {bought} {unit}</p>
-                  {!o.checked
-                    ? <button className={`${btn} mt-1`} onClick={() => act({ type: 'check', orderId: o.id })}>Check the delivery</button>
-                    : <>
-                      {c.gateExtra?.(o)}
-                      <p className="mt-1">{unusedMinimum(o) > 0 ? `Taken ${o.terms.lot * o.lots} · minimum ${o.terms.minimum} · billed ${billedUnits(o.terms, o.lots)}` : `Usable ${usableOf(o)}`} · order said <b>{$(o.expected)}</b> · invoice <b>{$(o.invoice)}</b></p>
-                      <div className="mt-1 flex gap-1.5">
-                        <button className={btn} onClick={() => act({ type: 'pay', orderId: o.id })}>Pay</button>
-                        <button className={btn} onClick={() => act({ type: 'dispute', orderId: o.id })}>Dispute</button>
+                  {!o.confirmed ? <>
+                    <p className="mt-1">Order confirmation · your order said <b>{$(o.expected)}</b> · confirmation <b>{$(o.confirmation)}</b></p>
+                    <div className="mt-1 flex flex-wrap gap-1.5">
+                      <button className={btn} onClick={() => act({ type: 'acceptConfirmation', orderId: o.id })}>Accept</button>
+                      <button className={btn} onClick={() => act({ type: 'rejectConfirmation', orderId: o.id })}>Reject: hold them to the order</button>
+                    </div>
+                  </> : !o.checked ? <>
+                    {o.prepaid && <p className="mt-1 text-slate-300">Paid in advance: {$(o.paid ?? 0)}.</p>}
+                    <button className={`${btn} mt-1`} onClick={() => act({ type: 'check', orderId: o.id })}>Check the delivery</button>
+                  </> : <>
+                    {c.gateExtra?.(o)}
+                    {o.damaged > 0 && o.claim === 'none' && <>
+                      <p className="mt-1">Usable {usableOf(o)} · <b>{o.damaged} damaged</b>{o.prepaid ? ` · paid in advance ${$(o.paid ?? 0)}` : ''}</p>
+                      <div className="mt-1 flex flex-wrap gap-1.5">
+                        <button className={btn} onClick={() => act({ type: 'claim', orderId: o.id })}>Claim the damaged {unit}</button>
+                        <button className={btn} onClick={() => act({ type: 'keep', orderId: o.id })}>Keep them</button>
                       </div>
                     </>}
+                    {o.paid === null && <>
+                      <p className="mt-1">{unusedMinimum(o) > 0 ? `Taken ${o.terms.lot * o.lots} · minimum ${o.terms.minimum} · billed ${billedUnits(o.terms, o.lots)}` : `Usable ${usableOf(o)}`} · order said <b>{$(o.expected)}</b> · invoice <b>{$(o.invoice)}</b></p>
+                      <div className="mt-1 flex flex-wrap gap-1.5">
+                        <button className={btn} onClick={() => act({ type: 'pay', orderId: o.id })}>Pay</button>
+                        <button className={btn} onClick={() => act({ type: 'dispute', orderId: o.id })}>Dispute</button>
+                        {demandFirst(M) && finesOf(o) > 0 && o.claim === 'none' && <button className={btn} onClick={() => act({ type: 'claim', orderId: o.id })}>Claim the unusable {unit}</button>}
+                      </div>
+                    </>}
+                  </>}
                 </div>
               );
             })}
           </section>
         )}
-        <GuideBox name={c.guide.name} portrait={c.guide.portrait} line={{ text: s.message, warning: s.phase === 'done' && profit(M, s) < 0 }} asset={c.guide.asset} />
+        <GuideBox name={c.guide.name} portrait={c.guide.portrait} line={{ text: s.message, warning: s.phase === 'done' && profit(M, s) < 0, speaker: s.speaker }} asset={c.guide.asset} />
         {s.phase === 'buy' && <button className={primary} disabled={!readyToMake(M, s)} onClick={() => setOpen('factory')}>{readyToMake(M, s) ? c.factory.go : 'Click a supplier to buy'}</button>}
+        {import.meta.env.DEV && s.scenario && <p className="text-[10px] text-slate-500">dev · scenario: {scenarioOf(M, s)?.name}</p>}
       </aside>
     </section>
   );
@@ -302,29 +341,44 @@ function SupplierPanel({ c, sup, s, act }: { c: DeskConfig; sup: Supplier; s: Tr
   const asked = s.asked[sup.id] ?? [];
   const tired = asked.length >= sup.patience;
   const sampled = s.sampled.includes(sup.id);
-  const pending = s.orders.some(o => o.supplierId === sup.id && o.paid === null);
+  const mine = s.orders.filter(o => o.supplierId === sup.id);
+  const pending = mine.some(isOpen);
+  const talking = s.phase === 'buy' || s.phase === 'enquiry';
   const usable = Math.floor(t.lot * t.usable) * lots;
   const needed = missing(M, s, n.id);
   const check = sup.spec ? 'read the spec sheet' : 'ask for a sample';
   const contract = !!t.minimum;
   const billed = billedUnits(t, lots);
+  const header = <>
+    <ProductView c={c} id={c.productOf(sup, s)} label={n.name} />
+    <div className="flex items-center gap-3">
+      <Art src={c.art.rep(sup.id)} alt="" className="h-14 w-12 object-contain" fallback={<span className="flex h-12 w-12 items-center justify-center rounded-lg bg-slate-600 font-bold">{sup.name[0]}</span>} />
+      <div><p className="font-bold">{sup.name}</p><p className="text-xs text-slate-400">{sup.origin}</p></div>
+    </div>
+  </>;
+  if (!knowsTerms(M, s, sup.id)) return (
+    <div className="space-y-3">
+      {header}
+      <p className="text-sm">No quote yet. Ask what they charge, in what lots, and on what terms.</p>
+      <button className={primary} disabled={!talking} onClick={() => act({ type: 'rfq', supplierId: sup.id })}>Ask for a quote</button>
+    </div>
+  );
   return (
     <div className="space-y-3">
-      <ProductView c={c} id={c.productOf(sup, s)} label={n.name} />
-      <div className="flex items-center gap-3">
-        <Art src={c.art.rep(sup.id)} alt="" className="h-14 w-12 object-contain" fallback={<span className="flex h-12 w-12 items-center justify-center rounded-lg bg-slate-600 font-bold">{sup.name[0]}</span>} />
-        <div><p className="font-bold">{sup.name}</p><p className="text-xs text-slate-400">{sup.origin}</p></div>
-      </div>
+      {header}
+      {demandFirst(M) && sup.quoteReply && <p className="rounded-lg border border-white/10 bg-white/5 p-2 text-xs italic text-slate-200">Their quote: “{sup.quoteReply}”</p>}
+      {mine.length > 0 && <ul className="space-y-0.5 text-xs text-slate-300" aria-label={`Your paperwork with ${sup.name}`}>{mine.map(o => <li key={o.id}>📄 {threadLine(o)}</li>)}</ul>}
       <p className="text-xs text-slate-300">You need {missing(M, s, n.id)} more {n.unit} of {n.name.toLowerCase()}.</p>
       <p className="font-mono">{billedUnits(t, 1)} {n.unit}{contract ? ' billed' : ''} × {$(t.unitPrice)}{t.fee ? ` + ${$(t.fee)} fee` : ''} = <b>{$(orderCost(t, 1))}</b></p>
       {contract && <p className="rounded-lg border border-amber-300/40 bg-amber-300/5 p-2 text-xs text-amber-100">
         Contract: each order bills at least <b>{t.minimum} {n.unit}</b> at {$(t.unitPrice)}, even if you take fewer. What you don't take is never delivered and can't be sold back.
       </p>}
+      {sup.prepay && <p className="rounded-lg border border-amber-300/40 bg-amber-300/5 p-2 text-xs text-amber-100">Payment before loading: you pay when you order, before you can check the goods.</p>}
       <p className="text-xs">{sup.spec ? `Spec sheet: ${sampled ? sup.spec : '? (read it before you buy)'}` : `Usable: ${sampled ? `${Math.floor(t.lot * t.usable)} of ${t.lot}` : '? (ask for a sample)'}`}</p>
       {sampled && c.sampleExtra?.(sup, t)}
       <div className="flex flex-wrap gap-1.5">
-        <button className={btn} disabled={sampled || s.phase !== 'buy'} onClick={() => act({ type: 'sample', supplierId: sup.id })}>{sup.spec ? '📄 Read the spec sheet' : '🔍 Sample'}</button>
-        {sup.levers.map(l => <button key={l.id} className={btn} disabled={asked.includes(l.id) || tired || s.phase !== 'buy'} onClick={() => {
+        <button className={btn} disabled={sampled || !talking} onClick={() => act({ type: 'sample', supplierId: sup.id })}>{sup.spec ? '📄 Read the spec sheet' : '🔍 Sample'}</button>
+        {sup.levers.map(l => <button key={l.id} className={btn} disabled={asked.includes(l.id) || tired || !talking} onClick={() => {
           setPreviousTerms({ ...t }); setReply(l.reply); act({ type: 'ask', supplierId: sup.id, leverId: l.id });
         }}>💬 {l.label}</button>)}
       </div>
@@ -342,9 +396,10 @@ function SupplierPanel({ c, sup, s, act }: { c: DeskConfig; sup: Supplier; s: Tr
         <span className="w-14 text-center text-xs">{lots} lot{lots > 1 ? 's' : ''}</span>
         <button className={btn} disabled={lots >= 3} onClick={() => setLots(lots + 1)}>+</button>
         <button className={`${btn} ml-auto bg-amber-300 font-bold text-slate-950`} disabled={pending || s.phase !== 'buy'} onClick={() => act({ type: 'order', supplierId: sup.id, lots })}>
-          {pending ? 'Order at the gate' : `${contract ? 'Sign and order' : 'Order'} ${$(orderCost(t, lots))}`}
+          {pending ? 'Order at the gate' : `${contract ? 'Sign and order' : sup.prepay ? 'Pay and order' : 'Order'} ${$(orderCost(t, lots))}`}
         </button>
       </div>
+      {s.phase === 'enquiry' && <p className="text-xs text-amber-200">You can order once {c.customerShort} has ordered from you.</p>}
       <p className="text-xs text-slate-300">This order: {t.lot * lots} {n.unit}{billed > t.lot * lots ? ` delivered, ${billed} billed (the minimum)` : ''}, {sampled ? `${usable} usable` : `usable amount untested (${check})`}, {$(orderCost(t, lots))} total.</p>
       {sampled && <p className={`rounded-lg p-2 text-xs ${usable < needed ? 'bg-amber-300/10 text-amber-200' : 'bg-emerald-300/10 text-emerald-200'}`}>
         {usable < needed ? `This order leaves you ${needed - usable} ${n.unit} short.` : needed === 0 ? `You already have enough. This adds ${usable} spare ${n.unit}.` : `This covers the remaining need${usable > needed ? ` and adds ${usable - needed} spare ${n.unit}` : ' exactly'}.`}
@@ -354,13 +409,27 @@ function SupplierPanel({ c, sup, s, act }: { c: DeskConfig; sup: Supplier; s: Tr
   );
 }
 
+/** One line per purchase order with this supplier: what was ordered, confirmed, delivered, claimed and paid. */
+function threadLine(o: Order) {
+  const parts = [`${o.id}: ordered ${$(o.ordered)}`];
+  if (!o.confirmed) parts.push(`confirmation says ${$(o.confirmation)}, to check`);
+  else if (o.changed) parts.push(o.changed === 'accepted' ? `higher confirmation accepted (${$(o.confirmation)})` : 'higher confirmation rejected');
+  if (o.prepaid && o.paid !== null) parts.push(`paid in advance ${$(o.paid)}`);
+  if (o.checked) parts.push(`${usableOf(o)} usable${o.damaged ? `, ${o.damaged} damaged` : ''}`);
+  if (o.claim === 'credited') parts.push(`credit note ${$(o.credit)}`);
+  if (o.claim === 'refused') parts.push('claim refused');
+  if (!o.prepaid && o.paid !== null) parts.push(`paid ${$(o.paid)}`);
+  return parts.join(' · ');
+}
+
 function FactoryPanel({ c, s, act }: { c: DeskConfig; s: TradeState; act: (a: TradeAction) => void }) {
   const M = c.market;
   const short = M.needs.filter(n => missing(M, s, n.id) > 0);
   return (
     <div className="space-y-3">
       <p className="font-bold">{c.factory.label}</p>
-      {s.phase !== 'buy' ? <p className="text-sm">{c.factory.done}</p>
+      {s.phase === 'enquiry' ? <p className="text-sm">First agree a price with {c.customerShort}, then buy what the furnace needs.</p>
+        : s.phase !== 'buy' ? <p className="text-sm">{c.factory.done}</p>
         : short.length ? <p className="text-sm">Still missing: {short.map(n => `${missing(M, s, n.id)} ${n.unit} of ${n.name.toLowerCase()}`).join(', ')}.</p>
         : s.orders.some(o => o.paid === null) ? <p className="text-sm">Everything is in. Settle the invoices at the gate first.</p>
         : <p className="text-sm">Store full, invoices paid. Fire it up!</p>}
@@ -374,6 +443,13 @@ function CustomerPanel({ c, s, act, onDone }: { c: DeskConfig; s: TradeState; ac
   const p = profit(M, s);
   const costs = paidTotal(s) + s.carriedCost;
   const carried = M.carried ? `${M.carried.name.toLowerCase()} ${$(s.carriedCost)} + ` : '';
+  const [quote, setQuote] = useState(600);
+  const first = demandFirst(M);
+  // The cheapest one-lot offer quoted so far for each input: a rough cost before samples and haggling.
+  const cheapest = M.needs.map(n => {
+    const offers = M.suppliers.filter(x => x.item === n.id && s.quoted.includes(x.id)).map(x => ({ x, cost: orderCost(s.terms[x.id], 1) }));
+    return { n, best: offers.sort((a, b) => a.cost - b.cost)[0] };
+  });
   return (
     <div className="space-y-3">
       <ProductView c={c} id={c.output.id} label={c.output.label} />
@@ -381,11 +457,41 @@ function CustomerPanel({ c, s, act, onDone }: { c: DeskConfig; s: TradeState; ac
         <Art src={c.art.rep('buyer')} alt="" className="h-14 w-12 object-contain" fallback={<span className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-700 font-bold">{M.buyer.name[0]}</span>} />
         <p className="font-bold">{M.buyer.name}</p>
       </div>
-      {s.phase === 'buy' && <div className="rounded-lg border border-sky-300/30 bg-sky-300/5 p-3 text-sm">
+      {s.phase === 'enquiry' && <div className="space-y-3 text-sm">
+        <p className="rounded-lg border border-sky-300/30 bg-sky-300/5 p-3">“We need one batch of {c.output.label.toLowerCase()}. What would you charge?”</p>
+        <div className="rounded-lg border border-white/10 p-3 text-xs">
+          <p className="mb-1 font-bold text-slate-200">Your costs, from the quotes you have (one lot each, before samples and haggling)</p>
+          <ul className="space-y-0.5 font-mono">{cheapest.map(({ n, best }) => <li key={n.id}>{n.name}: {best ? `${$(best.cost)} · ${best.x.name}` : 'no quote yet'}</li>)}</ul>
+          {M.carried && <p className="font-mono">{M.carried.name}: {$(s.carriedCost)}</p>}
+          <p className="mt-1 font-mono font-bold">Total so far: {$(s.carriedCost + cheapest.reduce((t, x) => t + (x.best?.cost ?? 0), 0))}{cheapest.some(x => !x.best) ? ' + inputs not quoted yet' : ''}</p>
+        </div>
+        {s.sale.countered && <>
+          <p className="rounded-lg border border-sky-300/30 bg-sky-300/5 p-3">“We can pay <b>{$(s.sale.offer)}</b>.” <span className="text-xs text-slate-300">Asks left: {Math.max(0, M.buyer.patience - s.sale.asked.length)}.{bestQuote(M, s) ? ` Best other quote: ${$(bestQuote(M, s))}.` : ' Other buyers on the map can give you a quote.'}</span></p>
+          <div className="flex flex-wrap gap-1.5">
+            {M.buyer.levers.map(l => <button key={l.id} className={btn} disabled={s.sale.asked.includes(l.id) || s.sale.asked.length >= M.buyer.patience} onClick={() => act({ type: 'askBuyer', leverId: l.id })}>
+              💬 {l.label}{l.match && bestQuote(M, s) ? ` (${$(bestQuote(M, s))})` : ''}</button>)}
+            <button className={btn} onClick={() => act({ type: 'acceptOffer' })}>Accept {$(s.sale.offer)}</button>
+          </div>
+        </>}
+        <div className="flex items-center gap-1.5">
+          <button className={btn} disabled={quote <= 300} onClick={() => setQuote(quote - 10)} aria-label="Lower your price">−</button>
+          <span className="w-20 text-center font-mono text-lg font-bold">{$(quote)}</span>
+          <button className={btn} disabled={quote >= 900} onClick={() => setQuote(quote + 10)} aria-label="Raise your price">+</button>
+          <button className={`${btn} ml-auto bg-amber-300 font-bold text-slate-950`} onClick={() => act({ type: 'quoteCustomer', price: quote })}>Send quote {$(quote)}</button>
+        </div>
+        <p className="text-xs text-slate-400">Once {c.customerShort} orders, the price is fixed. Then you buy, make and deliver.</p>
+      </div>}
+      {s.phase === 'buy' && first && <p className="rounded-lg border border-sky-300/30 bg-sky-300/5 p-3 text-sm">Order: one batch at <b>{$(s.sale.ordered ?? 0)}</b>. Deliver it after the furnace. Costs so far: {carried}inputs {$(paidTotal(s))} = <b>{$(costs)}</b>.</p>}
+      {s.phase === 'sell' && first && <>
+        <p className="text-sm">Ordered at <b>{$(s.sale.ordered ?? 0)}</b>. Your costs: {$(costs)}.</p>
+        {spares(M, s).length > 0 && <button className={btn} disabled={s.sale.sparesSold} onClick={() => act({ type: 'sellSpares' })}>{s.sale.sparesSold ? 'Spares sold' : `Sell spares for ${$(sparesValue(M, s))}`}</button>}
+        <button className={primary} onClick={() => act({ type: 'accept' })}>Deliver and send your invoice ({$(s.sale.ordered ?? 0)})</button>
+      </>}
+      {s.phase === 'buy' && !first && <div className="rounded-lg border border-sky-300/30 bg-sky-300/5 p-3 text-sm">
         <p>“Our opening offer is <b>{$(M.buyer.offer)}</b> for the finished batch.”</p>
         <p className="mt-2 text-slate-300">{M.carried ? <>Costs so far: {carried}inputs {$(paidTotal(s))} = <b>{$(costs)}</b>.</> : <>Inputs paid so far: <b>{$(paidTotal(s))}</b>.</>} Aim to cover all your costs from the sale; unused stock may also be sold back. Negotiate the final sale once the batch is made.</p>
       </div>}
-      {s.phase === 'sell' && <>
+      {s.phase === 'sell' && !first && <>
         <p className="text-2xl font-bold">offers {$(s.sale.offer)}</p>
         <p className="text-xs text-slate-300">Your costs: {$(costs)}. Asks left: {Math.max(0, M.buyer.patience - s.sale.asked.length)}.{bestQuote(M, s) ? ` Best other quote: ${$(bestQuote(M, s))}.` : ' Other customers on the map can give you a quote.'}</p>
         <div className="flex flex-wrap gap-1.5">
@@ -427,12 +533,14 @@ function CustomerPanel({ c, s, act, onDone }: { c: DeskConfig; s: TradeState; ac
 function CompetitorPanel({ c, id, s, act }: { c: DeskConfig; id: string; s: TradeState; act: (a: TradeAction) => void }) {
   const x = c.market.buyer.competitors.find(y => y.id === id)!;
   const quoted = s.sale.quotes.includes(id);
+  const quoting = demandFirst(c.market) ? s.phase === 'enquiry' : s.phase === 'sell';
   return (
     <div className="space-y-3">
       <ProductView c={c} id={c.output.id} label={c.output.label} />
       <div><p className="font-bold">{x.name}</p><p className="text-xs text-slate-400">{x.use}</p></div>
-      {s.phase === 'buy' && <p className="text-sm">"Make your batch first, then ask us for a quote."</p>}
-      {s.phase === 'sell' && (quoted
+      {s.phase === 'buy' && !demandFirst(c.market) && <p className="text-sm">"Make your batch first, then ask us for a quote."</p>}
+      {quoted && !quoting && s.phase !== 'payment' && s.phase !== 'done' && <p className="text-sm text-slate-400">Their quote was {$(x.quote)}. You are selling to {c.customerShort}.</p>}
+      {quoting && (quoted
         ? <p className="rounded-lg bg-sky-300/10 p-3 text-sm">Quote: <b>{$(x.quote)}</b>. {c.competitorNote}</p>
         : <button className={primary} onClick={() => act({ type: 'getQuote', competitorId: id })}>Ask for a quote</button>)}
       {(s.phase === 'payment' || s.phase === 'done') && <p className="text-sm text-slate-400">You sold to {c.customerShort}.</p>}
