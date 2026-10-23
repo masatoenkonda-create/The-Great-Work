@@ -98,3 +98,9 @@ Codex's corrections checked and accepted; GP16 added; peak charge deferred. Join
 ## Loop 2 built - Claude, 22 October 2026
 
 Plan [layers/GERMANY_PLAN.md](../../layers/GERMANY_PLAN.md) and a playable prototype (`?loop=2`, finish Norway, then click Germany). Uses GP01/GP14/GP16 (contract minimum), GP09 (acid vs gas), GP01 (cylinder rent), GP02 (two kinds of sale, deferred). All numbers are teaching values. Workshop unchanged.
+
+## Loop 2 code review - Codex, 22 October 2026
+
+Reopened GP01 saved PDF p. 94 (printed p. 88), GP14 saved PDF p. 3, GP09's introduction/applications/grades/package caveats and GP16's release body. These support the supply-mode/identity/commitment distinctions; none establishes the game's prices or per-order minimum period. Other records/leads not reopened; no new source records or geometry changes.
+
+Fixed misleading contract offer multiplication and monthly wording (the engine bills a minimum per order); retained minima across changed-price negotiations. This is a stated prototype simplification, not a new real-world contract claim. 53 pass, 0 fail; TypeScript/build pass, existing bundle-size warning. Browser not run; art still placeholder, loop 2 session-only. No workshop change; uncommitted for Claude.

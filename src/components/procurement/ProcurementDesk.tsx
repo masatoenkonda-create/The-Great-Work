@@ -302,9 +302,9 @@ function SupplierPanel({ c, sup, s, act }: { c: DeskConfig; sup: Supplier; s: Tr
         <div><p className="font-bold">{sup.name}</p><p className="text-xs text-slate-400">{sup.origin}</p></div>
       </div>
       <p className="text-xs text-slate-300">You need {missing(M, s, n.id)} more {n.unit} of {n.name.toLowerCase()}.</p>
-      <p className="font-mono">{t.lot} {n.unit} × {$(t.unitPrice)}{t.fee ? ` + ${$(t.fee)} fee` : ''} = <b>{$(orderCost(t, 1))}</b></p>
+      <p className="font-mono">{billedUnits(t, 1)} {n.unit}{contract ? ' billed' : ''} × {$(t.unitPrice)}{t.fee ? ` + ${$(t.fee)} fee` : ''} = <b>{$(orderCost(t, 1))}</b></p>
       {contract && <p className="rounded-lg border border-amber-300/40 bg-amber-300/5 p-2 text-xs text-amber-100">
-        Contract: you pay for at least <b>{t.minimum} {n.unit}</b> at {$(t.unitPrice)}, even if you take fewer. What you don't take is never delivered and can't be sold back.
+        Contract: each order bills at least <b>{t.minimum} {n.unit}</b> at {$(t.unitPrice)}, even if you take fewer. What you don't take is never delivered and can't be sold back.
       </p>}
       <p className="text-xs">{sup.spec ? `Spec sheet: ${sampled ? sup.spec : '? (read it before you buy)'}` : `Usable: ${sampled ? `${Math.floor(t.lot * t.usable)} of ${t.lot}` : '? (ask for a sample)'}`}</p>
       {sampled && c.sampleExtra?.(sup, t)}

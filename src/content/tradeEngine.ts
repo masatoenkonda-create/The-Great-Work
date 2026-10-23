@@ -185,6 +185,7 @@ export function tradeReducer(m: Market, s: TradeState, a: TradeAction): TradeSta
         if (asked.length >= sup.patience) return say(`${sup.name}: "That's our best offer."`);
         const c = lever.change;
         const terms = c ? {
+          ...t,
           lot: c.lot ?? t.lot, unitPrice: t.unitPrice + (c.priceAdd ?? 0),
           fee: t.fee + (c.feeAdd ?? 0), usable: c.usable ?? t.usable,
         } : t;

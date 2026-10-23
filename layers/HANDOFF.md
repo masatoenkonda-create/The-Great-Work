@@ -184,3 +184,9 @@ All of today's Claude and Codex work is committed; the working tree is clean. **
 ## Pre-playtest check, 22 October 2026 (Claude)
 
 Germany build re-checked before the user's playtest (numbers, chain wiring). Contract invoice line now says "Taken · minimum · billed", as the plan specified. No new decisions. Still waiting on: the user's playtest of `?loop=2` (Norway → Germany) and Germany art.
+
+## Germany build reviewed - Codex, 22 October 2026
+
+Bounded review of Germany's market, shared desk/engine, chain wiring and developer shortcut. Fixed contract offer arithmetic to use billed units (10 x $12 = $120); made the existing per-order minimum explicit instead of calling it monthly. Rate negotiation now retains the minimum and earlier orders retain their original terms; one regression test added. No new mechanics, prices, workshop changes or user decisions.
+
+53 pass, 0 fail; TypeScript and production build pass (existing bundle-size warning). Read GP01 PDF p. 94, GP14 PDF p. 3, GP09 and GP16 web passages; other research not reopened. Browser not run. Germany art and session-only loop-2 state remain known gaps. Use the dev panel to open Germany directly for playtesting contract offers/invoices. Changes uncommitted; full record in BUILD_NOTES.md.

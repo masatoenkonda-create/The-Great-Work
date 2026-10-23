@@ -46,6 +46,23 @@ describe('loop 2 Germany market', () => {
     assert.match(s.message, /agreement you signed/);
   });
 
+  it('negotiating a contract rate keeps its minimum and earlier order terms', () => {
+    const market = {
+      ...M,
+      suppliers: M.suppliers.map(s => s.id === 'park' ? {
+        ...s, levers: [{ id: 'rate', label: 'Lower rate', reply: 'Same minimum.', change: { priceAdd: -1 } }],
+      } : s),
+    };
+    let s = createTrade(market);
+    s = tradeReducer(market, s, { type: 'order', supplierId: 'park', lots: 1 });
+    s = tradeReducer(market, s, { type: 'ask', supplierId: 'park', leverId: 'rate' });
+    s = tradeReducer(market, s, { type: 'order', supplierId: 'park', lots: 1 });
+    assert.equal(s.terms.park.minimum, 10);
+    assert.equal(s.orders[0].expected, 120, 'the agreed first order stays fixed');
+    assert.equal(s.orders[1].expected, 110, 'the new rate still bills the minimum of 10');
+    assert.equal(unusedMinimum(s.orders[1]), 1, 'the undelivered minimum is not extra stock');
+  });
+
   it('the spec sheet shows the acid is not the gas; buying it blind leaves the reactor short', () => {
     const s = tradeReducer(M, start(), { type: 'sample', supplierId: 'discount' });
     assert.match(s.message, /not the dry gas/);

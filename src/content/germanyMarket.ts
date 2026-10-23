@@ -36,7 +36,7 @@ export const GERMANY_MARKET: Market = {
     {
       id: 'park', item: 'hydrogen', name: 'Chemical Park Hydrogen', origin: 'Hydrogen plant in the chemical park. Pipeline straight to your reactor.',
       terms: { lot: 9, unitPrice: 12, fee: 0, usable: 1, minimum: 10 }, patience: 1,
-      spec: 'hydrogen, pure, by pipeline. Supply agreement: at least 10 units this month.',
+      spec: 'hydrogen, pure, by pipeline. Each order commits you to paying for at least 10 units.',
       levers: [{ id: 'minimum', label: 'Lower the minimum', reply: 'Ten units is the smallest agreement we sign. It pays for the pipe.' }],
     },
     {

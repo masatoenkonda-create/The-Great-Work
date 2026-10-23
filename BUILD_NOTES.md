@@ -587,3 +587,12 @@ User: having to finish Norway before Germany in loop 2 "is a bore"; asked for a 
 - Loop 1 stops have no auto-complete (their results feed later stops' cargo, e.g. Taiwan's wafer map); not added.
 
 Tests: `bun test src` 52 pass, 0 fail; `npm run build` passes. `npm run lint`: no errors in game code; it now fails only on the untracked `tools/codex-statusbar/` (appeared 18:28, not Claude's, left untouched and uncommitted). Browser: not run (user tests).
+
+## Germany loop 2: bounded code review - Codex, 22 October 2026
+
+- Reviewed Claude's Germany market, shared desk, engine, Norway-to-Germany App wiring and developer shortcuts. The large Norway component deletion is extraction into the shared desk, not removal of its workshop. Existing economic-path tests still cover +$68, -$12, +$34 and -$209.
+- Fixed the offer calculation: pipeline minimum now shows 10 billed units x $12 = $120, rather than the misleading 9 x $12 = $120. Contract text and hydrogen spec now explicitly say the minimum applies per order; the former monthly wording contradicted the implemented rule. Per-order commitments are a deliberate prototype simplification, not a claim about actual gas contract periods.
+- Negotiating a changed rate now preserves all other agreed terms, including the minimum. Added one regression test covering the retained minimum and immutable earlier order price. Current suppliers/prices/workshops unchanged.
+- Evidence reopened: GP01 saved PDF p. 94 / printed p. 88 (three supply modes and cylinder charges); GP14 saved PDF p. 3 (take-or-pay versus termination); GP09 Niacet introduction/applications/grades/package caveats; GP16 Air Liquide release body (German on-site hydrogen contract). Selected passages read, not entire publications. No new sources or figure-dependent geometry changes; other records and leads not reopened. Original source status labels remain unchanged.
+
+Checks: `bun test src`: 53 pass, 0 fail; `npm.cmd run lint`: pass; `npm.cmd run build`: pass, existing bundle-size warning. Initial `npm` calls were blocked by PowerShell's script policy; the installed npm.cmd launcher worked. Browser: not run (user tests). Germany art remains placeholder; loop 2 remains session-only. Next useful check: dev panel -> finish Norway, open Germany -> compare pipeline and power-block order totals/invoices. No later-country work. Changes uncommitted for Claude.
