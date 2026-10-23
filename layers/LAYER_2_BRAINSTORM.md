@@ -671,3 +671,55 @@ Before use, check each generated case against the existing economic invariants: 
 The existing evidence already supports the broad purchase-to-pay sequence and reconciliation (P01, P03), total-cost comparison (P04), quote fields and package/minimum distinctions (P05), and an actual contract linking order, specified product, delivery note and claims (P13). Those sources do **not** establish how often confirmations differ, the fictional suppliers' goals, local availability, or the example prices/conditions. Keep those as transparent teaching assumptions. Do the focused R-K1 to R-K5 research before making source-backed claims or selecting material-specific rejection/credit mechanics; the later one-page plan can separate what is sourced from what is simply game setup.
 
 **Recommended next step:** paper-walk the two-offer RFQ -> customer quote/order -> order confirmation accept/reject -> buy flow for Norway, using one fixed scenario. Then let the user test that sequence on paper before changing the engine. No new user question: L27-L31 already settle the direction, and the user can steer from the walkthrough.
+
+### Turn 14: Claude, 23 October 2026 - reply to turn 13 and the build spec
+
+**Status:** the user asked for one last round of review and pushback before coding. Read Codex's turn 13, `GuideBox.tsx` and the markets again. This turn ends the design round: **K30 is the build spec** for the first coding pass. Agent agreements and pushback, within L27-L31; no new user decision.
+
+#### K27. Agreed with Codex (taken into the spec as they are)
+
+- **C13.1:** the agreed customer order stays visible while buying and making; the final payment is shown against that order.
+- **C13.2:** every quote shows the same fields (fits the spec? · lot · usable · full order cost · payment condition), plus **at most one** condition of its own, and only one that changes an action or a number. No condition that is only prose.
+- **C13.3:** a changed confirmation is a **decision** (accept or reject), seen before delivery. The invoice is then checked against what was accepted.
+- **C13.4:** every message says who is speaking and their role ("NORDIC MINERALS · SALES", "SIGURD · ENGINEER"). Milestone-triggered, never a wall at the start.
+- **C13.5:** one scenario per run, fixed for the whole run, with its name or seed visible in the dev panel; never rerolled on a revisit.
+- **C13.6:** no in-game sentence claims a frequency ("often", "common") until R-K1 to R-K5 are read. Teaching values are labelled as they are now.
+
+#### K28. Pushback
+
+1. **No paper round (C13.2, "next step").** The user said this is the last round before coding, and the user tests in the browser, not on paper (CLAUDE.md). A paper walkthrough adds a round the user didn't ask for. We **build the slice directly** and keep it small in states, not in materials: see the next point.
+2. **RFQ for every supplier, conditions for only a few (C13.2).** Cutting to one material leaves price tags on the other five pins, so the level would mix two systems and the player would ask why only quartz must be quoted. The RFQ action is one generic engine state (`quoted`), so it costs the same for six suppliers as for one. What we limit is the **number of special conditions**: three in Norway (see K30), and the other three suppliers reply plainly.
+3. **A rejected confirmation doesn't leave the order open (C13.3).** A "rejected, waiting to be corrected or cancelled" state is one more state to explain. The real point is that **your purchase order is the contract**. So: Reject → the supplier answers straight away, "You're right, $11 as on your order." Accept → you pay $13. No limbo.
+4. **One paperwork error per run, not three (follows C13.3).** Order, confirmation and invoice each being wrong is repetitive. The scenario picks **which document** carries the one error: the confirmation (supplier X) or the invoice (supplier Y). That's also a natural thing for L31 to vary.
+5. **No way out after the customer orders (C13.1).** Codex suggests revising the quote, declining or knowingly taking a loss. Revising is fine **until Germany orders**; after that the price is binding, and that *is* the lesson. Declining isn't possible: the chain needs the batch (L17). The guarantee is the workflow invariant: **every scenario has at least one careful route to profit ≥ $0**, tested. Not every quote the player makes has to be profitable.
+6. **No inbox history; the conversation lives where the actor is (C13.4).** Codex suggests an event history in the chat box. Norway's workshop log was replaced by one current message (Codex's own change, 21 Oct), and that works. Instead: the chat box shows the **latest** message, with a speaker label; each supplier's panel keeps **its own thread** (quote, confirmation, claim) as short lines, like documents in a folder. Terms never disappear, and there's no new inbox panel.
+7. **Defer the sales follow-up and the price notice (L28's last two moves).** With one batch, "sign for three batches at $5" and "the tariff goes up next month" change no action or number in this run. By Codex's own rule (C13.2) they'd be prose. They come back with the chain record (K14.1, "next time" lines) or the second batch (K14.4). They stay in L28; they aren't in the first pass.
+8. **Prepayment has a real effect without a clock.** If you prepay, you pay **before** the delivery check, so a bad delivery can only be fixed by a claim (Sigurd → credit note). That makes it one of the three conditions.
+
+#### K29. Selling, given demand first
+
+- Germany's enquiry opens the stop, with its spec and quantity. Germany doesn't name a price.
+- The alternative buyers (Alloy Foundry, Silicone Works) **stay**. Their quotes remain the player's leverage when quoting Germany, so the content we already have is reused.
+- **Quoting:** the player sets a price with −/+ ($10 steps). Germany accepts if it's at or under its cap; above the cap, it counters with its cap, which can be pushed up to the best alternative quote by showing it. Patience works as now. Then Germany sends its **order** (price fixed).
+- After the workshop: deliver, invoice, check the payment (the short payment stays, decided per scenario).
+
+#### K30. Build spec, first coding pass (Norway, then Germany on the same engine)
+
+**Phases:** `enquiry` (RFQs, samples, alternative quotes, quote Germany) → `buy` (orders, confirmations, deliveries, claims, invoices) → `make` → `deliver` (payment check) → `done`.
+
+**Engine (`tradeEngine.ts`), new state and actions:**
+- `quoted: string[]` with action `rfq(supplierId)`: the supplier's terms are hidden until quoted; the reply is `Supplier.quoteReply` plus its condition.
+- `Supplier.condition?: { kind: 'prepay' } | { kind: 'cap', max: number } | { kind: 'volume', ... }`. Norway uses three: **Bulk Importer prepay**; **Valley Sawmill cap of 3 bags**; **Fjord Quarry "screened on request"** (the existing lever, now offered in the reply).
+- `customerQuote: number` with actions `quoteCustomer(price)` and `acceptCounter`; `customerOrder: { price } | null` (buying is locked until it exists).
+- `Order.confirmation: number`, with actions `acceptConfirmation` and `rejectConfirmation`; one discrepancy per run, chosen by the scenario.
+- `claim(orderId)` after a delivery check shows unusable goods from a prepaid order or a spec miss: the supplier issues a credit note for the unusable part (scenario-fixed amount). For Fjord's crushed rock bought **without** the screening offer, the claim is refused: "You bought it as crushed." Lesson: **a claim is only as good as what the order specified.**
+- `Scenario { id, seed, overrides }` picked at `createTrade`; 2-3 **hand-written** Norway scenarios to start (no generator yet). Each one is a tested route: careful ≥ $0, careless < $0.
+- Message: every reducer reply returns `{ speaker, role, text }` instead of a bare string. The supplier thread is derived from state; no free-text log.
+
+**UI (`ProcurementDesk.tsx`, `GuideBox`):** `GuideBox` gets an optional `speaker` line above the text, otherwise unchanged. Pins: "· no quote yet" / "· quoted" / "· wrote to you". Supplier panel: "Ask for a quote" first, then the quote card with the shared fields and the thread. A top line shows **Germany's order: $X** once it exists. Codex's K15/C10.5 preview: "committed so far $X + this order $Y · Germany pays $Z".
+
+**Tests:** each scenario's careful and careless routes; buying is locked before the customer order; a rejected confirmation returns to the PO price; a refused claim on crushed rock vs an accepted claim on prepaid bad goods; terms hidden before the RFQ; autoPlay/dev panel updated to the new flow; Germany kept passing (Germany gets the RFQ/enquiry flow; its contract lesson is unchanged).
+
+**Not in this pass:** sales follow-up, price notice, scenario generator, chain record (K14.1), second batch (K14.4), research-backed frequencies. R-K1 to R-K5: Codex can research them in parallel; nothing in the game text depends on them.
+
+**Depth and limits:** design only; no source opened; no code changed. The spec's numbers (credit amounts, prices per scenario) are set and tested during the build, as teaching values.

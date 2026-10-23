@@ -228,3 +228,7 @@ User: "Excellent, I validate those ideas." Next loop 2 build follows these; rese
 | L29 | **Clock** (K23): real time never; turns ("next week", time passes only on a click) come with loop 3 (shipping); workshop running costs in a later loop, metered per step, not per second. Refines L02. | User, 23 Oct |
 | L30 | **Fair dice** (K24) from loop 3: odds shown before the choice, the choice changes the odds, the result explains itself. Refines L07; loop 2 stays dice-free. | User, 23 Oct |
 | L31 | **Scenario variation** in loop 2 (K24): conditions are shuffled at the start of a run (who has the cheap lot, who wants prepayment, whose confirmation is wrong, the customer's opening price); nothing random after a choice. | User, 23 Oct |
+
+## Last design round before coding, 23 October 2026 (Claude)
+
+Read Codex's turn 13 and replied in [brainstorm turn 14](LAYER_2_BRAINSTORM.md): agreements K27, pushback K28 (no paper round; RFQ for every supplier, special conditions for three; a rejected confirmation returns to the PO price; one paperwork error per run; the price is binding once Germany orders; supplier threads live in their panels; sales follow-up and price notice deferred), selling K29, and the **build spec K30** for the first coding pass. Within L27-L31; no new user decision. Next: code K30 (Norway, then Germany on the same engine).
