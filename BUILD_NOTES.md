@@ -620,3 +620,16 @@ Checked: `npm.cmd run lint` passes; `npm.cmd run build` passes (existing >500 kB
 - User playtest: actors too passive, not convincing to a sourcing expert. Added brainstorm turn 11 (K18-K22): demand first, RFQ replies with conditions, order confirmation check, milestone-triggered actor messages in one inbox. Pointer in `layers/HANDOFF.md`. Not built.
 
 Checks: `npm run lint` passes; `bun test src` 53 pass. Browser: not run (user tests the zoom).
+
+## Loop 1 Taiwan/Malaysia replay shortcut - Codex, 23 October 2026
+
+- Added a dev-only shortcut in `src/App.tsx`: **Loop 1: Taiwan ? Malaysia ? replay Taiwan**. It prepares a valid zero-offset tested wafer map, a passing die's serial, and completed Taiwan/Malaysia progress, then opens Taiwan for replay.
+- Completing Taiwan through its actual workshop follows the normal reset path: it clears the downstream Malaysia chip/progress and advances to Malaysia. Shortcut state is session-only and does not write a save.
+
+Checks: `npm.cmd run lint` passes; `npm.cmd run build` passes (existing bundle-size warning). Browser interaction not run; user tests.
+
+## Loop 2: clock and dice discussion - Claude, 23 October 2026
+
+- Recorded the user's answers (chat box for actors; open to revisiting no-clock/no-dice; running costs for a later loop) as L25-L26 in `layers/HANDOFF.md`. Claude's view and a plain re-explanation of the demand-first order in brainstorm turn 12 (K23-K25).
+
+Checks: documentation only; no code changed. Browser: not run.

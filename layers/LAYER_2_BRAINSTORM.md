@@ -585,3 +585,43 @@ Count: about the same number of clicks as now. But about half of them **answer s
 - **U9.** An inbox with short messages from the actors, beside the map: does that sound lively enough, or do you picture something else (for example, the actors visibly walking up or phoning in on the map)?
 
 **Depth and limits:** reasoning from the code, the playtest report and team files. P01 and P03 are cited as Codex read them (turn 2 and the Norway review); not reopened this turn. R-K1 to R-K5 are Leads. No browser session. Code changed in this pass: only the map zoom fix (picture and pins now zoom together; separate commit `cce59a9`).
+
+### Turn 12: Claude, 23 October 2026 — clock, dice, and the user's answers
+
+**User (23 Oct):**
+- "Lively" means visual assets we don't have yet, so **for this prototype the actors speak through the chat box**. *(User decision: K19's inbox = the existing guide/chat box, no new art.)*
+- The no-clock/no-dice rule (L02, L07) was set because they can stress the player, but **the user is open to changing it** if it adds value to the simulation. Example from the user: **machine running costs in the workshop** could be a good feature for a later loop. *(User direction: each loop adds a layer and makes the earlier layers more complex; for now we want a good basic foundation.)*
+- The user did not understand K19 A (changing the order with Germany). Explained again below.
+- The user liked turns 9 and 11 and asked to commit them for Codex.
+
+#### K23. Clock: Claude's view
+
+Split "clock" into three different things:
+
+| Kind | What it is | Value | Claude's recommendation |
+|---|---|---|---|
+| **Real time** (seconds ticking) | Things happen while you think | Teaches speed, not supply chains. Punishes reading. | **Never** (keep L02 as it is) |
+| **Turns** ("next week" button) | Time passes only when the player clicks | Real value: lead times, quotes that expire, paying a supplier before the customer pays you (cash flow), stock waiting on a shelf. These are core supply-chain ideas. | **Loop 3 (shipping)**, where time naturally belongs. Not in the loop 2 foundation. |
+| **Metered running cost** (the user's example) | Each workshop step or each furnace minute costs power money | Directly explains loop 1's exploding electricity bill. | A later loop, as the user says. Meter **per step**, not per real second, so reading costs nothing. |
+
+#### K24. Dice: Claude's view
+
+Here Claude would **change its earlier position**. Uncertainty is the heart of real sourcing: without it there's no reason for two suppliers, safety stock or a reliable-but-dearer supplier, and every stop has one known best answer (Codex's point in turn 5 and C10.4). So dice add real value, but only **fair dice**:
+1. **Odds visible before the choice** ("Harbour Coal delivers late about 1 time in 5").
+2. **The player's choice changes the odds** (a dearer, reliable supplier; a second source; a spare bag in stock).
+3. **The result explains itself** afterwards ("You had one supplier and it was late. A second source would have cost $20").
+
+A middle step that needs no dice at all, and fits loop 2 now: **vary the scenario, not the outcome.** At the start of each run the conditions are shuffled (who has a cheap lot, who wants prepayment, whose confirmation is wrong, Germany's opening price), but nothing random happens after a choice. Replays stop being a memorised answer, the actors feel less scripted, and it still never feels unfair.
+
+**Recommendation:** loop 2 foundation = no dice, but **scenario variation** (when the inbox design is built). Fair dice = loop 3, together with turns (late deliveries, defects, returns). Metered running costs = the later loop the user picks.
+
+#### K25. K19 A again, in plain words (the "order change" with Germany)
+
+- **Now:** buy all inputs → make the silicon → *then* Germany offers $560 and you bargain.
+- **Proposal:** Germany asks first ("What would you charge for a batch?") → you ask the suppliers for quotes → you tell Germany your price → Germany agrees and orders → *then* you buy, make and deliver.
+- **Why:** that's how a real factory sells. And it creates the buyer's real pressure: you've **promised** $600, so now every supplier price has to fit under it. If a confirmation comes back wrong or the quartz is dust, the money comes out of your promise.
+- **The trade-off:** you lose the moment of "now let's see what it's worth" at the end. Bargaining and the payment check stay; they just happen at different points.
+
+This is still U8, waiting for the user's answer.
+
+**Depth and limits:** design reasoning only; no source opened. Fair dice and scenario variation are recommendations, not decisions; L02 and L07 still stand until the user changes them. No code changed.

@@ -207,3 +207,12 @@ Checks: `npm.cmd run lint` passes; `npm.cmd run build` passes (existing >500 kB 
 ## Actors too passive: Claude's proposal, 23 October 2026
 
 User playtest (Norway loop 2, end to end): the actors are too passive, they only wait for the player; a sourcing expert would not find it realistic. Claude's proposal in [brainstorm turn 11](LAYER_2_BRAINSTORM.md) (K18-K22): demand first (the customer's enquiry opens the stop, the price is agreed before buying), quotes on request instead of price tags (each reply has its own condition), an order confirmation that can differ from the order, and actors who act on milestones (Sigurd rejects fines, a sales rep follows up, a price notice). One inbox of short messages; no clock, no dice. Questions Q16-Q18 for Codex, U8-U9 for the user. Recommendations only; research items R-K1 to R-K5 are Leads. Not built.
+
+## Clock and dice discussion, 23 October 2026 (Claude)
+
+| ID | Decision | Who |
+|---|---|---|
+| L25 | For this prototype, actors speak through the **existing chat box**; no new art for "lively" yet. | User, 23 Oct |
+| L26 | L02 (no clock) and L07 (no dice) were set to avoid stress; the user is **open to revisiting** them if they add value. Machine running costs in the workshop = candidate for a **later loop** (each loop adds a layer and deepens earlier ones; loop 2 = a good basic foundation). | User, 23 Oct |
+
+Claude's view in [brainstorm turn 12](LAYER_2_BRAINSTORM.md) (K23-K25): real time never; turns ("next week") belong to loop 3; running costs metered per step, not per second; fair dice (visible odds, the choice changes the odds, the result explains itself) in loop 3; for loop 2, **vary the scenario at the start of a run, not the outcome**. K19 A (agree the price with Germany before buying) explained again; U8 still open.
