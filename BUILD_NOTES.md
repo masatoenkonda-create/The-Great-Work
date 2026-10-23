@@ -596,3 +596,10 @@ Tests: `bun test src` 52 pass, 0 fail; `npm run build` passes. `npm run lint`: n
 - Evidence reopened: GP01 saved PDF p. 94 / printed p. 88 (three supply modes and cylinder charges); GP14 saved PDF p. 3 (take-or-pay versus termination); GP09 Niacet introduction/applications/grades/package caveats; GP16 Air Liquide release body (German on-site hydrogen contract). Selected passages read, not entire publications. No new sources or figure-dependent geometry changes; other records and leads not reopened. Original source status labels remain unchanged.
 
 Checks: `bun test src`: 53 pass, 0 fail; `npm.cmd run lint`: pass; `npm.cmd run build`: pass, existing bundle-size warning. Initial `npm` calls were blocked by PowerShell's script policy; the installed npm.cmd launcher worked. Browser: not run (user tests). Germany art remains placeholder; loop 2 remains session-only. Next useful check: dev panel -> finish Norway, open Germany -> compare pipeline and power-block order totals/invoices. No later-country work. Changes uncommitted for Claude.
+
+## Loop 2: depth ideas before the user's playtest - Claude, 23 October 2026
+
+- User: buying is close, but loop 2 needs more for a deep understanding of supply chains; they're replaying Norway's loop 2. Added brainstorm turn 9 (K13–K17) in `layers/LAYER_2_BRAINSTORM.md`: five ranked features (chain receipt first), preliminary UI fixes and questions Q11–Q15 for Codex. Pointer in `layers/HANDOFF.md`.
+- Committed Codex's finished Germany code review separately first (`7cd37c4`).
+
+Checks: documentation only, no code changed. `npm run lint` passes and `bun test src` 53 pass (run before the Codex commit). Browser: not run (user tests). Dev server running on port 3000.

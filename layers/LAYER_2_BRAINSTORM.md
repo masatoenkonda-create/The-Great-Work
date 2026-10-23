@@ -407,3 +407,53 @@ User decisions: a separate **Norway supplier map** becomes loop 2's main screen 
 ### Turn 8: Claude, 22 October 2026 — supplier map built
 
 Built the supplier map, store panel and product views with placeholders (commit `84bd0a9`); removed Codex's inset map, which the full map replaces. All decisions so far are collected in [HANDOFF.md](HANDOFF.md) (L01–L13). Q7–Q10 from turn 3 are parked until the user's next playtest.
+
+### Turn 9: Claude, 23 October 2026 — what loop 2 still needs for a deep understanding
+
+**Context.** The user (23 Oct, by voice) said the buying experience is close: the UI needs some fixes and the whole thing needs one or two more. At the meta level, though, loop 2 still lacks the features that would give a **deeper understanding of how a supply chain works**. The user is replaying Norway's loop 2 end to end and will report. This turn is Claude's **preliminary** contribution, written before that playtest, for Codex to challenge and add to. The playtest overrides anything here. These are agent recommendations, not user decisions. Nothing is sourced yet: every idea below is a **Lead** until someone opens a primary source.
+
+#### K13. What loop 2 teaches now
+
+Per stop, from `tradeEngine.ts` and the Norway and Germany markets:
+- **Purchase-to-pay hygiene:** check before you buy (sample, spec sheet); bought isn't the same as usable (fines); compare the invoice with the order.
+- **Lots and minimums:** a small buyer can't get small lots cheaply; leftovers are money sitting still.
+- **Contract vs pay as you go:** a commitment pays off only if you use it (Germany).
+- **Selling:** competing quotes are leverage; the agreed price, the invoice and the payment received are three different numbers.
+
+These are all lessons about **one transaction at one stop**. They are true and they work, but they teach *buying*, not *supply chain*. In the game today, the "chain" is a single number, `carriedCost`, that turns up in the next stop's store. What the player can't see yet is how the stops depend on each other.
+
+#### K14. What's missing: five candidates, ranked
+
+| ID | Feature | What the player sees and does | The "oh" | Build cost |
+|---|---|---|---|---|
+| **K14.1** | **The chain receipt** | One receipt that travels with the product and grows at every stop. At Germany: "Inside this silicon: quartz $X, carbon $Y, chips $Z, power $W, Norway's margin $M = $620." Germany adds its own lines. At home it's the TV's full bill, line by line, stop by stop. | "My price is my customer's cost. Every stop's waste and margin end up in the TV." | Small: all the data exists already (paid orders, `carriedCost`, sale price). UI, plus a list carried between stops. Gives L18 (TV price as the score) something concrete. |
+| **K14.2** | **Squeezing your customer moves cost, it doesn't remove it** | The player runs every stop (L17). Getting $620 instead of $560 from Germany makes Norway look good and Germany $60 worse. The chain receipt shows the two cancel out; only money paid to *outside* suppliers and waste actually change the TV's price. | "Haggling between my own stops doesn't make the TV cheaper. Buying well from outside and wasting less does." | Small (a reveal on the receipt). **Design tension for Codex:** once the player sees this, does negotiating with the next stop still feel worth doing? A suggestion: keep the per-stop result (each factory is its own business and must survive), and let the chain total be the second, deeper score. |
+| **K14.3** | **Your supplier's supplier** | The map already has origins. Make the tier visible: Harbour Coal and Bulk Importer both get their coal off the same ship from abroad. Two sellers can share one source. | "Two suppliers aren't two sources." | Visibility alone is cheap (origin lines on the map). A *consequence* (the shared source fails or gets dearer) is a disruption, which sits closer to loop 3 (shipping) and to L07 (no dice). It would need to be deterministic and announced. **Lead:** tier/concentration evidence (K10 Q7 is still open). |
+| **K14.4** | **A second batch** | After the first sale, the customer asks for another batch (or two). Now the Norway quartz lot of 25 is no longer waste, the contract minimum pays off at volume, and a supplier remembers whether you paid on time or disputed fairly. | "Commitments, volume and relationships only matter when you buy again." This is the core of real procurement (K8). | Medium to large: repeat orders in the engine, leftovers carried into the next batch, relationship state. Partly answers U4 (one TV or several), which is still open with the user. |
+| **K14.5** | **Cost per usable unit on every offer** | The offer shows "$18 a chunk, but only 6 of 10 are usable → **$30 per usable chunk**" once a sample is taken. | "The cheapest price isn't the cheapest unit." | Small, UI only. Already taught by the fines, but at the moment the player has to work it out. |
+
+**Claude's recommendation:** build **K14.1 + K14.2 first**. They are cheap, use data the game already has and give the chain model (L17) its meaning: the player finally *sees* a chain and not just six desks. They also settle L18. K14.5 belongs in the UI pass. K14.3 could be visibility only for now. K14.4 is the biggest step towards real procurement depth, but it changes the game's shape (U4), so it waits for the user's playtest and their answer.
+
+**Out of scope for loop 2:** lead times, late deliveries and returns (loop 3); legality and origin rules (loop 4); forecasting (GAME_VISION: planning stays out).
+
+#### K15. Preliminary UI fixes (from reading the code, not seeing it; the user's playtest decides)
+
+- **Compare offers side by side.** At the moment one supplier panel opens at a time, so the player has to remember the other seller's price. A small table per input (seller, lot, price, usable, total, per usable unit) makes the choice a real comparison.
+- **The margin, always in view, while buying.** A single line: "Costs so far $X · customer offers $Y · room left $Z". The opening offer is already on screen, but the player has to do the sum.
+- **The order button names the result:** "Order 1 lot: 10 chunks, 6 usable, you still need 4" (the order preview partly does this already).
+- Keep L20: plain labels, no colour coding, no motion.
+
+#### K16. Questions for Codex (turn 10)
+
+- **Q11.** Research for K14.1/K14.2: a primary source on how cost builds up stage by stage in a product (a teardown with a cost breakdown, or a value-added study of a semiconductor or TV supply chain). Is "each stage's price includes its suppliers' prices plus its margin" a fair simplification? What does it hide?
+- **Q12.** Attack K14.2: is a transfer-price reveal honest when, in reality, the stops are separate companies? Or does it teach the wrong thing ("negotiating doesn't matter")?
+- **Q13.** K14.3: is there primary evidence for shared upstream sources behind "different" suppliers (for our inputs, or in general)? Can its consequence stay deterministic?
+- **Q14.** K14.4: the smallest engine change that makes a second batch meaningful, without a clock. Which current lessons get deeper with it, and which become trivial?
+- **Q15.** What would *you* add for "deep understanding" that isn't in K14?
+
+#### K17. For the user (after the playtest; feel and direction only)
+
+- **U7.** Would seeing the TV's bill build up stop by stop (K14.1) make the loop feel more like one chain?
+- **U4** (still open): one batch per stop, or a second batch so that commitments and relationships matter?
+
+**Depth and limits:** read the code (`tradeEngine.ts`, `norwayMarket.ts`, the `ProcurementDesk.tsx` structure) and the team files (HANDOFF, GERMANY_PLAN, PROCUREMENT_WORKFLOW, NORWAY_BUYING_UI_REVIEW). No primary source opened in this turn: everything in K14 is a Lead. No browser session (the user tests). No code changed.
