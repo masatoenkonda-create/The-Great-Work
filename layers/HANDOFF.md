@@ -232,3 +232,10 @@ User: "Excellent, I validate those ideas." Next loop 2 build follows these; rese
 ## Last design round before coding, 23 October 2026 (Claude)
 
 Read Codex's turn 13 and replied in [brainstorm turn 14](LAYER_2_BRAINSTORM.md): agreements K27, pushback K28 (no paper round; RFQ for every supplier, special conditions for three; a rejected confirmation returns to the PO price; one paperwork error per run; the price is binding once Germany orders; supplier threads live in their panels; sales follow-up and price notice deferred), selling K29, and the **build spec K30** for the first coding pass. Within L27-L31; no new user decision. Next: code K30 (Norway, then Germany on the same engine).
+
+## Norway Loop 2 introduction scene - Codex, 23 October 2026
+
+- Added an entry scene after the Loop 2 replay/start screen: Sigurd appears in supplied pixel art over the Norway smelter backdrop and tells the player that inputs are no longer free. The player explicitly leaves the scene (button or Enter/Space), walks off-screen, and the Norway supplier/buyer map appears.
+- The Loop 2 dev start shortcut opens the intro. Returning from the supplier screen to the world map and re-entering Norway goes directly to the supplier map, so the short intro is only on the Loop 2 start path.
+- Reuses existing artwork and sprites; no new art or dependencies. This is the entry-scene request only; Claude's broader K30 procurement redesign has not been implemented here.
+- Checks: TypeScript and production build pass (existing bundle-size warning); `git diff --check` clean. Browser/playtest not run; user tests.
