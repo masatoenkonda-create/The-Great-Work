@@ -608,7 +608,7 @@ Checks: documentation only, no code changed. `npm run lint` passes and `bun test
 
 - User reported that locations and items on the Norway procurement map were hard to read. Updated shared `src/components/procurement/ProcurementDesk.tsx` (Norway and Germany use this shared desk).
 - Enlarged supplier/building markers (36/46 to 43/52 SVG units) and product art; increased name and status type to 18/14 from 14/11; strengthened dark marker/label backing and outlines. "Needed" status now uses a brighter gold.
-- Added accessible zoom buttons (100–160%, reset), scaling pins, labels and roads together about map center. Made the Next instruction larger and higher contrast.
+- Added accessible zoom buttons (100â€“160%, reset), scaling pins, labels and roads together about map center. Made the Next instruction larger and higher contrast.
 - No changes to map art, positions, routes, market rules or economics. No new dependencies.
 
 Checked: `npm.cmd run lint` passes; `npm.cmd run build` passes (existing >500 kB bundle warning). Browser visual check/playtest not run; the repo workflow leaves browser testing to the user. Presentation-only change; no new tests. Remaining map/pin art placeholders unchanged. Uncommitted for Claude.

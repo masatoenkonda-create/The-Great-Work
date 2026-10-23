@@ -107,7 +107,7 @@ function Icon({ c, item, faded }: { c: DeskConfig; item: string; faded?: boolean
   </span>;
 }
 
-function Pin({ c, id, p, s, open, onOpen, zoom }: { c: DeskConfig; id: string; p: Place; s: TradeState; open: boolean; onOpen: () => void; zoom: number }) {
+function Pin({ c, id, p, s, open, onOpen }: { c: DeskConfig; id: string; p: Place; s: TradeState; open: boolean; onOpen: () => void }) {
   const M = c.market;
   const sup = M.suppliers.find(x => x.id === id);
   const customer = id === 'customer' || c.competitors.includes(id);
@@ -122,12 +122,12 @@ function Pin({ c, id, p, s, open, onOpen, zoom }: { c: DeskConfig; id: string; p
   if (id === 'factory' && s.phase === 'buy' && readyToMake(M, s)) sub += ' · ready';
   if (customer && id !== 'customer' && s.sale.quotes.includes(id)) sub += ` · quoted $${M.buyer.competitors.find(x => x.id === id)!.quote}`;
   const art2 = hasArt ? art : hasIcon ? iconSrc : '';
-  const r = (id === 'factory' ? 52 : 43) * zoom;
+  const r = id === 'factory' ? 52 : 43;
   const img = hasArt ? r * 1.7 : r * 1.15; // a product marker sits smaller inside its plate
-  const labelSize = 18 * zoom;
-  const subSize = 14 * zoom;
-  const w = Math.max(p.label.length * labelSize * 0.62, sub.length * subSize * 0.58) + 30 * zoom;
-  const labelH = 54 * zoom;
+  const labelSize = 18;
+  const subSize = 14;
+  const w = Math.max(p.label.length * labelSize * 0.62, sub.length * subSize * 0.58) + 30;
+  const labelH = 54;
   const edge = open ? '#fde68a' : '#e2e8f0';
   return (
     <g transform={`translate(${p.x},${p.y})`} onClick={onOpen} className="cursor-pointer" role="button" tabIndex={0} aria-label={`${p.label}, ${sub}`}
@@ -136,10 +136,10 @@ function Pin({ c, id, p, s, open, onOpen, zoom }: { c: DeskConfig; id: string; p
       <circle r={r} fill="#0f172a" fillOpacity="0.35" stroke={edge} strokeWidth={open ? 4 : 3} />
       {art2 ? <image href={art2} x={-img / 2} y={-img / 2} width={img} height={img} style={{ imageRendering: 'pixelated' }} />
         : <circle r="7" fill="#e2e8f0" />}
-      <rect x={-w / 2} y={r - 3} width={w} height={labelH} rx={9 * zoom} fill="#09111f" fillOpacity="0.97" stroke="#07101c" strokeWidth={7 * zoom} />
-      <rect x={-w / 2} y={r - 3} width={w} height={labelH} rx={9 * zoom} fill="#101d2d" stroke={edge} strokeWidth={open ? 4 : 3} />
-      <text y={r + 19 * zoom} textAnchor="middle" fill="#ffffff" fontSize={labelSize} fontWeight="700" paintOrder="stroke" stroke="#07101c" strokeWidth={1.5 * zoom}>{p.label}</text>
-      <text y={r + 41 * zoom} textAnchor="middle" fill={sub.includes('needed') ? '#fde68a' : '#dbeafe'} fontSize={subSize} fontWeight="600">{sub}</text>
+      <rect x={-w / 2} y={r - 3} width={w} height={labelH} rx={9} fill="#09111f" fillOpacity="0.97" stroke="#07101c" strokeWidth={7} />
+      <rect x={-w / 2} y={r - 3} width={w} height={labelH} rx={9} fill="#101d2d" stroke={edge} strokeWidth={open ? 4 : 3} />
+      <text y={r + 19} textAnchor="middle" fill="#ffffff" fontSize={labelSize} fontWeight="700" paintOrder="stroke" stroke="#07101c" strokeWidth={1.5}>{p.label}</text>
+      <text y={r + 41} textAnchor="middle" fill={sub.includes('needed') ? '#fde68a' : '#dbeafe'} fontSize={subSize} fontWeight="600">{sub}</text>
     </g>
   );
 }
@@ -181,8 +181,8 @@ export function ProcurementDesk({ config: c, state: s, dispatch, onReturnToMap, 
       {/* Supplier map */}
       <div className="relative min-h-[45svh] min-w-0 flex-1 lg:min-h-0">
         <svg viewBox="0 0 1376 768" preserveAspectRatio="xMidYMid meet" className="h-full w-full" role="group" aria-label="Map of the factory's suppliers, material origins and customer">
-          {mapFailed ? <c.MapPlaceholder /> : <image href={c.art.map} onError={() => setMapFailed(true)} x="0" y="0" width="1376" height="768" preserveAspectRatio="xMidYMid meet" style={{ imageRendering: 'pixelated' }} />}
           <g transform={`translate(${(1 - mapZoom) * 688} ${(1 - mapZoom) * 384}) scale(${mapZoom})`}>
+          {mapFailed ? <c.MapPlaceholder /> : <image href={c.art.map} onError={() => setMapFailed(true)} x="0" y="0" width="1376" height="768" preserveAspectRatio="xMidYMid meet" style={{ imageRendering: 'pixelated' }} />}
           {Object.keys(c.pins).filter(id => id !== 'factory').map(id => (
             <path key={id} d={c.routes[id]} fill="none" stroke={open === id ? '#f8fafc' : '#475569'} strokeWidth={open === id ? 3 : 2} strokeDasharray="5 6" opacity={open === id ? 0.95 : 0.45} />
           ))}
@@ -205,7 +205,7 @@ export function ProcurementDesk({ config: c, state: s, dispatch, onReturnToMap, 
               <animateMotion dur="2.4s" fill="freeze" path={c.routes[lastOrder.supplierId]} />
             </g>
           )}
-          {Object.entries(c.pins).map(([id, p]) => <Pin key={id} c={c} id={id} p={p} s={s} open={open === id} zoom={mapZoom} onOpen={() => { sound.playClick(); setOpen(id); }} />)}
+          {Object.entries(c.pins).map(([id, p]) => <Pin key={id} c={c} id={id} p={p} s={s} open={open === id} onOpen={() => { sound.playClick(); setOpen(id); }} />)}
           </g>
         </svg>
 
