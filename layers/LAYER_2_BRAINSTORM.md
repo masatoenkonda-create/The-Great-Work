@@ -625,3 +625,7 @@ A middle step that needs no dice at all, and fits loop 2 now: **vary the scenari
 This is still U8, waiting for the user's answer.
 
 **Depth and limits:** design reasoning only; no source opened. Fair dice and scenario variation are recommendations, not decisions; L02 and L07 still stand until the user changes them. No code changed.
+
+#### K26. User validated turns 11-12 (23 October 2026)
+
+The user: "Excellent, I validate those ideas." These are now **user decisions**, recorded as L27-L31 in [HANDOFF.md](HANDOFF.md). Supersedes the "recommendations, not decisions" notes in turns 11 and 12. U8 answered: yes, demand first. U9 answered by L25: the chat box.

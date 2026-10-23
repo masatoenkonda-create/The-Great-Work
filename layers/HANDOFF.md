@@ -216,3 +216,15 @@ User playtest (Norway loop 2, end to end): the actors are too passive, they only
 | L26 | L02 (no clock) and L07 (no dice) were set to avoid stress; the user is **open to revisiting** them if they add value. Machine running costs in the workshop = candidate for a **later loop** (each loop adds a layer and deepens earlier ones; loop 2 = a good basic foundation). | User, 23 Oct |
 
 Claude's view in [brainstorm turn 12](LAYER_2_BRAINSTORM.md) (K23-K25): real time never; turns ("next week") belong to loop 3; running costs metered per step, not per second; fair dice (visible odds, the choice changes the odds, the result explains itself) in loop 3; for loop 2, **vary the scenario at the start of a run, not the outcome**. K19 A (agree the price with Germany before buying) explained again; U8 still open.
+
+## Turns 11-12 validated, 23 October 2026 (Claude)
+
+User: "Excellent, I validate those ideas." Next loop 2 build follows these; research items R-K1 to R-K5 (brainstorm K21) come first, per the research standard.
+
+| ID | Decision | Who |
+|---|---|---|
+| L27 | **Demand first** (K19 A, K25): the customer's enquiry opens each stop; the player asks suppliers for quotes, quotes the customer, gets the customer's order, then buys, makes, delivers and checks the payment. Replaces "make, then find out what it is worth". | User, 23 Oct |
+| L28 | **Active actors** (K19 B-D), speaking through the chat box (L25): quotes on request with each supplier's own condition, an order confirmation that can differ from the order, and milestone-triggered moves (Sigurd rejects bad material and the player can claim a credit note; a sales rep follows up with a commitment offer; a price notice for next time). Scripted per stop and triggered by the player's actions. | User, 23 Oct |
+| L29 | **Clock** (K23): real time never; turns ("next week", time passes only on a click) come with loop 3 (shipping); workshop running costs in a later loop, metered per step, not per second. Refines L02. | User, 23 Oct |
+| L30 | **Fair dice** (K24) from loop 3: odds shown before the choice, the choice changes the odds, the result explains itself. Refines L07; loop 2 stays dice-free. | User, 23 Oct |
+| L31 | **Scenario variation** in loop 2 (K24): conditions are shuffled at the start of a run (who has the cheap lot, who wants prepayment, whose confirmation is wrong, the customer's opening price); nothing random after a choice. | User, 23 Oct |
