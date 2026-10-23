@@ -621,10 +621,10 @@ Checked: `npm.cmd run lint` passes; `npm.cmd run build` passes (existing >500 kB
 
 Checks: `npm run lint` passes; `bun test src` 53 pass. Browser: not run (user tests the zoom).
 
-## Loop 1 Taiwan/Malaysia replay shortcut - Codex, 23 October 2026
+## Loop 1 later-stage dev shortcuts - Codex, 23 October 2026
 
-- Added a dev-only shortcut in `src/App.tsx`: **Loop 1: Taiwan ? Malaysia ? replay Taiwan**. It prepares a valid zero-offset tested wafer map, a passing die's serial, and completed Taiwan/Malaysia progress, then opens Taiwan for replay.
-- Completing Taiwan through its actual workshop follows the normal reset path: it clears the downstream Malaysia chip/progress and advances to Malaysia. Shortcut state is session-only and does not write a save.
+- Added three independent dev-only shortcuts in `src/App.tsx`: **Loop 1: complete Taiwan**, **complete Malaysia**, and **complete China**. Each prepares valid upstream data (tested wafer map, passing chip serial, and TV identity as applicable), marks progression through that stage, and returns to the map so the next stage can be opened normally.
+- Shortcut state is session-only and does not write a save. The three checkpoints make later-stage navigation easy during development without playing earlier stages.
 
 Checks: `npm.cmd run lint` passes; `npm.cmd run build` passes (existing bundle-size warning). Browser interaction not run; user tests.
 
@@ -633,3 +633,11 @@ Checks: `npm.cmd run lint` passes; `npm.cmd run build` passes (existing bundle-s
 - Recorded the user's answers (chat box for actors; open to revisiting no-clock/no-dice; running costs for a later loop) as L25-L26 in `layers/HANDOFF.md`. Claude's view and a plain re-explanation of the demand-first order in brainstorm turn 12 (K23-K25).
 
 Checks: documentation only; no code changed. Browser: not run.
+
+## Loop 2 Norway intro scene - Codex, 23 October 2026
+
+- Added a short pixel-art prologue between the Loop 2 replay screen and Norway's supplier map. Reuses the Norway smelter backdrop and supplied Sigurd/player sprites.
+- Sigurd tells the player, "This time, the inputs aren't free," and asks them to compare suppliers and costs. The player walks into the scene, then chooses **Leave for the supplier map** (or presses Enter/Space); the character walks off and Norway's buyer/supplier map opens.
+- The Loop 2 dev shortcut now also opens this intro so it can be checked during development. Returning to the world map and selecting Norway still opens the procurement map directly.
+
+Checks: `npm.cmd run lint`, `npm.cmd run build`, and `git diff --check` pass (build retains the existing bundle-size warning). Browser visual/play test not run; user tests.

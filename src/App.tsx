@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { RouteStop, ROUTE_STOPS, StopId, CargoState } from './types/route';
-import { loadSavedCargo, saveCargoState, clearCargoState, resetFrom, takeMigrationNotice } from './services/storage';
+import { INITIAL_CARGO_STATE, loadSavedCargo, saveCargoState, clearCargoState, resetFrom, takeMigrationNotice } from './services/storage';
 import { TitleScreen } from './components/TitleScreen';
 import { WorldMap } from './components/WorldMap';
 import { Workspace3D } from './components/Workspace3D';
 import { LoopReplay } from './components/LoopReplay';
 import { NorwayProcurement } from './components/NorwayProcurement';
+import { NorwayProcurementIntro } from './components/NorwayProcurementIntro';
 import { GermanyProcurement } from './components/GermanyProcurement';
 import { createTrade, tradeReducer, TradeAction, TradeState } from './content/tradeEngine';
 import { NORWAY_MARKET } from './content/norwayMarket';
@@ -14,11 +15,13 @@ import { DevPanel, DevAction } from './components/DevPanel';
 import { autoPlay, GERMANY_CAREFUL, NORWAY_CAREFUL } from './content/autoPlay';
 import { sound } from './services/audio';
 import { useFullscreen } from './services/fullscreen';
+import { buildWaferMap, chipSerial, mapCounts, tvSerialFor } from './content/waferMap';
+import { FIELDS } from './content/waferMap';
 
 export default function App() {
   const [cargo, setCargo] = useState<CargoState>(() => loadSavedCargo());
   // Loop 2 (procurement) prototype: Norway, then Germany; `?loop=2` opens its replay screen directly. Not saved yet.
-  const [view, setView] = useState<'title' | 'map' | 'workspace' | 'replay'>(
+  const [view, setView] = useState<'title' | 'map' | 'workspace' | 'replay' | 'procurement-intro'>(
     () => (new URLSearchParams(window.location.search).get('loop') === '2' ? 'replay' : 'title'));
   const [loop, setLoop] = useState<1 | 2>(1);
   // Keep orders/accepted stock while visiting the world map. Still session-only, isolated from campaign saves.
@@ -134,11 +137,36 @@ export default function App() {
   // Developer shortcuts (dev server only): finished stops are played carefully through the real engine.
   const devActions: DevAction[] = (() => {
     const norwayDone = () => autoPlay(NORWAY_MARKET, NORWAY_CAREFUL);
-    const toLoop2 = (norway: TradeState, germanyState: TradeState | null, stop: StopId, to: 'map' | 'workspace', note: string | null) => {
+    const toLoop2 = (norway: TradeState, germanyState: TradeState | null, stop: StopId, to: 'map' | 'workspace' | 'procurement-intro', note: string | null) => {
       setLoop(2); setProcurement(norway); setGermany(germanyState); setActiveStopId(stop); setView(to); setNotice(note);
     };
+    const completeLoop1Through = (stop: 4 | 5 | 6) => {
+      const waferMap = buildWaferMap(INITIAL_CARGO_STATE.lotId, 1, FIELDS.map(field => ({ field, dx: 0, dy: 0 })));
+      const firstGoodDie = waferMap.dies.find(die => die.status === 'pass')!;
+      const selectedChipSerial = chipSerial(waferMap, firstGoodDie);
+      const done = Array.from({ length: stop }, (_, i) => (i + 1) as StopId);
+      const completedCargo: CargoState = {
+        ...INITIAL_CARGO_STATE,
+        currentStopId: Math.min(7, stop + 1) as StopId,
+        completedStops: done,
+        siliconMetalBatchKg: 12,
+        polysiliconBatchKg: 12,
+        wafersProducedCount: 1,
+        ...mapCounts(waferMap),
+        waferMap,
+        selectedChipSerial: stop >= 5 ? selectedChipSerial : null,
+        tvChipSerial: stop >= 6 ? selectedChipSerial : null,
+        tvSerial: stop >= 6 ? tvSerialFor(selectedChipSerial) : null,
+        isTvOperational: stop >= 6,
+        completionMethod: {
+          1: 'placeholder', 2: 'placeholder', 3: 'placeholder', 4: stop >= 4 ? 'placeholder' : null,
+          5: stop >= 5 ? 'placeholder' : null, 6: stop >= 6 ? 'placeholder' : null, 7: null,
+        },
+      };
+      setLoop(1); setCargo(completedCargo); setActiveStopId(completedCargo.currentStopId); setView('map'); setNotice(null);
+    };
     return [
-      { label: 'Loop 2: start (skip loop 1)', run: () => toLoop2(createTrade(NORWAY_MARKET), null, 1, 'map', null) },
+      { label: 'Loop 2: start (skip loop 1)', run: () => toLoop2(createTrade(NORWAY_MARKET), null, 1, 'procurement-intro', null) },
       { label: 'Loop 2: finish Norway', run: () => toLoop2(norwayDone(), null, 1, 'map', 'Dev: Norway finished (careful play). Click Germany.') },
       { label: 'Loop 2: finish Norway, open Germany', run: () => {
         const n = norwayDone();
@@ -148,6 +176,9 @@ export default function App() {
         const n = norwayDone();
         toLoop2(n, autoPlay(GERMANY_MARKET, GERMANY_CAREFUL, n.sale.price!), 2, 'map', 'Dev: Norway and Germany finished (careful play).');
       } },
+      { label: 'Loop 1: complete Taiwan', run: () => completeLoop1Through(4) },
+      { label: 'Loop 1: complete Malaysia', run: () => completeLoop1Through(5) },
+      { label: 'Loop 1: complete China', run: () => completeLoop1Through(6) },
     ];
   })();
 
@@ -174,7 +205,11 @@ export default function App() {
       )}
 
       {view === 'replay' && (
-        <LoopReplay onStart={() => { setProcurement(createTrade(NORWAY_MARKET)); setLoop(2); setActiveStopId(1); setView('map'); }} />
+        <LoopReplay onStart={() => { setProcurement(createTrade(NORWAY_MARKET)); setLoop(2); setActiveStopId(1); setView('procurement-intro'); }} />
+      )}
+
+      {view === 'procurement-intro' && loop === 2 && (
+        <NorwayProcurementIntro onDone={() => setView('workspace')} />
       )}
 
       {view === 'map' && loop === 2 && (
