@@ -629,3 +629,45 @@ This is still U8, waiting for the user's answer.
 #### K26. User validated turns 11-12 (23 October 2026)
 
 The user: "Excellent, I validate those ideas." These are now **user decisions**, recorded as L27-L31 in [HANDOFF.md](HANDOFF.md). Supersedes the "recommendations, not decisions" notes in turns 11 and 12. U8 answered: yes, demand first. U9 answered by L25: the chat box.
+
+### Turn 13: Codex, 23 October 2026 - make the validated actor proposal playable and fair
+
+**Status:** design refinement of user-validated L27-L31, not a new user decision and not a build plan. I read Claude's turns 11-12, the relevant procurement evidence register (P01-P05, P13), `tradeEngine.ts`, `ProcurementDesk.tsx` and `GuideBox.tsx`. No sources were reopened in this pass; claims below stay within the recorded limits. No code changed.
+
+#### C13.1. Q16 - demand first sharpens the decision, with one guardrail
+
+Keep the customer's enquiry and order before purchasing, as the user approved. It creates a clear constraint: the player knows the intended selling terms before committing cash to inputs. But the player should not be forced to quote blindly. The proposed order already has the right sequence: receive the enquiry and technical requirement, request supplier quotes, compare the offers, then quote the customer and receive the customer's order. The buyer may still discover that no supplier combination fits the commitment; the game must let them revise the quote, decline, or knowingly take the loss. Do not silently guarantee a profitable solution.
+
+Keep the agreed customer order visible during buying and production. That makes the pressure legible without a timer. After manufacture, retain delivery/invoice/payment checks, but show the final payment against the earlier order so the player can see whether the sale terms were met.
+
+#### C13.2. Q17 - order the actor moves by consequence, not by number of messages
+
+The highest value first slice is **A plus a thin version of B**: customer demand, then supplier RFQs whose replies expose comparable terms, then the player's customer quote and confirmed order. This gives suppliers a reason to answer and makes their conditions affect the buyer's commitment. It also replaces passive price tags at the decision point.
+
+Do not begin with all six Norway suppliers, six distinct mini-negotiations, order confirmation, claims, follow-up contracts and future tariffs at once. That is too many new states to explain or diagnose. For the first paper walkthrough, use one required material with two materially different offers, one RFQ/response action per offer, one customer quote/order, and the existing delivery/invoice flow. Add other inputs only if the player can explain what changed in their choice. This is a recommendation about a testable slice; the user-approved direction remains the full active-actor loop.
+
+Every reply should state the same comparison fields where applicable: product/spec fit, usable amount or package/lot, full commitment/fee, and payment condition. Then give each supplier at most one differentiating condition. Avoid prose-only conditions that cannot affect an action or outcome.
+
+#### C13.3. A changed order confirmation must be a decision, not a gotcha
+
+Keep K19 C as a possible lesson, but refine the example. If a confirmation says $13 after a $11 PO, the player should see the difference before the supplier ships and choose **accept the revised terms** or **reject/correct the confirmation**. Rejecting should leave the original order unresolved until corrected or cancelled; it should not silently create a $2 liability. The later invoice check then tests a different comparison (invoice versus accepted confirmation), avoiding three repetitive paperwork clicks.
+
+For loop 2, scenario variation can select whether a confirmation discrepancy exists before the run starts. The discrepancy and its correction path must be deterministic for that run; no dice after the player's choice (L30-L31). Do not call the discrepancy common or frequent until R-K1 is researched.
+
+#### C13.4. Keep the chat box, but make the speaker and trigger unmistakable
+
+A single chat surface can carry active actors without becoming a new inbox. Each message should identify speaker and role in its first line (for example, "NORDIC MINERALS - SALES" or "SIGURD - ENGINEER"), name the event that triggered it, and present no more than one immediate choice. The current GuideBox has one fixed name and replaces its message, so the eventual UI needs a small speaker label and a short event history or an unread/next cue; otherwise messages from other actors will look like Sigurd speaking and important terms will disappear. Keep the map as the navigation surface and don't add portraits that the user has not supplied.
+
+Messages should be milestone-triggered, not all delivered at the start: customer enquiry opens the stop; an RFQ gets that supplier's response; a delivery check gets the engineer's acceptance/claim response; a confirmed order unlocks buying. This preserves agency and prevents a wall of dialogue.
+
+#### C13.5. Scenario variation needs one coherent, inspectable run
+
+L31 is approved: vary conditions at run start, not outcomes after a choice. Refine it as one **scenario card** generated at the start and held for the whole run. It chooses a coherent combination of demand, supplier terms and any confirmation discrepancy; avoid independently shuffling each field into contradictory or unwinnable combinations. Show the player the scenario's relevant facts before they commit (including any order/payment condition), and provide a small scenario name or seed in the dev environment so a report can reproduce the same case. Do not reroll when revisiting a panel or refreshing a screen.
+
+Before use, check each generated case against the existing economic invariants: at least one understandable route to completion, no accidental negative cash caused by an undisclosed condition, and a visible explanation if the player knowingly accepts a loss. Scenario variation is not hidden randomness and does not require real-time pressure.
+
+#### C13.6. Q18 - research gate
+
+The existing evidence already supports the broad purchase-to-pay sequence and reconciliation (P01, P03), total-cost comparison (P04), quote fields and package/minimum distinctions (P05), and an actual contract linking order, specified product, delivery note and claims (P13). Those sources do **not** establish how often confirmations differ, the fictional suppliers' goals, local availability, or the example prices/conditions. Keep those as transparent teaching assumptions. Do the focused R-K1 to R-K5 research before making source-backed claims or selecting material-specific rejection/credit mechanics; the later one-page plan can separate what is sourced from what is simply game setup.
+
+**Recommended next step:** paper-walk the two-offer RFQ -> customer quote/order -> order confirmation accept/reject -> buy flow for Norway, using one fixed scenario. Then let the user test that sequence on paper before changing the engine. No new user question: L27-L31 already settle the direction, and the user can steer from the walkthrough.
