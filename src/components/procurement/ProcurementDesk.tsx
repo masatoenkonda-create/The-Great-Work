@@ -107,7 +107,7 @@ function Icon({ c, item, faded }: { c: DeskConfig; item: string; faded?: boolean
   </span>;
 }
 
-function Pin({ c, id, p, s, open, onOpen }: { c: DeskConfig; id: string; p: Place; s: TradeState; open: boolean; onOpen: () => void }) {
+function Pin({ c, id, p, s, open, onOpen, zoom }: { c: DeskConfig; id: string; p: Place; s: TradeState; open: boolean; onOpen: () => void; zoom: number }) {
   const M = c.market;
   const sup = M.suppliers.find(x => x.id === id);
   const customer = id === 'customer' || c.competitors.includes(id);
@@ -122,19 +122,24 @@ function Pin({ c, id, p, s, open, onOpen }: { c: DeskConfig; id: string; p: Plac
   if (id === 'factory' && s.phase === 'buy' && readyToMake(M, s)) sub += ' · ready';
   if (customer && id !== 'customer' && s.sale.quotes.includes(id)) sub += ` · quoted $${M.buyer.competitors.find(x => x.id === id)!.quote}`;
   const art2 = hasArt ? art : hasIcon ? iconSrc : '';
-  const r = id === 'factory' ? 46 : 36;
+  const r = (id === 'factory' ? 52 : 43) * zoom;
   const img = hasArt ? r * 1.7 : r * 1.15; // a product marker sits smaller inside its plate
-  const w = Math.max(p.label.length * 8.2, sub.length * 6.6) + 22;
+  const labelSize = 18 * zoom;
+  const subSize = 14 * zoom;
+  const w = Math.max(p.label.length * labelSize * 0.62, sub.length * subSize * 0.58) + 30 * zoom;
+  const labelH = 54 * zoom;
   const edge = open ? '#fde68a' : '#e2e8f0';
   return (
     <g transform={`translate(${p.x},${p.y})`} onClick={onOpen} className="cursor-pointer" role="button" tabIndex={0} aria-label={`${p.label}, ${sub}`}
       onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpen(); } }}>
-      <circle r={r} fill="#0f172a" fillOpacity="0.62" stroke={edge} strokeWidth={open ? 3 : 2} />
+      <circle r={r} fill="#09111f" fillOpacity="0.93" stroke="#07101c" strokeWidth={open ? 7 : 6} />
+      <circle r={r} fill="#0f172a" fillOpacity="0.35" stroke={edge} strokeWidth={open ? 4 : 3} />
       {art2 ? <image href={art2} x={-img / 2} y={-img / 2} width={img} height={img} style={{ imageRendering: 'pixelated' }} />
         : <circle r="7" fill="#e2e8f0" />}
-      <rect x={-w / 2} y={r - 4} width={w} height="36" rx="7" fill="#0f172a" fillOpacity="0.8" stroke={edge} strokeWidth={open ? 3 : 2} />
-      <text y={r + 12} textAnchor="middle" fill="#f8fafc" fontSize="14" fontWeight="600">{p.label}</text>
-      <text y={r + 26} textAnchor="middle" fill="#cbd5e1" fontSize="11" fontStyle="italic">{sub}</text>
+      <rect x={-w / 2} y={r - 3} width={w} height={labelH} rx={9 * zoom} fill="#09111f" fillOpacity="0.97" stroke="#07101c" strokeWidth={7 * zoom} />
+      <rect x={-w / 2} y={r - 3} width={w} height={labelH} rx={9 * zoom} fill="#101d2d" stroke={edge} strokeWidth={open ? 4 : 3} />
+      <text y={r + 19 * zoom} textAnchor="middle" fill="#ffffff" fontSize={labelSize} fontWeight="700" paintOrder="stroke" stroke="#07101c" strokeWidth={1.5 * zoom}>{p.label}</text>
+      <text y={r + 41 * zoom} textAnchor="middle" fill={sub.includes('needed') ? '#fde68a' : '#dbeafe'} fontSize={subSize} fontWeight="600">{sub}</text>
     </g>
   );
 }
@@ -143,6 +148,7 @@ export function ProcurementDesk({ config: c, state: s, dispatch, onReturnToMap, 
   const M = c.market;
   const [open, setOpen] = useState<string | null>(null);
   const [mapFailed, setMapFailed] = useState(false);
+  const [mapZoom, setMapZoom] = useState(1);
   const truckArt = useLoaded(c.art.truck);
   const act = (a: TradeAction) => { sound.playSelect(); dispatch(a); };
 
@@ -176,6 +182,7 @@ export function ProcurementDesk({ config: c, state: s, dispatch, onReturnToMap, 
       <div className="relative min-h-[45svh] min-w-0 flex-1 lg:min-h-0">
         <svg viewBox="0 0 1376 768" preserveAspectRatio="xMidYMid meet" className="h-full w-full" role="group" aria-label="Map of the factory's suppliers, material origins and customer">
           {mapFailed ? <c.MapPlaceholder /> : <image href={c.art.map} onError={() => setMapFailed(true)} x="0" y="0" width="1376" height="768" preserveAspectRatio="xMidYMid meet" style={{ imageRendering: 'pixelated' }} />}
+          <g transform={`translate(${(1 - mapZoom) * 688} ${(1 - mapZoom) * 384}) scale(${mapZoom})`}>
           {Object.keys(c.pins).filter(id => id !== 'factory').map(id => (
             <path key={id} d={c.routes[id]} fill="none" stroke={open === id ? '#f8fafc' : '#475569'} strokeWidth={open === id ? 3 : 2} strokeDasharray="5 6" opacity={open === id ? 0.95 : 0.45} />
           ))}
@@ -198,12 +205,19 @@ export function ProcurementDesk({ config: c, state: s, dispatch, onReturnToMap, 
               <animateMotion dur="2.4s" fill="freeze" path={c.routes[lastOrder.supplierId]} />
             </g>
           )}
-          {Object.entries(c.pins).map(([id, p]) => <Pin key={id} c={c} id={id} p={p} s={s} open={open === id} onOpen={() => { sound.playClick(); setOpen(id); }} />)}
+          {Object.entries(c.pins).map(([id, p]) => <Pin key={id} c={c} id={id} p={p} s={s} open={open === id} zoom={mapZoom} onOpen={() => { sound.playClick(); setOpen(id); }} />)}
+          </g>
         </svg>
 
         <div className="absolute left-3 top-3 flex gap-2">
           <button onClick={onReturnToMap} className="rounded-md border border-white/15 bg-slate-900/70 px-3 py-1.5 text-xs text-slate-200 backdrop-blur-sm hover:bg-slate-900/85">← World map</button>
-          <p className="rounded-md border border-white/15 bg-slate-900/70 px-3 py-1.5 text-sm text-slate-100 backdrop-blur-sm"><span className="text-slate-400">Next ·</span> {nextStep(c, s)}</p>
+          <p className="max-w-[min(56vw,700px)] rounded-md border border-white/20 bg-slate-900/90 px-3 py-1.5 text-base font-medium text-white shadow-lg backdrop-blur-sm"><span className="text-amber-200">Next ·</span> {nextStep(c, s)}</p>
+        </div>
+        <div className="absolute right-3 top-3 flex items-center gap-1 rounded-lg border border-white/25 bg-slate-950/90 p-1.5 shadow-lg" aria-label="Map zoom controls">
+          <button aria-label="Zoom map out" title="Zoom out" onClick={() => setMapZoom(z => Math.max(1, +(z - 0.15).toFixed(2)))} disabled={mapZoom <= 1} className="h-10 w-10 rounded border border-white/20 text-2xl font-semibold leading-none hover:bg-white/10 disabled:opacity-40">−</button>
+          <span className="min-w-14 text-center font-mono text-sm font-semibold">{Math.round(mapZoom * 100)}%</span>
+          <button aria-label="Zoom map in" title="Zoom in" onClick={() => setMapZoom(z => Math.min(1.6, +(z + 0.15).toFixed(2)))} disabled={mapZoom >= 1.6} className="h-10 w-10 rounded border border-white/20 text-2xl font-semibold leading-none hover:bg-white/10 disabled:opacity-40">+</button>
+          <button aria-label="Reset map zoom" title="Reset zoom" onClick={() => setMapZoom(1)} disabled={mapZoom === 1} className="h-10 rounded border border-white/20 px-2 text-xs hover:bg-white/10 disabled:opacity-40">Reset</button>
         </div>
 
         {open && (

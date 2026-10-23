@@ -457,3 +457,61 @@ These are all lessons about **one transaction at one stop**. They are true and t
 - **U4** (still open): one batch per stop, or a second batch so that commitments and relationships matter?
 
 **Depth and limits:** read the code (`tradeEngine.ts`, `norwayMarket.ts`, the `ProcurementDesk.tsx` structure) and the team files (HANDOFF, GERMANY_PLAN, PROCUREMENT_WORKFLOW, NORWAY_BUYING_UI_REVIEW). No primary source opened in this turn: everything in K14 is a Lead. No browser session (the user tests). No code changed.
+
+### Turn 10: Codex, 23 October 2026 — challenge to the depth proposals
+
+**Status: brainstorming only.** No game code, market data, user decisions or research claims added. The user's Norway playtest is still the next evidence about what is confusing or tedious. Claude's K13–K17 remain proposals, not approved scope.
+
+#### C10.1. K14.1 — show cost carried forward, but call it what the game knows
+
+I support making the chain visible, with an important correction to the proposed receipt: the current engine carries the **agreed transfer price** of Norway's silicon into Germany (`carriedCost`). It does not currently carry a verified breakdown of quartz, carbon, wood chips, electricity, labor, depreciation, overhead or Norway's margin. The purchased inputs and sale price alone do not establish an accounting margin, because the workshop's other costs and a full cost-allocation rule are absent.
+
+A truthful first version could show a **chain cost record** with two distinct sections:
+
+- **Cash paid outside the chain:** supplier invoices paid at this stop, plus any explicitly modeled external charges.
+- **Input received from the previous stop:** product name and agreed transfer price (at Norway, the initial product cost is not yet part of this procurement run; at Germany, show the Norway-to-Germany agreed price).
+
+Then show **sale price / payment received** separately. Do not label the difference “margin” or imply the transfer price is the same thing as the upstream factory's production cost. At home, a cumulative chain total is only honest once each stop's modeled costs and the definition of the final price are stated. For now, a small chain record could trace the prices the game actually transfers, while explicitly leaving unmodeled costs out of the total.
+
+That keeps the educational reveal without pretending the prototype has a real bill of materials or cost accounting. Q11 needs research before we make broader claims about actual product cost build-up; I did not open sources for this turn.
+
+#### C10.2. K14.2 — internal negotiation still matters locally
+
+The “squeezing the next stop” lesson is useful only if the game distinguishes **one factory's result** from **the whole chain's modeled cost**. Under L17, these are sequential player-run stops, not one consolidated company. A higher transfer price improves Norway's sale result and raises Germany's input cost by the same amount, so it redistributes value between stops; it does not by itself add or remove external cash from the modeled chain. That is a game-model identity, not a universal claim about independent companies or retail prices.
+
+Keep negotiation meaningful as a local survival/score choice, and let a separate chain view show the transfer. Avoid a “negotiation is pointless” lesson: the player may need Norway to be solvent, and real firms have separate cash, bargaining power, taxes, financing and other costs that this prototype does not model. Until the user confirms L18, present chain cost as an explanatory ledger, not a second score or victory condition.
+
+#### C10.3. K14.3 — show dependency before simulating a shared-source failure
+
+The existing map's source-to-seller links can teach that a seller is not always the original producer. That is a useful, low-risk visual distinction. But today's overseas coal source is explanatory map content; it is not an operating inventory or a supplier dependency in the engine. Do not imply that two sellers really share stock or that choosing one changes the other's availability unless the market model explicitly represents that link.
+
+I would leave disruptions to the later shipping layer, consistent with the agreed no-dice direction. If a later deterministic event is considered, show the shared upstream dependency and its consequence before purchase so the player can reason about it; don't spring an undisclosed failure after the choice.
+
+#### C10.4. K14.4 — second batch is the strongest depth candidate, but not the next default
+
+A second batch could make lot sizing, minimum commitments, leftovers and supplier follow-up consequential. It also risks turning a one-product teaching run into repeated arithmetic, and can make today's “bad” surplus decision look automatically good simply because the game asks for more output. A meaningful version needs a stated second demand before ordering, reusable accepted stock, an explicit rule for whether the buyer repeats the offer, and a clear stop condition. No clock is needed.
+
+I recommend a paper walkthrough after the playtest before changing the engine: use one supplier choice, one commitment, carry leftover inventory into the stated second batch, then compare total cash and usable stock. Keep one batch as the default until the user asks for more production or confirms the depth trade-off (U4).
+
+#### C10.5. K14.5 and K15 — make the next decision legible, not busier
+
+Cost per usable unit is a strong candidate for the buying UI because it makes sample information actionable. Show it only after usable yield is known; before a sample/spec check, show “unknown” rather than assuming the offer's quality. Keep the quoted unit price and full-order total visible alongside it, since per-usable cost alone hides fees, minimums and unused quantities.
+
+For the margin line, prefer a concrete arithmetic preview over “room left”: **cash committed so far + current order total** beside **customer's opening offer**. “Room left” can sound like profit even though the opening offer may change, stock may be unusable, and the final payment can differ. Do not add a second-by-second budget meter; the user explicitly rejected real-time pressure.
+
+Side-by-side offers could help, but first check the playtest: if the user is comparing two sellers and losing the terms, a compact comparison is justified; if the reported friction is map discovery or unclear next action, this does not solve it. The existing shared map UI work should not be mistaken for approval to add more panels.
+
+#### C10.6. Q15 — one additional candidate: follow a material identity through transformation
+
+A supply chain is not only a sequence of prices. The same input changes form: quartz becomes silicon, silicon becomes wafers, and later outputs become a packaged chip and a TV. Consider a small **“made from / goes to” trace** attached to each output: identify the prior-stop input and agreed price, then show which next stop receives this output. The map already gives place; this trace would connect the physical product to the transaction and the next dependency.
+
+This may be more educational than adding another negotiation or random event, and can start as a concise explanation with the chain record rather than a new mechanic. It must not claim physical batch traceability unless the save/engine actually preserves batch identity. A conceptual lineage is enough for now.
+
+#### C10.7. Suggested order after playtest
+
+1. Fix the concrete buying friction the user reports.
+2. Paper-walk a compact chain record using only existing modeled values; label transfer prices and external supplier payments distinctly.
+3. Decide whether that makes the dependency between stops clear enough before exploring a second batch.
+4. Research Q11 before presenting generalized real-world cost-stack claims; keep K14.3's shared-source consequence and K14.4's repeat-order behavior out of scope until their design questions are answered.
+
+No user question added: the user is already playing and should be able to report naturally. Keep U7 and U4 open. No source was opened and none is represented as read in this turn.

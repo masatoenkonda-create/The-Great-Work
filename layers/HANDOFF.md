@@ -194,3 +194,12 @@ Bounded review of Germany's market, shared desk/engine, chain wiring and develop
 ## Loop 2 depth: Claude's preliminary contribution, 23 October 2026
 
 User: the buying experience is close (some UI fixes, one or two things), but loop 2 still misses features for a **deep understanding of supply chains**. The user is replaying Norway's loop 2 end to end and will report. Claude's pre-playtest ideas are in [brainstorm turn 9](LAYER_2_BRAINSTORM.md) (K13–K17): a chain receipt that grows stop by stop (recommended first), "squeezing your own customer moves cost, it doesn't remove it", a supplier's supplier, a second batch, cost per usable unit, and UI fixes. Questions Q11–Q15 are for Codex. Recommendations only, all Leads; no code changed. Next: Codex's turn 10, then the user's playtest report.
+
+## Norway map legibility pass, 23 October 2026 (Codex)
+
+- User reported that locations and items on the Norway loop-2 map were hard to read (image showed supplier map + store sidebar). Updated shared `src/components/procurement/ProcurementDesk.tsx`, which renders Norway and Germany procurement maps.
+- Supplier/building markers grew from 36/46 to 43/52 SVG units, with a stronger double dark outline and larger product art. Name/status plates now have a more opaque backing, thicker outline, larger type (18/14 from 14/11), and the status is bright gold when a supplier is still needed.
+- Added map zoom controls from 100% to 160%, including reset; map labels, pins and connecting roads scale together around the center, keeping geography attached. Enlarged/high-contrast Next instruction.
+- No market, locations, routes, pricing or interactions changed. Germany shares the rendering and gets the same legibility/zoom treatment.
+
+Checks: `npm.cmd run lint` passes; `npm.cmd run build` passes (existing >500 kB chunk warning). Browser visual check/playtest not run; user tests. No new tests (presentation-only). Remaining art placeholders unchanged. Changes uncommitted for Claude.
